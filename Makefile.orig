@@ -1,0 +1,21 @@
+FC = ifort -O0
+#FC = ifort -debug -O0  -wcheck -g 
+#FC = ifort -i4 -O
+LIBS = 
+
+TARGET=GPCODE_test
+SRCSF = ${TARGET}.f90 GP_Elitists.f90 \
+	GP_Fitness_Proportionate_Asexual_Reproduction.f90 \
+	GP_Tournament_Style_Sexual_Reproduction.f90 \
+	GP_Mutations.f90  GP_Tree_Build.f90 GP_Tree_Swap.f90  GP_Clean_Tree_Nodes.f90
+
+all : $(TARGET)
+ 
+%.o : %.f90
+	$(FC) $(FFLAGS) -c $<
+
+${TARGET}: ${TARGET}.f90
+	$(FC) $(FFLAGS) -o $@ ${SRCSF} ${LIBS}
+
+clean: 
+	rm -f *.o $(TARGET)

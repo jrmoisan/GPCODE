@@ -1,0 +1,13 @@
+#!/bin/bash
+
+#SBATCH -J v1511111
+#SBATCH --time=00:05:00
+#SBATCH --nodes=4  --ntasks=32   --cpus-per-task=1  --ntasks-per-node=8 
+#SBATCH -o output.%j
+#SBATCH -e error.%j
+#SBATCH -p compute                 
+#SBATCH --account=s1209
+
+mpirun -np 32 ./main.x
+
+exit 0

@@ -1,0 +1,43 @@
+model  fasham_CDOM
+GA_Crossover_Probability      0.31
+GA_Mutation_Probability       0.41
+GA_save_elites_Probability    0.08   # 0.006    # 0.25   #0.05
+ga_rand_replace_probability   0.00
+ga_tournament_style           2
+n_GA_Generations              2   # 8  # 3      # 5           # 2
+n_GA_Individuals              2    # 22   # 220 # 3      # 5           # 2
+n_gp_generations       1  
+n_gp_individuals       1  
+random_scale_large           2.05
+random_scale_small           1.05
+random_scale_fraction        0.70
+gp_all_summary  1
+ga_print  0
+gp_log    0
+gpsse_log    1
+GP_Tree_Probability  1.0    # 0.5
+GP_Elitist_Probability               0.011   #0.051   # 0.05
+GP_Asexual_Reproduction_Probability  0.31
+GP_Crossover_Probability             0.30
+GP_Mutation_Probability              0.30
+number_gp_child_prints              2
+dt            1440.            
+n_time_steps  300    
+n_input_vars   0
+n_levels     10
+selected_function  1
+selected_function  2
+selected_function  3
+selected_function  4
+selected_function  5
+selected_function  6
+selected_function  8
+selected_function  9
+selected_function  10
+prob_no_elite 0.000
+USER_INPUT_RANDOM_SEED 1678049841  #  0    # 1582795233 
+n_partitions 2
+term_to_parm_prob  0.6
+prob_forcing 0.16
+fort555_output  1
+fort333_output  1

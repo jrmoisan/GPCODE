@@ -1,0 +1,42 @@
+#PBS -S /bin/csh
+#PBS -N gpcodetest 
+# User job can access ~7.6 GB of memory per node.
+# A memory intensive job that needs more than ~0.9 GB 
+# per process should use less than 8 cores per node
+# to allow more memory per MPI process. This example
+# asks for 64 nodes and 4 MPI processes per node.
+# This request implies 8*8 = 64 MPI processes for the job.
+#PBS -l select=16:ncpus=2:mpiprocs=2
+#i ##PBS -l walltime=120:00:00 
+#PBS -l walltime=0:05:00 
+#PBS -j oe           
+# #PBS -W group_list=g26184    
+#PBS -W group_list=s1209    
+#PBS -m e            
+
+module load comp-intel/2015.0.090
+module load mpi-sgi/mpt.2.11r13
+
+# Currently, there is no default compiler and MPI library set.
+# You should load in the version you want.
+# Currently, MVAPICH or SGI's MPT are available in 64-bit only,
+# you should use a 64-bit version of the compiler.
+
+
+# By default, PBS executes your job from your home directory. 
+# However, you can use the environment variable 
+# PBS_O_WORKDIR to change to the directory where 
+# you submitted your job. 
+
+# use of dplace to pin processes to processors may improve performance
+# Here you request to pin processes to processors 2, 3, 6, 7 of each node.
+
+# The resource request of select=64 and mpiprocs=4 implies 
+# that you want to have 256 MPI processes in total.
+# If this is correct, you can omit the -np 256 for mpiexec
+# that you might have used before.
+
+mpiexec ./main.x
+
+# -end of script-
+
