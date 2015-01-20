@@ -88,10 +88,10 @@ logical :: L_myprint
 
    write(GP_print_unit,'(/A,2(1x,I6)/)') 'pts: i_GP_generation', i_GP_generation 
 
-   L_myprint = .FALSE.             
-   if( i_GP_generation == 0 )then
-      L_myprint = .TRUE. 
-   endif ! i_GP_generation == 0
+   L_myprint = .TRUE. ! .FALSE.             
+   !if( i_GP_generation == 0 )then
+   !   L_myprint = .TRUE. 
+   !endif ! i_GP_generation == 0
 
 GP_individual_Initial_Conditions = GP_Population_Initial_Conditions(:, i_GP_best_parent)
 GP_Individual_Node_Parameters    = GP_population_node_parameters(:,:,i_GP_best_parent)

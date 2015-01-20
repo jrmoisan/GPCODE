@@ -81,7 +81,7 @@ subroutine Runge_Kutta_Box_Model( L_print_RK )
         if( trim(model) == 'fasham' .or. &
             trim(model) == 'fasham_fixed_tree'      )then
 
-            call DoForcing( btmp, Runge_Kutta_Time_Step(iter), i_Time_Step, L_bad_result )
+            call DoForcing( btmp, Runge_Kutta_Time_Step(iter), i_Time_Step-1, L_bad_result )
             if( L_bad_result ) then
                 write(6,'(/A)') 'rkbm: bad result from DoForcing '
                 return
@@ -89,9 +89,10 @@ subroutine Runge_Kutta_Box_Model( L_print_RK )
          
         endif ! trim(model) == 'fasham'
 
-        if( trim(model) == 'fasham_CDOM)') then
+        if( trim(model) == 'fasham_CDOM') then
 
             call cdom%getForcing( Runge_Kutta_Time_Step(iter), i_Time_Step-1, L_bad_result )
+
             if( L_bad_result ) then
                 write(6,'(/A)') 'rkbm: bad result from DoForcing '
                 return
@@ -231,6 +232,10 @@ subroutine Runge_Kutta_Box_Model( L_print_RK )
     endif !   any( isnan( b_tmp ) ) .or.  any( abs(b_tmp) > big_real
 
     Numerical_CODE_Solution(i_Time_Step,1:n_Variables)=max(b_tmp(1:n_Variables),0.0D+0)
+
+!      write(6,'(A,1x,I4,10(1x,E15.7)/ )') &
+!          'rkbm: i_time_step, Numerical_CODE_Solution(i_time_step,:)', &
+!                 i_time_step, Numerical_CODE_Solution(i_time_step,:)
 
 enddo ! End Time step loop
 

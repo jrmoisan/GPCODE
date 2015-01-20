@@ -97,10 +97,6 @@ enddo echoloop
 write(GP_print_unit,'(A//)' )&
  'End of Input Echo Listing-----------------------------------------'
 
-
-
-!---------------------------------------------------------------------
-
 ! defaults
 
 user_input_random_seed = 0
@@ -201,16 +197,11 @@ L_restart = .false.
 
 GP_Set_Terminal_to_Parameter_Probability = 0.6d0
 
-
 n_partitions = 2
-!---------------------------------------------------------------------
-
 
 i_function_index = 0
 
-
 rewind(cntl_unitnum)
-
 
 cntlloop: &
 do
@@ -231,10 +222,6 @@ do
         EXIT cntlloop
     endif
 
-
-!------------------------------------------------------------------------------
-
-
 !GA_Crossover_Probability = 0.3d0
 ! probability of sexual crossing of parameter strings in GA_lmdif
 
@@ -247,10 +234,6 @@ do
         write(GP_print_unit,'(A,1x,F10.4)') 'rcntl: GA_Crossover_Probability   = ', &
                                                     GA_Crossover_Probability
 
-
-!--------------------------------------------------------------------
-
-
 !GA_Mutation_Probability  = 0.1d0
 ! probability of mutation in parameter string of GA_lmdif
 
@@ -262,10 +245,6 @@ do
         write(GP_print_unit,'(A,1x,F10.4)') 'rcntl: GA_Mutation_Probability    = ', &
                                                     GA_Mutation_Probability
 
-
-
-!--------------------------------------------------------------------
-
 !GA_rand_replace_Probability  = 0.005d0   ! probability of rand_replace in binary string
 
     elseif( Aline(1:len('GA_rand_replace_Probability')) == "GA_Rand_Replace_Probability" .or. &
@@ -275,11 +254,6 @@ do
 
         write(GP_print_unit,'(A,1x,F10.4)') 'rcntl: GA_rand_replace_Probability = ', &
                                                     GA_rand_replace_Probability
-
-
-
-!--------------------------------------------------------------------
-
 
 !GA_save_elites_Probability  = 0.005d0
 ! probability of saving an individual as an elite individual
@@ -292,10 +266,6 @@ do
         write(GP_print_unit,'(A,1x,F10.4)') 'rcntl: GA_save_elites_Probability = ', &
                                                     GA_save_elites_Probability
 
-
-!--------------------------------------------------------------------
-
-
 !GP_Tree_Probability  = 0.005d0   ! Estimated from previous work by Joel Cohen
 
     elseif( Aline(1:len('GP_Tree_Probability')) == "GP_Tree_Probability" .or.     &
@@ -305,10 +275,6 @@ do
 
         write(GP_print_unit,'(A,1x,F10.4)') 'rcntl: GP_Tree_Probability = ', &
                                                     GP_Tree_Probability
-
-
-!--------------------------------------------------------------------
-
 
 !GP_Elitist_Probability  = 0.005d0
 ! Keeps the top n_GP_Elitists of the Best Fit Individuals from Generation to Generation
@@ -320,9 +286,6 @@ do
 
         write(GP_print_unit,'(A,1x,F10.4)') 'rcntl: GP_Elitist_Probability = ', &
                                                     GP_Elitist_Probability
-
-
-!--------------------------------------------------------------------
 
 !GP_Asexual_Reproduction_Probability  = 0.005d0   ! probability of asexual reproduction
 
@@ -338,7 +301,6 @@ do
               'rcntl: GP_Asexual_Reproduction_Probability = ', &
                       GP_Asexual_Reproduction_Probability
 
-!------------------------------------------------------------------------------
 
 !GP_Crossover_Probability  = 0.005d0   !  probability of sexual crossing of binary string
 
@@ -350,10 +312,6 @@ do
         write(GP_print_unit,'(A,1x,F10.4)') 'rcntl: GP_Crossover_Probability = ', &
                                                     GP_Crossover_Probability
 
-
-
-!--------------------------------------------------------------------
-
 !GP_Mutation_Probability  = 0.005d0   ! probability of mutation in binary string
 
     elseif( Aline(1:len('GP_Mutation_Probability')) == "GP_Mutation_Probability" .or.     &
@@ -363,10 +321,6 @@ do
 
         write(GP_print_unit,'(A,1x,F10.4)') 'rcntl: GP_Mutation_Probability = ', &
                                                     GP_Mutation_Probability
-
-
-
-!--------------------------------------------------------------------
 
 !n_GA_Generations
 
@@ -379,9 +333,6 @@ do
                                                  n_GA_Generations
 
 
-!--------------------------------------------------------------------
-
-
 !n_GA_Individuals
 
     elseif( Aline(1:len('n_GA_Individuals')) == "n_GA_Individuals" .or.     &
@@ -392,9 +343,6 @@ do
         write(GP_print_unit,'(A,1x,I6)') 'rcntl: n_GA_Individuals = ', &
                                                  n_GA_Individuals
 
-
-!--------------------------------------------------------------------
-
 !n_time_steps
 
     elseif( Aline(1:len('n_time_steps')) == "N_Time_Steps" .or.     &
@@ -404,10 +352,6 @@ do
 
         write(GP_print_unit,'(A,1x,I6)') 'rcntl: n_time_steps     = ', &
                                                  n_time_steps
-
-
-!--------------------------------------------------------------------
-
 
 !dt = 1.0D+1/(24.0D+0*60.0D+0)   ! [d^-1; 10 minute time step]
 
@@ -430,10 +374,6 @@ do
         write(GP_print_unit,'(A,1x,F10.4)') 'rcntl: dt (days)    = ', dt
 
 
-
-!--------------------------------------------------------------------
-
-
 ! sse_low_wt  -  weight for data before sse_min_time
 
     elseif( Aline(1:len('sse_low_wt')) == "sse_low_wt" .or.     &
@@ -441,15 +381,8 @@ do
 
         READ(Aline(len('sse_low_wt')+1:), * )  sse_low_wt
 
-
-
         write(6,'(/A,1x,E15.7)') 'rcntl: sse_low_wt',  &
                                          sse_low_wt
-
-
-
-!--------------------------------------------------------------------
-
 
 ! sse_min_time  -  calculate sse only with data after this time
 
@@ -458,16 +391,8 @@ do
 
         READ(Aline(len('sse_min_time')+1:), * )  sse_min_time
 
-
-
         write(6,'(/A,1x,E15.7)') 'rcntl: sse_min_time',  &
                                          sse_min_time
-
-
-
-
-!--------------------------------------------------------------------
-
 
 ! sse_max_time  -  calculate sse only with data before this time
 
@@ -475,17 +400,8 @@ do
             Aline(1:len('sse_max_time')) == "SSE_MAX_TIME" ) then
 
         READ(Aline(len('sse_max_time')+1:), * )  sse_max_time
-
-
-
         write(6,'(/A,1x,E15.7)') 'rcntl: sse_max_time',  &
                                          sse_max_time
-
-
-
-
-!--------------------------------------------------------------------
-
 
 !model = LV  or  NPZ or data or fasham or fasham_fixed_tree
 
@@ -502,9 +418,6 @@ do
         if( trim(model) == 'FASHAM_FIXED_TREE' ) model = 'fasham_fixed_tree'
         if( trim(model) == 'Fasham_fixed_tree' ) model = 'fasham_fixed_tree'
 
-!--------------------------------------------------------------------
-
-
 !N_GP_individuals
 
     elseif( Aline(1:len('n_gp_individuals')) == "N_GP_INDIVIDUALS" .or.     &
@@ -514,11 +427,6 @@ do
 
         write(GP_print_unit,'(A,1x,I6)') 'rcntl: n_gp_individuals = ', n_gp_individuals
 
-
-
-!--------------------------------------------------------------------
-
-
 !N_GP_generations
 
     elseif( Aline(1:len('n_gp_generations')) == "N_GP_GENERATIONS" .or.     &
@@ -527,11 +435,6 @@ do
         READ(Aline(len('n_gp_generations')+1:), * )  n_gp_generations
 
         write(GP_print_unit,'(A,1x,I6)') 'rcntl: n_gp_generations = ', n_gp_generations
-
-
-
-
-!--------------------------------------------------------------------
 
 
 !n_Node_Functions
@@ -548,10 +451,6 @@ do
         write(GP_print_unit,'(A,1x,I6)') 'rcntl: n_Node_Functions = ', n_Node_Functions
 
         L_node_functions = .TRUE.
-
-
-!--------------------------------------------------------------------
-
 
 ! selected_function
 
@@ -576,9 +475,6 @@ do
 
         endif ! i_function_index <= n_functions_max
 
-
-!--------------------------------------------------------------------
-
 ! random_scale_small
 
 ! in random_real, random_scale_small is the smaller of the two scales
@@ -592,9 +488,6 @@ do
         write(GP_print_unit,'(A,1x,E15.7)') 'rcntl: random_scale_small = ', &
                                                     random_scale_small
 
-
-!--------------------------------------------------------------------
-
 ! random_scale_large
 
 ! in random_real, random_scale_large is the larger of the two scales
@@ -607,12 +500,6 @@ do
 
         write(GP_print_unit,'(A,1x,E15.7)') 'rcntl: random_scale_large = ', &
                                                     random_scale_large
-
-
-
-
-!--------------------------------------------------------------------
-
 
 ! random scale fraction
 
@@ -628,12 +515,6 @@ do
 
         write(GP_print_unit,'(A,1x,E15.7)') 'rcntl: random_scale_fraction = ', &
                                                     random_scale_fraction
-
-
-
-
-!--------------------------------------------------------------------
-
 
 ! ga_tournament_style
 
@@ -652,10 +533,6 @@ do
         write(GP_print_unit,'(A,1x,I6)') 'rcntl: ga_tournament_style = ', &
                                                  ga_tournament_style
 
-
-!--------------------------------------------------------------------
-
-
 !  user_input_random_seed
 
 ! user_input_random_seed = 0  -  use system clock value for random number seed
@@ -664,8 +541,6 @@ do
 
 ! user_input_random_seed is used for debugging since it allows multiple
 ! runs to be made which have the same set of random numbers
-
-
 
     elseif( Aline(1:len('user_input_random_seed')) == "user_input_random_seed"  .or.     &
             Aline(1:len('user_input_random_seed')) == "USER_INPUT_RANDOM_SEED"           ) then

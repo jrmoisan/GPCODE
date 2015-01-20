@@ -58,7 +58,7 @@ contains
       integer :: istat
       CHARACTER(len=72) :: Aline
       integer ::  n_count,i_count
-      integer ::  i
+      integer ::  i,n
       integer :: data_unitnum
       real(kind=r8b) :: increment
 !
@@ -75,20 +75,33 @@ contains
       n_count = i_count - 3
       n_time_steps = n_count
 
-      allocate(this%cdoms(n_time_steps))
-      allocate(this%pars(n_time_steps))
-      allocate(this%kds(n_time_steps))
-      allocate(this%mxds(n_time_steps))
-      allocate(this%dmxddts(n_time_steps))
+      allocate(this%cdoms(0:n_time_steps))
+      allocate(this%pars(0:n_time_steps))
+      allocate(this%kds(0:n_time_steps))
+      allocate(this%mxds(0:n_time_steps))
+      allocate(this%dmxddts(0:n_time_steps))
 
-      rewind(data_unitnum)
+      close(data_unitnum)   
+      open( unit = data_unitnum, file = 'CDOM.data', action="read")
       do i = 1,3
          read( data_unitnum, '(A)', iostat = istat ) Aline
       enddo
       do i = 1, n_count
          read( data_unitnum, '(A)', iostat = istat ) Aline
+         do n = 1,72
+            if (Aline(n:n) == ',') then
+               Aline(n:n)=' '
+            endif
+         enddo
          read( Aline,*)this%cdoms(i),this%kds(i),this%pars(i),this%mxds(i),this%dmxddts(i)
+         write(Aline,*)' '
       enddo
+      this%cdoms(0) = this%cdoms(1)
+      this%kds(0) = this%kds(1)
+      this%pars(0) = this%pars(1)
+      this%mxds(0) = this%mxds(1)
+      this%dmxddts(0) = this%dmxddts(1)
+
       close(data_unitnum)   
 !
 !   allocate and initialize all the globals
@@ -182,6 +195,8 @@ contains
          enddo ! i_node
       enddo ! i_tree
 
+      call this%generateGraph()
+
       call print_values2()
 
       call sse0_calc( )
@@ -200,7 +215,8 @@ contains
       real (kind=8) :: time_step_fraction
       integer (kind=4) :: i_Time_Step
       logical :: L_bad
-      integer :: k,iter
+      integer :: k
+      real(kind=8) :: iter
       real (kind=8) :: aDMXDDT,aPAR,aKd,aMXD
 
 ! TODO: read in frocing from the data arrays
@@ -211,6 +227,7 @@ contains
 
       L_bad = .false.
       k = i_time_step
+      iter = time_step_fraction
 
 !     the last step uses the previous step info
       if (k == n_time_steps) k = n_time_steps-1
