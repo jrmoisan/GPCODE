@@ -1,5 +1,8 @@
 cmake_minimum_required(VERSION 2.6)
 project (GPGA)
+#set(CMAKE_Fortran_COMPILER "/opt/intel/composer_xe_2013_sp1.3.166/bin/intel64/ifort")
+set(CMAKE_Fortran_COMPILER ${FC})
+message(status ${CMAKE_Fortran_COMPILER})
 enable_language (Fortran )
 
 #set (CMAKE_VERBOSE_MAKEFILE 1)
@@ -16,7 +19,7 @@ ENDIF()
 
 #message(${MPI_INCLUDE_PATH})
 
-set(CMAKE_Fortran_COMPILER ${FC})
+#set(CMAKE_Fortran_COMPILER ${FC})
 set (args "--version")
 execute_process(COMMAND ${CMAKE_Fortran_COMPILER} ${args}
   WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}

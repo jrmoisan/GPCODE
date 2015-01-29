@@ -94,6 +94,9 @@ contains
             endif
          enddo
          read( Aline,*)this%cdoms(i),this%kds(i),this%pars(i),this%mxds(i),this%dmxddts(i)
+
+         if(this%dmxddts(i)<0) this%dmxddts(i)=0
+
          write(Aline,*)' '
       enddo
       this%cdoms(0) = this%cdoms(1)
@@ -210,10 +213,11 @@ contains
  
    end subroutine setModel
 
-   subroutine getForcing(this,time_step_fraction, i_Time_Step,L_bad )
+   subroutine getForcing(this,preForce,time_step_fraction, i_Time_Step,L_bad )
       class(fasham_CDOM):: this
+      real (kind=8) :: preForce(n_code_equations)
       real (kind=8) :: time_step_fraction
-      integer (kind=4) :: i_Time_Step
+      integer :: i_Time_Step
       logical :: L_bad
       integer :: k
       real(kind=8) :: iter

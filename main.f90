@@ -303,7 +303,7 @@ program main
     !if( i_GP_generation > n_GP_generations / 2 )then
     !if( i_GP_generation > 20                   )then
 
-    !    call GP_para_lmdif_process( i_GP_generation, max_n_gp_params  )
+        call GP_para_lmdif_process( i_GP_generation, max_n_gp_params  )
 
     !endif !  i_GP_generation > n_GP_generations / 2
 

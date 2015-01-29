@@ -91,7 +91,7 @@ subroutine Runge_Kutta_Box_Model( L_print_RK )
 
         if( trim(model) == 'fasham_CDOM') then
 
-            call cdom%getForcing( Runge_Kutta_Time_Step(iter), i_Time_Step-1, L_bad_result )
+            call cdom%getForcing(btmp, Runge_Kutta_Time_Step(iter), i_Time_Step-1, L_bad_result )
 
             if( L_bad_result ) then
                 write(6,'(/A)') 'rkbm: bad result from DoForcing '
