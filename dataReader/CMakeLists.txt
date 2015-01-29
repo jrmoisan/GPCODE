@@ -1,0 +1,8 @@
+cmake_minimum_required(VERSION 2.8)
+set(srcs NetcdfReader_module.f90)
+list(APPEND srcs MXDReader_module.f90)
+list(APPEND srcs COLORReader_module.f90)
+include_directories(/opt/local/include)
+link_directories(/opt/local/lib)
+add_library(reader STATIC ${srcs})
+target_link_libraries(reader netcdff z dl )
