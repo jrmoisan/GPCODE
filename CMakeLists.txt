@@ -47,7 +47,7 @@ class_serialization_visitor.f90 class_tree_node.f90 clock_module.f90
 close_output_unit.f90 combine_tree_strings.f90 comp_data_variance.f90 corr.f90 
 count_parens.f90 create_equations.f90 create_tree_node_string.f90 
 deallocate_arrays1.f90 deserialize_trees.f90 
-enorm.f90 erfc.f90 erfcc.f90 fasham_CDOM_module.f90 Fasham_Forcing.f90 
+enorm.f90 erfc.f90 erfcc.f90 fasham_CDOM_module.f90 fasham_CDOM_GP_module.f90  Fasham_Forcing.f90 
 fasham_model_debug.f90 fasham_tree_functions.f90 
 fasham_tree_interfaces.f90 fasham_variables_module.f90 fcn.f90 
 fdjac2.f90 fill_string_arrays.f90 GA_calc_fitness.f90 

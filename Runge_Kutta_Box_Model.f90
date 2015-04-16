@@ -19,7 +19,9 @@ subroutine Runge_Kutta_Box_Model( L_print_RK )
    use GA_Parameters_module
    use GA_Variables_module
    use GP_Data_module
+   use twin_module
    use fasham_CDOM_module
+   use fasham_CDOM_GP_module
 
 
    implicit none
@@ -89,9 +91,9 @@ subroutine Runge_Kutta_Box_Model( L_print_RK )
          
         endif ! trim(model) == 'fasham'
 
-        if( trim(model) == 'fasham_CDOM') then
+        if( trim(model) == 'fasham_CDOM' .or. trim(model) == 'fasham_CDOM_GP') then
 
-            call cdom%getForcing(btmp, Runge_Kutta_Time_Step(iter), i_Time_Step-1, L_bad_result )
+            call aCDOM%getForcing(btmp, Runge_Kutta_Time_Step(iter), i_Time_Step-1, L_bad_result )
 
             if( L_bad_result ) then
                 write(6,'(/A)') 'rkbm: bad result from DoForcing '

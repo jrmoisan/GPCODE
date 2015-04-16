@@ -4,13 +4,13 @@ GA_Mutation_Probability       0.41
 GA_save_elites_Probability    0.08   # 0.006    # 0.25   #0.05
 ga_rand_replace_probability   0.00
 ga_tournament_style           2
-n_GA_Generations              2   # 8  # 3      # 5           # 2
-n_GA_Individuals              2    # 22   # 220 # 3      # 5           # 2
+n_GA_Generations              50   # 8  # 3      # 5           # 2
+n_GA_Individuals              200    # 22   # 220 # 3      # 5           # 2
 n_gp_generations       1  
 n_gp_individuals       1  
-random_scale_large           2.05
-random_scale_small           1.05
-random_scale_fraction        0.70
+random_scale_large           100.05
+random_scale_small           0.1
+random_scale_fraction        0.50
 gp_all_summary  1
 ga_print  0
 gp_log    0

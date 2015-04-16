@@ -20,6 +20,7 @@ use GP_Data_module
 
 use fasham_variables_module
 use fasham_CDOM_module
+use fasham_CDOM_GP_module
 use Tree_Node_Factory_module
 use class_Tree_Node
 
@@ -60,10 +61,18 @@ integer(kind=i4b) :: i_start_generation
 character(200) :: tree_descrip
 
 if (trim(model) == "fasham_CDOM") then
-   cdom =newFasham_CDOM()
-   call cdom%init()
-   call cdom%setTruth()
-   call cdom%setModel()
+   allocate(aCDOM,source=newFasham_CDOM())
+   call aCDOM%init()
+   call aCDOM%setTruth()
+   call aCDOM%setModel()
+   return
+endif
+
+if (trim(model) == "fasham_CDOM_GP") then
+   allocate(aCDOM,source=newFasham_CDOM_GP())
+   call aCDOM%init()
+   call aCDOM%setTruth()
+!  call cdom%setModel()
    return
 endif
 

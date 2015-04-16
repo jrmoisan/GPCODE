@@ -60,7 +60,7 @@ print*,"n_days", n_days
 ! transform to frequency space
 ! cuttoff numMonth = 12*(n_days/365) 
 !  any frequency >= numMonth will be filtered out
-   cutoff = 12*n_days/365
+   cutoff = 12*(n_days/365+1)
    print*,"cutoff",cutoff
 
 ! cdoms

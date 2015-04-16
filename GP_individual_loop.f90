@@ -326,6 +326,9 @@ subroutine GP_individual_loop(new_comm, i_GP_generation)
    call MPI_BCAST( GP_Individual_N_GP_param, message_len,    &
                 MPI_INTEGER,  0, MPI_COMM_WORLD, ierr )
 
+   call MPI_BCAST( GP_Child_Individual_SSE, n_GP_individuals,    &
+                MPI_DOUBLE_PRECISION, 0, MPI_COMM_WORLD, ierr )
+
    call MPI_BARRIER( MPI_COMM_WORLD, ierr )
 
 end subroutine GP_individual_loop

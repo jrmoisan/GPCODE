@@ -1,4 +1,4 @@
-module fasham_CDOM_module
+module fasham_CDOM_GP_module
    use kinds_mod
    use mpi
    use mpi_module
@@ -10,27 +10,28 @@ module fasham_CDOM_module
    use twin_module
 
    implicit none
-   public:: fasham_CDOM
-   public :: newFasham_CDOM
+   public:: fasham_CDOM_GP
+   public :: newFasham_CDOM_GP
 
-   type,extends(twin) :: fasham_CDOM
+   type,extends(twin) :: fasham_CDOM_GP
       real(kind=r8b),allocatable :: cdoms(:),pars(:),kds(:),mxds(:)
       real(kind=r8b),allocatable :: dmxddts(:) ! max( 0, d mxd/dt)
    contains
       procedure :: init
       procedure :: setTruth 
-      procedure :: setModel
+      procedure :: setModel 
       procedure :: getForcing 
-   end type fasham_CDOM
+      !procedure :: buildTrees
+   end type fasham_CDOM_GP
 
-   interface newFasham_CDOM
-      module procedure newFasham_CDOM
+   interface newFasham_CDOM_GP
+      module procedure newFasham_CDOM_GP
    end interface
 
 contains
 
-   function newFasham_CDOM() result (fasham)
-      type(fasham_CDOM) :: fasham
+   function newFasham_CDOM_GP() result (fasham)
+      type(fasham_CDOM_GP) :: fasham
 
       integer(kind=i4b) :: i_Tree
       integer(kind=i4b) :: i_Node
@@ -51,7 +52,8 @@ contains
    end function
 
    subroutine init(this)
-      class(fasham_CDOM),intent(inout) :: this
+      class(fasham_CDOM_GP),intent(inout) :: this
+
       integer :: istat
       CHARACTER(len=72) :: Aline
       integer ::  n_count,i_count
@@ -120,7 +122,7 @@ contains
    subroutine setTruth(this)
       use GP_data_module
 
-      class(fasham_CDOM),intent(inout):: this
+      class(fasham_CDOM_GP),intent(inout):: this
       integer :: i
 
       do i = 1, n_time_steps
@@ -135,70 +137,6 @@ contains
 
       call comp_data_variance()
 
-   end subroutine setTruth
-
-   subroutine setModel(this)
-      class(fasham_CDOM),intent(inout) :: this
-      integer :: i_CODE_Equation,i_Tree,i_Node
-!------------------------------------------------------------------------------------------------
-!   FORCING  -5001  : max(d MLD/ dt,0)
-!            -5002  : MLD
-!            -5003  : PAR
-!            -5004  : Kd
-
-! initialize GP_Individual_Node_Parameters and GP_Individual_Node_Type
-
-      GP_Individual_Node_Type(1,1) = 3          ! [*]
-      GP_Individual_Node_Type(2,1) = 4          ! [/]
-      GP_Individual_Node_Type(3,1) = -5001      ! [d MLD/dt]
-      GP_Individual_Node_Type(4,1) = 2          ! [-]
-      GP_Individual_Node_Type(5,1) = -5002      ! [MLD]
-      GP_Individual_Node_Type(8,1) = 0          ! [aBLM_CDOM]
-      GP_Individual_Node_Parameters(8,1)=0.0d0  ! [aBLM_CDOM]
-      GP_Individual_Node_Type(9,1) = -1         ! [aCDOM]
-
-      GP_Individual_Node_Type(1,2) = 3          ! [*]
-      GP_Individual_Node_Type(2,2) = 3          ! [*]
-      GP_Individual_Node_Type(3,2) = 3          ! [*]
-      GP_Individual_Node_Type(4,2) = 0          ! [delt] 
-      GP_Individual_Node_Parameters(4,2)=0.0d0  ! [delt]
-      GP_Individual_Node_Type(5,2) = 4          ! [/]
-      GP_Individual_Node_Type(6,2) = 5          ! func (1.0-e^(-ab))
-      GP_Individual_Node_Type(7,2) = -1         ! aCDOM
-      GP_Individual_Node_Type(10,2) = -5003     ! force PAR
-      GP_Individual_Node_Type(11,2) = 3         ! [*]
-
-      GP_Individual_Node_Type(12,2) = -5002     ! force MLD
-      GP_Individual_Node_Type(13,2) = -5004     ! force KD
-
-      GP_Individual_Node_Type(22,2) = -5002     ! force MLD
-      GP_Individual_Node_Type(23,2) = -5004     ! force KD
-
-      answer = 0.0d0 ! set all to zero
-      n_parameters = 0
-
-      do  i_CODE_equation=1,n_CODE_equations
-         n_parameters=n_parameters+1
-         answer(n_parameters)=Numerical_CODE_Initial_Conditions(i_CODE_equation)
-      enddo ! i_CODE_equation
-
-! calculate how many parameters total to fit for the specific individual CODE
-
-      do  i_tree=1,n_trees
-         do  i_node=1,n_nodes
-
-            if( GP_individual_node_type(i_node,i_tree) .eq. 0) then
-               n_parameters=n_parameters+1
-               answer(n_parameters)=GP_Individual_Node_Parameters(i_node,i_tree)
-            endif ! GP_individual_node_type(i_node,i_tree) .eq. 0
-
-         enddo ! i_node
-      enddo ! i_tree
-
-      call this%generateGraph()
-
-      call print_values2()
-
       call sse0_calc( )
 
       call set_modified_indiv( )
@@ -207,11 +145,19 @@ contains
 ! or prob_no_elite > 0 which means elite individuals might be modified
 
        L_minSSE = n_GP_Elitists ==  0 .or.   prob_no_elite > 0.0D0
- 
+       call print_values2()
+   end subroutine setTruth
+
+   subroutine setModel(this)
+      class(fasham_CDOM_GP),intent(inout) :: this
+      integer :: ierror
+
+      call GP_Tree_Build(ierror)
+
    end subroutine setModel
 
    subroutine getForcing(this,preForce,time_step_fraction, i_Time_Step,L_bad )
-      class(fasham_CDOM),intent(in) :: this
+      class(fasham_CDOM_GP),intent(in):: this
       real (kind=8) :: preForce(:)
       real (kind=8) :: time_step_fraction
       integer :: i_Time_Step
@@ -245,4 +191,4 @@ contains
 
    end subroutine getForcing
 
-end module fasham_CDOM_module
+end module fasham_CDOM_GP_module

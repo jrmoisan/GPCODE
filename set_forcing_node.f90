@@ -17,17 +17,17 @@ integer(kind=i4b) :: Node_Variable
 
 real(kind=r4b),dimension(2,4) :: frac_forcing_type
 
-data frac_forcing_type(1,1) / 0.578947 /
-data frac_forcing_type(2,1) / 1.00000  /
+data frac_forcing_type(1,1) / 0.0 /
+data frac_forcing_type(2,1) / 0.25 /
 
-data frac_forcing_type(1,2) / 0.210526 /
-data frac_forcing_type(2,2) / 0.578947 /
+data frac_forcing_type(1,2) / 0.25 /
+data frac_forcing_type(2,2) / 0.50 /
 
-data frac_forcing_type(1,3) / 0.0      /
-data frac_forcing_type(2,3) / 0.052632 /
+data frac_forcing_type(1,3) / 0.50     /
+data frac_forcing_type(2,3) / 0.75 /
 
-data frac_forcing_type(1,4) / 0.052632 /
-data frac_forcing_type(2,4) / 0.210526 /
+data frac_forcing_type(1,4) / 0.75 /
+data frac_forcing_type(2,4) / 1.0 /
 
 
 !-----------------------------------------------------------------------------

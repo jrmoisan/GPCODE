@@ -10,8 +10,41 @@ module twin_module
 
    type,abstract :: twin
    contains
+      procedure(Iinit), deferred :: init
+      procedure(IsetTruth), deferred :: setTruth
+      procedure(IsetModel), deferred :: setModel
+      procedure(IgetForcing), deferred :: getForcing
       procedure :: generateGraph
    end type twin
+
+   abstract interface
+
+      subroutine Iinit(this)
+         import twin
+         class(twin),intent(inout):: this
+      end subroutine Iinit
+
+      subroutine IsetTruth(this)
+         import twin
+         class(twin),intent(inout):: this
+      end subroutine IsetTruth
+
+      subroutine IsetModel(this)
+         import twin
+         class(twin),intent(inout):: this
+      end subroutine IsetModel
+
+      subroutine IgetForcing(this,preForce,time_step_fraction, i_Time_Step,L_bad )
+         import twin
+         class(twin),intent(in) :: this
+         real (kind=8) :: preForce(:)
+         real (kind=8) :: time_step_fraction
+         integer :: i_Time_Step
+         logical :: L_bad
+      end subroutine IgetForcing
+   end interface
+
+   class(twin),allocatable :: aCDOM
 
 contains
 

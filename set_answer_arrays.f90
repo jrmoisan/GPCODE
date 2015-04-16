@@ -1,4 +1,9 @@
 subroutine set_answer_arrays(  )  ! buildTrees )
+!
+! Weiyuan note : This program get the answer for the truth model.
+!  if the model truth is from node_type, use RK model to get the answer
+!  if the model truth is from data, assign the values directly
+!!!!!!!!
 
 ! program written by: Dr. John R. Moisan [NASA/GSFC] 31 January, 2013
 

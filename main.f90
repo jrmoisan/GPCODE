@@ -245,7 +245,7 @@ program main
     ! to replace function nodes that have both terminals set as parameters
     ! and to set the replaced node to a parameter itself
 
-      if( trim(model) /= 'fasham_fixed_tree' )then 
+      !if( trim(model) /= 'fasham_fixed_tree' )then 
          if( myid == 0 )then
     
             write(GP_print_unit,'(/A,1x,I6/)') &
@@ -253,7 +253,7 @@ program main
     
             call GP_Clean_Tree_Nodes
          endif ! myid == 0
-      endif ! trim(model) /= 'fasham_fixed_tree' 
+      !endif ! trim(model) /= 'fasham_fixed_tree' 
 
 ! broadcast GP_Adult_Population_Node_Type changed by GP_Clean_Tree_Nodes
 
@@ -295,6 +295,7 @@ program main
     GP_para_flag = .TRUE.
 
 
+    max_n_gp_params = maxval( GP_Individual_N_GP_param )
     ! call GP_para_lmdif_process only after the 2nd generation
     ! calling lmdif for really bad sets of parameters does not
     ! work well, so allow 2 generations to (hopefully) refine the
@@ -329,7 +330,6 @@ program main
 
       call GP_calc_fitness( i_GP_generation,  &
                               i_GP_best_parent, nop )
-
       if( L_minSSE )then
 
          ! whenever the SSE for the best parent is less than

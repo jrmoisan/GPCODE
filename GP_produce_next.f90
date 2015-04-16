@@ -41,13 +41,6 @@ subroutine GP_produce_next(i_GP_generation,i_GP_best_parent,L_nextloop)
 
       ! GP_Child_Individual_SSE  = GP_Adult_Population_SSE   ! needed ??  jjm 20140522
 
-      !----------------------------------------------------------------------------------
-
-      !tree_descrip =  ' GP_Adult trees before call selection routines '
-      !call print_trees( i_GP_generation, 1, n_GP_individuals, &
-      !                  GP_Adult_Population_Node_Type, &
-      !                  trim( tree_descrip )  )
-
       if( i_GP_generation == 1                                  .or. &
            mod( i_GP_generation, GP_child_print_interval ) == 0  .or. &
            i_GP_generation == n_GP_generations                          )then
@@ -113,34 +106,17 @@ subroutine GP_produce_next(i_GP_generation,i_GP_best_parent,L_nextloop)
             !    GP_Child_Population_Node_Type
             !    Run_GP_Calculate_Fitness ( to true for modified individuals )
 
-            if( trim(model) /= 'fasham_fixed_tree' )then
 
-                if( n_GP_Crossovers .gt. 0 )then
+            if( n_GP_Crossovers .gt. 0 )then
 
-                    write(GP_print_unit,'(/A,1x,I6)') &
-                          '0: call GP_Tour_Style_Sexual_Repro n_GP_Crossovers =', &
+                write(GP_print_unit,'(/A,1x,I6)') &
+                      '0: call GP_Tour_Style_Sexual_Repro n_GP_Crossovers =', &
                                                               n_GP_Crossovers
 
-                    ierror_t = 0
-                    call GP_Tournament_Style_Sexual_Reproduction( ierror_t )
+                ierror_t = 0
+                call GP_Tournament_Style_Sexual_Reproduction( ierror_t )
 
-
-                    !write(GP_print_unit,'(/A)') &
-                    !      '0: aft  call GP_Tournament_Style_Sexual_Reproduction '
-
-                    !tree_descrip = ' GP_Child trees after call to &
-                    !                  &GP_Tournament_Style_Sexual_Reproduction'
-                    !call print_trees( i_GP_generation, 1, n_GP_individuals, &
-                    !                    GP_Child_Population_Node_Type, &
-                    !                    trim( tree_descrip )  )
-
-                    !call print_debug_real_node_tree( GP_print_unit, &
-                    !         'aft GP_Tour print GP_population_node_parameters ', &
-                    !         GP_population_node_parameters )
-
-                endif !  n_GP_Crossovers .gt. 0
-
-            endif ! trim(model) /= 'fasham_fixed_tree'
+            endif !  n_GP_Crossovers .gt. 0
 
             !----------------------------------------------------------------------------------
 
@@ -151,44 +127,19 @@ subroutine GP_produce_next(i_GP_generation,i_GP_best_parent,L_nextloop)
 
             ! sets:
             !  GP_Child_Population_Node_Type
-
             !  Run_GP_Calculate_Fitness  ( to true for modified individuals )
 
 
-            if( trim(model) /= 'fasham_fixed_tree' )then
 
-                if( n_GP_Mutations .gt. 0 )then
+            if( n_GP_Mutations .gt. 0 )then
 
-                    write(GP_print_unit,'(/A,13x,I6, 1x, E15.7)')&
-                          '0: call GP_Mutations n_GP_Mutations, prob_no_elite', &
-                                                n_GP_Mutations, prob_no_elite
+                write(GP_print_unit,'(/A,13x,I6, 1x, E15.7)')&
+                     '0: call GP_Mutations n_GP_Mutations, prob_no_elite', &
+                                  n_GP_Mutations, prob_no_elite
 
-                    !tree_descrip =  ' GP_Adult trees BEFORE call to GP_Mutations'
-                    !call print_trees( i_GP_generation, 1, n_GP_individuals, &
-                    !     GP_Adult_Population_Node_Type, trim( tree_descrip )  )
-                    !tree_descrip =  ' GP_Child trees BEFORE call to GP_Mutations'
-                    !call print_trees( i_GP_generation, 1, n_GP_individuals, &
-                    !     GP_Child_Population_Node_Type, trim( tree_descrip )  )
-
-
-                    ierror_m = 0
-                    call GP_Mutations( ierror_m )
-
-
-                    !tree_descrip =  ' GP_Child trees after call to GP_Mutations'
-                    !call print_trees( i_GP_generation, 1, n_GP_individuals, &
-                    !     GP_Child_Population_Node_Type, trim( tree_descrip )  )
-
-                endif !  n_GP_Mutations .gt. 0
-
-
-            endif ! trim(model) /= 'fasham_fixed_tree' 
-
-            !tree_descrip =  ' GP_Adult trees after call to GP_Mutations'
-            !call print_trees( i_GP_generation, 1, n_GP_individuals, &
-            !     GP_Adult_Population_Node_Type, trim( tree_descrip )  )
-
-            !---------------------------------------------------------------------------
+                ierror_m = 0
+                call GP_Mutations( ierror_m )
+            endif !  n_GP_Mutations .gt. 0
 
             write(GP_print_unit,'(/A)')&
                   '0: i_GP_gen i_GP_indiv    Run_GP_Calculate_Fitness'

@@ -190,7 +190,7 @@ do  i_GP_Individual=1,n_GP_Individuals
 
                         !----------------------------------------------------------------------
 
-                        if( model == 'fasham' )then
+                        if( model == 'fasham' .or. model == 'fasham_CDOM_GP' )then
 
                             !  set some variables to the forcing functions -5001 -> -5004
 
@@ -200,7 +200,7 @@ do  i_GP_Individual=1,n_GP_Individuals
                             GP_Child_Population_Node_Type(i_Node,i_Tree,i_GP_Individual) = &
                                                                                Node_Variable
 
-                        endif ! model == 'fasham'
+                        endif ! model == 'fasham' .or. 'fasham_CDOM_GP
 
                     else  !   cff > GP_Set_Terminal_to_Parameter_Probability
 
