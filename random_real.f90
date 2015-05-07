@@ -11,11 +11,11 @@ use GP_parameters_module
 
 implicit none
 
-!real (kind=4) :: aff,bff,cff,dff
-real (kind=4) ::     bff,cff
+!real(kind=r4b) :: aff,bff,cff,dff
+real(kind=r4b) ::     bff,cff
 
-real (kind=8) ::     bff8, cff8
-!real (kind=4) :: log_huge,log_tiny,log_range
+real(kind=r8b) ::     bff8, cff8
+!real(kind=r4b) :: log_huge,log_tiny,log_range
 
 !xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
@@ -42,7 +42,7 @@ real (kind=8) ::     bff8, cff8
 
 call random_number(cff) ! uniform random number generator
 
-cff8 = real( cff, kind=8 )
+cff8 = real( cff, kind=r8b )
 
 !write(6,'(A,2(1x,E24.16))') 'rr: cff, cff8 ', cff, cff8
 !--------------------------------------
@@ -62,14 +62,14 @@ if( cff8 <= random_scale_fraction  )then
 
     call random_number(bff) ! uniform random number generator
 
-    bff8 = random_scale_small  * real( bff, kind=8 )
+    bff8 = random_scale_small  * real( bff, kind=r8b )
 
     !write(6,'(A,2(1x,E24.16))') 'rr:1 bff, bff8 ', bff, bff8
 else
 
     call random_number(bff) ! uniform random number generator
 
-    bff8 = random_scale_large  * real( bff, kind=8 )
+    bff8 = random_scale_large  * real( bff, kind=r8b )
 
     !write(6,'(A,2(1x,E24.16))') 'rr:2 bff, bff8 ', bff, bff8
 

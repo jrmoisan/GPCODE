@@ -5,10 +5,10 @@ implicit none
 
 !U    USES betai                                                        
 INTEGER,intent(in) :: n 
-REAL(kind=8) :: prob,r,z,x(n),y(n)
-REAL(kind=8),parameter :: mytiny=1.d-20 
+REAL(kind=r8b) :: prob,r,z,x(n),y(n)
+REAL(kind=r8b),parameter :: mytiny=1.d-20 
 INTEGER ::  j 
-REAL(kind=8) ::  ax,ay,df,sxx,sxy,syy,t,xt,yt,betai 
+REAL(kind=r8b) ::  ax,ay,df,sxx,sxy,syy,t,xt,yt,betai 
 
 !-----------------------------------------------------------
 

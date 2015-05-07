@@ -5,7 +5,7 @@ use kinds_mod
 implicit none
 
 
-REAL(kind=8) ::  gammln,xx 
+REAL(kind=r8b) ::  gammln,xx 
 INTEGER j 
 real(kind=r8b) :: ser,stp,tmp,x,y,cof(6) 
 SAVE cof,stp 

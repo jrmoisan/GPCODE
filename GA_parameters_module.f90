@@ -60,7 +60,7 @@ real(kind=r8b) :: GA_rand_replace_Probability
 
 ! GP Probability of a Tree being assigned
 ! Estimated from previous work by Joel Cohen
-!real (kind=4), parameter :: GP_Tree_Probability=0.5
+!real(kind=r4b), parameter :: GP_Tree_Probability=0.5
 
 !---------------------------------------------------------------------
 

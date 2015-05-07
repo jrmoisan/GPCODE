@@ -19,7 +19,7 @@ use GA_Variables_module
 
 implicit none
 
-real(kind=4) :: cff
+real(kind=r4b) :: cff
 
 integer(kind=i4b) :: i_GP_Mutation
 integer(kind=i4b) :: i_GP_Individual_Mutation
@@ -37,17 +37,17 @@ integer(kind=i4b) :: i_GP_individual
 integer(kind=i4b) :: i_Error
 integer(kind=i4b) :: test_function_index
 
-!real(kind=4),parameter :: prob_no_elite = -0.05     ! off
-!real(kind=4),parameter :: prob_no_elite = 0.05     ! on 
-!real(kind=4),parameter :: prob_no_elite = 0.10     ! on 
+!real(kind=r4b),parameter :: prob_no_elite = -0.05     ! off
+!real(kind=r4b),parameter :: prob_no_elite = 0.05     ! on 
+!real(kind=r4b),parameter :: prob_no_elite = 0.10     ! on 
 
 logical Node_Not_Found
 
 character(200) :: tree_descrip
 
 
-!real(kind=4),parameter :: prob_forcing = 0.025
-!real(kind=4),parameter :: prob_choose_forcing_type = 0.25
+!real(kind=r4b),parameter :: prob_forcing = 0.025
+!real(kind=r4b),parameter :: prob_choose_forcing_type = 0.25
 integer(kind=i4b) :: iforce                   
 
 !------------------------------------------------------------------------
@@ -232,6 +232,21 @@ do  i_GP_Mutation = 1,n_GP_Mutations
 
             ! VARIABLES   [Ranges from: -n_CODE_Equations to -1 ]
 
+            if( n_inputs > 0 )then
+
+                ! data processing option 
+
+                Node_Variable =   1 + int( cff*float(n_inputs) )
+
+                Node_Variable = max( Node_Variable , n_CODE_Equations+1 )  ! original
+                Node_Variable = min( Node_Variable , n_inputs        +1 )  ! original
+
+                !write(GP_print_unit,'(A,2(1x,I6),1x,E15.7)') &
+                !           'gpmut: VARIABLE   n_inputs, n_code_equations, cff', &
+                !                              n_inputs, n_code_equations, cff
+
+            else
+
 
             Node_Variable=1+int(cff*float(n_CODE_Equations))
 
@@ -240,6 +255,8 @@ do  i_GP_Mutation = 1,n_GP_Mutations
             !write(GP_print_unit,'(A,1x,E15.7, 2(1x,I6))') &
             !      'gpmut:2 cff, Node_Variable, n_CODE_Equations', &
             !               cff, Node_Variable, n_CODE_Equations
+
+            endif !  n_inputs > 0 
 
             GP_Child_Population_Node_Type(Node_to_Mutate,i_Tree_Mutation,i_GP_Individual) = &
                                                                                 -Node_Variable

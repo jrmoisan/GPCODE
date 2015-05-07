@@ -39,6 +39,10 @@ real(kind=r8b) :: x_obs
 
 real(kind=r8b), dimension(1:n_code_equations )  :: Data_Variance
 
+!----------------------------------------------------------------------------------------
+
+
+
 ! compute the data_variance  -- to be used in computing SSE
 
 !xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
@@ -48,6 +52,13 @@ real(kind=r8b), dimension(1:n_code_equations )  :: Data_Variance
 ! equal weight, and there are other options that can be considered.
 !xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
+!if( myid == 0 )then
+!    write(GP_print_unit,'(A)') ' '
+!endif ! myid == 0
+
+!write(GP_print_unit,'(A,3(1x,I6))') &
+!         'cdv: myid, n_CODE_equations, n_time_steps ', &
+!               myid, n_CODE_equations, n_time_steps
 if( myid == 0 )then
     write(6,'(/A,4(1x,E15.7)/)') &
              'cdv: dt, sse_min_time, sse_max_time, sse_low_wt', &
@@ -56,46 +67,83 @@ endif ! myid == 0
 
 if( n_code_equations > 1 )then
 
+    ! not the data processing code
+
     do  i_CODE_equation=1,n_CODE_equations
+    
+        !-------------------------------------------------------------------------------
     
         ! original
 
         ssum  = 0.0D+0
         ssum2 = 0.0D+0
         n_obs = 0
-        x_obs = 0.0D+0
+        x_obs = 0.0d0
 
+        !write(GP_print_unit,'(/A,3(1x,I6))') &
+        ! 'cdv: i_CODE_equation', &
+        !       i_CODE_equation
+        !write(6,'(/A/)') &
+        !    'cdv: i_time_step, n_obs, x_time_step, &
+        !      &Data_Array(i_time_step,i_CODE_equation), ssum, ssum2 '
+    
         do  i_time_step=1,n_time_steps
     
-            x_time_step = real( i_time_step, kind=8 ) * dt
-    
-            if( x_time_step < sse_min_time ) then
+            x_time_step = real( i_time_step, kind=r8b ) * dt
 
-                sse_wt = sse_low_wt
-            else 
+            if( x_time_step >= sse_min_time .and. &
+                x_time_step <= sse_max_time        )then
+
                 sse_wt = 1.0d0
-            endif 
 
-            if( x_time_step > sse_max_time ) exit
-    
+            else
+                sse_wt = sse_low_wt
+            endif
+
+
             !n_obs = n_obs + 1
             x_obs = x_obs + sse_wt
     
 
             ssum  = ssum  +   Data_Array(i_time_step,i_CODE_equation) * sse_wt
             ssum2 = ssum2 +  (Data_Array(i_time_step,i_CODE_equation) * sse_wt )**2
+
+            !write(6,'(2(1x,i6),4(1x, E15.7))') &
+            !      i_time_step, n_obs, x_time_step, &
+            !      Data_Array(i_time_step,i_CODE_equation), ssum, ssum2 
     
         enddo !   i_time_step
     
+        !-------------------------------------------------------------------------------
+    
+        !write(GP_print_unit,'(/A,40x,A)') 'cdv: ',  'wt inside **2' 
+
+        !write(GP_print_unit,'(A,1(1x,I6),2(1x,E15.7) )') &
+        !      'cdv: i_CODE_equation, ssum, ssum2', &
+        !            i_CODE_equation, ssum, ssum2
+    
         totobs    =  x_obs          ! dble(n_obs)               
         totobs_m1 =  x_obs - 1.0d0  ! dble(n_obs-1)               
+        !totobs    =  dble(n_obs)               
+        !totobs_m1 =  dble(n_obs-1)               
+    
+        !write(GP_print_unit,'(A, 2(1x,E15.7) )') &
+        !      'cdv: totobs, totobs_m1', &
+        !            totobs, totobs_m1
+    
     
         dff=( (totobs*ssum2)-(ssum**2) ) / totobs / totobs_m1
     
+    
+        !write(GP_print_unit,'(/A,2x,E15.7)') 'cdv: original dff ', dff
+    
+        !write(GP_print_unit,'(A, 2(1x,E15.7) )') 'cdv: dff', dff
+    
+        !!-------------------------------------------------------------------------------
         !nn = 0
         !sum1 = 0.0D0
         !do  i_time_step=1,n_time_steps
-        !    x_time_step = real( i_time_step, kind=8 ) * dt
+        !    x_time_step = real( i_time_step, kind=r8b ) * dt
         !
         !    if( x_time_step < sse_min_time ) cycle
         !    if( x_time_step > sse_max_time ) exit
@@ -108,7 +156,7 @@ if( n_code_equations > 1 )then
         !sum2 = 0.0D0
         !sum3 = 0.0D0
         !do  i_time_step=1,n_time_steps
-        !    x_time_step = real( i_time_step, kind=8 ) * dt
+        !    x_time_step = real( i_time_step, kind=r8b ) * dt
         !
         !    if( x_time_step < sse_min_time ) cycle
         !    if( x_time_step > sse_max_time ) exit
@@ -117,7 +165,7 @@ if( n_code_equations > 1 )then
         !    sum3 = sum3 + (Data_Array(i_time_step,i_CODE_equation) - mean)
         !enddo
         !
-        !variance = ( sum2 - sum3**2/real(nn, kind=8) ) / real(nn-1, kind=8)
+        !variance = ( sum2 - sum3**2/real(nn, kind=r8b) ) / real(nn-1, kind=r8b)
         !
         !write(GP_print_unit,'(/A,2x,E15.7)') 'cdv: 1 variance     ', variance
         !
@@ -128,18 +176,18 @@ if( n_code_equations > 1 )then
         !
         !
         !do  i_time_step=1,n_time_steps
-        !    x_time_step = real( i_time_step, kind=8 ) * dt
+        !    x_time_step = real( i_time_step, kind=r8b ) * dt
         !
         !    if( x_time_step < sse_min_time ) cycle
         !    if( x_time_step > sse_max_time ) exit
         !
         !    nn = nn + 1
         !    delta = Data_Array(i_time_step,i_CODE_equation) - mean
-        !    mean = mean + delta / real(nn, kind=8)
+        !    mean = mean + delta / real(nn, kind=r8b)
         !    M2 = M2 + delta*(Data_Array(i_time_step,i_CODE_equation) - mean)
         !enddo
         !
-        !variance2 = M2/real(nn - 1, kind=8)
+        !variance2 = M2/real(nn - 1, kind=r8b)
         !
         !write(GP_print_unit,'(/A,2x,E15.7)') 'cdv: 2 variance2    ', variance2
         !
@@ -233,6 +281,7 @@ if( n_code_equations > 1 )then
 
 else  ! n_code_equations == 1
 
+    ! for data processing code
 
     data_variance(1:n_code_equations)     = 1.0d0
     data_variance_inv(1:n_code_equations) = 1.0d0

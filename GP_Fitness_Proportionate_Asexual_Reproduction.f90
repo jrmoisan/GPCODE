@@ -11,7 +11,7 @@ use GA_Variables_module
 
 implicit none
 
-real(kind=4) :: cff
+real(kind=r4b) :: cff
 
 integer(kind=i4b) :: i
 integer(kind=i4b) :: icff
@@ -34,11 +34,11 @@ real(kind=r8b) :: sse_ind
 
 i_GP_Individual = n_GP_Elitists
 
-write(GP_print_unit,'(A,2(1x,I6))' ) &
-      'gpfpar: n_GP_Asexual_Reproductions, n_GP_Elitists', &
-               n_GP_Asexual_Reproductions, n_GP_Elitists
-write(GP_print_unit,'(A,1x,I6)' ) &
-      'gpfpar: start i_GP_individual ', n_GP_Elitists  + 1
+!write(GP_print_unit,'(A,2(1x,I6))' ) &
+!      'gpfpar: n_GP_Asexual_Reproductions, n_GP_Elitists', &
+!               n_GP_Asexual_Reproductions, n_GP_Elitists
+!write(GP_print_unit,'(A,1x,I6)' ) &
+!      'gpfpar: start i_GP_individual ', n_GP_Elitists  + 1
 
 !write(GP_print_unit,'(/A)' ) &
 !      'gpfpar: j_GP_individual replaces i_GP_individual'

@@ -6,8 +6,8 @@ use mpi_module
 implicit none
 
 !U    USES betacf,gammln                                                
-REAL(kind=8) ::  betai,a,b,x 
-REAL(kind=8) ::  bt,betacf,gammln 
+REAL(kind=r8b) ::  betai,a,b,x 
+REAL(kind=r8b) ::  bt,betacf,gammln 
 
 !-----------------------------------------------------------------
 

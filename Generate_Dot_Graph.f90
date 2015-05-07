@@ -6,10 +6,12 @@
 module class_Dot_Graph_Visitor
     use kinds_mod 
     use class_Tree_Node
+    use GP_parameters_module
 
     type, public, extends(Tree_Node_Visitor) :: Dot_Graph_Visitor
         integer(kind=i4b) :: funit, node_id
         contains
+        procedure :: Visit_Tree_Node => Dot_Visit_Tree_Node
         procedure :: Visit_Tree_Math_Node => Dot_Visit_Math_Node
         procedure :: Visit_Tree_Parameter_Node => Dot_Visit_Parameter_Node
         procedure :: Visit_Tree_Variable_Node => Dot_Visit_Variable_Node
@@ -97,7 +99,14 @@ contains
         write(this%funit,'(I0.0,A,I0.0,A)',advance='no') &
                          this%node_id, '[label="[', this%node_id, '] '
         !write(this%funit,'(A,E12.5)',advance='no') '(V) ', node%val()
-        write(this%funit,'(A,I5)',advance='no') '(V) ', abs(node%variable_index)
+        !write(this%funit,'(A,I5)',advance='no') '(V) ', abs(node%variable_index)
+        if( n_inputs == 0 )then                                                                                                    
+            write(this%funit,'(A,I5)',advance='no') '(V) ', &                                                                      
+                                      abs(node%variable_index)                                                           
+        else                                                                                                                       
+            write(this%funit,'(A,I5)',advance='no') '(V) ', &                                                                      
+                                      abs(node%variable_index) - n_code_equations                                        
+        endif ! n_inputs == 0 
         write(this%funit,'(A)') '"];'
 
         call Dot_Graph_Hierarchy(this%funit, this%node_id)
@@ -111,14 +120,14 @@ end module class_Dot_Graph_Visitor
 !---------------------------------------------------------------------------------------------------
 
 
-subroutine Generate_Dot_Graph( Trees, Tree_count, output_dir )
+subroutine Generate_Dot_Graph( Trees, Tree_count, output_dir1 )
     use kinds_mod 
     use class_Tree_Node
     use class_Dot_Graph_Visitor
     implicit none
 
     ! Input
-    character(len=*), intent(in) :: output_dir
+    character(len=*), intent(in) :: output_dir1
     integer(kind=i4b), intent(in) :: Tree_count
     type(Tree_Node_Pointer), dimension(Tree_count), intent(in) :: Trees ! The array of trees
     type(Dot_Graph_Visitor) :: grapher
@@ -126,15 +135,21 @@ subroutine Generate_Dot_Graph( Trees, Tree_count, output_dir )
     ! Local variables
     integer(kind=i4b) :: i, gFile
     character(len=80) :: Graph_File
+    character(len=80) :: command    
 
 !------------------------------------------------------------------------------------------------
 
     gFile = 85;
 
+    ! clear directory of Trees written into it before this call 
+    command = 'rm -f '// output_dir1 // '/Trees/*'
+    call system( command ) 
+
+
     do  i = 1,Tree_count
         if( associated(Trees(i)%n) ) then
 
-            write(Graph_File, '(A,I0)') trim(output_dir)//'/Trees/', i
+            write(Graph_File, '(A,I0)') trim(output_dir1)//'/Trees/', i
             open(gFile, FILE=trim(Graph_File)//'.dot')
 
             write(gFile,*) 'digraph g {'

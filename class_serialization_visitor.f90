@@ -12,9 +12,10 @@ use GP_variables_module
 
     type, public, extends(Tree_Node_Visitor) :: Serialization_Visitor
 
-        integer (kind=4) :: node_id, file_handle
+        integer(kind=i4b) :: node_id, file_handle
         contains
 
+        !procedure :: Visit_Tree_Node => Serialize_Visit_Tree_Node
         procedure :: Visit_Tree_Math_Node => Serialize_Visit_Math_Node
         procedure :: Visit_Tree_Parameter_Node => Serialize_Visit_Parameter_Node
         procedure :: Visit_Tree_Variable_Node => Serialize_Visit_Variable_Node
@@ -43,7 +44,7 @@ use GP_variables_module
     subroutine Serialize_Visit_Math_Node(this, node)
         class(Serialization_Visitor), intent(inout) :: this
         class(Tree_Node), intent(in) :: node
-        integer (kind=4) :: myid
+        integer(kind=i4b) :: myid
 
         myid = this%node_id
         write(this%file_handle, *) &

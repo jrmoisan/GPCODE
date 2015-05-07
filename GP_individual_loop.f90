@@ -69,6 +69,13 @@ subroutine GP_individual_loop(new_comm, i_GP_generation)
    integer(kind=i4b),allocatable ::   buff_parm_send(:)
    integer(kind=i4b) :: i_sender,i_GP_ind, tmpresult,i_tag,isource
 
+logical :: L_skip
+
+!---------------------------------------------------------------------------------------
+
+L_skip = .FALSE. 
+
+
    call mpi_comm_rank( new_comm, new_rank, ierr )
    call mpi_comm_size( new_comm, n_procs,  ierr )
 
@@ -248,11 +255,39 @@ subroutine GP_individual_loop(new_comm, i_GP_generation)
                     n_GP_parameters > n_maximum_number_parameters .or.  &
                     n_GP_parameters <=  n_code_equations                 ) then
 
-                    individual_fitness = 0.0d0
 
-                    cycle gp_ind_loop
+                    !if( new_rank == 0 )then
+                    !    write(GP_print_unit,'(A,1x,I5,A,1x,i5)')&
+                    !          'gil: skipping this i_GP_Individual', i_GP_individual, &
+                    !          ' --  the number of parameters is ', n_GP_parameters
+                    !    !flush(GP_print_unit)
+                    !endif !  new_rank == 0
+
+
+                    L_skip = .TRUE. 
+                    individual_fitness = 0.0d0
+                    GP_Child_Individual_SSE(i_GP_individual)         = big_real  ! jjm 20150109
+                    GP_Adult_Individual_SSE(i_GP_individual)         = big_real  ! jjm 20150109
+                    GP_Adult_Population_SSE(i_GP_individual)         = big_real  ! jjm 20150109
+                    GP_Child_Individual_SSE_nolog10(i_GP_individual) = big_real  ! jjm 20150109
+
+
+                    !if( new_rank == 0 )then
+                    !    write(GP_print_unit,'(A,7(1x,I5), 1x, E15.7)')&
+                    !     'gil: myid, new_rank, i_part, i_gp_1, i_gp_2, &
+                    !           &i_GP_gen, i_GP_indiv, indiv_fit', &
+                    !           myid, new_rank, i_part, i_gp_1, i_gp_2, &
+                    !           i_GP_generation, i_GP_individual, &
+                    !           individual_fitness
+                    !endif !  new_rank == 0
+
+                else
+
+                    L_skip = .FALSE.
 
                 endif ! n_GP_parameters == 0
+
+                !-------------------------------------------------------------------
 
                 ! THIS IS WHERE YOU NEED TO INSERT THE GA_LMDIF CALL AND
                 ! LINK THE SSE OUTPUT TO THE ARRAY AT THE END
@@ -263,10 +298,27 @@ subroutine GP_individual_loop(new_comm, i_GP_generation)
                 ! GP_Individual_Node_Parameters
                 ! these arrays are broadcast in GPCODE_GA...
 
-                call GPCODE_GA_lmdif_Parameter_Optimization( &
-                            i_GP_Generation,i_GP_individual, &
-                           new_comm  )
 
+                !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
+                !write(GP_print_unit,'(A,4(1x,I5))') &
+                !      'gil: call GPCODE myid, new_rank, i_GP_individual',&
+                !                        myid, new_rank, i_GP_individual
+
+                if( L_skip )then
+
+                    Individual_SSE_best_parent         = big_real
+                    Individual_SSE_best_parent_nolog10 = big_real
+
+                else
+
+                    call GPCODE_GA_lmdif_Parameter_Optimization( &
+                                  i_GP_Generation,i_GP_individual, &
+                                             new_comm  )
+                        
+                endif !  .not. L_skip 
+
+                !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
                 GP_Population_Ranked_Fitness(i_GP_individual) = individual_fitness
                 GP_Child_Individual_SSE(i_GP_individual) = Individual_SSE_best_parent
@@ -330,5 +382,12 @@ subroutine GP_individual_loop(new_comm, i_GP_generation)
                 MPI_DOUBLE_PRECISION, 0, MPI_COMM_WORLD, ierr )
 
    call MPI_BARRIER( MPI_COMM_WORLD, ierr )
+
+
+
+
+return
+
+
 
 end subroutine GP_individual_loop

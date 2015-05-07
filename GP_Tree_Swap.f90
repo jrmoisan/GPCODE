@@ -58,13 +58,13 @@ logical :: NODE_NOT_FOUND
 
 !write(6,'(/A,1x,I6)') 'gpts: at entry n_nodes = ', n_nodes
 
-!write(6,'(A)') 'gpts: kk, Parent_Tree_Swap_Node_Type(kk,1) '
+!write(6,'(/A)') 'gpts: MALE kk, Parent_Tree_Swap_Node_Type(kk,1) '
 
 !do  kk = 1, n_nodes
 !    write(6,'(3(1x,I6))') kk, Parent_Tree_Swap_Node_Type(kk,1)
 !enddo ! kk
 
-!write(6,'(A)') 'gpts: kk, Parent_Tree_Swap_Node_Type(kk,2) '
+!write(6,'(/A)') 'gpts: FEMALE kk, Parent_Tree_Swap_Node_Type(kk,2) '
 
 !do  kk = 1, n_nodes
 !    write(6,'(3(1x,I6))') kk, Parent_Tree_Swap_Node_Type(kk,2)
@@ -97,9 +97,10 @@ do  i_Node = 1,n_Nodes
 enddo
 
 if( i_Node_Count .eq. 0) then
-    MALE_CROSS = .false. ! there are no Trees on this GP_CODE
+    MALE_CROSS = .false. ! there are no nodes on this Tree
 endif
 
+!write(6,'(/A,1x,I6)') 'gpts: MALE i_Node_Count = ', i_Node_Count
 !--------------------------------------------------------------------------
 
 FEMALE_CROSS = .true.
@@ -112,8 +113,9 @@ do  i_Node = 1,n_Nodes
 enddo
 
 if( i_Node_Count .eq. 0) then
-    FEMALE_CROSS = .false. ! there are no Trees on this GP_CODE
+    FEMALE_CROSS = .false. ! there are no nodes on this Tree
 endif
+!write(6,'(/A,1x,I6)') 'gpts: FEMALE i_Node_Count = ', i_Node_Count
 
 !--------------------------------------------------------------------------
 
@@ -199,6 +201,10 @@ if( MALE_CROSS .and. FEMALE_CROSS) then
         i_Parent_One_Swap_Node = icnt_Parent_One_Nodes
     endif ! i_Parent_One_Swap_Node .gt. icnt_parent_one_nodes
 
+    !write(6,'(/A,2(1x,I6))')&
+    ! 'gpts: icnt_Parent_One_Nodes , i_parent_one_swap_node', &
+    !        icnt_Parent_One_Nodes , i_parent_one_swap_node
+
     icnt = 0
     NODE_NOT_FOUND=.true.
     do  i_node = 1,n_nodes
@@ -236,8 +242,10 @@ if( MALE_CROSS .and. FEMALE_CROSS) then
 
     Parent_one_max_swap_level = n_levels  -  Parent_one_max_swap_level + 1
 
-    !write(6,'(A,1x,I6)') 'gts: i_Parent_One_Swap_Node     =', i_Parent_One_Swap_Node
-    !write(6,'(A,1x,I6)') 'gts: Parent_One_Max_Swap_Level  =', Parent_One_Max_Swap_Level
+    !write(6,'(A,1x,I6)') 'gpts: i_Parent_One_Swap_Node     =', &
+    !                            i_Parent_One_Swap_Node
+    !write(6,'(A,1x,I6)') 'gpts: Parent_One_Max_Swap_Level  =', &
+    !                            Parent_One_Max_Swap_Level
 
     !.....................................................................
     !     determine the range of levels that the swap can occur over
@@ -497,6 +505,11 @@ elseif( .not. MALE_CROSS .and. FEMALE_CROSS) then  ! the Male tree is empty
     i_Parent_Two_Swap_Node = Parent_Two_Swappable_Nodes(icff)
 
     n_Parent_Two_Swap_Levels = node_depth(i_Parent_Two_Swap_Node,i_Parent_Two)
+
+
+    !write(6,'(/A,2(1x,I6))')&
+    ! 'gpts: icnt_Parent_two_Nodes , i_parent_two_swap_node', &
+    !        icnt_Parent_two_Nodes , i_parent_two_swap_node
 
     ! find parent_two's swap level
 

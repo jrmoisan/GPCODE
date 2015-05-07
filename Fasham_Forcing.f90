@@ -12,14 +12,14 @@ use GP_variables_module
 
     implicit none
 
-    real (kind=8), intent(in) :: species(n_CODE_Equations), day, aMLD
-    real (kind=8), intent(out) :: aJ
-    real (kind=8) :: daym(14),coktas(14)
+    real(kind=r8b), intent(in) :: species(n_CODE_Equations), day, aMLD
+    real(kind=r8b), intent(out) :: aJ
+    real(kind=r8b) :: daym(14),coktas(14)
 
-    real (kind=8),parameter :: solar=1353.D+0 ! the solar max is from Brock, 1981
-    real (kind=8),parameter :: pi = 3.141592653589793D0
+    real(kind=r8b),parameter :: solar=1353.D+0 ! the solar max is from Brock, 1981
+    real(kind=r8b),parameter :: pi = 3.141592653589793D0
 
-    integer (kind=4) :: iz,i
+    integer(kind=i4b) :: iz,i
 
     logical :: L_bad
 
@@ -177,11 +177,11 @@ use GP_variables_module
 
     implicit none
 
-    real (kind=8), intent(in) :: day
-    real (kind=8), intent(out) :: h, aMLD
-    integer (kind=4), parameter :: n=14
-    real (kind=8) :: daym(14),cmld(14)
-    integer (kind=4) nloop,iloop,i
+    real(kind=r8b), intent(in) :: day
+    real(kind=r8b), intent(out) :: h, aMLD
+    integer(kind=i4b), parameter :: n=14
+    real(kind=r8b) :: daym(14),cmld(14)
+    integer(kind=i4b) nloop,iloop,i
 
     data daym /0.D+0,16.D+0,46.D+0,75.D+0,105.D+0,136.D+0,&
                166.D+0,197.D+0,228.D+0,258.D+0,289.D+0,319.D+0,350.D+0,365.D+0/

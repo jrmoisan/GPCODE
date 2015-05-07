@@ -17,7 +17,7 @@ use GA_Variables_module
 
 implicit none
 
-real(kind=4) :: cff
+real(kind=r4b) :: cff
 real(kind=r8b) :: sse_ind
 
 integer(kind=i4b) :: i_GP_Crossover
@@ -30,14 +30,10 @@ integer(kind=i4b) :: i_Female_Tree
 integer(kind=i4b) :: i_Error
 
 integer(kind=i4b) :: i_GP_individual
-!integer(kind=i4b) :: i_tree
-!integer(kind=i4b) :: i_node
 
 integer(kind=i4b) :: i_safe
 integer(kind=i4b) :: i_safe_max
 
-!integer(kind=i4b) :: kk
-!character(6) ::  flag
 
 character(1) ::  symbol
 
@@ -64,16 +60,49 @@ cross_loop:&
 do
 
     i_safe  = i_safe  + 1
-    if( i_safe > i_safe_max ) exit cross_loop
+
+    if( i_safe > i_safe_max ) then
+
+        write(6,'(A,2(1x,I12))') &
+              'gptssr: ERROR i_safe > i_safe_max ', &
+                             i_safe,  i_safe_max
+        write(6,'(A,3(1x,I12))') &
+              'gptssr: i_GP_Crossover, i_GP_individual, i_safe ', &
+                       i_GP_Crossover, i_GP_individual, i_safe
+        i_error = 1
+        return
+
+    endif ! i_safe > i_safe_max
 
 
     i_GP_Crossover = i_GP_Crossover + 1
-    if( i_GP_crossover > n_GP_crossovers) exit cross_loop
+
+    if( i_GP_crossover > n_GP_crossovers )then
+        !write(6,'(A,2(1x,I12))') &
+        !      'gptssr: return i_GP_crossover > n_GP_crossovers', &
+        !                      i_GP_crossover,  n_GP_crossovers
+        !write(6,'(A,3(1x,I12))') &
+        !      'gptssr: i_GP_Crossover, i_GP_individual, i_safe ', &
+        !               i_GP_Crossover, i_GP_individual, i_safe
+        i_error = 0
+        return
+    endif ! i_GP_crossover > n_GP_crossovers
+
 
     i_GP_Individual = i_GP_Individual+1
-    if( i_GP_Individual >  n_GP_individuals ) exit cross_loop 
-    !i_GP_Individual = min( n_GP_individuals, i_GP_Individual )
-    
+
+    if( i_GP_Individual >  n_GP_individuals )then
+        !write(6,'(A,2(1x,I12))') &
+        !      'gptssr: return i_GP_Individual > n_GP_individuals', &
+        !                     i_GP_Individual,  n_GP_individuals
+        !write(6,'(A,3(1x,I12))') &
+        !      'gptssr: i_GP_Crossover, i_GP_individual, i_safe ', &
+        !               i_GP_Crossover, i_GP_individual, i_safe
+        i_error = 0
+        return
+    endif ! i_GP_Individual >  n_GP_individuals
+
+
     sse_ind = GP_Adult_Population_SSE(i_GP_Individual )
 
     !write(6,'(A,2(1x,I6))') &
@@ -264,7 +293,7 @@ do
            'gptssr: i_GP_Individual, k_GP_Indiv_Male(1), i_Error  ', &
                     i_GP_Individual, k_GP_Individual_Male(1), i_Error
 
-        return 
+        !return
     endif
 
     !-----------------------------------------------------------------------------------------
@@ -279,24 +308,22 @@ do
         write(6,'(A,3(1x,I6)/)') &
            'gptssr: i_GP_Individual, k_GP_Indiv_Female(1), i_Error  ', &
                     i_GP_Individual, k_GP_Individual_Female(1), i_Error
-        return
+        !return
     endif
 
     !-----------------------------------------------------------------------------------
 
     !write(6,'(/A)') 'gptssr: bef call GP_Tree_Swap '
-    !! >> debug
+    ! >> debug
     !call print_trees( 1, i_GP_Individual, i_GP_Individual, &
     !                      GP_Child_Population_Node_Type,  &
     !                      'tree bef tree swap'  )
-    !! << debug
+    ! << debug
 
     ! GP_Tree_Swap modifies Parent_Tree_Swap_Node_Type
 
     call GP_Tree_Swap    !   perform the random tree swap
 
-
-    !write(6,'(A/)') 'gptssr: aft call GP_Tree_Swap '
 
     !-----------------------------------------------------------------------------------
 
@@ -338,7 +365,7 @@ do
            &Post-GP_Check_Error in GP_Tournament_Style_Sexual_Reproduction'
         write(6,'(A,3(1x,I6)/)') 'gptssr: i_GP_Indiv, i_Male_Tree, i_Error  ', &
                                           i_GP_Individual, i_Male_Tree, i_Error
-        return
+        !return
     endif
 
     !-----------------------------------------------------------------------------------

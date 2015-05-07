@@ -16,7 +16,7 @@ use GA_variables_module
 
 implicit none
 
-integer (kind=4),intent(in) ::    individual
+integer(kind=i4b),intent(in) ::    individual
 
 !--------------------------------------------------------------------
 

@@ -11,7 +11,7 @@ use GP_Data_module
 implicit none
 
 real(kind=r8b) :: child_parameters(n_GP_parameters,n_GA_individuals)
-real(kind=4) :: cff
+real(kind=r4b) :: cff
 real(kind=r8b) :: dff
 
 integer(kind=i4b) :: i_GA_Mutation
@@ -71,9 +71,9 @@ do i_GA_Mutation=1,n_GA_Mutations
   !  randomly pick which parameter will be replaced
 
   call random_number(cff)   ! uniform random number generator
-  dff = real(cff,kind=8)   
+  dff = real(cff,kind=r8b)   
 
-  i_Parameter_Mutation=1+int( dff * real(n_parameters-1,kind=8) )
+  i_Parameter_Mutation=1+int( dff * real(n_parameters-1,kind=r8b) )
   i_Parameter_Mutation = min( i_Parameter_Mutation , n_parameters )
 
   !if( L_ga_print )then

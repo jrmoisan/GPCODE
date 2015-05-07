@@ -1,7 +1,6 @@
 subroutine GPCODE_GA_lmdif_Parameter_Optimization( &
                   i_GP_Generation,i_GP_individual, &
                              new_comm ) 
-                  !new_group, new_comm ) 
 
 ! written by: Dr. John R. Moisan [NASA/GSFC] 5 December, 2012
 !xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
@@ -53,8 +52,8 @@ subroutine GPCODE_GA_lmdif_Parameter_Optimization( &
      dimension(n_GP_parameters,n_GA_individuals) ::  child_parameters
 
 
-   real(kind=r8b), dimension(n_GP_parameters + 2)  :: buffer
-   real(kind=r8b), dimension(n_GP_parameters + 2)  :: buffer_recv
+real(kind=r8b), dimension(n_GP_parameters + 3)  :: buffer
+real(kind=r8b), dimension(n_GP_parameters + 3)  :: buffer_recv
 
 
    integer(kind=i4b) ::      i
@@ -72,7 +71,9 @@ subroutine GPCODE_GA_lmdif_Parameter_Optimization( &
 
    integer(kind=i4b) :: individual_quality(n_GA_individuals)
 
-   logical :: L_stop_run
+real(kind=r8b), external :: indiv_fitness
+
+logical :: L_stop_run
 
    logical :: L_too_many_iters
 
@@ -87,6 +88,10 @@ subroutine GPCODE_GA_lmdif_Parameter_Optimization( &
    real(kind=r8b) :: t1
    real(kind=r8b) :: t2
 
+!----------------------------------------------------------------------
+
+!write(6,'(A,1x,I5,4x,L1)') 'GP_GA_opt: myid, L_GA_print   ', myid, L_GA_print
+!write(6,'(A,1x,I5,1x,I5)') 'GP_GA_opt: myid, GA_print_unit', myid, GA_print_unit
 
    ierror_tou = 0
 
@@ -98,7 +103,7 @@ subroutine GPCODE_GA_lmdif_Parameter_Optimization( &
    L_too_many_iters = .FALSE.
    i_dummy = 0
 
-   do  jj = 1, n_GP_parameters+2
+   do  jj = 1, n_GP_parameters+3
       buffer(jj)      = 0.0D0
       buffer_recv(jj) = 0.0D0
    enddo ! jj
@@ -202,12 +207,11 @@ subroutine GPCODE_GA_lmdif_Parameter_Optimization( &
                 !  Run_GA_lmdif
                 !  individual_quality
 
-                !t1 = MPI_Wtime()
+
                 ierror_tou = 0
                 call GA_Tournament_Style_Sexual_Reproduction( &
                             Parent_Parameters, Child_Parameters, &
                             individual_quality, ierror_tou )
-                !t2 = MPI_Wtime()
 
             endif !   n_GA_Crossovers .gt. 0
 
@@ -324,7 +328,7 @@ subroutine GPCODE_GA_lmdif_Parameter_Optimization( &
 
 
             buffer_recv = 0.0d0
-            call MPI_RECV( buffer_recv, n_GP_parameters+2, &
+            call MPI_RECV( buffer_recv, n_GP_parameters+3, &
                            MPI_DOUBLE_PRECISION, &
                            MPI_ANY_SOURCE, MPI_ANY_TAG,  &
                            new_comm, MPI_STAT,  ierr )
@@ -332,7 +336,6 @@ subroutine GPCODE_GA_lmdif_Parameter_Optimization( &
             sender       = MPI_STAT( MPI_SOURCE )
             i_individual = MPI_STAT( MPI_TAG ) ! - itag4
 
-            !if( i_individual > 0 )then
 
             ! received a message from processor "sender" which processed
             ! individual "i_individual"
@@ -349,8 +352,34 @@ subroutine GPCODE_GA_lmdif_Parameter_Optimization( &
 
                 individual_SSE(i_individual)     =       buffer_recv( n_GP_parameters+1)
                 individual_quality(i_individual) = nint( buffer_recv( n_GP_parameters+2) )
+                individual_SSE_nolog10(i_individual) =   buffer_recv( n_GP_parameters+3)
+
+                if( individual_quality(i_individual) < 0 .or.  &                         ! jjm 20150108
+                    individual_SSE(i_individual) < 1.0D-20         )then                 ! jjm 20150108
+
+                    individual_SSE(i_individual) = big_real                              ! jjm 20150108
+                    individual_SSE_nolog10(i_individual) =   big_real
+
+                endif ! individual_quality(i_individual) < 0                             ! jjm 20150108
+
+                !if( L_ga_print )then
+                !    write(GA_print_unit,'(A,2(1x,I3),1x,E15.7, 1x,I3)') &
+                !     'GP_GA_opt:2 new_rank, i_indiv, indiv_SSE, indiv_quality', &
+                !                  new_rank, i_individual, individual_SSE(i_individual), &
+                !                                          individual_quality(i_individual)
+                !endif ! L_ga_print
 
             endif ! Run_GA_lmdif(i_individual)
+
+
+            !--------------------------------------------------------------------------------
+
+
+            !if( L_ga_print )then
+            !    write(GA_print_unit,'(A,1x,I6, 4x,L1)') &
+            !     'GP_GA_opt:2 542 new_rank, numsent < n_GA_individuals ', &
+            !                      new_rank, numsent < n_GA_individuals
+            !endif ! L_ga_print
 
             ! check to see if all individuals have been processed
 
@@ -470,7 +499,9 @@ subroutine GPCODE_GA_lmdif_Parameter_Optimization( &
                 buffer(n_GP_parameters+1) = &
                       individual_SSE(i_2_individual)
                 buffer(n_GP_parameters+2) = &
-                      real( individual_quality(i_2_individual), kind=8 )
+                      real( individual_quality(i_2_individual), kind=r8b )
+                buffer(n_GP_parameters+3) = &
+                      individual_SSE_nolog10(i_2_individual)
 
             endif !  Run_GA_lmdif(i_2_individual)
 
@@ -479,7 +510,7 @@ subroutine GPCODE_GA_lmdif_Parameter_Optimization( &
 
             itag7 = i_2_individual ! + itag4
 
-            call MPI_SEND( buffer, n_GP_parameters+2,  &
+            call MPI_SEND( buffer, n_GP_parameters+3,  &
                            MPI_DOUBLE_PRECISION, 0, &
                            itag7, new_comm, ierr )
 
@@ -488,10 +519,24 @@ subroutine GPCODE_GA_lmdif_Parameter_Optimization( &
             nsafe = nsafe + 1
 
             if( nsafe > 100 * n_GA_individuals ) then
+
+                if( L_GA_print )then
+                    write(GA_print_unit,'(A,1x,I10)') &
+                      'GP_GA_opt: too many iterations  nsafe =', nsafe
+                    !flush(GA_print_unit) 
+                endif ! L_GA_print 
+
+                write(6,'(A,1x,I10)') &
+                  'GP_GA_opt: too many iterations  nsafe =', nsafe
+                !flush(6) 
+
                 L_too_many_iters = .TRUE.  
                 exit recv_loop
 
             endif ! nsafe
+
+            !---------------------------------------------------------------
+
 
          enddo  recv_loop
     endif ! new_rank == 0
@@ -595,6 +640,40 @@ message_len = 1
 call MPI_BCAST( Individual_SSE_best_parent, message_len,    &
                 MPI_DOUBLE_PRECISION, 0, new_comm, ierr )
 
+!if( L_ga_print )then
+!    write(GA_print_unit,'(/A,1x,I6)') &
+!     'GP_GA_opt: aft broadcast Individual_SSE_best_parent  ierr = ', ierr
+!endif ! L_ga_print
+
+!if( new_rank == 0 )then 
+!write(6,'(A,3(1x,I6),1x,E15.7)') &
+!    'GP_GA_opt: aft broadcast myid, new_rank, ierr, Individual_SSE_best_parent = ', &
+!                              myid, new_rank, ierr, Individual_SSE_best_parent
+!endif ! new_rank == 0
+
+
+
+!------------------------------------------------------------------------
+
+! broadcast Individual_SSE_best_parent_nolog10
+
+message_len = 1
+call MPI_BCAST( Individual_SSE_best_parent_nolog10, message_len,    &
+                MPI_DOUBLE_PRECISION, 0, new_comm, ierr )
+
+!if( L_ga_print )then
+!    write(GA_print_unit,'(/A,1x,I6)') &
+!     'GP_GA_opt: aft broadcast Individual_SSE_best_parent  ierr = ', ierr
+!endif ! L_ga_print
+
+!if( new_rank == 0 )then 
+!write(6,'(A,3(1x,I6),1x,E15.7)') &
+!    'GP_GA_opt: aft broadcast myid, new_rank, ierr, Individual_SSE_best_parent_nolog10 = ', &
+!                              myid, new_rank, ierr, Individual_SSE_best_parent_nolog10
+!endif ! new_rank == 0
+
+!------------------------------------------------------------------------
+
 ! broadcast GP_Individual_Node_Parameters
 
 message_len = n_trees * n_nodes
@@ -609,5 +688,10 @@ message_len = n_CODE_equations
 
 call MPI_BCAST( GP_Individual_Initial_Conditions, message_len,    &
                 MPI_DOUBLE_PRECISION, 0, new_comm, ierr )
+
+
+
+return
+
 
 end subroutine GPCODE_GA_lmdif_Parameter_Optimization

@@ -84,7 +84,8 @@ integer(kind=i4b),parameter :: min_N_param = 2
 
 integer(kind=i4b),parameter :: GP_print_unit                 =  6
 integer(kind=i4b),parameter :: GP_output_unit                = 30
-integer(kind=i4b),parameter :: GP_summary_output_unit        = 40
+integer(kind=i4b),parameter :: GP_summary_output_unit_all    = 39
+integer(kind=i4b),parameter :: GP_summary_output_unit_lgen   = 40
 integer(kind=i4b),parameter :: GP_minSSE_summary_output_unit = 41
 integer(kind=i4b),parameter :: GP_best_summary_output_unit   = 42
 integer(kind=i4b),parameter :: GP_restart_file_input_unit    = 45
@@ -94,6 +95,7 @@ integer(kind=i4b),parameter :: GPSSE_log_unit                = 90
 integer(kind=i4b),parameter :: GPSSE_best_log_unit           = 91
 
 logical ::   L_GP_all_summary
+integer(kind=i4b) ::  GP_all_summary_flag 
 
 logical ::   L_unit50_output
 logical ::   L_GP_log
@@ -137,7 +139,7 @@ character(5) :: node_element_string
 ! GP Probability of a Tree being assigned
 ! Estimated from previous work by Joel Cohen
 
-!real (kind=4), parameter :: GP_Tree_Probability=0.5
+!real(kind=r4b), parameter :: GP_Tree_Probability=0.5
 real(kind=r8b) :: GP_Tree_Probability !=0.5 ! Estimated from previous work by Joel Cohen
 
 
@@ -155,18 +157,18 @@ real(kind=r8b), allocatable, dimension(:) :: Node_Probability
 ! Keeps the top n_GP_Elitists of the
 ! Best Fit Individuals from Generation to Generation
 
-!real (kind=4), parameter :: GP_Elitist_Probability = 0.1
+!real(kind=r4b), parameter :: GP_Elitist_Probability = 0.1
 real(kind=r8b) :: GP_Elitist_Probability
 
-!real(kind=4),parameter :: &
+!real(kind=r4b),parameter :: &
 !  GP_Asexual_Reproduction_Probability =0.4 ! prob of asexual reproduction
 real(kind=r8b) :: GP_Asexual_Reproduction_Probability
 
-!real(kind=4),parameter :: &
+!real(kind=r4b),parameter :: &
 !  GP_Crossover_Probability=0.4 ! prob of sexual crossing of binary string
 real(kind=r8b) :: GP_Crossover_Probability
 
-!real (kind=4), parameter :: &
+!real(kind=r4b), parameter :: &
 !  GP_Mutation_Probability = 0.1 ! prob of mutation in binary string
 real(kind=r8b) :: GP_Mutation_Probability
 
@@ -219,7 +221,7 @@ logical :: L_bad_result
 
 
 
-integer (kind=4) :: ier_file,idummy,iwkid,iwktype  ! NCAR Graphics
+integer(kind=i4b) :: ier_file,idummy,iwkid,iwktype  ! NCAR Graphics
 
 ! orig !character (len=*), parameter :: output_dir = 'Output/'//Model_Name
 character (len=*), parameter :: output_dir = '.'
@@ -229,20 +231,20 @@ character (len=*), parameter :: input_dir = 'Input'
 
 !The temporal unit depends on the delta time in days
 
-!!!!real (kind=4), dimension(0:n_Time_Steps) :: x_Time_Steps = 0.D+0
-!!!real (kind=4), dimension(:),allocatable :: x_Time_Steps
+!!!!real(kind=r4b), dimension(0:n_Time_Steps) :: x_Time_Steps = 0.D+0
+!!!real(kind=r4b), dimension(:),allocatable :: x_Time_Steps
 
 
 
-! real (kind=8), parameter :: dt = 1.0D+0 /(24.0D+0*60.0D+0)   ! [d^-1; 1 minute time step]
-!!real (kind=8), parameter :: dt = 10.0D+0/(24.0D+0*60.0D+0)   ! [d^-1; 10 minute time step]
+! real(kind=r8b), parameter :: dt = 1.0D+0 /(24.0D+0*60.0D+0)   ! [d^-1; 1 minute time step]
+!!real(kind=r8b), parameter :: dt = 10.0D+0/(24.0D+0*60.0D+0)   ! [d^-1; 10 minute time step]
 
 real(kind=r8b) :: dt
 
 !------------------------------------------------------------------------------
 
 ! sse_min_time and sse_max_time are used for setting start and stop times 
-! for inclusion of data into the SSE value
+! for weighting of data into the SSE value
 
 real(kind=r8b) :: sse_min_time
 real(kind=r8b) :: sse_max_time
@@ -284,12 +286,16 @@ logical :: GP_para_flag
 
 integer(kind=i4b) :: n_input_vars
 
+! number of input data points in the input data file 
+
+integer(kind=i4b) :: n_input_data_points
+
 integer, parameter :: name_len = 20 
 
 !----------------------------------------------------------------
 ! big_real is large number for testing if a result is too big
 
-real(kind=r8b),parameter :: big_real = 1.0D20 
+real(kind=r8b),parameter :: big_real = 1.0D13 ! 1.0D20 
 
 !----------------------------------------------------------------
                                                                                                                                 
@@ -304,6 +310,12 @@ integer(kind=i4b) :: n_partitions
 integer(kind=i4b) :: new_rank   !, sendbuf, recvbuf     
                                                                                                                               
 integer(kind=i4b) :: color
+                                                                                                                              
+integer,dimension(:,:),allocatable  :: ranks                                                                                  
+integer,dimension(:,:),allocatable  :: ranks2                                                                                 
+integer,dimension(:),allocatable    :: ranks_temp                                                                             
+                                                                                                                              
+integer(kind=i4b) :: divider                                                                                                            
 integer(kind=i4b) :: orig_group
 
 !!integer(kind=i4b) :: new_group                                                                                              
@@ -314,5 +326,9 @@ real(kind=r8b) :: sum_if
 real(kind=r8b) :: allocated_memory 
 
 real(kind=r4b) :: prob_forcing
+
+integer(kind=i4b)           :: max_forcing_index 
+integer(kind=i4b),parameter :: fasham_max_forcing_index = -5001
+
 
 end module GP_parameters_module

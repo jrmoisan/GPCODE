@@ -38,7 +38,7 @@ integer(kind=i4b) :: i_Node
 !    ops   = arithmetic operators and functions
 
 max_number_nodes = n_trees * n_nodes
-xmax_number_nodes = real( max_number_nodes, kind=8 )
+xmax_number_nodes = real( max_number_nodes, kind=r8b )
 
 
 write(GP_print_unit,'(/A,1x,I6)') 'gcdi: i_GP_generation = ', i_GP_generation
@@ -83,9 +83,9 @@ do  i_indiv = 1, n_GP_individuals
 
     enddo !  i_tree
 
-    !icnt_ops   = int( 100.0d0 * real( icnt_ops,   kind=8 ) / xmax_number_nodes )
-    !icnt_vars  = int( 100.0d0 * real( icnt_vars,  kind=8 ) / xmax_number_nodes )
-    !icnt_parms = int( 100.0d0 * real( icnt_parms, kind=8 ) / xmax_number_nodes )
+    !icnt_ops   = int( 100.0d0 * real( icnt_ops,   kind=r8b ) / xmax_number_nodes )
+    !icnt_vars  = int( 100.0d0 * real( icnt_vars,  kind=r8b ) / xmax_number_nodes )
+    !icnt_parms = int( 100.0d0 * real( icnt_parms, kind=r8b ) / xmax_number_nodes )
 
     i_diversity = 100 * ( icnt_parms * 100  + icnt_vars ) + icnt_ops
 

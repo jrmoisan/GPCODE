@@ -6,6 +6,7 @@ implicit none
 
 !real(kind=r8b) :: Data_Array(0:n_time_steps,n_CODE_equations)
 real(kind=r8b),allocatable, dimension(:,:) :: Data_Array
+real(kind=r8b),allocatable, dimension(:,:) :: Data_Array_log10
 
 
 real(kind=r8b),allocatable, dimension( : )  :: Data_Variance_inv

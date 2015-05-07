@@ -9,12 +9,12 @@ implicit none
 
 !U    USES gammln                                                       
 
-REAL(kind=8) ::  a,gammcf,gln,x
+REAL(kind=r8b) ::  a,gammcf,gln,x
 INTEGER,parameter      :: ITMAX=100
-REAL(kind=8),parameter :: EPS=3.0d-7
-REAL(kind=8),parameter :: FPMIN=1.0d-30
+REAL(kind=r8b),parameter :: EPS=3.0d-7
+REAL(kind=r8b),parameter :: FPMIN=1.0d-30
 INTEGER ::  i 
-REAL(kind=8) ::  an,b,c,d,del,h,gammln 
+REAL(kind=r8b) ::  an,b,c,d,del,h,gammln 
 
 !----------------------------------------------------------------
 

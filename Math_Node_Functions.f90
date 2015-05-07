@@ -36,7 +36,7 @@ use kinds_mod
 
     !-------------------------------------------------------
 
-    ! math_funcs(1)
+    ! math_funcs(1)          Addition: a + b
 
     ! Addition: a + b
 
@@ -51,7 +51,7 @@ use kinds_mod
 
     !-------------------------------------------------------
 
-    ! math_funcs(2)
+    ! math_funcs(2)         Subtraction: a - b
 
     ! Subtraction: a - b
 
@@ -66,7 +66,7 @@ use kinds_mod
 
     !-------------------------------------------------------
 
-    ! math_funcs(3)
+    ! math_funcs(3)          Multiply: a * b
 
     ! Multiply: a * b
 
@@ -89,7 +89,7 @@ use kinds_mod
 
     !-------------------------------------------------------
 
-    ! math_funcs(4)
+    ! math_funcs(4)          Protected Divide 
 
     ! Protected Divide (only if b not equal to zero): a / b
 
@@ -109,7 +109,7 @@ use kinds_mod
 
     !-------------------------------------------------------
 
-    ! math_funcs(5)
+    ! math_funcs(5)          Ivlev Grazing Function
 
     ! Ivlev Grazing Function: (1 - e^-abs(a*b))
 
@@ -130,7 +130,7 @@ use kinds_mod
 
     !-------------------------------------------------------
 
-    ! math_funcs(6)
+    ! math_funcs(6)          Michaelis-Menton Term
 
     !orig  Michaelis-Menton Term (modified for Forward-Backward): (1 / (abs(a) + abs(b)))
     ! Michaelis-Menton Term (modified for Forward-Backward): (abs(b) / (abs(a) + abs(b)))
@@ -152,7 +152,7 @@ use kinds_mod
 
     !-------------------------------------------------------
 
-    ! math_funcs(7)
+    ! math_funcs(7)          Mayzaud-Poulet Grazing Function
 
     ! Mayzaud-Poulet Grazing Function:  abs(a*b)*(1 - e^-abs(a*b))
 
@@ -173,7 +173,7 @@ use kinds_mod
 
     !-------------------------------------------------------
 
-    ! math_funcs(8)
+    ! math_funcs(8)          Power: a ^ b
 
     ! Power: a ^ b
 
@@ -226,7 +226,7 @@ use kinds_mod
 
     !-------------------------------------------------------
 
-    ! math_funcs(9)
+    ! math_funcs(9)          EXP: exp(-abs(a*b))
 
     ! EXP: exp(-abs(a*b))
 
@@ -254,7 +254,7 @@ use kinds_mod
 
     !-------------------------------------------------------
 
-    ! math_funcs(10)
+    ! math_funcs(10)         Minimum: min(a,b)
 
     ! Minimum: a or b, whichever is lower
 
@@ -269,7 +269,7 @@ use kinds_mod
 
     !-------------------------------------------------------
 
-    ! math_funcs(11)
+    ! math_funcs(11)         Maximum: max(a,b)
 
     ! Maximum: a or b, whichever is greater
 
@@ -323,7 +323,7 @@ use kinds_mod
 
     !-------------------------------------------------------
 
-    ! math_funcs(12)
+    ! math_funcs(12)         IF a .ne. 0 THEN b ELSE 0
 
     ! IF a .ne. 0 THEN b ELSE 0
 
@@ -342,7 +342,7 @@ use kinds_mod
 
     !-------------------------------------------------------
 
-    ! math_funcs(13)
+    ! math_funcs(13)         IF a .GT. b THEN 1 ELSE 0
 
     ! IF a .GT. b THEN 1 ELSE 0
 
@@ -360,7 +360,7 @@ use kinds_mod
 
     !-------------------------------------------------------
 
-    ! math_funcs(14)
+    ! math_funcs(14)         IF a .GE. b THEN 1 ELSE 0
 
     ! IF a .GE. b THEN 1 ELSE 0
 
@@ -379,7 +379,7 @@ use kinds_mod
 
     !-------------------------------------------------------
 
-    ! math_funcs(15)
+    ! math_funcs(15)         IF a .LT. b THEN 1 ELSE 0
 
     ! IF a .LT. b THEN 1 ELSE 0
 
@@ -398,7 +398,7 @@ use kinds_mod
 
     !-------------------------------------------------------
 
-    ! math_funcs(16)
+    ! math_funcs(16)         IF a .LE. b THEN 1 ELSE 0
 
     ! IF a .LE. b THEN 1 ELSE 0
 
@@ -416,7 +416,7 @@ use kinds_mod
 
     !-------------------------------------------------------
 
-    ! math_funcs(17)
+    ! math_funcs(17)         EXP_LP: exp(a)
 
     ! EXP_LP: exp(a)
 
@@ -436,7 +436,7 @@ use kinds_mod
 
     !-------------------------------------------------------
 
-    ! math_funcs(18)
+    ! math_funcs(18)         EXP_RP: exp(b)
 
     ! EXP_RP: exp(b)
 
@@ -456,7 +456,7 @@ use kinds_mod
     !-------------------------------------------------------
 
 
-    ! math_funcs(19)
+    ! math_funcs(19)         EXP_LM: exp(-a)
 
     ! EXP_LM: exp(-a)
 
@@ -475,9 +475,9 @@ use kinds_mod
 
     !-------------------------------------------------------
 
-    ! math_funcs(20)
+    ! math_funcs(20)         EXP_RM: exp(-b)
 
-    ! EXP_RM: exp(b)
+    ! EXP_RM: exp(-b)
 
     real(kind=r8b) function f_ExponentialRightMinus(a, b)
         use kinds_mod

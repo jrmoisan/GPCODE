@@ -193,10 +193,10 @@ elseif( n_levels == 8 )then
                          0.5d0,0.4d0,0.3d0,0.d0/)  ! NOTE: Last value MUST BE 0.0!!!]
 else
 
-    increment = 1.0d0 / real( n_levels, kind=8 )
+    increment = 1.0d0 / real( n_levels, kind=r8b )
 
     do  i = 1, n_levels-1
-        Node_Probability(i) = 1.0d0 - increment * real(i,kind=8)
+        Node_Probability(i) = 1.0d0 - increment * real(i,kind=r8b)
     enddo
     Node_Probability(n_levels) = 0.0d0
 

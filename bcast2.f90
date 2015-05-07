@@ -67,6 +67,14 @@ call MPI_BCAST( GP_Adult_Population_Node_Type, message_len,    &
 call MPI_BCAST( GP_Child_Individual_SSE, n_GP_individuals,    &
                 MPI_DOUBLE_PRECISION, 0, MPI_COMM_WORLD, ierr )
 
+if( index( model, 'log10') > 0 .or. &                                                                                   
+    index( model, 'LOG10') > 0        )then                                                                             
+                                                                                                                        
+    call MPI_BCAST( GP_Child_Individual_SSE_nolog10, n_GP_individuals,    &
+                    MPI_DOUBLE_PRECISION, 0, MPI_COMM_WORLD, ierr )
+                                                                                                                        
+endif ! index( model, 'log10') > 0 .or. ...                                                                             
+           
 !---------------------------------------------------------------------
 
 ! GP_Adult_Individual_SSE

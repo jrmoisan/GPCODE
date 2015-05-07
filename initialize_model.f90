@@ -72,9 +72,9 @@ use GP_variables_module
 
 implicit none
 
-real (kind=8) :: b_tmp_local(n_CODE_Equations)
-real (kind=8) :: time_step_fraction, day, h, hplus, aMLD, aJ
-integer (kind=4) :: i_Time_Step
+real(kind=r8b) :: b_tmp_local(n_CODE_Equations)
+real(kind=r8b) :: time_step_fraction, day, h, hplus, aMLD, aJ
+integer(kind=i4b) :: i_Time_Step
 
 logical :: L_bad
 

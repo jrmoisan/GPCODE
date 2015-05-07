@@ -5,8 +5,8 @@ use kinds_mod
 implicit none
 
 !U    USES gammp,gammq                                                  
-REAL(kind=8) ::  erfc1,x 
-REAL(kind=8) ::  gammp,gammq 
+REAL(kind=r8b) ::  erfc1,x 
+REAL(kind=r8b) ::  gammp,gammq 
 
 !---------------------------------------------------
 

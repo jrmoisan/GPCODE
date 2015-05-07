@@ -14,7 +14,7 @@ implicit none
 integer(kind=i4b) :: index0
 integer(kind=i4b) :: ksafe
 
-real(kind=4) :: cff
+real(kind=r4b) :: cff
 real(kind=r8b) :: dff
 
 
@@ -48,7 +48,7 @@ do
     call random_number(cff) ! uniform random number generator
     dff = cff
 
-    index0  = 1 + int(  dff * real( n_GA_Individuals-1, kind=8 )  )
+    index0  = 1 + int(  dff * real( n_GA_Individuals-1, kind=r8b )  )
 
 
     !if( L_ga_print )then

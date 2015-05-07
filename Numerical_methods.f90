@@ -6,12 +6,12 @@ subroutine spline ( x, y, n, yp1, ypn, y2 )
 
     implicit none
 
-    integer (kind=4), intent(in) :: n
-    real (kind=8), intent(in) :: x(n), y(n), yp1, ypn
-    real (kind=8), intent(out) :: y2(n)
-    integer (kind=4), parameter :: NMAX = 500
-    integer (kind=4) :: i
-    real (kind=8) :: p, qn, sig, un, u(NMAX)
+    integer(kind=i4b), intent(in) :: n
+    real(kind=r8b), intent(in) :: x(n), y(n), yp1, ypn
+    real(kind=r8b), intent(out) :: y2(n)
+    integer(kind=i4b), parameter :: NMAX = 500
+    integer(kind=i4b) :: i
+    real(kind=r8b) :: p, qn, sig, un, u(NMAX)
 
     if ( yp1 .gt. 0.99D+30 ) then
         y2(1) = 0.D+0

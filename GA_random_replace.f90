@@ -12,12 +12,12 @@ implicit none
 real(kind=r8b) :: child_parameters(n_GP_parameters,n_GA_individuals)
 real(kind=r8b) :: dff
 
-integer (kind=4) :: i_GA_replace
-integer (kind=4) :: i_GA_Individual_replace, i_Parameter_replace
+integer(kind=i4b) :: i_GA_replace
+integer(kind=i4b) :: i_GA_Individual_replace, i_Parameter_replace
 
 integer(kind=i4b) :: individual_quality(n_GA_individuals)
 
-integer (kind=4) :: n_replaced
+integer(kind=i4b) :: n_replaced
 integer(kind=i4b) :: i_GA_individual
 
 !---------------------------------------------------------------------

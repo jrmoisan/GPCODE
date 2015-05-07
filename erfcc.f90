@@ -4,8 +4,8 @@ use kinds_mod
 
 implicit none
 
-REAL(kind=8) ::  erfcc,x 
-REAL(kind=8) ::  t,z 
+REAL(kind=r8b) ::  erfcc,x 
+REAL(kind=r8b) ::  t,z 
 
 !-------------------------------------------------------------------------
 

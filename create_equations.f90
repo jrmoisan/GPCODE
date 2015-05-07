@@ -33,7 +33,7 @@ integer(kind=i4b) :: n_levels_file
 !write(6,'(A,1x,I6)')  'ceq: n_nodes         ',  n_nodes
 !write(6,'(A,1x,I6)')  'ceq: n_levels        ',  n_levels
 
-n_levels_file = nint( log( real( n_nodes+1,kind=4)  ) / log( 2.0) )
+n_levels_file = nint( log( real( n_nodes+1,kind=i4b)  ) / log( 2.0) )
 
 !write(6,'(A,1x,I10/)') 'ceq: n_levels_file = ', n_levels_file
 

@@ -16,7 +16,7 @@ real(kind=r8b)    :: parent_parameters(n_GP_parameters,n_GA_individuals)
 real(kind=r8b)    :: child_parameters(n_GP_parameters,n_GA_individuals)
 integer(kind=i4b) :: individual_quality(n_GA_individuals)
 
-real(kind=4) :: cff
+real(kind=r4b) :: cff
 real(kind=r8b) :: dff
 real(kind=r8b) :: mean_fit_before
 real(kind=r8b) :: mean_fit_after
@@ -69,7 +69,7 @@ enddo ! i_GA_individual
 
 
 if( icount > 0 )then
-    mean_fit_before =  mean_fit_before / real( icount, kind=8 )
+    mean_fit_before =  mean_fit_before / real( icount, kind=r8b )
 else
     mean_fit_before = 0.0d0
 endif ! icount > 0
@@ -86,7 +86,7 @@ do i_GA_Individual=1,n_GA_individuals
 
   call Random_Number(cff) ! uniform random number generator
 
-  dff = real(cff,kind=8)   
+  dff = real(cff,kind=r8b)   
 
   !if( L_ga_print )then
   !    write(GA_print_unit,'(/A,1x,I6,1x,E15.7)') &
@@ -239,7 +239,7 @@ do  i_GA_individual = 1, n_GA_individuals
 enddo ! i_GA_individual
 
 if( icount > 0 )then
-    mean_fit_after =  mean_fit_after / real( icount , kind=8 )
+    mean_fit_after =  mean_fit_after / real( icount , kind=r8b )
 else
     mean_fit_after =  0.0D0
 endif ! icount > 0

@@ -140,22 +140,22 @@ integer(kind=i4b) :: I
 
    90 CONTINUE 
 
-    9 FORMAT(/1x ,'***** NON-FATAL DIAGNOSTIC--THE FIRST  INPUT ARGUMENT&
+    9 FORMAT(/1x ,'>>>>> NON-FATAL DIAGNOSTIC--THE FIRST  INPUT ARGUMENT&
          & (A VECTOR) TO THE CORR   SUBROUTINE HAS ALL ELEMENTS = ', &
-         E15.8,' *****'/)
+         E15.8,' <<<<<'/)
 
 
-   19 FORMAT(/1x ,'***** NON-FATAL DIAGNOSTIC--THE SECOND INPUT ARGUMENT&
+   19 FORMAT(/1x ,'>>>>> NON-FATAL DIAGNOSTIC--THE SECOND INPUT ARGUMENT&
              & (A VECTOR) TO THE CORR   SUBROUTINE HAS ALL ELEMENTS = ', &
-             E15.8,' *****'/)
+             E15.8,' <<<<<'/)
 
-   25 FORMAT(/1x, '***** FATAL ERROR--THE THIRD  INPUT ARGUMENT TO THE  CORR&
-              &   SUBROUTINE IS NON-POSITIVE *****')
+   25 FORMAT(/1x, '>>>>> FATAL ERROR--THE THIRD  INPUT ARGUMENT TO THE  CORR&
+              &   SUBROUTINE IS NON-POSITIVE <<<<<')
 
-   28 FORMAT(/1x ,'***** NON-FATAL DIAGNOSTIC--THE THIRD  INPUT ARGUMENT &
-                  &TO THE CORR   SUBROUTINE HAS THE VALUE 1 *****'/)
+   28 FORMAT(/1x ,'>>>>> NON-FATAL DIAGNOSTIC--THE THIRD  INPUT ARGUMENT &
+                  &TO THE CORR   SUBROUTINE HAS THE VALUE 1 <<<<<'/)
 
-   47 FORMAT(1x, '***** THE VALUE OF THE ARGUMENT IS ',I8   ,' *****'/) 
+   47 FORMAT(1x, '>>>>> THE VALUE OF THE ARGUMENT IS ',I8   ,' <<<<<'/) 
 !                                                                       
 !-----START POINT-----------------------------------------------------  
 !                                                                       
@@ -163,18 +163,8 @@ integer(kind=i4b) :: I
       YBAR=0.0d0 
 
       DO 100 I=1,N 
-
-          !xi = dt * real(i,kind=8)
-          !if( xi < sse_min_time )then
-          !    sse_wt = sse_low_wt
-          !else
-          !    sse_wt = 1.0d0             
-          !endif 
-          !if( xi > sse_max_time ) exit
-
-          XBAR=XBAR+X(I)      !*sse_wt 
-
-          YBAR=YBAR+Y(I)      !*sse_wt 
+          XBAR=XBAR+X(I)
+          YBAR=YBAR+Y(I)
   100 ENDDO 
 
       XBAR=XBAR/AN 
@@ -185,21 +175,11 @@ integer(kind=i4b) :: I
       SUM3=0.0d0 
 
       DO 200  I=1,N 
-          !xi = dt * real(i,kind=8)
-          !if( xi < sse_min_time )then
-          !    sse_wt = sse_low_wt
-          !else
-          !    sse_wt = 1.0d0             
-          !endif 
-          !if( xi > sse_max_time ) exit
 
       SUM1=SUM1+(X(I)-XBAR)*(Y(I)-YBAR) !orig 
       SUM2=SUM2+(X(I)-XBAR)**2 !orig 
       SUM3=SUM3+(Y(I)-YBAR)**2 !orig 
 
-      !SUM1 = SUM1 + ( X(I)*sse_wt -XBAR ) * ( Y(I)*sse_wt -YBAR ) 
-      !SUM2 = SUM2 + ( X(I)*sse_wt -XBAR )**2 
-      !SUM3 = SUM3 + ( Y(I)*sse_wt -YBAR )**2 
 
   200 ENDDO 
 

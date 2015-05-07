@@ -61,6 +61,7 @@ real(kind=r8b) :: prob_no_elite
 
 real(kind=r8b) :: Individual_Fitness
 real(kind=r8b) :: Individual_SSE_best_parent
+real(kind=r8b) :: Individual_SSE_best_parent_nolog10
 
 integer(kind=i4b) :: n_GP_Elitists
 integer(kind=i4b) :: n_GP_Asexual_Reproductions
@@ -172,6 +173,9 @@ integer(kind=i4b) :: GP_minSSE_Individual_N_GP_param
 
 real(kind=r8b),allocatable, dimension(:) :: GP_Adult_Individual_SSE
 real(kind=r8b),allocatable, dimension(:) :: GP_Child_Individual_SSE
+real(kind=r8b),allocatable, dimension(:) :: GP_Child_Individual_SSE_nolog10
+
+real(kind=r8b) :: sse_local_nolog10              
 
 real(kind=r8b),allocatable, dimension(:) :: GP_Adult_Population_SSE  ! ???
 
@@ -200,8 +204,8 @@ real(kind=r8b),allocatable,target, dimension(:) ::  RK_data_array
 
 !GP_Solution contains columns for forcing functions
 
-!!!!real(kind=4) :: GP_Solution(0:n_Time_Steps,n_Variables)
-!!!real(kind=4), dimension(:,:),allocatable :: GP_Solution
+!!!!real(kind=r4b) :: GP_Solution(0:n_Time_Steps,n_Variables)
+!!!real(kind=r4b), dimension(:,:),allocatable :: GP_Solution
 
 
 !Numerical_CODE_Initial_Conditions contains columns for forcing functions
@@ -210,6 +214,7 @@ real(kind=r8b),dimension(:), allocatable :: Numerical_CODE_Initial_Conditions
 
 !Numerical_CODE_Solution contains columns for forcing functions
 real(kind=r8b),dimension(:,:), allocatable  :: Numerical_CODE_Solution
+real(kind=r8b),dimension(:,:), allocatable  :: Numerical_CODE_Solution_log10
 
 
 

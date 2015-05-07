@@ -8,8 +8,8 @@ use mpi_module
 implicit none
 
 !U    USES gcf,gser                                                     
-REAL(kind=8) ::  a,gammq,x 
-REAL(kind=8) ::  gammcf,gamser,gln 
+REAL(kind=r8b) ::  a,gammq,x 
+REAL(kind=r8b) ::  gammcf,gamser,gln 
 
 !--------------------------------------------------------------
 

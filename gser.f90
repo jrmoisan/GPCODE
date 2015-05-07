@@ -8,11 +8,11 @@ use mpi_module
 implicit none
 
 !U    USES gammln                                                       
-REAL(kind=8) ::  a,gamser,gln,x
+REAL(kind=r8b) ::  a,gamser,gln,x
 integer, parameter     :: ITMAX=100
-REAL(kind=8),parameter :: EPS=3.0d-7 
+REAL(kind=r8b),parameter :: EPS=3.0d-7 
 INTEGER :: n 
-REAL(kind=8) ::  ap,del,sum,gammln 
+REAL(kind=r8b) ::  ap,del,sum,gammln 
 
 !--------------------------------------------------------------
 

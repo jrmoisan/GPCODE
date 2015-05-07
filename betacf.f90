@@ -5,12 +5,12 @@ use mpi_module
 
 implicit none
 
-REAL(kind=8) ::  betacf,a,b,x
+REAL(kind=r8b) ::  betacf,a,b,x
 integer,parameter       :: MAXIT=100
-REAL(kind=8), parameter :: EPS=3.d-7
-REAL(kind=8), parameter :: FPMIN=1.d-30
+REAL(kind=r8b), parameter :: EPS=3.d-7
+REAL(kind=r8b), parameter :: FPMIN=1.d-30
 INTEGER m,m2 
-REAL(kind=8) ::  aa,c,d,del,h,qab,qam,qap 
+REAL(kind=r8b) ::  aa,c,d,del,h,qab,qam,qap 
 
 !----------------------------------------------------------
 

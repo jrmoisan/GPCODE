@@ -34,6 +34,7 @@ implicit none
 
 deallocate( ga_individual_elites )
 deallocate( individual_SSE )
+deallocate( individual_SSE_nolog10 )
 deallocate( integrated_SSE )
 
 deallocate( GP_N_parms )
@@ -60,6 +61,7 @@ deallocate( GP_Child_Population_Node_Type )
 deallocate( Parent_Tree_Swap_Node_Type )
 deallocate( GP_Adult_Individual_SSE )
 deallocate( GP_Child_Individual_SSE )
+deallocate( GP_Child_Individual_SSE_nolog10 )
 deallocate( GP_Individual_Ranked_Fitness )
 deallocate( GP_Integrated_Ranked_Fitness )
 deallocate( GP_Population_Ranked_Fitness )

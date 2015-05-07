@@ -274,11 +274,11 @@ else
 
     ! n_levels has some other value
 
-    increment = 1.0d0 / real( n_levels, kind=8 )
+    increment = 1.0d0 / real( n_levels, kind=r8b )
 
     do  i = 1, n_levels-1
-        Node_Probability(i) =  1.0d0 - increment * real(i,kind=8)  ! orig 
-        !Node_Probability(i) = ( 1.0d0 - increment * real(i,kind=8) )**2
+        Node_Probability(i) =  1.0d0 - increment * real(i,kind=r8b)  ! orig 
+        !Node_Probability(i) = ( 1.0d0 - increment * real(i,kind=r8b) )**2
     enddo
     Node_Probability(n_levels) = 0.0d0
 

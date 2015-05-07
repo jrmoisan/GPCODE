@@ -32,7 +32,7 @@ real(kind=r8b) :: child_two_parameters(n_parameters)
 real(kind=r8b) :: temp_male_parameters(n_parameters)
 real(kind=r8b) :: temp_female_parameters(n_parameters)
 
-real(kind=4) :: cff
+real(kind=r4b) :: cff
 real(kind=r8b) :: dff
 
 real(kind=r8b) :: old_male
@@ -128,8 +128,8 @@ do  i_GA_Crossover=1,n_GA_Crossovers
                 ierror_tou = 1
                 return
             endif ! ksafe
-            write(6,'(A,1x,I10)') 'gato:1 ksafe = ', ksafe
-            write(GA_print_unit,'(A,1x,I10)') 'gato:1 ksafe = ', ksafe
+            !write(6,'(A,1x,I10)') 'gato:1 ksafe = ', ksafe
+            !write(GA_print_unit,'(A,1x,I10)') 'gato:1 ksafe = ', ksafe
         enddo
     
         ! at this point, male(1) /= male(2) and 
@@ -225,8 +225,8 @@ do  i_GA_Crossover=1,n_GA_Crossovers
                 ierror_tou = 1
                 return
             endif ! ksafe
-            write(6,'(A,1x,I10)') 'gato:2 ksafe = ', ksafe
-            write(GA_print_unit,'(A,1x,I10)') 'gato:2 ksafe = ', ksafe
+            !write(6,'(A,1x,I10)') 'gato:2 ksafe = ', ksafe
+            !write(GA_print_unit,'(A,1x,I10)') 'gato:2 ksafe = ', ksafe
         enddo
     
         ! at this point, female(1) /= female(2) and 
@@ -290,7 +290,7 @@ do  i_GA_Crossover=1,n_GA_Crossovers
   
     ! pick a location from 1 to n_parameters-1
   
-    i_GA_Crossover_Point = 1 + int( dff * real(n_Parameters-2,kind=8) )
+    i_GA_Crossover_Point = 1 + int( dff * real(n_Parameters-2,kind=r8b) )
     i_GA_Crossover_Point = min( i_GA_Crossover_Point , n_Parameters )
     i_GA_Crossover_Point = max( i_GA_Crossover_Point , 1            )
   
@@ -383,7 +383,7 @@ do  i_GA_Crossover=1,n_GA_Crossovers
   
   
         call random_number( cff )
-        std_dev_parm = 0.5d0 + real(cff,kind=8) * mean_parm
+        std_dev_parm = 0.5d0 + real(cff,kind=r8b) * mean_parm
   
         !if( L_ga_print )then
         !    write(GA_print_unit,'(A,3(1x,E15.7))') &
@@ -472,7 +472,7 @@ do  i_GA_Crossover=1,n_GA_Crossovers
         !endif ! L_ga_print
   
         call random_number( cff )
-        std_dev_parm = 0.5d0 + real(cff,kind=8) * mean_parm
+        std_dev_parm = 0.5d0 + real(cff,kind=r8b) * mean_parm
   
   
         !if( L_ga_print )then
