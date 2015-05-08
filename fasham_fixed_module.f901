@@ -1,4 +1,5 @@
 module fasham_fixed_module
+
    use kinds_mod
    use mpi
    use mpi_module
@@ -13,7 +14,10 @@ module fasham_fixed_module
    public:: fasham_fixed
    public :: newFasham_fixed
 
-   type,extends(twin) :: fasham_fixed
+   !type, extends(twin) :: fasham_fixed  ! orig
+
+   type,abstract, extends(twin) :: fasham_fixed  ! jjm
+      real(kind=r8b),allocatable :: cdoms(:)     ! jjm
    contains
       procedure :: init
       procedure :: setTruth 
@@ -30,7 +34,9 @@ module fasham_fixed_module
 contains
 
    function newFasham_fixed() result (fasham)
-      type(fasham_fixed) :: fasham
+
+      type(fasham_fixed)  :: fasham
+      !type(fasham_fixed),intent(out)   :: fasham
 
       integer(kind=i4b) :: i_Tree
       integer(kind=i4b) :: i_Node
@@ -51,7 +57,8 @@ contains
    end function
 
    subroutine init(this)
-      class(fasham_fixed) :: this
+      !class(fasham_fixed) :: this   !orig
+      class(fasham_fixed),intent(inout) :: this    ! jjm
       integer ::  i,n
       real(kind=r8b) :: increment
 !
@@ -100,8 +107,10 @@ contains
    subroutine setTruth(this)
       use GP_data_module
 
-      class(fasham_fixed):: this
+      !class(fasham_fixed):: this
+      class(fasham_fixed), intent(inout) :: this
       integer :: i
+      integer :: i_GP_individual   ! jjm
 
       GP_Adult_Population_Node_Type(:,:,: ) = -9999
       GP_Individual_Node_Type(:,:) =  -9999
@@ -739,7 +748,8 @@ contains
    end subroutine setTruth
 
    subroutine setModel(this)
-      class(fasham_fixed) :: this
+      !class(fasham_fixed) :: this  ! orig
+      class(fasham_fixed),intent(inout) :: this  ! jjm
       integer :: i_CODE_Equation,i_Tree,i_Node
 !------------------------------------------------------------------------------------------------
 !   FORCING  -5001  : max(d MLD/ dt,0)
@@ -812,9 +822,13 @@ contains
    end subroutine setModel
 
    subroutine getForcing(this,preForce,time_step_fraction, i_Time_Step,L_bad )
+
       use fasham_variables_module
       use GP_variables_module
-      class(fasham_fixed):: this
+
+      !class(fasham_fixed):: this
+      class(fasham_fixed),intent(inout):: this    !jjm
+
       real (kind=8) :: preForce(n_CODE_Equations)
       real (kind=8) :: time_step_fraction, day, h, hplus, aMLD, aJ
       integer (kind=4) :: i_Time_Step

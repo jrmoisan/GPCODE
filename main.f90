@@ -811,8 +811,8 @@ if( myid == 0 )then
 
     endif ! L_GP_all_summary
 
-endif ! myid == 0
 
+endif ! myid == 0
 
 !------------------------------------------------------------------
 
@@ -823,9 +823,10 @@ call deallocate_arrays1( )
 
 !------------------------------------------------------------------
 
+if( myid == 0 )then
 
       write(GP_print_unit,'(//A)')  '0: NORMAL TERMINATION'
-   endif ! myid == 0
+endif ! myid == 0
 
    call MPI_FINALIZE(ierr)
 

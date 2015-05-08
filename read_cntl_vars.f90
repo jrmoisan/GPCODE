@@ -33,7 +33,7 @@ integer(kind=i4b) :: fort333_output_flag
 integer(kind=i4b) :: fort444_output_flag
 integer(kind=i4b) :: fort555_output_flag
 integer(kind=i4b) ::  unit50_output_flag
-integer(kind=i4b) ::  GP_all_summary_flag
+!integer(kind=i4b) ::  GP_all_summary_flag
 
 integer(kind=i4b) :: print_equations_flag
 integer(kind=i4b) :: run_GP_para_lmdif_flag
@@ -94,6 +94,9 @@ endif !  myid == 0
       write(GP_print_unit,'(A)') trim( Aline )
 
    enddo echoloop
+
+
+if( myid == 0 )then
 
    write(GP_print_unit,'(A//)' )&
       'End of Input Echo Listing-----------------------------------------'
@@ -183,6 +186,8 @@ L_run_GP_para_lmdif = .FALSE.
 L_no_forcing = .FALSE.            
 
 prob_forcing = 0.20
+
+max_forcing_index = -9999                    
 
 number_GA_child_prints  = 10
 number_GP_child_prints  = 10
@@ -342,7 +347,8 @@ do
 
         Delta_Time_in_Days  = dt
 
-! sse_low_wt  -  weight for data before sse_min_time
+! sse_low_wt  -  weight for data outside the 
+!                [sse_min_time , sse_max_time] interval
 
     elseif( Aline(1:len('sse_low_wt')) == "sse_low_wt" .or.     &
             Aline(1:len('sse_low_wt')) == "SSE_LOW_WT" ) then
@@ -350,7 +356,7 @@ do
         READ(Aline(len('sse_low_wt')+1:), * )  sse_low_wt
 
 
-! sse_min_time  -  calculate sse only with data after this time
+! sse_min_time  -  start time of interval where data is weighted with 1.0 
 
     elseif( Aline(1:len('sse_min_time')) == "sse_min_time" .or.     &
             Aline(1:len('sse_min_time')) == "SSE_MIN_TIME" ) then
@@ -358,7 +364,7 @@ do
         READ(Aline(len('sse_min_time')+1:), * )  sse_min_time
 
 
-! sse_max_time  -  calculate sse only with data before this time
+! sse_max_time  -  stop  time of interval where data is weighted with 1.0 
 
     elseif( Aline(1:len('sse_max_time')) == "sse_max_time" .or.     &
             Aline(1:len('sse_max_time')) == "SSE_MAX_TIME" ) then
@@ -378,6 +384,22 @@ do
 
         if( trim(model) == 'FASHAM_FIXED_TREE' ) model = 'fasham_fixed_tree'
         if( trim(model) == 'Fasham_fixed_tree' ) model = 'fasham_fixed_tree'
+        if( trim(model) == 'fasham_fixed_tree' ) model = 'fasham_fixed_tree'
+
+
+        ! set up max_forcing_index for use in GP_Check_Tree
+
+        if( index( model, 'fasham') > 0 )then
+
+            max_forcing_index = fasham_max_forcing_index
+        else
+            
+            max_forcing_index = -9999                    
+
+        endif !  index( model, 'fasham') > 0 
+
+
+
 
 !N_GP_individuals
 
