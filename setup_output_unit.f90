@@ -61,23 +61,6 @@ subroutine setup_output_unit()
 
       endif ! L_fort555_output
 
-
-      if( L_GA_output_parameters )then
-         open( GA_output_unit, file='GA_output_parameters', &
-              form = 'formatted', access = 'sequential', &
-              status = 'unknown' )
-      endif ! L_GA_output_parameters
-
-      if( L_GP_output_parameters )then
-         open( GP_output_unit, file='GP_output_parameters', &
-              form = 'formatted', access = 'sequential', &
-              status = 'unknown' )
-      endif ! L_GP_output_parameters
-
-      open( GP_minSSE_summary_output_unit, file='GP_minSSE_summary_file', &
-          form = 'formatted', access = 'sequential', &
-          status = 'unknown' )
-
    endif !   myid == 0
 
 
@@ -95,4 +78,4 @@ subroutine setup_output_unit()
       GP_child_print_interval = max( 1, n_GP_generations / 2 )
    endif
 
-end subroutine  
+end subroutine setup_output_unit

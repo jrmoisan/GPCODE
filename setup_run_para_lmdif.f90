@@ -100,7 +100,7 @@ external :: fcn
 if( n_parms <= n_code_equations ) then
 
     individual_quality = -1
-    my_indiv_SSE =  1.0D+13
+    my_indiv_SSE =  big_real ! 1.0D+13
 
     !if( L_myprint  )then
     !    write(myprint_unit,'(A, 2(1x, I6))') &
@@ -346,7 +346,9 @@ endif ! Lprint_lmdif
 if( info <= 0 ) then
 
     individual_quality  = -1
-    my_indiv_SSE =  1.0D+13
+    my_indiv_SSE =  big_real ! 1.0D+13
+
+    GP_Child_Individual_SSE_nolog10(i_G_indiv) = big_real
 
     !if( L_myprint  .and. i_G_indiv == 3 )then
     !if( L_myprint )then
@@ -413,6 +415,8 @@ enddo ! i_parameter
 !endif ! L_myprint
 
 
+my_indiv_SSE = big_real 
+
 if( individual_quality > 0 ) then
 
 
@@ -421,7 +425,7 @@ if( individual_quality > 0 ) then
     do i_time_step = 1, n_time_steps
 
        if( isnan(fvec(i_time_step)) )         fvec(i_time_step) = 0.0d0
-       if( abs(fvec(i_time_step)) >  1.0d20 ) fvec(i_time_step) = 1.0d20
+       if( abs(fvec(i_time_step)) >  big_real ) fvec(i_time_step) = big_real 
 
        !newif( isnan(fvec(i_time_step)) .or.  &
        !new    abs(fvec(i_time_step)) >  1.0d20 ) fvec(i_time_step) =  1.0d20
@@ -439,6 +443,16 @@ if( individual_quality > 0 ) then
     enddo ! i_time_step
 
 endif !  individual_quality > 0
+
+
+
+if( index( model,'LOG10') > 0 .or. &                                                                            
+    index( model,'log10') > 0         )then                                                                     
+
+    GP_Child_Individual_SSE_nolog10(i_G_indiv) = sse_local_nolog10
+
+endif ! index( model,'LOG10') > 0 .or. ...                                                                          
+
 
 !if( L_myprint .and. myid == 1  )then
 !    write(myprint_unit,'(/A,2(1x,I6))') &

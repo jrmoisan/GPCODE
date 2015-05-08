@@ -9,12 +9,12 @@ use kinds_mod
     implicit none
 
     ! Input
-    character (len=*), intent(in) :: io_dir
-    integer (kind=4), intent(in) :: Tree_count, num_Tracked_resources
+    character(len=*), intent(in) :: io_dir
+    integer(kind=i4b), intent(in) :: Tree_count, num_Tracked_resources
     type(Tree_Node_Pointer), dimension(Tree_count, num_Tracked_resources), intent(in) :: Trees
 
     ! Local variables
-    integer (kind=4) :: i, j, file_handle
+    integer(kind=i4b) :: i, j, file_handle
     type(Serialization_Visitor) :: serializer
     character (len=80) :: file_name
 

@@ -3,7 +3,6 @@ subroutine select_best_RK_lmdif_result( &
                 i_GA_best_parent, parent_parameters, &
                 child_parameters, &
                 L_stop_run,            new_comm )
-                !L_stop_run, new_group, new_comm )
 
 ! written by: Dr. John R. Moisan [NASA/GSFC] 5 December, 2012
 !xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
@@ -29,9 +28,7 @@ implicit none
 
 integer(kind=i4b),intent(in) :: i_GP_Generation
 integer(kind=i4b),intent(in) :: i_GP_individual
-!integer(kind=i4b),intent(in) :: new_group
 integer(kind=i4b),intent(in) :: new_comm 
-!integer(kind=i4b)            :: new_rank 
 
 real(kind=r8b),&
  dimension(n_GP_parameters,n_GA_individuals) ::  parent_parameters
@@ -40,13 +37,13 @@ real(kind=r8b),&
 
 
 real(kind=r8b) :: individual_SSE_best_1
+real(kind=r8b) :: individual_SSE_best_1_nolog10
 real(kind=r8b) :: individual_ranked_fitness_best_1
 real(kind=r8b) :: Individual_Fitness_best_1
 
 real(kind=r8b),dimension(n_GP_parameters) :: parent_parameters_best_1
 
 
-!integer(kind=i4b) ::      i
 integer(kind=i4b) :: i_GA_Best_Parent
 integer(kind=i4b) :: i_GA_Best_Parent_1
 
@@ -57,7 +54,6 @@ integer(kind=i4b) :: i_GA_generation_last
 ! if lmdif encounters an error, set individual_quality to -1
 ! if < 0 , reject this individual  ! jjm
 
-!integer(kind=i4b),intent(in) :: individual_quality(n_GA_individuals)
 
 real(kind=r8b), external :: indiv_fitness
 
@@ -72,6 +68,9 @@ integer(kind=i4b) :: i_parameter
 
 
 
+!-------------------------------------------------------------------------------
+
+                                                                                                                                
 call mpi_comm_rank( new_comm, new_rank, ierr ) 
 
 
@@ -88,6 +87,7 @@ n_parameters = n_GP_parameters
 
 i_GA_best_parent_1               = i_GA_best_parent
 individual_SSE_best_1            = individual_SSE(i_GA_best_parent)
+individual_SSE_best_1_nolog10    = individual_SSE_nolog10(i_GA_best_parent)
 individual_ranked_fitness_best_1 = individual_ranked_fitness(i_GA_best_parent)
 
 Individual_Fitness        = Individual_Ranked_Fitness(i_GA_Best_Parent)
@@ -98,6 +98,11 @@ do  jj = 1, n_parameters
     parent_parameters_best_1(jj) =  &
                         Parent_Parameters(jj, i_GA_Best_Parent)
 enddo ! jj
+
+
+
+
+!-------------------------------------------------------------------------------
 
 
 !  compute fitness for parameters of the best parent after lmdif has been run
@@ -114,6 +119,9 @@ individual_ranked_fitness(i_GA_best_parent) = &
                            indiv_fitness( i_GA_best_parent ) ! function
 
 Individual_Fitness = Individual_Ranked_Fitness(i_GA_Best_Parent)
+
+
+!------------------------------------------------------------------------------
 
 !  test if lmdif has improved the best parent parameters
 !  compare the fitness of the parameter set from the RK integrations
@@ -153,6 +161,7 @@ if( individual_ranked_fitness(i_GA_best_parent) <= &
 
     individual_fitness         = individual_ranked_fitness_best_1
     Individual_SSE_best_parent = individual_SSE_best_1
+    Individual_SSE_best_parent_nolog10 = individual_SSE_best_1_nolog10
 
     do  jj = 1, n_parameters
         child_parameters(jj,i_GA_Best_Parent) =  &
@@ -273,6 +282,7 @@ else  ! lmdif is best
 
     individual_fitness         = individual_ranked_fitness(i_GA_best_parent)
     Individual_SSE_best_parent = individual_SSE(i_GA_best_parent)
+    Individual_SSE_best_parent_nolog10 = individual_SSE_nolog10(i_GA_best_parent)
 
     do  jj = 1, n_parameters
         child_parameters(jj,i_GA_Best_Parent) =  &
@@ -372,5 +382,13 @@ else  ! lmdif is best
 
 
 endif ! individual_ranked_fitness...
+
+!write(6,'(A,2(1x,I6),1x,E15.7)') &
+!      'sbrl: new_rank, i_GA_best_parent, individual_fitness', &
+!             new_rank, i_GA_best_parent, individual_fitness
+
+
+return
+
 
 end subroutine select_best_RK_lmdif_result

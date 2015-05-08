@@ -1,4 +1,4 @@
-subroutine summary_GP_indiv( i_GP_generation, i_GP_indiv, icall  )
+subroutine summary_GP_indiv( i_GP_generation, i_GP_indiv ) !, icall  )
 
 ! program written by: Dr. John R. Moisan [NASA/GSFC] 31 January, 2013
 
@@ -36,7 +36,7 @@ integer(kind=i4b) :: i_code_eq
 
 integer(kind=i4b),intent(in)  :: i_GP_Generation
 integer(kind=i4b),intent(in)  :: i_GP_indiv
-integer(kind=i4b),intent(in)  :: icall       
+!integer(kind=i4b),intent(in)  :: icall       
 
 integer(kind=i4b) :: i_Tree
 integer(kind=i4b) :: i_Node
@@ -164,6 +164,10 @@ write(GP_best_summary_output_unit, '(A,2(1x,I6))') &
 !------------------------------------------------------------------------------
 
 if( Lprint )then
+
+    write(GP_print_unit,'(/A,1x,I6)') &
+         'sgpi: print the tree for the best individual =', i_GP_indiv       
+
     call print_trees( i_GP_generation, i_GP_indiv, i_GP_indiv, &
                       GP_Adult_Population_Node_Type, ' ' )
 endif ! Lprint

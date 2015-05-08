@@ -102,9 +102,11 @@ if( trim(model) /= 'fasham_fixed_tree' )then
         n_GP_Crossovers            + &
         n_GP_Mutations                 .gt. n_GP_Individuals) then
     
-        write(GP_print_unit,'(/A/)') &
-              'smi: Sum of n_GP_Elitists + n_Asexual_Reproduction + &
-              &n_GP_Crossovers + n_GP_Mutations is too high'
+        if( myid == 0 )then
+            write(GP_print_unit,'(/A/)') &
+                  'smi: Sum of n_GP_Elitists + n_Asexual_Reproduction + &
+                  &n_GP_Crossovers + n_GP_Mutations is too high'
+        endif ! myid == 0
     
         call MPI_FINALIZE(ierr)
         stop 'smi: sum too big'
@@ -114,9 +116,11 @@ if( trim(model) /= 'fasham_fixed_tree' )then
             n_GP_Crossovers            + &
             n_GP_Mutations                 .lt. n_GP_Individuals) then
     
-        write(GP_print_unit,'(/A/)') &
-              'smi: Sum of n_GP_Elitists + n_Asexual_Reproduction + &
-              &n_GP_Crossovers + n_GP_Mutations is too low'
+        if( myid == 0 )then
+            write(GP_print_unit,'(/A/)') &
+                  'smi: Sum of n_GP_Elitists + n_Asexual_Reproduction + &
+                  &n_GP_Crossovers + n_GP_Mutations is too low'
+        endif ! myid == 0
     
         call MPI_FINALIZE(ierr)
         stop 'smi: sum too small'
@@ -124,5 +128,9 @@ if( trim(model) /= 'fasham_fixed_tree' )then
     endif !   n_GP_Elitists + ...
 
 endif ! trim(model) /= 'fasham_fixed_tree' 
+
+
+
+return
 
 end subroutine set_modified_indiv

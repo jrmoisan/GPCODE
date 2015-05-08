@@ -56,9 +56,22 @@ subroutine read_GP_restart( i_GP_generation )
    read(GP_restart_file_input_unit, '(A)', iostat=istat) Aline
    read(Aline,*) i_GP_gen, nn_code_equations, nn_trees, nn_nodes, nn_levels
 
-   if(nn_code_equations /= nn_code_equations .or. &
-      nn_trees /= n_trees .or. nn_nodes /= n_nodes .or. &
-      nn_levels /=n_levels ) stop "wrong restart"
+if( nn_code_equations /= n_code_equations .or. &
+    nn_trees /= n_trees .or.                   &
+    nn_nodes /= n_nodes .or.                   &
+    nn_levels /=n_levels                    ) then
+
+    write(6,'(/A/)') 'rrf: problem in read_restart file - mis-match in numbers'
+    write(6,'(/A,5(1x,I10)/)') &
+          'rrf: i_GP_gen, nn_code_equations, nn_trees, nn_nodes, nn_levels ', &
+                i_GP_gen, nn_code_equations, nn_trees, nn_nodes, nn_levels 
+    write(6,'(/A,5(1x,I10)/)') &
+          'rrf: i_GP_generation, n_code_equations, n_trees, n_nodes, n_levels ', &
+                i_GP_generation, n_code_equations, n_trees, n_nodes, n_levels 
+
+    stop "wrong restart"
+
+endif ! nn_code_equations /= nn_code_equations ...
 
    readloop:&
    do

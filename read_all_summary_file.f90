@@ -39,6 +39,9 @@ subroutine read_all_summary_file( i_GP_generation )
    character(2) :: arrow2
    character(200) :: Aline 
 
+!----------------------------------------------------------------------------------------
+
+
 !---------------------------------------------------
 ! assume this subroutine is called by all processes. W.J noted
 !---------------------------------------------------
@@ -132,5 +135,7 @@ subroutine read_all_summary_file( i_GP_generation )
    enddo readloop 
 
    close( GP_restart_file_input_unit  )
+
+return
 
 end subroutine read_all_summary_file

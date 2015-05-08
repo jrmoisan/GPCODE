@@ -221,7 +221,7 @@ call lmdif( fcn, n_time_steps, n_parameters, x_LMDIF, fvec, &
 
 if( Lprint_lmdif )then
 
-    if( L_myprint )then
+    !if( L_myprint )then
 
         !write(myprint_unit,'(A,3(1x,I3),1x,I10/)') &
         !      'setrlm: aft call lmdif, myid, n_parameters, info, n_time_steps', &
@@ -262,7 +262,7 @@ if( Lprint_lmdif )then
         !!    '######################################################################################'
         !!
         !!endif ! info > 0
-    endif ! L_myprint
+    !endif ! L_myprint
 
     Lprint_lmdif = .FALSE.
 endif ! Lprint_lmdif
@@ -275,7 +275,7 @@ endif ! Lprint_lmdif
 if( info < 0 ) then
 
     individual_quality( i_G_indiv ) = -1
-    my_indiv_SSE(i_G_indiv) =  1.0D+13
+    my_indiv_SSE(i_G_indiv) =  big_real  ! 1.0D+13
 
     !if( L_myprint )then
     !    write(myprint_unit,'(/A/ 3(1x, I6),  1x,E12.5)') &
@@ -333,6 +333,7 @@ enddo ! i_parameter
 !    write(myprint_unit,'(/A/)')'setrlm: calculate the individual SSE values '
 !endif ! L_myprint
 
+my_indiv_SSE(i_G_indiv) = big_real
 
 if( individual_quality( i_G_indiv ) > 0 ) then
 
@@ -343,7 +344,7 @@ if( individual_quality( i_G_indiv ) > 0 ) then
     do i_time_step=1,n_time_steps
 
        if( isnan(fvec(i_time_step)) ) fvec(i_time_step) = 0.0d0
-       if( abs(fvec(i_time_step)) >  1.0d20 ) fvec(i_time_step) =  1.0d20
+       if( abs(fvec(i_time_step)) >  big_real  ) fvec(i_time_step) =  big_real 
 
 !new   if( isnan(fvec(i_time_step)) .or.  &
 !new         abs(fvec(i_time_step)) >  1.0d20 ) fvec(i_time_step) =  1.0d20

@@ -42,8 +42,8 @@ subroutine GP_produce_next(i_GP_generation,i_GP_best_parent,L_nextloop)
       ! GP_Child_Individual_SSE  = GP_Adult_Population_SSE   ! needed ??  jjm 20140522
 
       if( i_GP_generation == 1                                  .or. &
-           mod( i_GP_generation, GP_child_print_interval ) == 0  .or. &
-           i_GP_generation == n_GP_generations                          )then
+          mod( i_GP_generation, GP_child_print_interval ) == 0  .or. &
+          i_GP_generation == n_GP_generations                          )then
 
          write(GP_print_unit,'(//A)') '0:3 before modifications'
          write(GP_print_unit,'(A)')&
@@ -106,6 +106,7 @@ subroutine GP_produce_next(i_GP_generation,i_GP_best_parent,L_nextloop)
             !    GP_Child_Population_Node_Type
             !    Run_GP_Calculate_Fitness ( to true for modified individuals )
 
+            !if( trim(model) /= 'fasham_fixed_tree' )then
 
             if( n_GP_Crossovers .gt. 0 )then
 
@@ -117,6 +118,8 @@ subroutine GP_produce_next(i_GP_generation,i_GP_best_parent,L_nextloop)
                 call GP_Tournament_Style_Sexual_Reproduction( ierror_t )
 
             endif !  n_GP_Crossovers .gt. 0
+
+            !endif ! trim(model) /= 'fasham_fixed_tree'
 
             !----------------------------------------------------------------------------------
 
@@ -130,6 +133,8 @@ subroutine GP_produce_next(i_GP_generation,i_GP_best_parent,L_nextloop)
             !  Run_GP_Calculate_Fitness  ( to true for modified individuals )
 
 
+            !if( trim(model) /= 'fasham_fixed_tree' )then
+
 
             if( n_GP_Mutations .gt. 0 )then
 
@@ -140,6 +145,9 @@ subroutine GP_produce_next(i_GP_generation,i_GP_best_parent,L_nextloop)
                 ierror_m = 0
                 call GP_Mutations( ierror_m )
             endif !  n_GP_Mutations .gt. 0
+
+            !endif ! trim(model) /= 'fasham_fixed_tree'
+
 
             write(GP_print_unit,'(/A)')&
                   '0: i_GP_gen i_GP_indiv    Run_GP_Calculate_Fitness'

@@ -73,7 +73,7 @@ if( myid == 0 )then
 
     call Generate_Dot_Graph( GP_Trees(:,1), n_Trees, output_dir )
 
-    write(6,'(/A/)') 'saa: aft call Generate_Dot_Graph'
+    !write(6,'(/A/)') 'saa: aft call Generate_Dot_Graph'
 
 endif ! myid == 0
 
@@ -126,19 +126,25 @@ if( myid == 0 )then
     write(6,'(A)') ' '
 
     do  ii = 1, n_CODE_equations
-        write(6,'(A,1x,I6,1x,E15.7)') 'saa: ii, Numerical_CODE_Initial_Conditions(ii) ', &
-                                            ii, Numerical_CODE_Initial_Conditions(ii)
+        write(6,'(A,1x,I6,1x,E15.7)') &
+              'saa: ii, Numerical_CODE_Initial_Conditions(ii) ', &
+                    ii, Numerical_CODE_Initial_Conditions(ii)
     enddo ! ii
 
-    write(6,'(A)') ' '
+    !write(6,'(A)') ' '
 
     do  ii = 1, n_CODE_equations
-        write(6,'(A,1x,I6,1x,E15.7)') 'saa: ii, Numerical_CODE_Solution(0,ii) ', &
-                                            ii, Numerical_CODE_Solution(0,ii)
+        write(6,'(A,1x,I6,1x,E15.7)') &
+              'saa: ii, Numerical_CODE_Solution(0,ii)         ', &
+                    ii, Numerical_CODE_Solution(0,ii)
     enddo ! ii
 
 
     write(6,'(/A,2(1x,I6))') 'saa: n_trees, n_nodes ', n_trees, n_nodes
+
+    !-------------------------------------------------------------------------------
+
+    ! this section prints nothing for the data processing model
 
     write(6,'(/A)') &
           'saa: i_tree  i_node  GP_Individual_Node_Parameters( i_node, i_tree ) '
@@ -171,6 +177,9 @@ if( myid == 0 )then
 
     write(6,'(A)') ' '
 
+    !-------------------------------------------------------------------------------
+
+
 endif ! myid == 0
 
 
@@ -199,6 +208,8 @@ if( myid == 0 )then
 
     else
 
+        ! input_data_array(0,:) is the function truth value 
+        ! input_data_array(1:n_input_vars,:) are the inputs to the function
 
         do  i = 1, n_time_steps
         
@@ -210,10 +221,24 @@ if( myid == 0 )then
         
         enddo ! i 
 
-        !Numerical_CODE_Solution(0,1:n_code_equations) = Numerical_CODE_Solution(1,1:n_code_equations)
+        if( index( model, 'LOG10') > 0 .or. &
+            index( model, 'log10') > 0        )then
 
-!!        call Runge_Kutta_Box_Model_data( .FALSE. )
+            write(6,'(A/)') ' '
 
+            do  i = 1, n_input_data_points
+            
+                do  ii = 1, n_CODE_equations
+                    Numerical_CODE_Solution_log10( i, ii ) = &
+                                     log10( input_data_array(0,i) ) 
+                    write(6,'(A,2(1x,I6),1x,E20.10)') &
+                          'saa: i,ii, Numerical_CODE_Solution_log10(i,ii)', &
+                                i,ii, Numerical_CODE_Solution_log10(i,ii)
+                enddo ! ii
+            
+            enddo ! i 
+
+        endif ! index( model, 'LOG10') > 0 ...      
     endif ! n_input_vars == 0
 
 endif ! myid == 0

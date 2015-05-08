@@ -1,7 +1,6 @@
 subroutine setup_run_fcn( i_GA_indiv,  &
                           child_parameters, individual_quality, &
                                      new_comm  )
-                          !new_group, new_comm  )
 
 ! written by: Dr. John R. Moisan [NASA/GSFC] 5 December, 2012
 !xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
@@ -32,7 +31,7 @@ integer(kind=i4b) ::  iflag
 
 ! lmdif arrays and variables
 
-real (kind=8) :: x_LMDIF(n_GP_parameters)
+real(kind=r8b) :: x_LMDIF(n_GP_parameters)
 
 real(kind=r8b),dimension(n_time_steps) :: fvec
 
@@ -44,9 +43,7 @@ integer(kind=i4b) ::   info
 integer(kind=i4b) :: i_time_step
 integer(kind=i4b) :: i_parameter
 
-!integer(kind=i4b),intent(in) :: new_group
 integer(kind=i4b),intent(in) :: new_comm 
-!integer(kind=i4b) :: new_rank       
 
 ! individual_quality contains information on the result of lmdif
 ! if lmdif encounters an error, set individual_quality to -1
@@ -140,7 +137,8 @@ info = iflag
 if( info < 0 ) then
 
     individual_quality( i_GA_indiv ) = -1
-    individual_SSE(i_GA_indiv) =  1.0D+13
+    individual_SSE(i_GA_indiv) =  big_real  ! 1.0D+13
+    individual_SSE_nolog10(i_GA_indiv) = big_real
 
     !if( L_ga_print )then
     !    write(6,'(A, 3(1x, I6),  1x,E15.7/)') &
@@ -195,7 +193,9 @@ enddo ! i_parameter
 !write(6,'(A,3(1x,E15.7))') 'setrf: sse_min_time, sse_max_time, dt ', &
 !                                   sse_min_time, sse_max_time, dt
 
-individual_SSE(i_GA_indiv)=0.0D+0
+
+individual_SSE(i_GA_indiv) =  big_real  !1.0D+13
+individual_SSE_nolog10(i_GA_indiv) = big_real
 
 if( individual_quality( i_GA_indiv ) > 0 ) then
 
@@ -203,18 +203,14 @@ if( individual_quality( i_GA_indiv ) > 0 ) then
     !    write(GA_print_unit,'(A,1x,I6)') 'setrf: i_GA_indiv ', i_GA_indiv
     !endif ! L_ga_print
 
-    do i_time_step=1,n_time_steps
+    individual_SSE(i_GA_indiv)=0.0D+0
 
-        x_time_step = real( i_time_step, kind=8 ) * dt
-        if( x_time_step > sse_max_time ) exit
+    do  i_time_step=1,n_time_steps
 
-        !old   if( isnan(fvec(i_time_step)) )    fvec(i_time_step) = 0.0d0
-        !old   if( abs(fvec(i_time_step)) >  1.0d20 ) fvec(i_time_step) =  1.0d20
-        !new   if( isnan(fvec(i_time_step))  .or.   &
-        !new         abs(fvec(i_time_step)) >  1.0d20   ) fvec(i_time_step) =  1.0d20
+        x_time_step = real( i_time_step, kind=r8b ) * dt
 
-       if( isnan(fvec(i_time_step)) )         fvec(i_time_step) =  0.0d0
-       if( abs(fvec(i_time_step)) >  1.0d20 ) fvec(i_time_step) =  1.0d20
+        if( isnan(fvec(i_time_step)) )          fvec(i_time_step) =  big_real !1.0d20
+        if( abs(fvec(i_time_step)) > big_real ) fvec(i_time_step) =  big_real !1.0d20
 
 
        !if( L_ga_print )then
@@ -232,6 +228,8 @@ if( individual_quality( i_GA_indiv ) > 0 ) then
                                     fvec(i_time_step)
 
     enddo ! i_time_step
+
+    individual_SSE_nolog10(i_GA_indiv) = sse_local_nolog10
 
 endif !  individual_quality( i_GA_indiv ) > 0
 
