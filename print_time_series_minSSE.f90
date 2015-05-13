@@ -231,7 +231,7 @@ if( myid == 0 )then
 
     !write(GP_print_unit,'(/A/)') &
     ! 'ptsMS: data_point   Numerical_CODE_Solution(data_point,1:n_CODE_equations)'
-    !do  i = 0, n_input_data_points
+    !do  i = 0, n_time_steps  ! n_input_data_points
     !    write(GP_print_unit,'(I6,2x,10(1x,E14.7))') &
     !          i, (Numerical_CODE_Solution(i,jj), jj = 1,n_CODE_equations )
     !enddo ! i
@@ -318,7 +318,7 @@ if( myid == 0 )then
 
 
         !temp_data_array = 0.0d0
-        !do  i = 1, n_input_data_points
+        !do  i = 1, n_time_steps  ! n_input_data_points
         !    temp_data_array(i) = Data_array(i,1) input_data_array(0,i)
         !enddo
     

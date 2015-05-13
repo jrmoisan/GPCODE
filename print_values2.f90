@@ -18,7 +18,6 @@ use GA_Parameters_module
 use GP_Variables_module
 use GA_Variables_module
 use GP_Data_module
-use GP_variables_module
 
 
 implicit none
@@ -29,9 +28,11 @@ implicit none
 integer(kind=i4b) :: i
 !!real(kind=r8b), dimension(n_parameters) :: answer
 
-if (myid /=0) return
 
 !----------------------------------------------------------------------------------------
+
+!if (myid /=0) return
+
 
 write(GP_print_unit,'(/A,1x,I6/)') 'pv2: Total Parameters for this run = ',n_parameters
 write(GP_print_unit,'(A,1x,I6)')   'pv2: n_GA_individuals ', n_GA_individuals

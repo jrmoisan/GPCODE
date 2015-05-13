@@ -61,6 +61,8 @@ logical :: Lprint
 !--------------------------------------------------------------------------------
                                                                                                                 
 
+write(GP_print_unit,'(A,1x,I5)')&
+      'sgpi: GP_best_summary_output_unit ', GP_best_summary_output_unit
 
 open( GP_best_summary_output_unit, file='GP_summary_file', &                                        
       form = 'formatted', access = 'sequential', &                                                  

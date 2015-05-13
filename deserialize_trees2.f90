@@ -1,4 +1,4 @@
-subroutine deserialize_trees( Trees, num_Tracked_resources, Tree_count )
+subroutine deserialize_trees2( Trees, num_Tracked_resources, Tree_count )
 
 
 use kinds_mod 
@@ -526,4 +526,4 @@ enddo ! i
 
 return
 
-end subroutine deserialize_trees
+end subroutine deserialize_trees2

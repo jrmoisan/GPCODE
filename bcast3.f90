@@ -162,7 +162,7 @@ buffer_length = n_CODE_equations  * n_GP_individuals
 !if( myid == 0 )then
 !    write(GP_print_unit,'(/A/(5(1x,E24.16)))') &
 !          'bc3: AFT broadcast GP_Population_Initial_Conditions ',&
-  !                            GP_Population_Initial_Conditions
+!                              GP_Population_Initial_Conditions
 !endif ! myid == 0
 
 

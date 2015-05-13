@@ -1,11 +1,13 @@
-
 subroutine setup_output_unit()
 
-   use mpi
-   use mpi_module
+use mpi
+use mpi_module
 
-   use GP_Parameters_module
-   use GA_Parameters_module
+use GP_Parameters_module
+use GA_Parameters_module
+
+!-----------------------------------------------------------------------
+
 
    if( myid == 0 )then
 
@@ -61,21 +63,21 @@ subroutine setup_output_unit()
 
       endif ! L_fort555_output
 
-   endif !   myid == 0
+endif !   myid == 0
 
 
 ! calculate the generation interval for printing the list of children
 
-    GA_child_print_interval = n_GA_generations /  number_GA_child_prints
+GA_child_print_interval = n_GA_generations /  number_GA_child_prints
 
-   if( GA_child_print_interval == 0) then
-       GA_child_print_interval = max( 1, n_GA_generations / 2 )
-   endif
+if( GA_child_print_interval == 0) then
+    GA_child_print_interval = max( 1, n_GA_generations / 2 )
+endif
 
-   GP_child_print_interval = n_GP_generations /  number_GP_child_prints
+GP_child_print_interval = n_GP_generations /  number_GP_child_prints
 
-   if( GP_child_print_interval == 0) then
-      GP_child_print_interval = max( 1, n_GP_generations / 2 )
-   endif
+if( GP_child_print_interval == 0) then
+    GP_child_print_interval = max( 1, n_GP_generations / 2 )
+endif
 
 end subroutine setup_output_unit

@@ -7,6 +7,10 @@ subroutine close_output_unit()
    use GP_Parameters_module
    use GA_Parameters_module
    use GP_variables_module
+
+!--------------------------------------------------------
+
+
    if( myid /= 0 ) return
 
    if( L_unit50_output )then

@@ -67,6 +67,8 @@ program main
 
    integer(kind=i4b), parameter ::  zero = 0
 
+!---------------------------------------------------------------------------------------
+
 !  About version 15
 
 !  version 15 derived from version 13 '             
@@ -94,7 +96,7 @@ program main
          '   branch:', trim( branch ) , &
          '   Last modified on:', trim( modification_date )
 
-   endif
+   endif ! myid == 0
 
 !--------------------------------------------------------------
 ! current setup
@@ -129,6 +131,8 @@ program main
 
    call setup_output_unit()
 
+
+   ! for reading input files for the "DATA" model
    call read_input_data()
 
    ALLOCATE(seed(n_seed))
@@ -143,6 +147,25 @@ program main
    seed = clock + 37 * (/ (i_seed - 1, i_seed = 1, n_seed) /)
 
    CALL RANDOM_SEED(PUT = seed)
+
+
+if( myid == 0 )then
+
+    write(6,'(A,1x,I12)') '0: n_seed ', n_seed
+    write(6,'(A)') '0: seed array '
+
+    do  i = 1, n_seed
+        write(6,'(I12,1x,I12)')  i, seed(i)
+    enddo ! i
+
+    write(6,'(A)') ' '
+    !flush(6)
+
+endif ! myid == 0
+
+
+!---------------------------------------------------------------------------
+
 
    call setup1( )
 
@@ -164,9 +187,9 @@ program main
    call MPI_COMM_SPLIT( comm_world, color, myid, new_comm, ierr )
    call mpi_comm_rank( new_comm, new_rank, ierr )
    call mpi_comm_size( new_comm, my_size , ierr )
-!
-!  rank0 store the myid of new_rank =0
-!
+
+!  rank0 store the myid of new_rank = 0
+
    allocate(rank0(0:n_partitions))
    allocate(tmprank0(0:n_partitions))
    tmprank0=0
@@ -175,6 +198,9 @@ program main
    call MPI_ALLREDUCE(tmprank0(0),rank0(0),n_partitions+1, & 
          & MPI_INTEGER, MPI_SUM, MPI_COMM_WORLD, ierr)
    deallocate(tmprank0)
+
+
+!---------------------------------------------------------------------------
 
 ! begin the GP generation loop
 
@@ -335,13 +361,15 @@ endif ! myid == 0
 
    GP_Child_Population_Node_Type =  GP_Adult_Population_Node_Type
 
+   !-----------------------------------------------------------------------------------------
+
+
    ! if there are no more individuals to evaluate fitness for, exit
 
    if( .not.  any( Run_GP_Calculate_Fitness ) ) exit generation_loop
 
    call GP_individual_loop( new_comm, i_GP_generation )
 
-   call summary_GP_all(i_GP_generation, zero )
 
     !xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
     ! GA_lmdif subroutine segment
@@ -373,6 +401,10 @@ endif ! myid == 0
 
             ! write this generation out to the GP_all_summary_file
 
+            !write(GP_print_unit,'(A,1x,I6)')  &
+            !  '0:2 call summary_GP_all GP_summary_output_unit_all  ', &
+            !                           GP_summary_output_unit_all 
+
             call summary_GP_all( GP_summary_output_unit_all, i_GP_generation, zero )
 
         endif ! GP_all_summary_flag > 1 
@@ -380,6 +412,10 @@ endif ! myid == 0
         !----------------------------------------------------------------------------
 
         ! write this generation out to the GP_last_gen_summary_file
+
+        !write(GP_print_unit,'(A,1x,I6)')  &
+        !      '0:3 call summary_GP_all GP_summary_output_unit_lgen ', &
+        !                               GP_summary_output_unit_lgen
 
         call summary_GP_all( GP_summary_output_unit_lgen, i_GP_generation, zero )
 
@@ -559,10 +595,10 @@ endif ! myid == 0
 
             write(GP_print_unit,'(/A)')&
             '0:#################################################################'
-      write(GP_print_unit,'(A,1x,I6)') &
-            '0: call GP_calc_fitness i_GP_generation =', &
-                                     i_GP_Generation
-      write(GP_print_unit,'(A/)')&
+            write(GP_print_unit,'(A,1x,I6)') &
+                  '0: call GP_calc_fitness i_GP_generation =', &
+                                           i_GP_Generation
+            write(GP_print_unit,'(A/)')&
             '0:#################################################################'
 
             !flush(GP_print_unit)
@@ -692,7 +728,7 @@ endif ! myid == 0
 enddo generation_loop !  i_GP_Generation
 
 
-   call MPI_BARRIER( MPI_COMM_WORLD, ierr )
+call MPI_BARRIER( MPI_COMM_WORLD, ierr )
 
 
 if( myid == 0 )then
@@ -724,7 +760,7 @@ if( myid == 0 )then
     !  GP_Individual_Initial_Conditions
     !  GP_Individual_Node_Parameters
 
-       write(GP_print_unit,'(A/)') &
+    write(GP_print_unit,'(A/)') &
           '0: DO NOT call GP_select_best_RK_lmdif_result to run lmdif for best parent'
 
     !!!call GP_select_best_RK_lmdif_result( i_GP_best_parent, nop )
@@ -756,7 +792,6 @@ if( myid == 0 )then
     write(GP_print_unit,'(/A,3(1x,I5))') &
     '0:2 call print_time_series  i_GP_best_parent, max_n_gp_params, nop ', &
                                  i_GP_best_parent, max_n_gp_params, nop
-    !flush(GP_print_unit)
 
     call print_time_series( i_GP_best_parent, nop, zero )
 
@@ -824,11 +859,10 @@ call deallocate_arrays1( )
 !------------------------------------------------------------------
 
 if( myid == 0 )then
-
       write(GP_print_unit,'(//A)')  '0: NORMAL TERMINATION'
 endif ! myid == 0
 
-   call MPI_FINALIZE(ierr)
+call MPI_FINALIZE(ierr)
 
 stop
 

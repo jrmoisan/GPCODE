@@ -21,6 +21,9 @@ subroutine GP_produce_next(i_GP_generation,i_GP_best_parent,L_nextloop)
    integer(kind=i4b) :: i_GP_individual
    integer :: message_len,ierror_t,ierror_m
 
+
+!----------------------------------------------------------------------------------
+
 ! create the next 'generation' of tree structures using either:
 !    i)  GP Fitness-Proportionate Asexual Reproduction;
 !   ii)  GP Tournament-Style Sexual Reproduction, and;
@@ -45,13 +48,13 @@ subroutine GP_produce_next(i_GP_generation,i_GP_best_parent,L_nextloop)
           mod( i_GP_generation, GP_child_print_interval ) == 0  .or. &
           i_GP_generation == n_GP_generations                          )then
 
-         write(GP_print_unit,'(//A)') '0:3 before modifications'
+         write(GP_print_unit,'(//A)') 'gpn:3 before modifications'
          write(GP_print_unit,'(A)')&
-            '0:3 i_GP_gen i_GP_indiv    GP_Child_Indiv_SSE&
+            'gpn:3 i_GP_gen i_GP_indiv    GP_Child_Indiv_SSE&
              &   GP_Child_Indiv_SSE/SSE0'
 
          do  i_GP_individual = 1, n_GP_individuals
-            write(GP_print_unit,'(2(1x,I10), 2(1x, E20.10))') &
+            write(GP_print_unit,'(2(1x,I10), 2(1x, E15.7))') &
                   i_GP_generation, i_GP_individual, &
                   GP_Child_Individual_SSE(i_GP_Individual), &
                   GP_Child_Individual_SSE(i_GP_Individual)/SSE0
@@ -83,7 +86,7 @@ subroutine GP_produce_next(i_GP_generation,i_GP_best_parent,L_nextloop)
             if( n_GP_Asexual_Reproductions .gt. 0 )then
 
                 write(GP_print_unit,'(A,1x,I6)') &
-                      '0: call GP_Fit_Prop_Asexual_Repro &
+                      'gpn: call GP_Fit_Prop_Asexual_Repro &
                       &n_GP_Asexual_Reproductions =', n_GP_Asexual_Reproductions
                 !flush(GP_print_unit)
 
@@ -106,12 +109,12 @@ subroutine GP_produce_next(i_GP_generation,i_GP_best_parent,L_nextloop)
             !    GP_Child_Population_Node_Type
             !    Run_GP_Calculate_Fitness ( to true for modified individuals )
 
-            !if( trim(model) /= 'fasham_fixed_tree' )then
+       if( trim(model) /= 'fasham_fixed_tree' )then
 
             if( n_GP_Crossovers .gt. 0 )then
 
                 write(GP_print_unit,'(/A,1x,I6)') &
-                      '0: call GP_Tour_Style_Sexual_Repro n_GP_Crossovers =', &
+                      'gpn: call GP_Tour_Style_Sexual_Repro n_GP_Crossovers =', &
                                                               n_GP_Crossovers
 
                 ierror_t = 0
@@ -119,7 +122,7 @@ subroutine GP_produce_next(i_GP_generation,i_GP_best_parent,L_nextloop)
 
             endif !  n_GP_Crossovers .gt. 0
 
-            !endif ! trim(model) /= 'fasham_fixed_tree'
+            endif ! trim(model) /= 'fasham_fixed_tree'
 
             !----------------------------------------------------------------------------------
 
@@ -133,35 +136,58 @@ subroutine GP_produce_next(i_GP_generation,i_GP_best_parent,L_nextloop)
             !  Run_GP_Calculate_Fitness  ( to true for modified individuals )
 
 
-            !if( trim(model) /= 'fasham_fixed_tree' )then
+            if( trim(model) /= 'fasham_fixed_tree' )then
 
 
             if( n_GP_Mutations .gt. 0 )then
 
-                write(GP_print_unit,'(/A,13x,I6, 1x, E15.7)')&
-                     '0: call GP_Mutations n_GP_Mutations, prob_no_elite', &
-                                  n_GP_Mutations, prob_no_elite
-
-                ierror_m = 0
-                call GP_Mutations( ierror_m )
-            endif !  n_GP_Mutations .gt. 0
-
-            !endif ! trim(model) /= 'fasham_fixed_tree'
+               !write(GP_print_unit,'(A,1x,I6)')&
+               !  'gpn: call GP_Mutations               n_GP_Mutations     =', &
+               !                                        n_GP_Mutations
+               !write(GP_print_unit,'(A,1x, E15.7/)')&
+               !  'gpn: call GP_Mutations               prob_no_elite      =', &
+               !                                        prob_no_elite
 
 
-            write(GP_print_unit,'(/A)')&
-                  '0: i_GP_gen i_GP_indiv    Run_GP_Calculate_Fitness'
+               !tree_descrip =  ' GP_Adult trees BEFORE call to GP_Mutations'
+               !call print_trees( i_GP_generation, 1, n_GP_individuals, &
+               !     GP_Adult_Population_Node_Type, trim( tree_descrip )  )
+               !tree_descrip =  ' GP_Child trees BEFORE call to GP_Mutations'
+               !call print_trees( i_GP_generation, 1, n_GP_individuals, &
+               !     GP_Child_Population_Node_Type, trim( tree_descrip )  )
 
-            do  i_GP_individual = 1, n_GP_individuals
-                if( .not.  Run_GP_Calculate_Fitness(i_GP_Individual)  )then
-                    write(GP_print_unit,'(2(1x,I10), 5x,L1)') &
-                               i_GP_generation, i_GP_individual, &
-                               Run_GP_Calculate_Fitness(i_GP_Individual)
-                endif !.not.  Run_GP_Calculate_Fitness(i_GP_Individual)  )then
-            enddo ! i_GP_individual
+               ierror_m = 0
+               call GP_Mutations( ierror_m )
 
-            write(GP_print_unit,'(A)') ' '
-            !flush(GP_print_unit)
+
+               !tree_descrip =  ' GP_Child trees after call to GP_Mutations'
+               !call print_trees( i_GP_generation, 1, n_GP_individuals, &
+               !     GP_Child_Population_Node_Type, trim( tree_descrip )  )
+
+           endif !  n_GP_Mutations .gt. 0
+
+
+       endif ! trim(model) /= 'fasham_fixed_tree' 
+
+       !---------------------------------------------------------------------------
+
+       !if( myid == 0 )then
+       !    write(GP_print_unit,'(/A)') 'gpn: after call GP_Mutations '
+       !    write(GP_print_unit,'(/A)')&
+       !          'gpn: i_GP_gen i_GP_indiv    Run_GP_Calculate_Fitness'
+       !    
+       !    do  i_GP_individual = 1, n_GP_individuals
+       !        !if( .not.  Run_GP_Calculate_Fitness(i_GP_Individual)  )then
+       !        write(GP_print_unit,'(2(1x,I10), 5x,L1)') &
+       !              i_GP_generation, i_GP_individual, &
+       !              Run_GP_Calculate_Fitness(i_GP_Individual)
+       !              !endif !.not.  Run_GP_Calculate_Fitness(i_GP_Individual)  )then
+       !    enddo ! i_GP_individual
+       !    
+       !    write(GP_print_unit,'(A)') ' '
+       !    !flush(GP_print_unit)
+       !
+       !endif ! myid == 0 
 
             !---------------------------------------------------------------------------
 
@@ -171,36 +197,30 @@ subroutine GP_produce_next(i_GP_generation,i_GP_best_parent,L_nextloop)
             GP_Adult_Population_SSE       = GP_Child_Individual_SSE
 
 
-            if( i_GP_generation == 1                                  .or. &
-                mod( i_GP_generation, GP_child_print_interval ) == 0  .or. &
-                i_GP_generation == n_GP_generations                          )then
-
-                write(GP_print_unit,'(A,1x,I6/)') '0: after Mutations ierror_m = ', ierror_m
-
-                write(GP_print_unit,'(A)')&
-                      '0: i_GP_gen i_GP_indiv    GP_Child_Indiv_SSE&
-                      &   GP_Child_Indiv_SSE/SSE0'
-
-                do  i_GP_individual = 1, n_GP_individuals
-                    write(GP_print_unit,'(2(1x,I10), 2(1x, E20.10))') &
-                               i_GP_generation, i_GP_individual, &
-                               GP_Child_Individual_SSE(i_GP_Individual), &
-                               GP_Child_Individual_SSE(i_GP_Individual)/SSE0
-                enddo ! i_GP_individual
-
-                !flush(GP_print_unit)
-
-                !write(GP_print_unit,'(/A/(10(3x,L1)))')&
-                !      '0: Run_GP_Calculate_Fitness ', Run_GP_Calculate_Fitness
-
-            endif ! i_GP_generation == 1 .or. ...
+       !if( i_GP_generation == 1                                  .or. &
+       !    mod( i_GP_generation, GP_child_print_interval ) == 0  .or. &
+       !    i_GP_generation == n_GP_generations                          )then
+       !    write(GP_print_unit,'(A,1x,I6/)') 'gpn: after Mutations ierror_m = ', ierror_m
+       !    write(GP_print_unit,'(A)')&
+       !          'gpn: i_GP_gen i_GP_indiv    GP_Child_Indiv_SSE&
+       !          &   GP_Child_Indiv_SSE/SSE0'
+       !    do  i_GP_individual = 1, n_GP_individuals
+       !        write(GP_print_unit,'(2(1x,I6),6x, 2(5x, E15.7))') &
+       !                   i_GP_generation, i_GP_individual, &
+       !                   GP_Child_Individual_SSE(i_GP_Individual), &
+       !                   GP_Child_Individual_SSE(i_GP_Individual)/SSE0
+       !    enddo ! i_GP_individual
+       !    !flush(GP_print_unit)
+       !    !write(GP_print_unit,'(/A/(10(3x,L1)))')&
+       !    !      'gpn: Run_GP_Calculate_Fitness ', Run_GP_Calculate_Fitness
+       !endif ! i_GP_generation == 1 .or. ...
 
 
             !---------------------------------------------------------------------------
 
         endif ! myid == 0
 
-        !write(6,'(/A,1x,I5/)') '0: broadcast ierror_t and ierror_m         myid = ', myid
+   !write(6,'(/A,1x,I5/)') 'gpn: broadcast ierror_t and ierror_m         myid = ', myid
 
         message_len =  1
         call MPI_BCAST( ierror_t, message_len,    &
@@ -208,19 +228,19 @@ subroutine GP_produce_next(i_GP_generation,i_GP_best_parent,L_nextloop)
         call MPI_BCAST( ierror_m, message_len,    &
                         MPI_INTEGER,  0, MPI_COMM_WORLD, ierr )
 
-        if( ierror_t > 0 .or. ierror_m > 0 )then
-            write(6,'(A,2(1x,I6))') &
-                  '0: error found in GP_Tour or GP_Mut in generation ', &
-                                                     i_GP_generation, myid
-            write(6,'(A,2(1x,I6))') '0: ierror_t, myid ', ierror_t, myid
-            write(6,'(A,2(1x,I6))') '0: ierror_m, myid ', ierror_m, myid
-            write(6,'(A,1x,I6)') '0: cycle generation_loop myid =', myid
-            !flush(6)
-            ierror_t = 0
-            ierror_m = 0
-            L_nextloop = .true.
-            return
-        endif ! ierror....
+   if( ierror_t > 0 .or. ierror_m > 0 )then
+       write(6,'(A,2(1x,I6))') &
+             'gpn: error found in GP_Tour or GP_Mut in generation ', &
+                                                i_GP_generation, myid
+       write(6,'(A,2(1x,I6))') 'gpn: ierror_t, myid ', ierror_t, myid
+       write(6,'(A,2(1x,I6))') 'gpn: ierror_m, myid ', ierror_m, myid
+       write(6,'(A,1x,I6)') 'gpn: cycle generation_loop myid =', myid
+       !flush(6)
+       ierror_t = 0
+       ierror_m = 0
+       L_nextloop = .true.
+       return
+   endif ! ierror....
 
         !------------------------------------------------------------------------------------
         ! for fasham tree version, Run_GP_Calculate_Fitness is set to true at the start
@@ -231,11 +251,11 @@ subroutine GP_produce_next(i_GP_generation,i_GP_best_parent,L_nextloop)
         ! new GA individuals, without regard to what the best GP individuals of the last
         ! generation were
 
-        if( trim(model) == 'fasham_fixed_tree' )then
-            if( myid == 0 )then
-                write(6,'(/A,2(1x,I6))') &
-                      '0: generation,i_GP_best_parent  ', &
-                      i_GP_generation, i_GP_best_parent
+   if( trim(model) == 'fasham_fixed_tree' )then
+       if( myid == 0 )then
+           write(6,'(/A,2(1x,I6))') &
+                 'gpn: generation,i_GP_best_parent  ', &
+                 i_GP_generation, i_GP_best_parent
 
                 Run_GP_Calculate_Fitness(i_GP_best_parent) = .false.
 

@@ -6,7 +6,7 @@ SRCS =	allocate_arrays1.f90 bcast1.f90 bcast2.f90 bcast3.f90 betacf.f90 \
 	close_output_unit.f90 combine_tree_strings.f90 comp_data_variance.f90 \
 	corr.f90 count_parens.f90 create_equations.f90 \
 	create_tree_node_string.f90 deallocate_arrays1.f90 \
-	deserialize_trees.f90 enorm.f90 erfc.f90 erfcc.f90 \
+	deserialize_trees2.f90 enorm.f90 erfc.f90 erfcc.f90 \
 	fasham_CDOM_GP_module.f90 fasham_CDOM_module.f90 \
 	fasham_fixed_module.f90 Fasham_Forcing.f90 fasham_model_debug.f90 \
 	fasham_tree_functions.f90 fasham_tree_interfaces.f90 \
@@ -54,7 +54,7 @@ OBJS =	allocate_arrays1.o bcast1.o bcast2.o bcast3.o betacf.o betai.o \
 	class_serialization_visitor.o class_tree_node.o clock_module.o \
 	close_output_unit.o combine_tree_strings.o comp_data_variance.o \
 	corr.o count_parens.o create_equations.o create_tree_node_string.o \
-	deallocate_arrays1.o deserialize_trees.o enorm.o erfc.o erfcc.o \
+	deallocate_arrays1.o deserialize_trees2.o enorm.o erfc.o erfcc.o \
 	fasham_CDOM_GP_module.o fasham_CDOM_module.o fasham_fixed_module.o \
 	Fasham_Forcing.o fasham_model_debug.o fasham_tree_functions.o \
 	fasham_tree_interfaces.o fasham_variables_module.o fcn.o fdjac2.o \
@@ -204,7 +204,7 @@ create_tree_node_string.o: GA_parameters_module.o GA_variables_module.o \
 deallocate_arrays1.o: GA_parameters_module.o GA_variables_module.o \
 	GP_data_module.o GP_parameters_module.o GP_variables_module.o \
 	kinds_mod.o mpi_module.o
-deserialize_trees.o: GP_variables_module.o Tree_Helper_module.o \
+deserialize_trees2.o: GP_variables_module.o Tree_Helper_module.o \
 	class_serialization_visitor.o class_tree_node.o kinds_mod.o \
 	mpi_module.o tree_node_factory_module.o
 enorm.o: kinds_mod.o

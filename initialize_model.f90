@@ -22,6 +22,10 @@ logical, intent(in)  ::  L_myprint
 integer, intent(in)  ::  myprint_unit
 
 
+!------------------------------------------------------------------------------------------------
+
+
+
 ! See comment in GP_Variables
 
 do  i = 1, n_CODE_equations
@@ -46,7 +50,7 @@ call Build_Trees( GP_Trees(:, 1) ,  buildTrees )
 
 
 !-------------------------------------------------------------------------------
-
+! for old deserialize_trees which read trees from input files
 !call Deserialize_Trees( GP_Trees(:,:,:), &
 !                        n_Trees, n_Tracked_Resources, output_dir )
 !-------------------------------------------------------------------------------

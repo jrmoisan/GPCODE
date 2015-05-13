@@ -30,20 +30,21 @@ if( buildtrees )then
     
     !if( myid == 1 )then
     !    write(6,'(/A/)')      'build_trees: create trees from GP_Individual_Node_Type  '
-    !    write(6,'(/A/)')      'build_trees: call Deserialize_Trees '
+    !    write(6,'(/A/)')      'build_trees: call Deserialize_Trees2 '
     !    write(6,'(A,1x,I6)')  'build_trees: n_Tracked_resources ', n_Tracked_resources
     !    write(6,'(A,1x,I6/)') 'build_trees: n_trees ', n_trees
     !endif ! myid == 1
     
     
-    ! Deserialize_Trees should create trees 
+    ! Deserialize_Trees2 should create trees 
     ! from the GP_Individual_Node_Type and GP_Individual_Node_parameter arrays
+    ! modified version of  deserialize_trees
     
-    call deserialize_trees( treeSlice, n_Tracked_resources, n_trees    )
+    call deserialize_trees2( treeSlice, n_Tracked_resources, n_trees    )
     
     
     !if( myid == 1 )then
-    !    write(6,'(/A/)') 'build_trees: aft call Deserialize_Trees '
+    !    write(6,'(/A/)') 'build_trees: aft call Deserialize_Trees2 '
     !endif ! myid == 1
     
 

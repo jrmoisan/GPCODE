@@ -52,7 +52,7 @@ contains
       class(twin):: this
       if (myid/=0) return
 
-      call deserialize_trees( GP_Trees, n_Tracked_resources, n_trees    )
+      call deserialize_trees2( GP_Trees, n_Tracked_resources, n_trees    )
       call Generate_Dot_Graph( GP_Trees(:,1), n_Trees, output_dir )
 
    end subroutine generateGraph

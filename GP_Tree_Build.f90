@@ -99,9 +99,11 @@ do  i_GP_Individual=1,n_GP_Individuals  ! for each GP individual
 
                             endif ! L_node_functions
 
+                            !--------------------------------------------------------------------
 
                             GP_Child_Population_Node_Type(i_Node,i_Tree,i_GP_Individual) =  &
                                                                              Node_Function
+                            !--------------------------------------------------------------------
 
                             !  set the node vs terminal selection capability
                             !  for the node inputs at the next level
@@ -225,6 +227,7 @@ do  i_GP_Individual=1,n_GP_Individuals
 
                             GP_Child_Population_Node_Type(i_Node,i_Tree,i_GP_Individual) = &
                                                                                Node_Variable
+                            !----------------------------------------------------------------------
 
                             !write(GP_print_unit,'(A,4(1x,I6))') &
                             !    'gtb:5 i_GP_Individual, i_Tree, i_Node, &

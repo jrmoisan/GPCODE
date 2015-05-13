@@ -109,7 +109,7 @@ use kinds_mod
 
     !-------------------------------------------------------
 
-    ! math_funcs(5)          Ivlev Grazing Function
+    ! math_funcs(5)          Ivlev Grazing Function:  (1 - e^-abs(a*b))
 
     ! Ivlev Grazing Function: (1 - e^-abs(a*b))
 
@@ -130,7 +130,7 @@ use kinds_mod
 
     !-------------------------------------------------------
 
-    ! math_funcs(6)          Michaelis-Menton Term
+    ! math_funcs(6)          Michaelis-Menton Term: (abs(b) / (abs(a) + abs(b)))
 
     !orig  Michaelis-Menton Term (modified for Forward-Backward): (1 / (abs(a) + abs(b)))
     ! Michaelis-Menton Term (modified for Forward-Backward): (abs(b) / (abs(a) + abs(b)))
@@ -152,7 +152,7 @@ use kinds_mod
 
     !-------------------------------------------------------
 
-    ! math_funcs(7)          Mayzaud-Poulet Grazing Function
+    ! math_funcs(7)          Mayzaud-Poulet Grazing Function:  abs(a*b)*(1 - e^-abs(a*b))
 
     ! Mayzaud-Poulet Grazing Function:  abs(a*b)*(1 - e^-abs(a*b))
 

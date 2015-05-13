@@ -69,7 +69,6 @@ rewind(cntl_unitnum)
 if( myid == 0 )then
     write(GP_print_unit,'(//A)' ) &
     'Input Echo Listing------------------------------------------------'
-endif !  myid == 0 
 
    echoloop: &
    do
@@ -96,12 +95,15 @@ endif !  myid == 0
    enddo echoloop
 
 
-if( myid == 0 )then
 
    write(GP_print_unit,'(A//)' )&
       'End of Input Echo Listing-----------------------------------------'
 
 endif !myid==0
+
+
+
+!---------------------------------------------------------------------
 
 ! defaults
 user_input_random_seed = 0
@@ -204,6 +206,8 @@ L_restart = .false.
 GP_Set_Terminal_to_Parameter_Probability = 0.6d0
 
 n_partitions = 2
+!---------------------------------------------------------------------
+
 
 i_function_index = 0
 
@@ -1011,6 +1015,7 @@ do
 
 
 enddo cntlloop
+
 close(cntl_unitnum)  
 
 ! check

@@ -16,6 +16,9 @@ subroutine GP_produce_first(i_GP_generation)
    integer(kind=i4b),intent(in) :: i_GP_generation
    integer :: message_len,ierror_tb
 
+
+!---------------------------------------------------------------------------------
+ 
    if(i_GP_generation > 1) return
 
    ierror_tb = 0
@@ -41,7 +44,7 @@ subroutine GP_produce_first(i_GP_generation)
 
       if( myid == 0 ) then
          write(GP_print_unit,'(/A/)') &
-              '0: call read_all_summary_file '
+              'gpf: call read_all_summary_file '
       endif
 
       call read_all_summary_file( i_GP_generation )
@@ -62,10 +65,10 @@ subroutine GP_produce_first(i_GP_generation)
             call fasham_model_debug()
       else
 
-         if (myid ==0) then
+         if( myid ==0) then
 
-            write(GP_print_unit,'(/A,1x,I6)') &
-                      '0: call GP_Tree_Build        Generation =',i_GP_Generation
+             write(GP_print_unit,'(/A,1x,I6)') &
+                      'gpf: call GP_Tree_Build        Generation =',i_GP_Generation
 
             ! set
             ! GP_Adult_Population_Node_Type array with random trees
@@ -94,5 +97,26 @@ subroutine GP_produce_first(i_GP_generation)
    endif ! L_restart
 
    L_restart = .false.
+
+   !---------------------------------------------------------------------------
+
+   !if( myid == 0 )then
+   !    write(GP_print_unit,'(/A)')&
+   !               'gpf: i_GP_gen i_GP_indiv    Run_GP_Calculate_Fitness'
+
+   !    do  i_GP_individual = 1, n_GP_individuals
+   !        !if( .not.  Run_GP_Calculate_Fitness(i_GP_Individual)  )then
+   !             write(GP_print_unit,'(2(1x,I10), 5x,L1)') &
+   !                        i_GP_generation, i_GP_individual, &
+   !                        Run_GP_Calculate_Fitness(i_GP_Individual)
+   !        !endif !.not.  Run_GP_Calculate_Fitness(i_GP_Individual)  )then
+   !    enddo ! i_GP_individual
+
+   !    write(GP_print_unit,'(A)') ' '
+   !    !flush(GP_print_unit)
+
+   !endif !  myid == 0 
+   !---------------------------------------------------------------------------
+
 
 end subroutine GP_produce_first

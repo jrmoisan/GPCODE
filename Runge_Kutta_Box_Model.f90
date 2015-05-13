@@ -225,6 +225,8 @@ subroutine Runge_Kutta_Box_Model( L_print_RK )
         enddo ! End Kval loop
     enddo ! End iter loop
 
+    !-----------------------------------------------------------------------
+
     ! if b_tmp is bad on any time step, then return with a bad result
 
     if( any( isnan( b_tmp ) ) .or.  any( abs(b_tmp) > big_real  ) ) then
@@ -232,6 +234,8 @@ subroutine Runge_Kutta_Box_Model( L_print_RK )
         L_bad_result = .TRUE.
         return
     endif !   any( isnan( b_tmp ) ) .or.  any( abs(b_tmp) > big_real
+
+    !---------------------------------------------------------------------------
 
     Numerical_CODE_Solution(i_Time_Step,1:n_Variables)=max(b_tmp(1:n_Variables),0.0D+0)
 
