@@ -218,26 +218,20 @@ do  i_GP_Individual=1,n_GP_Individuals
 
                         !----------------------------------------------------------------------
 
-                        if( model == 'fasham' .or. model == 'fasham_CDOM_GP' )then
+                        if( model == 'fasham' )then
 
                             !  set some variables to the forcing functions -5001 -> -5004
-
-                            node_variable = 0
                             call set_forcing_node( node_variable )
-
-                            GP_Child_Population_Node_Type(i_Node,i_Tree,i_GP_Individual) = &
-                                                                               Node_Variable
-                            !----------------------------------------------------------------------
-
-                            !write(GP_print_unit,'(A,4(1x,I6))') &
-                            !    'gtb:5 i_GP_Individual, i_Tree, i_Node, &
-                            !        &GP_Child_Population_Node_Type', &
-                            !           i_GP_Individual, i_Tree, i_Node, &
-                            !         GP_Child_Population_Node_Type(i_Node,i_Tree,i_GP_Individual)
-
-                            !----------------------------------------------------------------------
-
                         endif ! model == 'fasham'
+
+                        if(model == 'fasham_CDOM_GP' )then
+                            !  set some variables to the forcing functions -5001 -> -5004
+                            call set_forcing_node( node_variable )
+                        endif ! model == 'fasham_CDOM_GP
+
+
+                        GP_Child_Population_Node_Type(i_Node,i_Tree,i_GP_Individual) = &
+                                                                          -Node_Variable
 
                     else  !   cff > GP_Set_Terminal_to_Parameter_Probability
 
@@ -267,7 +261,7 @@ do  i_GP_Individual=1,n_GP_Individuals
     enddo !  i_Tree
 
     call GP_Check_Terminals(&
-         GP_Child_Population_Node_Type( 1, 1, i_GP_Individual) , i_Error )
+         GP_Child_Population_Node_Type( 1, 1, i_GP_Individual),n_Nodes,n_Trees , i_Error )
 
 
     if( i_Error .eq. 1 ) then

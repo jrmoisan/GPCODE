@@ -60,8 +60,6 @@ if(  icall  == 0  )then
 
     n_trees=((n_CODE_equations+1)**2)-(n_CODE_equations+1)
 
-    ! (n+1)**2 - n - 1 =  n**2 + 2n + 1 - n - 1 = n**2 + n = n * (n + 1 ) 
-
     n_nodes = pow2_table( n_levels )  ! n_nodes = int(2**n_levels)-1
 
     !write(6,'(A,2(1x,I6))') 'initlv: int(2**n_levels)-1 , pow2_table( n_levels )   ', &

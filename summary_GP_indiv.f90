@@ -43,6 +43,7 @@ integer(kind=i4b) :: i_Node
 !integer(kind=i4b) :: nparm_temp
 
 logical :: Lprint
+logical :: L_op
 
 !----------------------------------------------------------------------------------------
 
@@ -63,6 +64,12 @@ logical :: Lprint
 
 write(GP_print_unit,'(A,1x,I5)')&
       'sgpi: GP_best_summary_output_unit ', GP_best_summary_output_unit
+
+inquire( unit = GP_best_summary_output_unit,  opened = L_op )
+if( L_op ) then
+    close( GP_best_summary_output_unit )  
+endif !  L_op 
+
 
 open( GP_best_summary_output_unit, file='GP_summary_file', &                                        
       form = 'formatted', access = 'sequential', &                                                  
@@ -201,7 +208,10 @@ write(GP_best_summary_output_unit, '(A,2(1x,I6))') '>>', i_GP_generation, i_GP_i
 
 !---------------------------------------------------------------------------------
 
-close( GP_best_summary_output_unit )  
+inquire( unit = GP_best_summary_output_unit,  opened = L_op )
+if( L_op ) then
+    close( GP_best_summary_output_unit )  
+endif !  L_op 
 
 
 return

@@ -98,6 +98,7 @@ do  i_time_step = 1, n_time_steps
              ( Data_Array(i_time_step,i_CODE_equation) )**2  *       &
                                 Data_Variance_inv(i_CODE_equation) * &
                                 sse_wt
+
     enddo ! i_CODE_equation
 
     !write(GP_print_unit,'(1x,I6, 3(1x,E15.7))') &

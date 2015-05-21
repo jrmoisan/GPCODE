@@ -1,4 +1,4 @@
-subroutine GP_Check_Terminals( temp_Node_Type, i_Error)
+subroutine GP_Check_Terminals( temp_Node_Type,nn_Nodes,nn_Trees, i_Error)
 
 ! This subroutine looks through a specific temp_Node_Type array
 ! for nodes that do not correctly set terminals.
@@ -27,16 +27,20 @@ integer(kind=i4b) :: i_function
 integer(kind=i4b) :: i_Node_left
 integer(kind=i4b) :: i_Node_right
 
-!integer(kind=i4b)           :: max_forcing_index 
-!integer(kind=i4b),parameter :: fasham_max_forcing_index = -5001
+integer(kind=i4b),intent(in) :: nn_Trees
+integer(kind=i4b),intent(in) :: nn_Nodes
 
-integer(kind=i4b), dimension(1:n_Nodes,1:n_Trees), intent(in) :: temp_Node_Type
+integer(kind=i4b), dimension(1:nn_Nodes,1:nn_Trees), intent(in) :: temp_Node_Type
+
+integer(kind=i4b),dimension(2) :: dims
 
 !xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
 i_Error=0
+print*, "nn_Nodes,nn_Trees",nn_Nodes,nn_Trees
 
-do  i_Tree=1,n_Trees
+
+do  i_Tree=1,nn_Trees
 
     do  i_Level=1,n_Levels-1
 

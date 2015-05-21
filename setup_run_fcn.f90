@@ -100,20 +100,6 @@ enddo ! i_parameter
 ! call fcn
 
 
-!if( new_rank == 1 )then
-!    if( L_ga_print )then
-!        write(GA_print_unit,'(/A,4(1x,I10))') &
-!              'setrf: call fcn, new_rank, i_GA_indiv, n_time_steps, n_parameters', &
-!                                new_rank, i_GA_indiv, n_time_steps, n_parameters
-!    endif ! L_ga_print
-!    write(6,'(/A,4(1x,I10))') &
-!          'setrf: call fcn, new_rank, i_GA_indiv, n_time_steps, n_parameters', &
-!                            new_rank, i_GA_indiv, n_time_steps, n_parameters
-!    !flush(6)
-!endif ! new_rank == 1
-
-!----------------------------------------------------------------------------------------
-
 iflag = 1
 
 call fcn( n_time_steps, n_parameters, x_LMDIF, fvec, iflag )

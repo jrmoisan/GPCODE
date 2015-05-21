@@ -39,17 +39,13 @@ character(1) ::  symbol
 
 !----------------------------------------------------------------------------------
 
+
+write(GP_print_unit,'(/A,1x,I6)') &
+    '0: call GP_Tour_Style_Sexual_Repro n_GP_Crossovers =', &
+     n_GP_Crossovers
+
+
 i_GP_Individual = n_GP_Elitists + n_GP_Asexual_Reproductions
-
-write(GP_print_unit,'(A,3(1x,I6))' ) &
-  'gptssr: n_GP_Crossovers, n_GP_Elitists, n_GP_Asexual_Reproductions ', &
-           n_GP_Crossovers, n_GP_Elitists, n_GP_Asexual_Reproductions
-write(GP_print_unit,'(A,1x,I6)' ) &
-  'gptssr: start i_GP_individual  =  ', &
-               n_GP_Elitists + n_GP_Asexual_Reproductions +1
-
-
-
 i_GP_Crossover = 0
 i_Error = 0
 
@@ -90,24 +86,10 @@ do
 
 
     i_GP_Individual = i_GP_Individual+1
-
-    if( i_GP_Individual >  n_GP_individuals )then
-        !write(6,'(A,2(1x,I12))') &
-        !      'gptssr: return i_GP_Individual > n_GP_individuals', &
-        !                     i_GP_Individual,  n_GP_individuals
-        !write(6,'(A,3(1x,I12))') &
-        !      'gptssr: i_GP_Crossover, i_GP_individual, i_safe ', &
-        !               i_GP_Crossover, i_GP_individual, i_safe
-        i_error = 0
-        return
-    endif ! i_GP_Individual >  n_GP_individuals
-
-
+    if( i_GP_Individual >  n_GP_individuals ) exit cross_loop 
+    
     sse_ind = GP_Adult_Population_SSE(i_GP_Individual )
 
-    !write(6,'(A,2(1x,I6))') &
-    !      'gptssr: i_GP_Crossover, i_GP_individual', &
-    !               i_GP_Crossover, i_GP_individual
 
 
     !----------------------------------------------------------------------
@@ -122,10 +104,7 @@ do
     k_GP_Individual_Male(2) = 1+int(cff*float(n_GP_Individuals))
     k_GP_Individual_Male(2) = min( k_GP_Individual_Male(2) , n_GP_Individuals )
 
-
-
     ! Check to make sure that the two males are not the same
-
 
     if( k_GP_Individual_Male(2) .eq. k_GP_Individual_Male(1)) then
 
@@ -146,15 +125,6 @@ do
     if( GP_Adult_Population_SSE(k_GP_Individual_Male(2)) .lt.  &
         GP_Adult_Population_SSE(k_GP_Individual_Male(1))         ) then
 
-        !write(GP_print_unit,'(A,1x,I6,1x,E15.7)' ) &
-        !   'gptssr: k_GP_Indiv_Male(1), GP_Adult_Pop_SSE(k_GP_Indiv_Male(1)) ', &
-        !            k_GP_Individual_Male(1), &
-        !            GP_Adult_Population_SSE(k_GP_Individual_Male(1))
-        !write(GP_print_unit,'(A,1x,I6,1x,E15.7)' ) &
-        !   'gptssr: k_GP_Indiv_Male(2), GP_Adult_Pop_SSE(k_GP_Indiv_Male(2)) ', &
-        !            k_GP_Individual_Male(2), &
-        !            GP_Adult_Population_SSE(k_GP_Individual_Male(2))
-
         k_GP_Individual_Male(1) = k_GP_Individual_Male(2)
 
     endif !   GP_Adult_Population_SSE(k_GP_Individual_Male(2)) .lt....
@@ -172,9 +142,7 @@ do
     k_GP_Individual_Female(2)  =  1+int(cff*float(n_GP_Individuals))
     k_GP_Individual_Female(2) = min( k_GP_Individual_Female(2) , n_GP_Individuals )
 
-
     ! Check to make sure that the two females are not the same
-
 
     if( k_GP_Individual_Female(2) .eq. k_GP_Individual_Female(1)  ) then
 
@@ -195,15 +163,6 @@ do
 
     if( GP_Adult_Population_SSE(k_GP_Individual_Female(2)) .lt.  &
         GP_Adult_Population_SSE(k_GP_Individual_Female(1))          ) then
-
-        !write(GP_print_unit,'(A,1x,I6,1x,E15.7)' ) &
-        !   'gptssr: k_GP_Indiv_Female(1), GP_Adult_Pop_SSE(k_GP_Indiv_Female(1)) ', &
-        !            k_GP_Individual_Female(1), &
-        !            GP_Adult_Population_SSE(k_GP_Individual_Female(1))
-        !write(GP_print_unit,'(A,1x,I6,1x,E15.7)' ) &
-        !   'gptssr: k_GP_Indiv_Female(2), GP_Adult_Pop_SSE(k_GP_Indiv_Female(2)) ', &
-        !            k_GP_Individual_Female(2), &
-        !            GP_Adult_Population_SSE(k_GP_Individual_Female(2))
 
         k_GP_Individual_Female(1)  =  k_GP_Individual_Female(2)
 
@@ -231,43 +190,11 @@ do
     i_Female_Tree=1+int(cff*float(n_Trees))  ! pick a tree
     i_Female_Tree = min( i_Female_Tree , n_Trees )
 
-
     ! stick the entire chosen male node/tree set into the new child node/tree set
 
     GP_Child_Population_Node_Type(1:n_Nodes,1:n_Trees,i_GP_Individual) =  &
            GP_Adult_Population_Node_Type(1:n_Nodes,1:n_Trees, k_GP_Individual_Male(1) )
 
-    !write(GP_print_unit,'(A,1x,I6/(10(1x,I6)))' ) &
-    !   'gptssr: k_GP_Indiv_Male(1), &
-    !   &GP_Adult_Pop_Node_Type(1:n_Nodes,1:n_Trees,k_GP_Indiv_Male(1))', &
-    !   k_GP_Individual_Male(1), &
-    !   GP_Adult_Population_Node_Type(1:n_Nodes,1:n_Trees,k_GP_Individual_Male(1))
-    !write(GP_print_unit,'(A,1x,I6/(10(1x,I6)))' ) &
-    !   'gptssr: i_GP_Individual, &
-    !   &GP_Child_Pop_Node_Type(1:n_Nodes,1:n_Trees,i_GP_Individual)', &
-    !   i_GP_Individual, &
-    !   GP_Child_Population_Node_Type(1:n_Nodes,1:n_Trees,i_GP_Individual)
-
-
-    if( GP_Adult_Population_SSE( k_GP_Individual_Male(1) )  >   sse_ind )then
-        symbol = '-'
-    else
-        symbol = '+'
-    endif ! GP_Adult_Population_SSE( k_GP_Individual_Male(1) >= sse_ind
-
-    !write(GP_print_unit, &
-    !   '(A,1x,I4, 1x, A, 1x,E12.5, 1x, A, 1x, I4, 1x, A, 1x, E12.5,4x,A)' ) &
-    !   'gptssr: i_GP_Indiv', i_GP_Individual, 'with SSE =', sse_ind, &
-    !   ' replaced with k_GP_Indiv_Male(1)', k_GP_Individual_Male(1),  &
-    !   'with SSE =', GP_Adult_Population_SSE( k_GP_Individual_Male(1) ), &
-    !   symbol
-
-    !???! Do the genetic crossovers but only keep the solution
-    !???! from one (the male) of the two (male and female) generated child tree
-    !!?? if( CROSS) then
-    !!??  call Random_Number(cff) ! uniform random number generator
-    !!??  ! i_Male_Tree    = 1+int(cff*float(n_Trees-1))  ! pick a location from 1 to n_Trees
-    !!??  ! i_Female_Tree  = 1+int(cff*float(n_Trees-1))  ! pick a location from 1 to n_Trees
 
     ! move the selected trees from the selected
     ! male and female individuals that are to be randomly swapped
@@ -278,11 +205,10 @@ do
     Parent_Tree_Swap_Node_Type(1:n_Nodes,2)  =  &
         GP_Adult_Population_Node_Type(1:n_Nodes,i_Female_Tree, k_GP_Individual_Female(1))
 
-    !-----------------------------------------------------------------------------------------
 
 
     call GP_Check_Terminals( &
-         GP_Adult_Population_Node_Type(1, 1,  k_GP_Individual_Male(1)) , i_Error)
+         Parent_Tree_Swap_Node_Type,n_Nodes,2 , i_Error)
 
     if( i_Error .eq. 1) then
 
@@ -293,88 +219,31 @@ do
            'gptssr: i_GP_Individual, k_GP_Indiv_Male(1), i_Error  ', &
                     i_GP_Individual, k_GP_Individual_Male(1), i_Error
 
-        !return
-    endif
-
-    !-----------------------------------------------------------------------------------------
-
-    call GP_Check_Terminals( &
-         GP_Adult_Population_Node_Type(1, 1, k_GP_Individual_Female(1)) , i_Error)
-
-    if( i_Error .eq. 1) then
-        write(6,'(/A)')&
-           'gptssr: ERROR &
-           &Pre-GP_Check_Error [Female] in GP_Tournament_Style_Sexual_Reproduction'
         write(6,'(A,3(1x,I6)/)') &
            'gptssr: i_GP_Individual, k_GP_Indiv_Female(1), i_Error  ', &
                     i_GP_Individual, k_GP_Individual_Female(1), i_Error
-        !return
+       
+        i_GP_Crossover  = i_GP_Crossover  - 1
+        i_GP_Individual = i_GP_Individual - 1
+        i_Error = 0
+        cycle cross_loop
+
     endif
 
-    !-----------------------------------------------------------------------------------
-
-    !write(6,'(/A)') 'gptssr: bef call GP_Tree_Swap '
-    ! >> debug
-    !call print_trees( 1, i_GP_Individual, i_GP_Individual, &
-    !                      GP_Child_Population_Node_Type,  &
-    !                      'tree bef tree swap'  )
-    ! << debug
-
-    ! GP_Tree_Swap modifies Parent_Tree_Swap_Node_Type
-
     call GP_Tree_Swap    !   perform the random tree swap
-
 
     !-----------------------------------------------------------------------------------
 
     ! move one of the swapped trees into the new child GP_Child_Population_Node_Type
 
-    !write(6,'(//A)') 'gptssr:  kk, GP_Child_Population_Node_Type(kk,i_Male_Tree, i_GP_Individual) &
-    !               &, Parent_Tree_Swap_Node_Type(kk,1) '
-    !do  kk = 1, n_nodes
-    !    flag = ' '
-    !    if( GP_Child_Population_Node_Type(kk,i_Male_Tree, i_GP_Individual) /=  &
-    !                                             Parent_Tree_Swap_Node_Type(kk,1) )then
-    !        flag = '<<<<<<'
-    !    endif
-    !    write(6,'(3(1x,I6),1x,A)')  &
-    !          kk, GP_Child_Population_Node_Type(kk,i_Male_Tree, i_GP_Individual),  &
-    !                 Parent_Tree_Swap_Node_Type(kk,1) , flag
-    !enddo ! kk
-
-
-    GP_Child_Population_Node_Type(1:n_Nodes,i_Male_Tree, i_GP_Individual)  =  &
-                  Parent_Tree_Swap_Node_Type(1:n_Nodes,1)
-
-
-    !! >> debug
-    !call print_trees( 1, i_GP_Individual, i_GP_Individual, &
-    !                  GP_Child_Population_Node_Type,  &
-    !                  'tree AFTER tree swap'  )
-    !! << debug
-
-
-    !-----------------------------------------------------------------------------------
 
     call GP_Check_Terminals( &
-         GP_Child_Population_Node_Type(1, 1, i_GP_Individual) , i_Error )
+         Parent_Tree_Swap_Node_Type(1, 1),n_Nodes,1 , i_Error )
 
     if( i_Error .eq. 1) then
-        write(6,'(/A)')&
-           'gptssr: ERROR &
-           &Post-GP_Check_Error in GP_Tournament_Style_Sexual_Reproduction'
-        write(6,'(A,3(1x,I6)/)') 'gptssr: i_GP_Indiv, i_Male_Tree, i_Error  ', &
-                                          i_GP_Individual, i_Male_Tree, i_Error
-        !return
-    endif
-
-    !-----------------------------------------------------------------------------------
-
 
     !  if you found an error in the tree, reset i_GP_Crossover
     !  and try making a new tree and with a new random i_GP_Individual
-
-    if( i_Error > 0 )then
 
         write(6,'(/A/)')&
               'gptssr: ERROR: i_Error = 1 so subtract 1 &
@@ -390,20 +259,14 @@ do
 
     endif ! i_Error > 0
 
-    !-----------------------------------------------------------------------------------
+    GP_Child_Population_Node_Type(1:n_Nodes,i_Male_Tree, i_GP_Individual)  =  &
+                  Parent_Tree_Swap_Node_Type(1:n_Nodes,1)
 
     Run_GP_Calculate_Fitness(i_GP_Individual) = .true.
-
-    !!?? endif ! CROSS
-
-    !-----------------------------------------------------------------------------------
 
 enddo cross_loop
 
 
-write(GP_print_unit,'(/A,3(1x,I6)/)') &
-      'gptssr: at RETURN i_GP_Crossover, i_GP_individual', &
-                         i_GP_Crossover, i_GP_individual
 
 return
 

@@ -1115,7 +1115,7 @@ GP_log - binary
 
 i_GP_generation
 i_GP_Individual
-GP_Adult_Individual_SSE(i_GP_Individual)
+GP_Adult_Population_SSE(i_GP_Individual)
 GP_Population_Ranked_Fitness(i_GP_Individual)
 
 

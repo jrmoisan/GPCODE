@@ -59,9 +59,13 @@ deallocate( GP_Node_Type_for_Plotting )
 deallocate( GP_Adult_Population_Node_Type )
 deallocate( GP_Child_Population_Node_Type )
 deallocate( Parent_Tree_Swap_Node_Type )
-deallocate( GP_Adult_Individual_SSE )
-deallocate( GP_Child_Individual_SSE )
+
+!deallocate( GP_Adult_Individual_SSE )
+!deallocate( GP_Child_Individual_SSE )
 deallocate( GP_Child_Individual_SSE_nolog10 )
+
+deallocate( GP_Child_Population_SSE )
+
 deallocate( GP_Individual_Ranked_Fitness )
 deallocate( GP_Integrated_Ranked_Fitness )
 deallocate( GP_Population_Ranked_Fitness )
@@ -121,7 +125,7 @@ deallocate( Truth_Initial_Conditions )
 deallocate( Truth_Node_Type          )
 deallocate( Truth_Node_Parameters    )
                                                                                                         
-deallocate( Truth_Model_Match  ) 
+!deallocate( Truth_Model_Match  ) 
 !---------------------------------------------------------------                                        
 
 

@@ -10,22 +10,19 @@ subroutine GP_calc_fitness( i_GP_generation, &
 
 ! inputs:
 
-! GP_Child_Individual_SSE
+! GP_Child_Population_SSE
 
 
 ! outputs:
 
-! GP_Adult_Individual_SSE
+! GP_Adult_Population_SSE
 ! GP_Population_Ranked_Fitness
 ! GP_Integrated_Population_Ranked_Fitness
 ! i_GP_Best_Parent
 ! output_array
 
-
 !xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 use kinds_mod 
-!use mpi
-!use mpi_module
 
 use GP_Parameters_module
 use GA_Parameters_module
@@ -78,49 +75,6 @@ output_array = 0.0d0
 max_n_gp_parameters = maxval( GP_Individual_N_GP_param )
 
 
-!write(GP_print_unit,'(/A,1x,I6)') &
-!      'gpcf: i_GP_generation ',  i_GP_generation
-!write(GP_print_unit,'(A)') &
-!  'gpcf: i_GP_indiv    GP_Child_Indiv_SSE'
-!do  i_GP_individual = 1, n_GP_individuals
-!    write(GP_print_unit,'(4x,I6,10x,E15.7)')  &
-!          i_GP_individual, GP_Child_Individual_SSE(i_GP_individual)
-!enddo ! i_GP_individual
-
-!-------------------------------------------------------------------------------
-
-if( i_GP_generation == 1                                 .or. &
-    mod( i_GP_generation, GP_child_print_interval ) == 0 .or. &
-    i_GP_generation == n_GP_generations                          ) then
-
-!if( i_GP_generation == 1                                 .or. &
-!    mod( i_GP_generation, GP_child_print_interval ) == 0 .or. &
-!    i_GP_generation == n_GP_generations                          ) then
-!
-!    write(GP_print_unit,'(/A,1x,I6/)') &
-!          'gpcf: i_GP_generation ',  i_GP_generation
-!
-!    write(GP_print_unit,'(A)') &
-!          'gpcf: i_GP_Indiv, GP_Indiv_N_GP_param(i_GP_Indiv) '
-!
-!    write(GP_print_unit, '(10(1x,I6," :", I3))') &
-!           ( i_GP_Individual, GP_Individual_N_GP_param(i_GP_Individual), &
-!             i_GP_Individual=1,n_GP_Individuals )
-!
-!    write(GP_print_unit,'(/A)')' '
-!
-!endif ! i_GP_generation ...
-!-------------------------------------------------------------------------------
-
-max_n_gp_parameters = maxval( GP_Individual_N_GP_param )
-
-write(GP_print_unit,'(//A,1x, I6)') &
-      'gpcf: max_n_gp_parameters', max_n_gp_parameters
-
-endif ! i_GP_generation ...
-
-!-------------------------------------------------------------------------------
-
 ! calculate the total population's SSE
 
 dff=0.0d0
@@ -128,7 +82,7 @@ do  i_GP_Individual=1,n_GP_Individuals
 
     if(  GP_Individual_N_GP_param( i_GP_Individual ) < min_N_param ) cycle
 
-    dff=dff+GP_Child_Individual_SSE(i_GP_Individual)
+    dff=dff+GP_Child_Population_SSE(i_GP_Individual)
 
 enddo ! i_gp_individual
 
@@ -194,8 +148,8 @@ if( L_GPSSE_log )then
 
         write(GPSSE_log_unit,'(I6, 1x,I6,2(1x,E15.7))') &
               i_GP_generation, &
-              i_GP_Individual, GP_Child_Individual_SSE(i_GP_Individual), &
-              GP_Child_Individual_SSE(i_GP_Individual)/ SSE0
+              i_GP_Individual, GP_Child_Population_SSE(i_GP_Individual), &
+              GP_Child_Population_SSE(i_GP_Individual)/ SSE0
 
     enddo ! i_gp_individual
 
@@ -221,17 +175,17 @@ do  i_GP_Individual=1,n_GP_Individuals
     if(  GP_Individual_N_GP_param( i_GP_Individual ) < min_N_param ) cycle
 
 
-    if( abs( GP_Child_Individual_SSE(i_GP_Individual) ) > 1.0D-30 )then
+    if( abs( GP_Child_Population_SSE(i_GP_Individual) ) > 1.0D-30 )then
 
         GP_Population_Ranked_Fitness(i_GP_Individual) = &
-             sse0  /  GP_Child_Individual_SSE(i_GP_Individual)
+             sse0  /  GP_Child_Population_SSE(i_GP_Individual)
 
-             !1.0d0 /  GP_Child_Individual_SSE(i_GP_Individual)
+             !1.0d0 /  GP_Child_Population_SSE(i_GP_Individual)
     else
 
         GP_Population_Ranked_Fitness(i_GP_Individual) = 0.0D0
 
-    endif ! abs( GP_Child_Individual_SSE(i_GP_Individual)) > 1.0D-30
+    endif ! abs( GP_Child_Population_SSE(i_GP_Individual)) > 1.0D-30
 
 
 enddo ! i_GP_Individual
@@ -351,8 +305,8 @@ write(GP_print_unit,'(/A,2(1x,I6),3(1x,E15.7))') &
             &Pop_Rank_Fit, GP_Child_SSE, SSE/SSE0', &
              i_GP_Generation, i_GP_Best_Parent, &
              GP_Population_Ranked_Fitness(i_GP_Best_Parent), &
-             GP_Child_Individual_SSE(i_GP_Best_Parent),      &
-             GP_Child_Individual_SSE(i_GP_Best_Parent)/sse0
+             GP_Child_Population_SSE(i_GP_Best_Parent),      &
+             GP_Child_Population_SSE(i_GP_Best_Parent)/sse0
 
 
 !-------------------------------------------------------------------------------
@@ -405,7 +359,7 @@ if( L_GPSSE_log )then
     !write(GP_print_unit,'(A,2(1x,I6),1x,E20.10)') &
     !  'gpcf: best parent SSE i_GP_generation, i_GP_Best_Parent, SSE ', &
     !                         i_GP_generation, i_GP_Best_Parent, &
-    !                         GP_Child_Individual_SSE(i_GP_Best_Parent)
+    !                         GP_Child_Population_SSE(i_GP_Best_Parent)
 
     if( index( model, 'LOG10') > 0 .or. &
         index( model, 'log10') > 0        )then
@@ -424,16 +378,14 @@ if( L_GPSSE_log )then
               GP_Child_Individual_SSE_nolog10(i_GP_best_parent)/ SSE0_nolog10
 
 
-              !sse_local, &
-              !sse_local / SSE0_nolog10
 
         write(GPSSE_best_log_unit,'(I6, 1x,I6,2(1x,E15.7))') &
               i_GP_generation, &
               i_GP_Best_Parent, &
               GP_Child_Individual_SSE_nolog10(i_GP_best_parent), &
               GP_Child_Individual_SSE_nolog10(i_GP_best_parent)/ SSE0_nolog10
-              !sse_local, &
-              !sse_local / SSE0_nolog10
+              
+             
 
     else
 
@@ -445,6 +397,10 @@ if( L_GPSSE_log )then
 
     endif !
 
+    write(GPSSE_best_log_unit,'(I6,1x,I6,2(1x,E24.16))') &
+          i_GP_Generation, i_GP_Best_Parent, &
+          GP_Child_Population_SSE(i_GP_Best_Parent), &
+          GP_Child_Population_SSE(i_GP_Best_Parent)/ SSE0
 
     flush( GPSSE_best_log_unit ) ! DO NOT COMMENT OUT
 
@@ -462,7 +418,7 @@ if( L_fort555_output )then
     !write(6,'(A,3(1x,I10))') 'gpcf:555 gp_gen ', i_GP_Generation
                                                                                                         
     write(GA_555_unit) i_GP_Generation,  &                             
-               GP_child_individual_SSE(1:n_GP_individuals)                                                       
+               GP_Child_Population_SSE(1:n_GP_individuals)                                                       
                                                                                                         
 endif !  L_fort555_output                                                                              
                                                                                                         
@@ -474,45 +430,9 @@ endif !  L_fort555_output
 
 output_array = 0.0d0
 
-!write(GP_print_unit,'(/A)') &
-! 'gpcf: i_CODE_eq  Num_CODE_Init_Cond(i_CODE_eq)  &
-! &GP_Pop_init_cond(i_CODE_eq,i_GP_Best_Parent)'
-!do  i_CODE_equation=1,n_CODE_equations
-!    write(GP_print_unit,'(6x,I6,7x, E20.10, 10x, E20.10)') &
-!     i_CODE_equation, &
-!     Numerical_CODE_Initial_Conditions(i_CODE_equation),  &
-!     GP_Population_Initial_Conditions( i_CODE_equation, i_GP_Best_Parent )
-!
-!    output_array( i_CODE_equation ) = &
-!       GP_Population_Initial_Conditions( i_CODE_equation,i_GP_Best_Parent )
-!
-!enddo ! i_CODE_equation
-
-
-!------------------------------------------------------------------------------------
-
-!write(GP_print_unit,'(/A)') &
-!          'gpcf: i_CODE_eq  Numer_Init_Cond(i_CODE_eq)  &
-!          &GP_Pop_init_cond(i_CODE_eq,i_GP_Best_Parent)'
-!
-!do  i_CODE_equation=1,n_CODE_equations
-!
-!    write(GP_print_unit,'(6x,I6,7x, E20.10, 10x, E20.10)') &
-!          i_CODE_equation, &
-!          Numerical_CODE_Initial_Conditions(i_CODE_equation),  &
-!          GP_Population_Initial_Conditions( i_CODE_equation, i_GP_Best_Parent )
-!
-!    output_array( i_CODE_equation ) = &
-!            GP_Population_Initial_Conditions( i_CODE_equation,i_GP_Best_Parent )
-!
-!
-!enddo ! i_CODE_equation
-
-!------------------------------------------------------------------------------------
-
 
 write(GP_print_unit,'(/A)') &
-          'gpcf: i_CODE_eq  Truth_Init_Cond(i_CODE_eq)  &
+          'gpcf: i_CODE_eq  Model_Init_Cond(i_CODE_eq)  &
           &GP_Pop_init_cond(i_CODE_eq,i_GP_Best_Parent)'
 
 do  i_CODE_equation=1,n_CODE_equations
@@ -525,22 +445,13 @@ do  i_CODE_equation=1,n_CODE_equations
     output_array( i_CODE_equation ) = &
             GP_Population_Initial_Conditions( i_CODE_equation,i_GP_Best_Parent )
 
-
 enddo ! i_CODE_equation
 
 
 nop = n_CODE_equations
 
-!write(GP_print_unit,'(/A)') &
-!      'gpcf: count number of parameters, nop, in tree'
-
-!write(GP_print_unit,'(A,2(1x,I6))') &
-!      'gpcf: before tree loop n_code_equations, nop ', &
-!                              n_code_equations, nop
-
 write(GP_print_unit,'(/A)') &
      'gpcf: i_tree  i_node  nop   GP_pop_node_params'
-
 
 tree_loop:&
 do  i_tree=1,n_trees
@@ -561,26 +472,6 @@ do  i_tree=1,n_trees
 
 
         endif ! GP_Adult_Pop_Node_Type(i_Node,i_Tree,i_GP_Best_Parent) == 0
-
-        !write(GP_print_unit,'(3(1x,I6))') i_tree, i_node, nop
-
-        !if( nop > n_maximum_number_parameters ) then
-        !    write(GP_print_unit,'(A)') &
-        !          'gpcf: nop >  n_maximum_number_parameters  '
-        !    write(GP_print_unit,'(A,3(1x,I6))') &
-        !          'gpcf: nop, n_maximum_number_parameters  ', &
-        !                 nop, n_maximum_number_parameters
-        !    nop = min( nop, n_maximum_number_parameters )
-        !    exit tree_loop
-        !endif  ! nop > ...
-
-        ! max_n_gp_parameters is the maximum over GP_Individual_N_GP_param
-
-        !write(GP_print_unit,'(A,3(1x,I6))') &
-        !      'gpcf: nop, max_n_gp_parameters  ', &
-        !             nop, max_n_gp_parameters
-
-
 
         if( nop > max_n_gp_parameters ) then
 
@@ -690,129 +581,94 @@ endif ! i_GP_generation == 1 .or. ...
 !  logical calculation
 
 
-!write(GP_print_unit, '(/A/)') &
-!  'gpcf: i     GP_Pop_Initial_Cond   truth_initial_cond        diff'
+write(GP_print_unit, '(/A,T89,A/)') &
+  'gpcf: i     GP_Pop_Initial_Cond   Truth_initial_cond        diff', 'Truth'
 
-!do  i = 1, n_code_equations
+do  i = 1, n_code_equations
 
-!    write(GP_print_unit, '(1x,I6,3(6x,E15.7))') &
-!          i, &
-!          GP_Population_Initial_Conditions( i,i_GP_Best_Parent ), &
-!          truth_initial_conditions(i), &
-!          ( GP_Population_Initial_Conditions( i,i_GP_Best_Parent )  - &
-!                                          truth_initial_conditions(i)   )
-!enddo ! i
-
-
-!!node_match_count = 0
-!!undefined_node_count = 0
-!!Truth_Model_Match(i_GP_generation) = .TRUE.
-!!
-!!!write(GP_print_unit,'(/A/)') &
-!!!      'gpcf: i_tree  i_node   GP_pop_node_params   Truth_Node_Params        diff'
-!!
-!!tree_loop2:&
-!!do  i_tree=1,n_trees
-!!
-!!    node_loop2:&
-!!    do  i_node=1,n_nodes
-!!
-!!        !------------------------------------------------------------------------
-!!        if( GP_Adult_Population_Node_Type(i_Node,i_Tree,i_GP_Best_Parent) == -9999 )then
-!!
-!!            undefined_node_count = undefined_node_count + 1
-!!
-!!            if( Truth_Node_Type( i_Node,i_Tree ) == -9999   )then
-!!
-!!                cycle node_loop2
-!!
-!!            endif ! Truth_Node_Type... == -9999...
-!!        endif ! GP_Adult_...Node_Type... == -9999...
-!!        !------------------------------------------------------------------------
-!!
-!!        !flag_string = ' '
-!!        L_node_match = &
-!!           ( GP_Adult_Population_Node_Type(i_Node,i_Tree,i_GP_Best_Parent) == &
-!!                                                 Truth_Node_Type( i_Node,i_Tree ) )
-!!
-!!        Truth_Model_Match(i_GP_generation) = &
-!!             Truth_Model_Match(i_GP_generation) .and.  L_node_match
-!!
-!!
-!!        if( L_node_match ) then
-!!            node_match_count =  node_match_count + 1
-!!            !flag_string = 'node type match'
-!!        endif ! L_node_match
-!!
-!!        !if( GP_Adult_Population_Node_Type(i_Node,i_Tree,i_GP_Best_Parent) == 0 .or. &
-!!        !    Truth_Node_Type(i_Node,i_Tree) == 0                                 )then
-!!
-!!        !    write(GP_print_unit,'(3x,2(1x,I6),3(6x,E15.7),3x,A)') &
-!!        !      i_tree, i_node, &
-!!        !      GP_population_node_parameters(i_node,i_tree,i_GP_Best_Parent), &
-!!        !      Truth_Node_Parameters(i_node,i_tree),  &
-!!        !      ( GP_population_node_parameters(i_node,i_tree,i_GP_Best_Parent) -  &
-!!        !                                      Truth_Node_Parameters(i_node,i_tree) ), &
-!!        !      trim(flag_string)
-!!
-!!        !endif ! GP_Adult_Population_Node_Type(i_Node,i_Tree,i_GP_Best_Parent) == 0
-!!
-!!    enddo node_loop2 ! i_node
-!!
-!!enddo tree_loop2 ! i_tree
-!!
-!!
-!!write(GP_print_unit,'(/A,1x, i6,5x,L1, 2(1x,I6))') &
-!!  'gpcf: i_gp_gen, Truth_Model_Match(i_GP_gen), node_match_count', &
-!!         i_gp_generation, &
-!!                   Truth_Model_Match(i_GP_generation), node_match_count
-!!
-!!write(GP_print_unit,'(A,1x, 2(1x,I6)/)') &
-!!  'gpcf: total_nodes, undefined_nodes  ', n_nodes*n_trees, undefined_node_count
+    write(GP_print_unit, '(1x,I6,3(6x,E15.7),T89,A)') &
+          i, &
+          GP_Population_Initial_Conditions( i,i_GP_Best_Parent ), &
+          truth_initial_conditions(i), &
+          ( GP_Population_Initial_Conditions( i,i_GP_Best_Parent )  - &
+                                          truth_initial_conditions(i)   ), &
+          'Truth'
+enddo ! i
 
 
+node_match_count = 0
+undefined_node_count = 0
+Truth_Model_Match = .FALSE.
+
+write(GP_print_unit,'(/A,T89,A/)') &
+      'gpcf: i_tree  i_node   GP_pop_node_params   Truth_Node_Params        diff', 'Truth'
 
 
-!---------------------------------------------------------------------------
+tree_loop2:&
+do  i_tree=1,n_trees
 
-GP_Adult_Individual_SSE  =  GP_Child_Individual_SSE
-GP_Adult_Population_SSE  =  GP_Child_Individual_SSE
+    node_loop2:&
+    do  i_node=1,n_nodes
 
-!---------------------------------------------------------------------------
+        !------------------------------------------------------------------------
+        if( GP_Adult_Population_Node_Type(i_Node,i_Tree,i_GP_Best_Parent) == -9999 )then
 
-!if( i_GP_generation == 1                                 .or. &
-!    mod( i_GP_generation, GP_child_print_interval ) == 0 .or. &
-!    i_GP_generation == n_GP_generations                          ) then
-!
-!    write(GP_print_unit,'(/A)') &
-!          'gpcf: i_GP_Indiv   GP_Adult_Indiv_SSE       GP_Pop_Ranked_Fitness'
-!
-!    do  i_GP_Individual=1,n_GP_individuals
-!
-!        write(GP_print_unit,'(6x,I6,4x,2(1x,E15.7))') &
-!              i_GP_Individual, &
-!              GP_Adult_Individual_SSE(i_GP_Individual), &
-!              GP_Population_Ranked_Fitness(i_GP_Individual)
-!
-!    enddo ! i_GP_individual
-!
-!endif ! i_GP_generation == 1 .or. ...
+            undefined_node_count = undefined_node_count + 1
 
-!!off if( i_GP_Generation .eq. 3) Stop
+            if( Truth_Node_Type( i_Node,i_Tree ) == -9999   )then
 
-!!-------------------------------------------------------------------------------
-!
-!! the last line of the call disables the sse_min_time, etc. option for this call
-!
-!call calc_stats( n_GP_individuals, GP_Population_Ranked_Fitness,  &
-!                 mean_fit, rms_fit, std_dev_fit, &
-!                 1.0d0, 0.0d0, 1.0d99, 1.0d0 )
-!
-!write(GP_print_unit,'(/A,1x,I5,3(1x,E15.7))') &
-!   'gpcf: GP_Gen, GP_Pop_Rank_Fit mean, rms, std_dev', &
-!          i_GP_Generation, mean_fit, rms_fit, std_dev_fit
-!
-!!-------------------------------------------------------------------------------
+                cycle node_loop2
+
+            endif ! Truth_Node_Type... == -9999...
+        endif ! GP_Adult_...Node_Type... == -9999...
+        !------------------------------------------------------------------------
+
+        flag_string = ' '
+        L_node_match = &
+           ( GP_Adult_Population_Node_Type(i_Node,i_Tree,i_GP_Best_Parent) == &
+                                                 Truth_Node_Type( i_Node,i_Tree ) )
+
+
+        Truth_Model_Match = Truth_Model_Match .and.  L_node_match
+
+
+        if( L_node_match ) then
+            node_match_count =  node_match_count + 1
+            flag_string = 'node type match'
+        endif ! L_node_match
+
+        if( GP_Adult_Population_Node_Type(i_Node,i_Tree,i_GP_Best_Parent) == 0 .or. &
+            Truth_Node_Type(i_Node,i_Tree) == 0                                 )then
+
+            write(GP_print_unit,'(3x,2(1x,I6),3(6x,E15.7),T89,A,5x,A)') &
+              i_tree, i_node, &
+              GP_population_node_parameters(i_node,i_tree,i_GP_Best_Parent), &
+              Truth_Node_Parameters(i_node,i_tree),  &
+              ( GP_population_node_parameters(i_node,i_tree,i_GP_Best_Parent) -  &
+                                              Truth_Node_Parameters(i_node,i_tree) ), &
+              'Truth', trim(flag_string) 
+
+        endif ! GP_Adult_Population_Node_Type(i_Node,i_Tree,i_GP_Best_Parent) == 0
+
+    enddo node_loop2 ! i_node
+
+enddo tree_loop2 ! i_tree
+
+
+write(GP_print_unit,'(/A,1x, i6,5x,L1, 1x,I6, T89,A)') &
+  'gpcf: i_gp_gen, Truth_Model_Match, node_match_count', &
+         i_gp_generation, &
+                   Truth_Model_Match, node_match_count, 'Truth'
+
+write(GP_print_unit,'(A,1x, 2(1x,I6),T89,A/)') &
+  'gpcf: total_nodes, undefined_nodes  ',     &
+     n_nodes*n_trees, undefined_node_count, 'Truth'
+
+
+
+
+GP_Adult_Population_SSE  =  GP_Child_Population_SSE
+
 
 if( L_GP_log )then
 
@@ -824,7 +680,7 @@ if( L_GP_log )then
         write(GP_log_unit) &
               i_GP_generation, &
               i_GP_Individual, &
-              GP_Adult_Individual_SSE(i_GP_Individual), &
+              GP_Adult_Population_SSE(i_GP_Individual), &
               GP_Population_Ranked_Fitness(i_GP_Individual)
 
     enddo ! i_GP_individual
@@ -867,7 +723,7 @@ endif ! L_unit50_output
 ! re-sort based on rankings
 
 ! uses:
-!  GP_Child_Individual_SSE
+!  GP_Child_Population_SSE
 !  GP_population_node_parameters
 !  GP_Population_Initial_Conditions
 
@@ -875,8 +731,7 @@ endif ! L_unit50_output
 !  GP_Adult_Population_Node_Type
 !  GP_Population_Initial_Conditions
 !  GP_Adult_Population_SSE
-!  GP_Adult_Individual_SSE
-!  GP_Child_Individual_SSE
+!  GP_Child_Population_SSE
 !  GP_population_node_parameters
 !  GP_Population_Ranked_Fitness
 !  GP_Integrated_Population_Ranked_Fitness

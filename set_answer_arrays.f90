@@ -211,7 +211,7 @@ if( myid == 0 )then
         ! input_data_array(0,:) is the function truth value 
         ! input_data_array(1:n_input_vars,:) are the inputs to the function
 
-        do  i = 1, n_time_steps
+        do  i = 1, n_input_data_points
         
             do  ii = 1, n_CODE_equations
                 Numerical_CODE_Solution( i, ii ) = input_data_array(0,i) 

@@ -80,6 +80,8 @@ n_GA_save_elites = nint(GA_save_elites_Probability  * n_GA_individuals)
 ! calculate the number of GA random replacements
 n_GA_rand_replaces  = nint(GA_rand_replace_Probability  * n_GA_individuals)
 
+! calculate the number of GP random replacements
+n_GP_rand_replaces  = nint(GP_rand_replace_Probability  * n_GP_individuals)
 
 
 write(GP_print_unit,'(A,1x,I6)') &
@@ -92,6 +94,9 @@ write(GP_print_unit,'(A,1x,I6)') &
       'pv1: n_GA_rand_replaces             ', n_GA_rand_replaces
 write(GP_print_unit,'(A,1x,E12.5)') &
       'pv1: GA_rand_replace_Probability ', GA_rand_replace_Probability
+
+write(GP_print_unit,'(A,1x,I6)') &
+      'pv1: n_GP_rand_replaces             ', n_GP_rand_replaces
 
 !flush(GP_print_unit)
 

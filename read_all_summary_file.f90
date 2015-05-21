@@ -41,6 +41,7 @@ subroutine read_all_summary_file( i_GP_generation )
 
 !----------------------------------------------------------------------------------------
 
+write(6,'(/A/)')'rasf: at entry'
 
 !---------------------------------------------------
 ! assume this subroutine is called by all processes. W.J noted
@@ -50,10 +51,14 @@ subroutine read_all_summary_file( i_GP_generation )
    GP_Adult_Population_Node_Type    = -9999
    GP_population_node_parameters    = 0.0d0 
 
+!--------------------------------------------------------------------------------
 
    open( GP_restart_file_input_unit, file='GP_restart_file', &                                        
       form = 'formatted', access = 'sequential', &                                                  
       status = 'old' )                                 
+
+write(6,'(A)')'rasf: after open of GP_restart_file'
+flush(6)
 
 ! set Lprint so printing is done only under the conditions in the if-test
 
@@ -66,8 +71,10 @@ subroutine read_all_summary_file( i_GP_generation )
      Lprint = .TRUE.
    endif ! i_GP_generation == 1 .or. ...
 
-   readloop:&
-   do
+!--------------------------------------------------------------------------------
+
+readloop:&
+do
 
    ! read the summary file header for each individual
    ! which has n_GP_parameters >= n_code_equations
@@ -80,9 +87,22 @@ subroutine read_all_summary_file( i_GP_generation )
              
       if( istat /= 0 ) exit readloop
     
+    write(6,'(A,6(1x,I6))') &
+      'rasf: i_GP_Gen, i_GP_indiv, n_code_equations, n_trees, n_nodes, n_levels', &
+             i_GP_Gen, i_GP_indiv, n_code_equations, n_trees, n_nodes, n_levels
+    
+    !--------------------------------------------------------------------------------
+    
     ! read initial conditions
     
-      do  
+    
+    if( Lprint )then
+        write(GP_print_unit,'(/A)')&
+          'rasf: i_GP_gen  i_GP_indiv  i_code_eq  &
+                &GP_Pop_Init_Cond(i_code_eq, i_GP_Indiv) '
+    endif ! Lprint
+    
+    do  
     
          read(GP_restart_file_input_unit, '(A)', iostat=istat) Aline
     
@@ -90,13 +110,36 @@ subroutine read_all_summary_file( i_GP_generation )
             exit readloop
          endif ! istat /=0 
     
-         if( Aline(1:2) == '> '   ) exit
+        !write(6,'(A,1x,A)')'rasf: Aline: ', trim(Aline)
+    
+        if( Aline(1:2) == '> '   ) exit
     
          read(Aline, *)&
               i_GP_Gen, i_GP_indiv, i_code_eq, &
               GP_Population_Initial_Conditions( i_code_eq, i_GP_indiv ) 
     
-      enddo 
+    
+        !if( Lprint )then
+        !    write(GP_print_unit,'(3(1x,I10), 7x, E24.16)')&
+        !    i_GP_Gen, i_GP_indiv, i_code_eq, &
+        !    GP_Population_Initial_Conditions( i_code_eq, i_GP_indiv )
+        !endif ! Lprint
+    
+    
+        write(6,'(A,3(1x,I6),1x,E15.7)') &
+           'rasf: i_GP_Gen, i_GP_indiv, i_code_eq, &
+            &GP_Population_Initial_Conditions(i_code_eq,i_GP_indiv)', &
+                  i_GP_Gen, i_GP_indiv, i_code_eq, &
+             GP_Population_Initial_Conditions(i_code_eq,i_GP_indiv)
+    
+    
+    enddo  ! i
+    
+    !--------------------------------------------------------------------------------
+    
+    
+    ! print the node types if node /= -9999
+    
     !  read the node types from the old  summary file
         
       do 
@@ -107,14 +150,27 @@ subroutine read_all_summary_file( i_GP_generation )
             exit readloop
          endif ! istat /=0 
     
-         if( Aline(1:2) == '> '   ) exit
+        !write(6,'(A,1x,A)')'rasf: Aline: ', trim(Aline)
+    
+        if( Aline(1:2) == '> '   ) exit
     
          read(Aline, * ) &
              i_GP_Gen, i_GP_indiv,i_tree, i_node, &
              GP_Adult_Population_Node_Type(i_Node,i_Tree,i_GP_indiv)
     
-      enddo 
-
+        write(6,'(A,5(1x,I6))') &
+           'rasf:i_GP_Gen,i_GP_indiv,i_tree,i_node,&
+            &GP_Adult_Population_Node_Type(i_Node,i_Tree,i_GP_indiv)',&
+                 i_GP_Gen,i_GP_indiv,i_tree,i_node,&
+             GP_Adult_Population_Node_Type(i_Node,i_Tree,i_GP_indiv) 
+    
+    enddo 
+    
+    
+    
+    !------------------------------------------------------------------------------
+    
+    
     ! read all non-zero parameters from the old summary file file
     
       do 
@@ -123,6 +179,9 @@ subroutine read_all_summary_file( i_GP_generation )
          if( istat /= 0 )then
             exit readloop
          endif ! istat /=0 
+    
+         !write(6,'(A,1x,A)')'rasf: Aline: ', trim(Aline)
+    
            
          if( Aline(1:2) == '>>' ) exit
     
@@ -130,11 +189,27 @@ subroutine read_all_summary_file( i_GP_generation )
               i_GP_Gen, i_GP_indiv,i_tree, i_node, &
               GP_population_node_parameters( i_node,i_tree, i_GP_indiv)
     
-     enddo  
+    
+    
+        write(6,'(A,4(1x,I4),1x,E15.7)') &
+          'rasf: i_GP_Gen, i_GP_indiv, i_tree, i_node, &
+                 &GP_population_node_parameters( i_node,i_tree, i_GP_indiv)', &
+                 i_GP_Gen, i_GP_indiv, i_tree, i_node, &
+                  GP_population_node_parameters( i_node,i_tree, i_GP_indiv)
+    
+    enddo  
 
    enddo readloop 
 
-   close( GP_restart_file_input_unit  )
+
+
+
+
+!---------------------------------------------------------------------------------
+
+close( GP_restart_file_input_unit  )
+
+write(6,'(A/)')'rasf: at return'
 
 return
 

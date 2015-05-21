@@ -132,18 +132,18 @@ endif ! L_GP_print
 
 
 i_GP_best_parent_1                  = i_GP_best_parent
-GP_individual_SSE_best_1            = GP_child_individual_SSE(i_GP_best_parent)
+GP_individual_SSE_best_1            = GP_Child_Population_SSE(i_GP_best_parent)
 GP_individual_ranked_fitness_best_1 = GP_Population_Ranked_Fitness(i_GP_best_parent)
 
 
 !--------------------------------------------------------------------------------------
 
 GP_Individual_Fitness = 0.0D0
-if( GP_child_individual_SSE(i_GP_best_parent) > 0.0D0 )then
+if( GP_Child_Population_SSE(i_GP_best_parent) > 0.0D0 )then
 
-    GP_Individual_Fitness  = sse0 / GP_child_individual_SSE(i_GP_best_parent)
+    GP_Individual_Fitness  = sse0 / GP_Child_Population_SSE(i_GP_best_parent)
 
-endif  ! GP_child_individual_SSE(i_GP_best_parent) > 0.0D0
+endif  ! GP_Child_Population_SSE(i_GP_best_parent) > 0.0D0
 
 GP_Individual_Fitness_best_1 = GP_Individual_Fitness
 
@@ -194,25 +194,25 @@ endif ! L_GP_print
 
 !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
-before_SSE = GP_child_individual_SSE( i_GP_best_Parent )
+before_SSE = GP_Child_Population_SSE( i_GP_best_Parent )
 
 
 !debug only call setup_run_lmdif( i_GP_best_Parent, parent_parameters, individual_quality, &
-!debug only                       n_GP_individuals, GP_child_individual_SSE,  &
+!debug only                       n_GP_individuals, GP_Child_Population_SSE,  &
 !debug only                       L_GP_print, GP_print_unit )
 
 
 write(GP_print_unit,'(A,1x,I6,2(1x,E15.7))') &
-      'gpsbrl:1 i_GP_best_Parent, GP_child_individual_SSE( i_GP_best_Parent ), before_SSE  ', &
-                i_GP_best_Parent, GP_child_individual_SSE( i_GP_best_Parent ), before_SSE
+      'gpsbrl:1 i_GP_best_Parent, GP_Child_Population_SSE( i_GP_best_Parent ), before_SSE  ', &
+                i_GP_best_Parent, GP_Child_Population_SSE( i_GP_best_Parent ), before_SSE
 
 ! if lmdif ends in error, keep the SSE of the child before lmdif
 
-if( abs( GP_child_individual_SSE( i_GP_best_Parent ) ) > 1.0D13 )then
+if( abs( GP_Child_Population_SSE( i_GP_best_Parent ) ) > big_real )then
 
-    GP_child_individual_SSE( i_GP_best_Parent ) = before_SSE
+    GP_Child_Population_SSE( i_GP_best_Parent ) = before_SSE
 
-endif ! abs( GP_child_individual_SSE( i_GP_best_Parent ) ) > 1.0D13
+endif ! abs( GP_Child_Population_SSE( i_GP_best_Parent ) ) > big_real
 
 !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
@@ -254,7 +254,7 @@ if( L_GP_print )then
 
     write(GP_print_unit,'(/A,1x,I6,1x,E15.7)') &
           'gpsbrl: i_GP_best_parent, GP_child_indiv_SSE', &
-                   i_GP_best_parent, GP_child_individual_SSE(i_GP_best_parent)
+                   i_GP_best_parent, GP_Child_Population_SSE(i_GP_best_parent)
 
 endif ! L_GP_print
 
@@ -262,14 +262,14 @@ endif ! L_GP_print
 !-----------------------------------------------------------------------------------
 
 
-if( GP_child_individual_SSE( i_GP_best_parent )  > 0.0d0 )then
+if( GP_Child_Population_SSE( i_GP_best_parent )  > 0.0d0 )then
     GP_individual_ranked_fitness(i_GP_best_parent) = &
-                             sse0 / GP_child_individual_SSE( i_GP_best_parent )
+                             sse0 / GP_Child_Population_SSE( i_GP_best_parent )
 else
 
     GP_individual_ranked_fitness(i_GP_best_parent) = 0.0d0
 
-endif ! GP_child_individual_SSE( i_GP_best_parent )  > 0.0d0
+endif ! GP_Child_Population_SSE( i_GP_best_parent )  > 0.0d0
 
 
 GP_Individual_Fitness = GP_individual_ranked_fitness(i_GP_best_Parent)
@@ -281,7 +281,7 @@ if( L_GP_print )then
           'gpsbrl: lmdif i_GP_best_parent, &
           &GP_child_indiv_SSE, GP_indiv_ranked_fitness', &
                          i_GP_best_parent, &
-                         GP_child_individual_SSE(i_GP_best_parent), &
+                         GP_Child_Population_SSE(i_GP_best_parent), &
                          GP_individual_ranked_fitness(i_GP_best_parent)
 
     !write(GP_print_unit,'(/A,1x,E15.7/)') &
@@ -313,8 +313,8 @@ if( L_GP_print )then
           'gpsbrl: fcn   GP_individual_SSE_best_1                      ', &
                          GP_individual_SSE_best_1
     write(GP_print_unit,'(A, 1x,E15.7/)') &
-          'gpsbrl: lmdif GP_child_individual_SSE( i_GP_best_parent )   ', &
-                         GP_child_individual_SSE( i_GP_best_parent )
+          'gpsbrl: lmdif GP_Child_Population_SSE( i_GP_best_parent )   ', &
+                         GP_Child_Population_SSE( i_GP_best_parent )
 endif ! L_GP_print
 
 
@@ -444,7 +444,7 @@ if( GP_individual_ranked_fitness(i_GP_best_parent) <= &
             write(GP_log_unit) &
                   i_GP_generation, &
                   ii, &
-                  GP_child_individual_SSE(ii), &
+                  GP_Child_Population_SSE(ii), &
                   GP_individual_ranked_fitness(ii)
 
         enddo ! ii
@@ -505,7 +505,7 @@ else  ! lmdif is best
 
 
     GP_individual_fitness         = GP_individual_ranked_fitness(i_GP_best_parent)
-    GP_individual_SSE_best_parent = GP_child_individual_SSE(i_GP_best_parent)
+    GP_individual_SSE_best_parent = GP_Child_Population_SSE(i_GP_best_parent)
 
     child_parameters(1:n_parameters,i_GP_best_Parent) =  &
                         Parent_Parameters(1:n_parameters, i_GP_best_Parent)
@@ -613,7 +613,7 @@ else  ! lmdif is best
         write(GP_log_unit) &
               i_GP_generation, &
               i_GP_best_parent, &
-              GP_child_individual_SSE(i_GP_best_parent), &
+              GP_Child_Population_SSE(i_GP_best_parent), &
               GP_individual_ranked_fitness(i_GP_best_parent)
 
     endif ! L_GP_log

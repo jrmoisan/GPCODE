@@ -40,8 +40,9 @@ integer(kind=i4b) :: buffer_length
 !endif ! myid == 0
 
 
-   call MPI_BCAST( GP_Child_Individual_SSE, n_GP_individuals,    &
+   call MPI_BCAST( GP_Child_Population_SSE, n_GP_individuals,    &
                 MPI_DOUBLE_PRECISION, 0, MPI_COMM_WORLD, ierr )
+
 
                                                                                                                                            
 if( index( model, 'log10') > 0 .or. &                                                                                                      
@@ -55,19 +56,11 @@ endif ! index( model, 'log10') > 0 .or. ...
 !------------------------------------------------------------------------------
 
 
-! GP_Adult_Individual_SSE
-
-!if( myid == 0 )then
-!    write(GP_print_unit,'(/A/(5(1x,E24.16)))') &
-!          'bc3: broadcast GP_Adult_Individual_SSE = ',&
-!                          GP_Adult_Individual_SSE
-!    write(GP_print_unit,'(/A, 1x, I6)') &
-!          'bc3: n_GP_individuals = ',n_GP_individuals
-!
-!endif ! myid == 0
+! GP_Adult_Population_SSE
 
 
-call MPI_BCAST( GP_Adult_Individual_SSE, n_GP_individuals,    &
+   call MPI_BCAST( GP_Adult_Population_SSE, n_GP_individuals,    &
+
                 MPI_DOUBLE_PRECISION, 0, MPI_COMM_WORLD, ierr )
 
 !------------------------------------------------------------------------------

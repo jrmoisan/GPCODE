@@ -71,7 +71,7 @@ program main
 
 !  About version 15
 
-!  version 15 derived from version 13 '             
+!  version 15 derived from version 13 '
 !  fixed the problem with sort and the best individual'
 !  DO NOT run lmdif in parallel on each GP generation'
 !  fixed bug in GA_Tournament* '
@@ -127,7 +127,7 @@ program main
 
    call setup_math_functions()
 
-   call load_pow2_table() 
+   call load_pow2_table()
 
    call setup_output_unit()
 
@@ -183,7 +183,7 @@ endif ! myid == 0
    color = mod((myid-1),n_partitions)
 
    if(myid == 0) color = 2*n_partitions
-     
+
    call MPI_COMM_SPLIT( comm_world, color, myid, new_comm, ierr )
    call mpi_comm_rank( new_comm, new_rank, ierr )
    call mpi_comm_size( new_comm, my_size , ierr )
@@ -195,7 +195,7 @@ endif ! myid == 0
    tmprank0=0
    rank0=0
    if(myid /=0 .and. new_rank == 0) tmprank0(color+1) = myid
-   call MPI_ALLREDUCE(tmprank0(0),rank0(0),n_partitions+1, & 
+   call MPI_ALLREDUCE(tmprank0(0),rank0(0),n_partitions+1, &
          & MPI_INTEGER, MPI_SUM, MPI_COMM_WORLD, ierr)
    deallocate(tmprank0)
 
@@ -232,11 +232,11 @@ if( myid == 0 )then
 
         inquire( GP_summary_output_unit_all, opened = op )
         if( op ) close( GP_summary_output_unit_all )
-    
+
         !write(6,'(/A,1x,I5)')&
         !     '0: open GP_ALL_summary_file GP_summary_output_unit_all = ', &
-        !                                  GP_summary_output_unit_all 
-    
+        !                                  GP_summary_output_unit_all
+
         open( GP_summary_output_unit_all, file='GP_ALL_summary_file', &
               form = 'formatted', access = 'sequential', &
               status = 'unknown' )
@@ -277,7 +277,7 @@ endif ! myid == 0
 
             !write(6,'(/A,1x,I5)')&
             !     '0: open GP_last_gen_summary_file GP_summary_output_unit_lgen = ', &
-            !                                       GP_summary_output_unit_lgen 
+            !                                       GP_summary_output_unit_lgen
 
             open( GP_summary_output_unit_lgen, file='GP_last_gen_summary_file', &
                   form = 'formatted', access = 'sequential', &
@@ -323,19 +323,19 @@ endif ! myid == 0
     ! if the individual did not change on the last generation
     ! (so it needs no recalculation)
 
-      if( trim(model) == 'fasham_fixed_tree' )then 
-         Run_GP_Calculate_Fitness= .true.   ! for fasham fixed tree 
+      if( trim(model) == 'fasham_fixed_tree' )then
+         Run_GP_Calculate_Fitness= .true.   ! for fasham fixed tree
       else
          Run_GP_Calculate_Fitness= .false.
       endif !  trim(model) == 'fasham_fixed_tree'
 
     ! randomly create the initial tree arrays for each individual and
     ! send them all to GA_lmdif for parameter optimization on generation 1
-   
+
       call GP_produce_first(i_GP_generation)
       call GP_produce_next(i_GP_generation,i_GP_best_parent,L_nextloop)
 
-      if(L_nextloop) cycle 
+      if(L_nextloop) cycle
 
     !-----------------------------------------------------------------------------------------
 
@@ -343,15 +343,15 @@ endif ! myid == 0
     ! to replace function nodes that have both terminals set as parameters
     ! and to set the replaced node to a parameter itself
 
-      if( trim(model) /= 'fasham_fixed_tree' )then 
+      if( trim(model) /= 'fasham_fixed_tree' )then
          if( myid == 0 )then
-    
+
             write(GP_print_unit,'(/A,1x,I6/)') &
                   '0: call GP_Clean_Tree_Nodes  Generation =', i_GP_Generation
-    
+
             call GP_Clean_Tree_Nodes
          endif ! myid == 0
-      endif ! trim(model) /= 'fasham_fixed_tree' 
+      endif ! trim(model) /= 'fasham_fixed_tree'
 
 ! broadcast GP_Adult_Population_Node_Type changed by GP_Clean_Tree_Nodes
 
@@ -403,11 +403,11 @@ endif ! myid == 0
 
             !write(GP_print_unit,'(A,1x,I6)')  &
             !  '0:2 call summary_GP_all GP_summary_output_unit_all  ', &
-            !                           GP_summary_output_unit_all 
+            !                           GP_summary_output_unit_all
 
             call summary_GP_all( GP_summary_output_unit_all, i_GP_generation, zero )
 
-        endif ! GP_all_summary_flag > 1 
+        endif ! GP_all_summary_flag > 1
 
         !----------------------------------------------------------------------------
 
@@ -467,7 +467,7 @@ endif ! myid == 0
                 write(GP_print_unit, '(/A )') &
                      '0:i_GP_Indiv  GP_Indiv_N_param   &
                       & GP_Child_Indiv_SSE_nolog10   GP_Child_Indiv_SSE_nolog10/SSE0_nolog10'
-    
+
                 do  i_GP_individual = 1, n_GP_individuals
                     write(GP_print_unit, '(5x,I6,6x,I6,6x,2(1x, E20.10) )') &
                     i_GP_Individual,  GP_Individual_N_GP_param(i_GP_individual), &
@@ -477,7 +477,7 @@ endif ! myid == 0
 
                 !flush(GP_print_unit)
 
-            endif ! index( model, 'log10') > 0 .or. index( model, 'LOG10') > 0 
+            endif ! index( model, 'log10') > 0 .or. index( model, 'LOG10') > 0
 
         endif ! i_GP_generation == 1 .or. ...
 
@@ -500,7 +500,7 @@ endif ! myid == 0
     !  GP_Population_Initial_Conditions
     !  GP_population_node_parameters
     !  child_parameters
-    !  GP_child_individual_SSE
+    !  GP_Child_Population_SSE
     !  individual_quality
     !  GP_n_parms
 
@@ -513,6 +513,12 @@ endif ! myid == 0
     ! work well, so allow 2 generations to (hopefully) refine the
     ! parameter values
 
+    ! needed if GP_para_lmdif_process called
+
+    call MPI_BCAST( GP_Child_Population_SSE, n_GP_individuals,          &    ! jjm 20150130
+                    MPI_DOUBLE_PRECISION, 0, MPI_COMM_WORLD, ierr )          ! jjm 20150130
+
+
     !if( i_GP_generation > n_GP_generations / 2 )then
     if( i_GP_generation > min( 20, n_GP_generations / 2 ) )then
 
@@ -520,6 +526,7 @@ endif ! myid == 0
 
     endif !  i_GP_generation > min( 20, n_GP_generations / 2 )
 
+    !endif !  i_GP_generation > n_GP_generations / 2
 
     !---------------------------------------------------------------
 
@@ -567,7 +574,7 @@ endif ! myid == 0
                 write(GP_print_unit, '(/A )') &
                      '0:i_GP_Indiv  GP_Indiv_N_param   &
                       & GP_Child_Indiv_SSE   GP_Child_Indiv_SSE_nolog10/SSE0_nolog10'
-    
+
                 do  i_GP_individual = 1, n_GP_individuals
                     write(GP_print_unit, '(5x,I6,6x,I6,6x,2(1x, E20.10) )') &
                     i_GP_Individual,  GP_Individual_N_GP_param(i_GP_individual), &
@@ -645,9 +652,9 @@ endif ! myid == 0
          ! final generation is not the best found in the run
 
 
-         if( GP_Child_Individual_SSE(i_GP_best_parent) <  GP_minSSE_Individual_SSE  ) then
+         if( GP_Child_Population_SSE(i_GP_best_parent) <  GP_minSSE_Individual_SSE  ) then
 
-            GP_minSSE_Individual_SSE = GP_Child_Individual_SSE(i_GP_best_parent)
+            GP_minSSE_Individual_SSE = GP_Child_Population_SSE(i_GP_best_parent)
 
             GP_minSSE_Individual_Initial_Conditions(1:n_CODE_equations)  = &
                  GP_Population_Initial_Conditions(1:n_CODE_equations, i_GP_best_parent)
@@ -673,7 +680,7 @@ endif ! myid == 0
             GP_minSSE_Individual =  i_GP_best_parent
                 GP_minSSE_generation =  i_GP_generation
 
-         endif  !  GP_Child_Individual_SSE(i_GP_best_parent) <  GP_minSSE_Individual_SSE
+         endif  !  GP_Child_Population_SSE(i_GP_best_parent) <  GP_minSSE_Individual_SSE
 
       endif ! L_minSSE
 
@@ -683,7 +690,7 @@ endif ! myid == 0
 
     ! broadcast results of GP_calc_fitness:
 
-    !  GP_Adult_Individual_SSE
+    !  GP_Adult_Population_SSE
     !  GP_population_node_parameters
     !  GP_Population_Ranked_Fitness
     !  GP_Integrated_Population_Ranked_Fitness
@@ -754,7 +761,7 @@ if( myid == 0 )then
     !  Parent_Parameters
     !  GP_individual_node_type
     !  parent_parameters
-    !  GP_child_individual_SSE
+    !  GP_Child_Population_SSE
     !  GP_individual_ranked_fitness
     !  child_parameters
     !  GP_Individual_Initial_Conditions
@@ -834,7 +841,7 @@ endif ! myid == 0
 if( myid == 0 )then
 
 
- 
+
 
     if( L_GP_all_summary )then
 

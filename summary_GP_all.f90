@@ -102,7 +102,7 @@ endif ! GP_unit == GP_summary_output_unit
     write(GP_unit, '(2x,6(1x,I6),1x,E20.10)') &
              i_GP_generation, i_GP_indiv, &
              n_code_equations, n_trees, n_nodes, n_levels, &
-             GP_Child_Individual_SSE(i_GP_indiv)
+             GP_Child_Population_SSE(i_GP_indiv)
 
 
     !--------------------------------------------------------------------------------

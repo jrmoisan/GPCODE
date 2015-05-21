@@ -1,4 +1,4 @@
-subroutine GP_individual_loop(new_comm, i_GP_generation)
+subroutine GP_individual_loop( new_group, new_comm, i_GP_generation)
 
    ! program written by: Dr. John R. Moisan [NASA/GSFC] 31 January, 2013
 
@@ -26,6 +26,7 @@ subroutine GP_individual_loop(new_comm, i_GP_generation)
 
    implicit none
 
+   integer(kind=i4b),intent(in) :: new_group
    integer(kind=i4b),intent(in) :: new_comm
    integer(kind=i4b),intent(in) :: i_GP_Generation
 
@@ -58,92 +59,74 @@ subroutine GP_individual_loop(new_comm, i_GP_generation)
    integer(kind=i4b),parameter :: tag_init_cond    = 700000
    integer(kind=i4b),parameter :: tag_node_parm    = 800000
 
-   integer(kind=i4b) :: tag_fit_r
-   integer(kind=i4b) :: tag_fit_s
-   integer(kind=i4b) :: tag_sse_r
-   integer(kind=i4b) :: tag_sse_s
-   integer(kind=i4b) :: tag_tmp
-
-   real(kind=r8b),allocatable ::   fit_buffer_send(:)
-   real(kind=r8b),allocatable ::   sse_buffer_send(:)
-   integer(kind=i4b),allocatable ::   buff_parm_send(:)
-   integer(kind=i4b) :: i_sender,i_GP_ind, tmpresult,i_tag,isource
-
-logical :: L_skip
-
-!---------------------------------------------------------------------------------------
-
-L_skip = .FALSE. 
-
+   integer(kind=i4b) :: i_GP_ind, tmpresult,i_tag,isource
 
    call mpi_comm_rank( new_comm, new_rank, ierr )
    call mpi_comm_size( new_comm, n_procs,  ierr )
 
-!!!!!!!!!!!!!!!
-! Below mpi strcture will replace the old ones
-!!!!!!!!!!!!!!
-
-!   call MPI_BARRIER(MPI_COMM_WORLD,ierr)
-!   tag_tmp=20000
-!   i_GP_ind = 0
-!   if (myid == 0) then
-!      do isource = 1, min(n_partitions,n_GP_individuals)
-!         i_GP_ind = i_GP_ind +1
-!         i_tag = isource -1 ! color
-!         call MPI_SEND( i_GP_ind,  1, MPI_INTEGER,    &
-!                      rank0(isource), i_tag,  MPI_COMM_WORLD, ierr )
-!      enddo !isource
-!      do isource = 1,n_GP_individuals
-!         ! receive results
-!         call MPI_RECV( tmpresult, 1, MPI_INTEGER, &
-!                       MPI_ANY_SOURCE, MPI_ANY_TAG, &
-!                       MPI_COMM_WORLD, MPI_STAT, ierr )
-!
-!         i_GP_ind=i_GP_ind+1
-!         if (i_GP_ind > n_GP_individuals)  cycle
-!         !send a job
-!         i_sender = MPI_STAT(MPI_SOURCE)
-!         i_tag  = MPI_STAT(MPI_TAG)-tag_tmp
-!         call MPI_SEND( i_GP_ind,  1, MPI_INTEGER,    &
-!                      i_sender, i_tag,  MPI_COMM_WORLD, ierr )
-!
-!      enddo
-!
-!      i_GP_ind = 0
-!      do isource = 1,n_partitions
-!         i_tag = isource-1
-!         call MPI_SEND( i_GP_ind,  1, MPI_INTEGER,    &
-!                      rank0(isource), i_tag,  MPI_COMM_WORLD, ierr )
-!      enddo
-!
-!   else
-!      do
-!         
-!         if( new_rank ==0 ) then! (1) receive job id
-!           call MPI_RECV( i_GP_ind, 1, MPI_INTEGER,    &
-!                      0, MPI_ANY_TAG,MPI_COMM_WORLD, MPI_STAT, ierr )
-!         endif
-!         ! (2) bradcast job id 
-!         call MPI_BCAST(i_GP_ind, 1, MPI_INTEGER,    &
-!                      0, new_comm,ierr )
-!         if (i_GP_ind ==0) exit
-!
-!         !(3) do the jobs
-!
-!         !(4) send the result backs to myid=0
-!         if (new_rank == 0) then
-!            tmpresult = myid
-!            i_tag = tag_tmp+color
-!            call MPI_SEND( tmpresult, 1, MPI_INTEGER, &
-!                       0, i_tag,  &
-!                       MPI_COMM_WORLD, ierr )
-!         endif
-!      enddo
-!   endif
-!
-!  call MPI_BARRIER(MPI_COMM_WORLD,ierr)
-!
 ! do the loop over the GP individuals in n_partitions chunks
+
+   if (myid == 0) then
+      i_GP_ind = 0
+      do isource = 1, min(n_partitions,n_GP_individuals)
+         i_GP_ind = i_GP_ind +1
+         i_tag = isource -1 ! color
+         call MPI_SEND( i_GP_ind,  1, MPI_INTEGER,    &
+                      MPI_ANY_SOURCE, i_tag,  MPI_COMM_WORLD, ierr )
+      enddo !isource
+      do isource = 1,n_GP_individual
+         ! receive results
+         call MPI_RECV( tmpresult, 1, MPI_INTEGER, &
+                       MPI_ANY_SOURCE, MPI_ANY_TAG,                       &
+                       MPI_COMM_WORLD, MPI_STAT, ierr ) 
+         print*."tmpresults", tmpresult     
+         i_GP_ind=i_GP_ind+1
+         if (i_GP_ind > n_GP_individuals)  exit
+         !send a job
+         sender = MPI_STAT(MPI_SOURCE)
+         i_tag  = MPI_STAT(MPI_TAG)
+         call MPI_SEND( i_GP_ind,  1, MPI_INTEGER,    &
+                      sender, i_tag,  MPI_COMM_WORLD, ierr )
+
+      enddo
+    
+      i_GP_ind = 0 
+      do isource = 1,n_partitions
+         i_tag = isource-1
+         call MPI_SEND( i_GP_ind,  1, MPI_INTEGER,    &
+                      MPI_ANY_SOURCE, i_tag,  MPI_COMM_WORLD, ierr )
+      enddo
+
+   elseif (new_rank == 0) then
+      do
+         ! (1) receive job id
+         call MPI_RECV( i_GP_ind, 1, MPI_INTEGER,    &
+                      0, color,MPI_COMM_WORLD, MPI_STAT, ierr )
+
+         ! (2) bradcast job id 
+         call MPI_BCAST(i_GP_ind, 1, MPI_INTEGER,    &
+                      0, new_comm,ierr )
+         if (i_GP_ind ==0) exit
+
+         !(3) reseive result from slaves
+         !(4) send the result backs to myid=0
+         tmpresult = myid
+         call MPI_SEND( tmpresult, 1, MPI_INTEGER, &
+                       0, tag_parm+i_GP_ind,                       &
+                       MPI_COMM_WORLD, ierr )      
+        enddo
+      else
+         do
+          !(1) brodcast job id
+            call MPI_BCAST(i_GP_ind, 1, MPI_INTEGER,    &
+                      0, new_comm,ierr )
+            if (i_GP_ind ==0) exit
+
+         !  (2) job id ==0, exit
+         !  (3) did the job
+         !  (4) send the result back to new_rank==0 
+         enddo 
+   endif    
 
    part_loop:&
    do  i_part = 1,  n_partitions
@@ -254,41 +237,11 @@ L_skip = .FALSE.
                     n_GP_parameters > n_maximum_number_parameters .or.  &
                     n_GP_parameters <=  n_code_equations                 ) then
 
-
-                    !if( new_rank == 0 )then
-                    !    write(GP_print_unit,'(A,1x,I5,A,1x,i5)')&
-                    !          'gil: skipping this i_GP_Individual', i_GP_individual, &
-                    !          ' --  the number of parameters is ', n_GP_parameters
-                    !    !flush(GP_print_unit)
-                    !endif !  new_rank == 0
-
-
-                    L_skip = .TRUE. 
                     individual_fitness = 0.0d0
-                    Individual_SSE_best_parent = big_real
 
-!                    GP_Child_Individual_SSE(i_GP_individual)         = big_real  ! jjm 20150109
-!                    GP_Adult_Individual_SSE(i_GP_individual)         = big_real  ! jjm 20150109
-!                    GP_Adult_Population_SSE(i_GP_individual)         = big_real  ! jjm 20150109
-                    GP_Child_Individual_SSE_nolog10(i_GP_individual) = big_real  ! jjm 20150109
-
-
-                    !if( new_rank == 0 )then
-                    !    write(GP_print_unit,'(A,7(1x,I5), 1x, E15.7)')&
-                    !     'gil: myid, new_rank, i_part, i_gp_1, i_gp_2, &
-                    !           &i_GP_gen, i_GP_indiv, indiv_fit', &
-                    !           myid, new_rank, i_part, i_gp_1, i_gp_2, &
-                    !           i_GP_generation, i_GP_individual, &
-                    !           individual_fitness
-                    !endif !  new_rank == 0
-
-                else
-
-                    L_skip = .FALSE.
+                    cycle gp_ind_loop
 
                 endif ! n_GP_parameters == 0
-
-                !-------------------------------------------------------------------
 
                 ! THIS IS WHERE YOU NEED TO INSERT THE GA_LMDIF CALL AND
                 ! LINK THE SSE OUTPUT TO THE ARRAY AT THE END
@@ -299,19 +252,9 @@ L_skip = .FALSE.
                 ! GP_Individual_Node_Parameters
                 ! these arrays are broadcast in GPCODE_GA...
 
-
-                if( L_skip )then
-
-                    Individual_SSE_best_parent         = big_real
-                    Individual_SSE_best_parent_nolog10 = big_real
-
-                else
-
-                    call GPCODE_GA_lmdif_Parameter_Optimization( &
-                                  i_GP_Generation,i_GP_individual, &
-                                             new_comm  )
-                        
-                endif !  .not. L_skip 
+                call GPCODE_GA_lmdif_Parameter_Optimization( &
+                            i_GP_Generation,i_GP_individual, &
+                           new_comm  )
 
 
                 GP_Population_Ranked_Fitness(i_GP_individual) = individual_fitness
@@ -340,6 +283,7 @@ L_skip = .FALSE.
             n_indiv = ind2 - ind1 + 1
             call MPI_SEND( GP_Individual_N_GP_Param(ind1), n_indiv, MPI_INTEGER,        &
                            0,  tag_parm+ii, MPI_COMM_WORLD, ierr )
+
             ! send the fitness buffer for the GP individuals already completed
             call MPI_SEND(GP_Population_Ranked_Fitness(ind1), n_indiv, MPI_DOUBLE_PRECISION, &
                            0,  tag_ind_fit+ii, MPI_COMM_WORLD, ierr )
@@ -372,16 +316,6 @@ L_skip = .FALSE.
    call MPI_BCAST( GP_Individual_N_GP_param, message_len,    &
                 MPI_INTEGER,  0, MPI_COMM_WORLD, ierr )
 
-   call MPI_BCAST( GP_Child_Population_SSE, n_GP_individuals,    &
-                MPI_DOUBLE_PRECISION, 0, MPI_COMM_WORLD, ierr )
-
    call MPI_BARRIER( MPI_COMM_WORLD, ierr )
-
-
-
-
-return
-
-
 
 end subroutine GP_individual_loop

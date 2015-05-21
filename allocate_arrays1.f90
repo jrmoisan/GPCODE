@@ -50,8 +50,9 @@ allocate( Data_Array_log10( 0:n_time_steps, n_CODE_equations )  )
    allocate( Parent_Tree_Swap_Node_Type(n_Nodes,2) )
    allocate( Run_GP_Calculate_Fitness(n_GP_Individuals) )
 
-   allocate( GP_Adult_Individual_SSE(n_GP_Individuals) )
-   allocate( GP_Child_Individual_SSE(n_GP_Individuals) )
+!allocate( GP_Adult_Individual_SSE(n_GP_Individuals) )
+!allocate( GP_Child_Individual_SSE(n_GP_Individuals) )
+   allocate( GP_Child_Population_SSE(n_GP_Individuals) )
 
 !if( index( model, 'log10') > 0 .or. &
 !    index( model, 'LOG10') > 0        )then
@@ -110,7 +111,8 @@ allocate( Truth_Initial_Conditions( 1:n_code_equations )  )
 allocate( Truth_Node_Type( n_nodes, n_trees )  )
 allocate( Truth_Node_Parameters( n_nodes, n_trees )  )
 
-   allocate( Truth_Model_Match( n_gp_generations ) )
+
+!allocate( Truth_Model_Match( n_gp_generations ) )
 
 
 
@@ -243,9 +245,12 @@ individual_SSE_nolog10  = -7.0d0
 Truth_Initial_Conditions  = 0.0d0
 Truth_Node_Type           = -9999
 Truth_Node_Parameters     = 0.0d0
-Truth_Model_Match         = .FALSE.
+!Truth_Model_Match         = .FALSE.
 
 !---------------------------------------------------------------
+=======
+   GP_Child_Population_SSE = 0.0d0
+>>>>>>> origin/master
 
 
 GP_Adult_Population_Node_Type = -9999

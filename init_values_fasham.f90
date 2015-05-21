@@ -2194,13 +2194,13 @@ endif ! myid == 0
             GP_Individual_Node_Parameters(15,54)=  beta3  ! "[15] (P)   0.75000000"];
 
 
-    !=============================================================================================
-
-    Truth_Initial_Conditions =  Numerical_CODE_Initial_Conditions
-    Truth_Node_Type          = GP_Individual_Node_Type
-    Truth_Node_Parameters    = GP_Individual_Node_Parameters
-
-    !=============================================================================================
+!=============================================================================================
+!
+Truth_Initial_Conditions =  Numerical_CODE_Initial_Conditions
+Truth_Node_Type          = GP_Individual_Node_Type
+Truth_Node_Parameters    = GP_Individual_Node_Parameters
+!
+!=============================================================================================
 
 
 return

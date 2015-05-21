@@ -141,6 +141,8 @@ call MPI_BCAST( GA_save_elites_Probability, 1,    &
                 MPI_DOUBLE_PRECISION, 0, MPI_COMM_WORLD, ierr )
 call MPI_BCAST( GA_rand_replace_Probability, 1,    &
                 MPI_DOUBLE_PRECISION, 0, MPI_COMM_WORLD, ierr )
+call MPI_BCAST( GP_rand_replace_Probability, 1,    &
+                MPI_DOUBLE_PRECISION, 0, MPI_COMM_WORLD, ierr )
 call MPI_BCAST( dt, 1,    &
                 MPI_DOUBLE_PRECISION, 0, MPI_COMM_WORLD, ierr )
 call MPI_BCAST( GP_Tree_Probability, 1,    &

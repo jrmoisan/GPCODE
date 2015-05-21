@@ -27,11 +27,6 @@ implicit none
 
 
 
-
-!real(kind=r8b),dimension(4) :: Time_Step
-!data Time_Step /0.0D+0,0.5D+0,0.5D+0,1.0D+0/  ! fraction of R-K time step
-
-
 ! Forcing functions are used in computations, so are included here for book keeping purposes
 
 
@@ -150,7 +145,7 @@ tree_node_count = 0
 ! start the time stepping loop
 
 
-do  i_data_point = 1, n_time_steps
+do  i_data_point = 1, n_input_data_points
 
 
     !------------------------------------------------------------------------------

@@ -13,7 +13,7 @@ implicit none
 
 real(kind=r4b) :: cff
 
-integer(kind=i4b),intent(inout) :: Node_Variable
+integer(kind=i4b) :: Node_Variable
 
 real(kind=r4b),dimension(2,4) :: frac_forcing_type
 
@@ -65,12 +65,12 @@ if( cff < prob_forcing )then
     if( cff >  frac_forcing_type(1, 3) .and.  &
         cff <= frac_forcing_type(2, 3)         )then
 
-        node_variable = 5003
+        node_variable = -5003
 
     elseif( cff >  frac_forcing_type(1, 4) .and.  &
             cff <= frac_forcing_type(2, 4)         )then
 
-        node_variable = 5004
+        node_variable = -5004
 
         ! turn off the daily forcing only
         if( L_no_forcing ) then
@@ -80,12 +80,12 @@ if( cff < prob_forcing )then
     elseif( cff >  frac_forcing_type(1, 2) .and.  &
             cff <= frac_forcing_type(2, 2)         )then
 
-        node_variable = 5002
+        node_variable = -5002
 
     elseif( cff >  frac_forcing_type(1, 1) .and.  &
             cff <= frac_forcing_type(2, 1)         )then
 
-        node_variable = 5001
+        node_variable = -5001
 
     endif ! cff < frac_forcing_type(1,3) ...
 

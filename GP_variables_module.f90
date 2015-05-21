@@ -68,7 +68,7 @@ integer(kind=i4b) :: n_GP_Asexual_Reproductions
 integer(kind=i4b) :: n_GP_Crossovers
 integer(kind=i4b) :: n_GP_Mutations
 
-
+integer(kind=i4b) :: n_GP_rand_replaces
 
 
 
@@ -153,7 +153,7 @@ real(kind=r8b),allocatable,dimension(:)          :: Truth_Initial_Conditions
 integer(kind=i4b),allocatable,dimension(:,:)     :: Truth_Node_Type
 real(kind=r8b),target,allocatable,dimension(:,:) :: Truth_Node_Parameters
 
-logical,allocatable, dimension(:) :: Truth_Model_Match       
+logical :: Truth_Model_Match       
 
 !------------------------------------------------------------------------------
 
@@ -166,18 +166,20 @@ integer(kind=i4b) :: GP_minSSE_Individual_N_GP_param
 
 ! must be kept for re-evaluations of next generations >>>
 
-! GP_Adult_Individual_SSE(n_GP_Individuals)
-! GP_Child_Individual_SSE(n_GP_Individuals)
+! GP_Adult_Population_SSE(n_GP_Individuals)
+! GP_Child_Population_SSE(n_GP_Individuals)
 ! GP_Individual_Ranked_Fitness(n_GP_Individuals)
 ! GP_Integrated_Ranked_Fitness(n_GP_Individuals)
 
-real(kind=r8b),allocatable, dimension(:) :: GP_Adult_Individual_SSE
-real(kind=r8b),allocatable, dimension(:) :: GP_Child_Individual_SSE
 real(kind=r8b),allocatable, dimension(:) :: GP_Child_Individual_SSE_nolog10
 
 real(kind=r8b) :: sse_local_nolog10              
 
-real(kind=r8b),allocatable, dimension(:) :: GP_Adult_Population_SSE  ! ???
+
+real(kind=r8b),allocatable, dimension(:) :: GP_Child_Population_SSE
+
+
+real(kind=r8b),allocatable, dimension(:) :: GP_Adult_Population_SSE  
 
 real(kind=r8b),allocatable, dimension(:) :: GP_Individual_Ranked_Fitness
 real(kind=r8b),allocatable, dimension(:) :: GP_Integrated_Ranked_Fitness

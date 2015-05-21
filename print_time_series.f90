@@ -8,7 +8,7 @@ subroutine print_time_series( i_GP_best_parent,  nop, i_GP_generation )
 ! coupled ordinary differential equations
 !xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
-use kinds_mod 
+use kinds_mod
 
 use mpi
 use mpi_module
@@ -31,7 +31,7 @@ character(1000) :: title_string
 
 integer(kind=i4b),intent(in) :: i_GP_best_parent
 integer(kind=i4b),intent(in) :: nop
-integer(kind=i4b),intent(in) :: i_GP_generation 
+integer(kind=i4b),intent(in) :: i_GP_generation
 integer(kind=i4b) :: i_tree
 integer(kind=i4b) :: i_node
 integer(kind=i4b) :: ii
@@ -254,6 +254,13 @@ if( myid == 0 )then
     enddo
 
 
+!    if( index( model, 'LOG10' ) .or. &
+!        index( model, 'log10' )        )then
+
+!    if( L_myprint )write(GP_print_unit,'(/A/)') 'pts: LOG10 DATA'
+!    write(plot_unit,'(A)')  '#pts: LOG10 DATA'
+
+!    endif !  index( model, 'DATA' ) ...
 
     if( L_myprint )write(GP_print_unit,'(/A/)')  trim( title_string )
     write(plot_unit,'(A)')        trim( title_string )
