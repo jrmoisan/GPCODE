@@ -173,12 +173,11 @@ subroutine GP_individual_loop(new_comm, i_GP_generation)
                        MPI_COMM_WORLD, MPI_STAT, ierr )
 
         ! receive the SSE information
-        call MPI_RECV( GP_Child_Individual_SSE(ind1), n_indiv, MPI_DOUBLE_PRECISION, &
+        call MPI_RECV( GP_Child_Population_SSE(ind1), n_indiv, MPI_DOUBLE_PRECISION, &
                        MPI_ANY_SOURCE, tag_ind_sse+jj,                       &
                        MPI_COMM_WORLD, MPI_STAT, ierr )
 
-        GP_Adult_Individual_SSE(ind1:ind2) =  GP_Child_Individual_SSE(ind1:ind2)
-        GP_Adult_Population_SSE(ind1:ind2) =  GP_Child_Individual_SSE(ind1:ind2)
+        GP_Adult_Population_SSE(ind1:ind2) =  GP_Child_Population_SSE(ind1:ind2)
 
         message_len = n_indiv*n_code_equations
         call MPI_RECV( GP_Population_Initial_Conditions(1,jj), message_len,    &
@@ -249,10 +248,9 @@ subroutine GP_individual_loop(new_comm, i_GP_generation)
                     n_GP_parameters <=  n_code_equations                 ) then
 
                     individual_fitness = 0.0d0
+                    Individual_SSE_best_parent = big_real
 
-                    cycle gp_ind_loop
-
-                endif ! n_GP_parameters == 0
+                else
 
                 ! THIS IS WHERE YOU NEED TO INSERT THE GA_LMDIF CALL AND
                 ! LINK THE SSE OUTPUT TO THE ARRAY AT THE END
@@ -263,13 +261,14 @@ subroutine GP_individual_loop(new_comm, i_GP_generation)
                 ! GP_Individual_Node_Parameters
                 ! these arrays are broadcast in GPCODE_GA...
 
-                call GPCODE_GA_lmdif_Parameter_Optimization( &
+                   call GPCODE_GA_lmdif_Parameter_Optimization( &
                             i_GP_Generation,i_GP_individual, &
                            new_comm  )
 
+                endif ! n_GP_parameters == 0
 
                 GP_Population_Ranked_Fitness(i_GP_individual) = individual_fitness
-                GP_Child_Individual_SSE(i_GP_individual) = Individual_SSE_best_parent
+                GP_Child_Population_SSE(i_GP_individual) = Individual_SSE_best_parent
 
                 ! set the GA_lmdif-optimized initial condition array
                 GP_Population_Initial_Conditions(:, i_GP_Individual) = &
@@ -299,7 +298,7 @@ subroutine GP_individual_loop(new_comm, i_GP_generation)
                            0,  tag_ind_fit+ii, MPI_COMM_WORLD, ierr )
 
             ! send the SSE buffer for the GP individuals already completed
-            call MPI_SEND( GP_Child_Individual_SSE(ind1), n_indiv, MPI_DOUBLE_PRECISION, &
+            call MPI_SEND( GP_Child_Population_SSE(ind1), n_indiv, MPI_DOUBLE_PRECISION, &
                            0, tag_ind_sse+ii, MPI_COMM_WORLD, ierr )
            
             ! send initial condition
@@ -326,7 +325,7 @@ subroutine GP_individual_loop(new_comm, i_GP_generation)
    call MPI_BCAST( GP_Individual_N_GP_param, message_len,    &
                 MPI_INTEGER,  0, MPI_COMM_WORLD, ierr )
 
-   call MPI_BCAST( GP_Child_Individual_SSE, n_GP_individuals,    &
+   call MPI_BCAST( GP_Child_Population_SSE, n_GP_individuals,    &
                 MPI_DOUBLE_PRECISION, 0, MPI_COMM_WORLD, ierr )
 
    call MPI_BARRIER( MPI_COMM_WORLD, ierr )

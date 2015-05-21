@@ -288,7 +288,7 @@ program main
     !  GP_Population_Initial_Conditions
     !  GP_population_node_parameters
     !  child_parameters
-    !  GP_child_individual_SSE
+    !  GP_Child_Population_SSE
     !  individual_quality
     !  GP_n_parms
 
@@ -304,10 +304,16 @@ program main
     !if( i_GP_generation > n_GP_generations / 2 )then
     !if( i_GP_generation > 20                   )then
 
-        call GP_para_lmdif_process( i_GP_generation, max_n_gp_params  )
+    ! needed if GP_para_lmdif_process called                                                            
+                                                                                                         
+    call MPI_BCAST( GP_Child_Population_SSE, n_GP_individuals,          &    ! jjm 20150130           
+                    MPI_DOUBLE_PRECISION, 0, MPI_COMM_WORLD, ierr )          ! jjm 20150130           
+
+
+    call GP_para_lmdif_process( i_GP_generation, max_n_gp_params  )
+
 
     !endif !  i_GP_generation > n_GP_generations / 2
-
 
     !---------------------------------------------------------------
 
@@ -344,9 +350,9 @@ program main
          ! final generation is not the best found in the run
 
 
-         if( GP_Child_Individual_SSE(i_GP_best_parent) <  GP_minSSE_Individual_SSE  ) then
+         if( GP_Child_Population_SSE(i_GP_best_parent) <  GP_minSSE_Individual_SSE  ) then
 
-            GP_minSSE_Individual_SSE = GP_Child_Individual_SSE(i_GP_best_parent)
+            GP_minSSE_Individual_SSE = GP_Child_Population_SSE(i_GP_best_parent)
 
             GP_minSSE_Individual_Initial_Conditions(1:n_CODE_equations)  = &
                  GP_Population_Initial_Conditions(1:n_CODE_equations, i_GP_best_parent)
@@ -372,7 +378,7 @@ program main
             GP_minSSE_Individual =  i_GP_best_parent
                 GP_minSSE_generation =  i_GP_generation
 
-         endif  !  GP_Child_Individual_SSE(i_GP_best_parent) <  GP_minSSE_Individual_SSE
+         endif  !  GP_Child_Population_SSE(i_GP_best_parent) <  GP_minSSE_Individual_SSE
 
       endif ! L_minSSE
 
@@ -382,7 +388,7 @@ program main
 
     ! broadcast results of GP_calc_fitness:
 
-    !  GP_Adult_Individual_SSE
+    !  GP_Adult_Population_SSE
     !  GP_population_node_parameters
     !  GP_Population_Ranked_Fitness
     !  GP_Integrated_Population_Ranked_Fitness
@@ -410,7 +416,7 @@ program main
     !  Parent_Parameters
     !  GP_individual_node_type
     !  parent_parameters
-    !  GP_child_individual_SSE
+    !  GP_Child_Population_SSE
     !  GP_individual_ranked_fitness
     !  child_parameters
     !  GP_Individual_Initial_Conditions

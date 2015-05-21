@@ -29,11 +29,11 @@ message(STATUS "compiler[${c_result}]: ${c_output}")
 
 if("${c_output}" MATCHES "GNU" OR "${c_output}" MATCHES "gfortran")
    message(STATUS "gfortran")
-   set(CMAKE_Fortran_FLAGS_DEBUG "${CMAKE_Fortran_FLAGS_DEBUG} -O0 -fcheck=bounds")
+   set(CMAKE_Fortran_FLAGS_DEBUG "${CMAKE_Fortran_FLAGS_DEBUG} -g -O0 -fcheck=bounds")
    set(CMAKE_Fortran_FLAGS "${CMAKE_Fortran_FLAGS} -O3 -free")
 elseif("${c_output}" MATCHES "ifort")
    message(STATUS "ifort")
-   set(CMAKE_Fortran_FLAGS_DEBUG "${CMAKE_Fortran_FLAGS_DEBUG} -O0 -check uninit -check bounds -traceback")
+   set(CMAKE_Fortran_FLAGS_DEBUG "${CMAKE_Fortran_FLAGS_DEBUG} -g -O0 -check uninit -check bounds -traceback")
    set(CMAKE_Fortran_FLAGS "${CMAKE_Fortran_FLAGS} -O3 -assume realloc_lhs -mkl -heap-arrays")
 else()
    message( FATAL_ERROR "Unrecognized compiler. Please use ifort, gfortran or gfortran-mp-4.8" )
@@ -63,7 +63,7 @@ GP_individual_loop.f90 GP_Mutations.f90 GP_para_lmdif_process.f90
 GP_parameters_module.f90 GP_produce_first.f90 GP_produce_next.f90 
 GP_ranking_sort.f90 GP_select_best_RK_lmdif_result.f90 
 GP_Tournament_Style_Sexual_Reproduction.f90 GP_Tree_Build.f90 
-GP_Tree_Build_single.f90 GP_Tree_Swap.f90 GP_variables_module.f90 
+GP_Tree_Swap.f90 GP_variables_module.f90 
 GPCODE_GA_lmdif_Parameter_Optimization.f90 gser.f90 indiv_fitness.f90 
 init_values.f90 init_values_data.f90 init_values_fasham.f90 
 init_values_LV.f90 init_values_NPZ.f90 

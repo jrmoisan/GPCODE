@@ -27,10 +27,10 @@ integer(kind=i4b) :: buffer_length
 
 
 
-   call MPI_BCAST( GP_Child_Individual_SSE, n_GP_individuals,    &
+   call MPI_BCAST( GP_Child_Population_SSE, n_GP_individuals,    &
                 MPI_DOUBLE_PRECISION, 0, MPI_COMM_WORLD, ierr )
 
-   call MPI_BCAST( GP_Adult_Individual_SSE, n_GP_individuals,    &
+   call MPI_BCAST( GP_Adult_Population_SSE, n_GP_individuals,    &
                 MPI_DOUBLE_PRECISION, 0, MPI_COMM_WORLD, ierr )
 
    buffer_length = n_nodes * n_trees * n_GP_individuals

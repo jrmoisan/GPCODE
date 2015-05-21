@@ -163,12 +163,11 @@ subroutine GP_individual_loop( new_group, new_comm, i_GP_generation)
                        MPI_COMM_WORLD, MPI_STAT, ierr )
 
         ! receive the SSE information
-        call MPI_RECV( GP_Child_Individual_SSE(ind1), n_indiv, MPI_DOUBLE_PRECISION, &
+        call MPI_RECV( GP_Child_Population_SSE(ind1), n_indiv, MPI_DOUBLE_PRECISION, &
                        MPI_ANY_SOURCE, tag_ind_sse+jj,                       &
                        MPI_COMM_WORLD, MPI_STAT, ierr )
 
-        GP_Adult_Individual_SSE(ind1:ind2) =  GP_Child_Individual_SSE(ind1:ind2)
-        GP_Adult_Population_SSE(ind1:ind2) =  GP_Child_Individual_SSE(ind1:ind2)
+        GP_Adult_Population_SSE(ind1:ind2) =  GP_Child_Population_SSE(ind1:ind2)
 
         message_len = n_indiv*n_code_equations
         call MPI_RECV( GP_Population_Initial_Conditions(1,jj), message_len,    &
@@ -259,7 +258,7 @@ subroutine GP_individual_loop( new_group, new_comm, i_GP_generation)
 
 
                 GP_Population_Ranked_Fitness(i_GP_individual) = individual_fitness
-                GP_Child_Individual_SSE(i_GP_individual) = Individual_SSE_best_parent
+                GP_Child_Population_SSE(i_GP_individual) = Individual_SSE_best_parent
 
                 ! set the GA_lmdif-optimized initial condition array
                 GP_Population_Initial_Conditions(:, i_GP_Individual) = &
@@ -290,7 +289,7 @@ subroutine GP_individual_loop( new_group, new_comm, i_GP_generation)
                            0,  tag_ind_fit+ii, MPI_COMM_WORLD, ierr )
 
             ! send the SSE buffer for the GP individuals already completed
-            call MPI_SEND( GP_Child_Individual_SSE(ind1), n_indiv, MPI_DOUBLE_PRECISION, &
+            call MPI_SEND( GP_Child_Population_SSE(ind1), n_indiv, MPI_DOUBLE_PRECISION, &
                            0, tag_ind_sse+ii, MPI_COMM_WORLD, ierr )
            
             ! send initial condition

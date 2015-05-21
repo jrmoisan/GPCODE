@@ -25,7 +25,7 @@ subroutine GP_produce_next(i_GP_generation,i_GP_best_parent,L_nextloop)
 !    i)  GP Fitness-Proportionate Asexual Reproduction;
 !   ii)  GP Tournament-Style Sexual Reproduction, and;
 !  iii)  GP Mutation
-! then broadcast the arrays to all processors
+!  iv )  Broadcast the arrays to all processors
    
    L_nextloop = .false.
 
@@ -39,7 +39,7 @@ subroutine GP_produce_next(i_GP_generation,i_GP_best_parent,L_nextloop)
 
       ! fill child sse for individuals not  modified in this generation
 
-      ! GP_Child_Individual_SSE  = GP_Adult_Population_SSE   ! needed ??  jjm 20140522
+      ! GP_Child_Population_SSE  = GP_Adult_Population_SSE   ! needed ??  jjm 20140522
 
       if( i_GP_generation == 1                                  .or. &
            mod( i_GP_generation, GP_child_print_interval ) == 0  .or. &
@@ -53,8 +53,8 @@ subroutine GP_produce_next(i_GP_generation,i_GP_best_parent,L_nextloop)
          do  i_GP_individual = 1, n_GP_individuals
             write(GP_print_unit,'(2(1x,I10), 2(1x, E20.10))') &
                   i_GP_generation, i_GP_individual, &
-                  GP_Child_Individual_SSE(i_GP_Individual), &
-                  GP_Child_Individual_SSE(i_GP_Individual)/SSE0
+                  GP_Child_Population_SSE(i_GP_Individual), &
+                  GP_Child_Population_SSE(i_GP_Individual)/SSE0
          enddo ! i_GP_individual
                 !flush(GP_print_unit)
 
@@ -75,21 +75,11 @@ subroutine GP_produce_next(i_GP_generation,i_GP_best_parent,L_nextloop)
 
             !   sets:
             !   GP_Child_Population_Node_Type
-            !   GP_Child_Individual_SSE
+            !   GP_Child_Population_SSE
             !   GP_Population_Node_Parameters
             !   GP_Population_Initial_Conditions
 
-
-            if( n_GP_Asexual_Reproductions .gt. 0 )then
-
-                write(GP_print_unit,'(A,1x,I6)') &
-                      '0: call GP_Fit_Prop_Asexual_Repro &
-                      &n_GP_Asexual_Reproductions =', n_GP_Asexual_Reproductions
-                !flush(GP_print_unit)
-
-                call GP_Fitness_Proportionate_Asexual_Reproduction
-
-            endif !  n_GP_Asexual_Reproductions .gt. 0
+       call GP_Fitness_Proportionate_Asexual_Reproduction
 
             !----------------------------------------------------------------------------------
 
@@ -106,17 +96,8 @@ subroutine GP_produce_next(i_GP_generation,i_GP_best_parent,L_nextloop)
             !    GP_Child_Population_Node_Type
             !    Run_GP_Calculate_Fitness ( to true for modified individuals )
 
+       call GP_Tournament_Style_Sexual_Reproduction( ierror_t )
 
-            if( n_GP_Crossovers .gt. 0 )then
-
-                write(GP_print_unit,'(/A,1x,I6)') &
-                      '0: call GP_Tour_Style_Sexual_Repro n_GP_Crossovers =', &
-                                                              n_GP_Crossovers
-
-                ierror_t = 0
-                call GP_Tournament_Style_Sexual_Reproduction( ierror_t )
-
-            endif !  n_GP_Crossovers .gt. 0
 
             !----------------------------------------------------------------------------------
 
@@ -129,78 +110,22 @@ subroutine GP_produce_next(i_GP_generation,i_GP_best_parent,L_nextloop)
             !  GP_Child_Population_Node_Type
             !  Run_GP_Calculate_Fitness  ( to true for modified individuals )
 
-
-
-            if( n_GP_Mutations .gt. 0 )then
-
-                write(GP_print_unit,'(/A,13x,I6, 1x, E15.7)')&
-                     '0: call GP_Mutations n_GP_Mutations, prob_no_elite', &
-                                  n_GP_Mutations, prob_no_elite
-
-                ierror_m = 0
-                call GP_Mutations( ierror_m )
-            endif !  n_GP_Mutations .gt. 0
-
-            write(GP_print_unit,'(/A)')&
-                  '0: i_GP_gen i_GP_indiv    Run_GP_Calculate_Fitness'
-
-            do  i_GP_individual = 1, n_GP_individuals
-                if( .not.  Run_GP_Calculate_Fitness(i_GP_Individual)  )then
-                    write(GP_print_unit,'(2(1x,I10), 5x,L1)') &
-                               i_GP_generation, i_GP_individual, &
-                               Run_GP_Calculate_Fitness(i_GP_Individual)
-                endif !.not.  Run_GP_Calculate_Fitness(i_GP_Individual)  )then
-            enddo ! i_GP_individual
-
-            write(GP_print_unit,'(A)') ' '
-            !flush(GP_print_unit)
-
-            !---------------------------------------------------------------------------
+       call GP_Mutations( ierror_m )
 
             !   Move over any newly created children into the adult arrays
 
-            GP_Adult_Population_Node_Type = GP_Child_Population_Node_Type
-            GP_Adult_Population_SSE       = GP_Child_Individual_SSE
-
-
-            if( i_GP_generation == 1                                  .or. &
-                mod( i_GP_generation, GP_child_print_interval ) == 0  .or. &
-                i_GP_generation == n_GP_generations                          )then
-
-                write(GP_print_unit,'(A,1x,I6/)') '0: after Mutations ierror_m = ', ierror_m
-
-                write(GP_print_unit,'(A)')&
-                      '0: i_GP_gen i_GP_indiv    GP_Child_Indiv_SSE&
-                      &   GP_Child_Indiv_SSE/SSE0'
-
-                do  i_GP_individual = 1, n_GP_individuals
-                    write(GP_print_unit,'(2(1x,I10), 2(1x, E20.10))') &
-                               i_GP_generation, i_GP_individual, &
-                               GP_Child_Individual_SSE(i_GP_Individual), &
-                               GP_Child_Individual_SSE(i_GP_Individual)/SSE0
-                enddo ! i_GP_individual
-
-                !flush(GP_print_unit)
-
-                !write(GP_print_unit,'(/A/(10(3x,L1)))')&
-                !      '0: Run_GP_Calculate_Fitness ', Run_GP_Calculate_Fitness
-
-            endif ! i_GP_generation == 1 .or. ...
-
-
-            !---------------------------------------------------------------------------
+       GP_Adult_Population_Node_Type = GP_Child_Population_Node_Type
+       GP_Adult_Population_SSE       = GP_Child_Population_SSE
 
         endif ! myid == 0
 
-        !write(6,'(/A,1x,I5/)') '0: broadcast ierror_t and ierror_m         myid = ', myid
-
-        message_len =  1
-        call MPI_BCAST( ierror_t, message_len,    &
+       message_len =  1
+       call MPI_BCAST( ierror_t, message_len,    &
                         MPI_INTEGER,  0, MPI_COMM_WORLD, ierr )
-        call MPI_BCAST( ierror_m, message_len,    &
+       call MPI_BCAST( ierror_m, message_len,    &
                         MPI_INTEGER,  0, MPI_COMM_WORLD, ierr )
 
-        if( ierror_t > 0 .or. ierror_m > 0 )then
+       if( ierror_t > 0 .or. ierror_m > 0 )then
             write(6,'(A,2(1x,I6))') &
                   '0: error found in GP_Tour or GP_Mut in generation ', &
                                                      i_GP_generation, myid
@@ -239,7 +164,7 @@ subroutine GP_produce_next(i_GP_generation,i_GP_best_parent,L_nextloop)
         ! broadcast:
         ! GP_Child_Population_Node_Type
         ! GP_Adult_Population_Node_Type
-        ! GP_Child_Individual_SSE
+        ! GP_Child_Population_SSE
         ! GP_Integrated_Population_Ranked_Fitness
         ! GP_Population_Ranked_Fitness
         ! Run_GP_Calculate_Fitness

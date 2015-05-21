@@ -33,8 +33,7 @@ subroutine allocate_arrays1()
    allocate( Parent_Tree_Swap_Node_Type(n_Nodes,2) )
    allocate( Run_GP_Calculate_Fitness(n_GP_Individuals) )
 
-   allocate( GP_Adult_Individual_SSE(n_GP_Individuals) )
-   allocate( GP_Child_Individual_SSE(n_GP_Individuals) )
+   allocate( GP_Child_Population_SSE(n_GP_Individuals) )
 
    allocate( individual_SSE( n_GA_individuals )  )
 
@@ -191,8 +190,7 @@ subroutine allocate_arrays1()
    GP_Adult_Population_Node_Type = -9999
    GP_Child_Population_Node_Type = -9999
 
-   GP_Adult_Individual_SSE = 0.0d0
-   GP_Child_Individual_SSE = 0.0d0
+   GP_Child_Population_SSE = 0.0d0
 
    Node_Values = 0.0d0
    tree_evaluation = 0.0d0

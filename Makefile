@@ -23,7 +23,7 @@ SRCS =	main.f90 allocate_arrays1.f90 \
 	GP_parameters_module.f90 GP_produce_first.f90 GP_produce_next.f90 \
 	GP_ranking_sort.f90 GP_select_best_RK_lmdif_result.f90 \
 	GP_Tournament_Style_Sexual_Reproduction.f90 GP_Tree_Build.f90 \
-	GP_Tree_Build_single.f90 GP_Tree_Swap.f90 GP_variables_module.f90 \
+	GP_Tree_Swap.f90 GP_variables_module.f90 \
 	GPCODE_GA_lmdif_Parameter_Optimization.f90 gser.f90 indiv_fitness.f90 \
 	init_values.f90 init_values_data.f90 init_values_fasham.f90 \
 	init_values_LV.f90 init_values_NPZ.f90 \

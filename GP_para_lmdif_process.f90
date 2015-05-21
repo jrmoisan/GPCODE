@@ -224,7 +224,7 @@ if( myid == 0  )then
                 child_parameters(jj,i_individual) =  buffer2_recv(jj )
             enddo ! jj
 
-            GP_Child_Individual_SSE(i_individual) =  &
+            GP_Child_Population_SSE(i_individual) =  &
                                  buffer2_recv( max_n_gp_params+1)
             individual_quality(i_individual) = &
                            nint( buffer2_recv( max_n_gp_params+2) )
@@ -342,12 +342,12 @@ else  ! not myid == 0
             ! after setup_run_para_lmdif, temp_SSE will have the result of lmdif
 
             ! if info > 0, this is a good result so load temp_SSE into the 
-            ! GP_child_individual_SSE array
+            ! GP_Child_Population_SSE array
 
             ! if info < 0, this is a bad result so do not replace the value in the
-            ! GP_child_individual_SSE array
+            ! GP_Child_Population_SSE array
 
-            temp_SSE = GP_child_individual_SSE(i_2_individual)
+            temp_SSE = GP_Child_Population_SSE(i_2_individual)
 
             call setup_run_para_lmdif( i_2_individual, &
                                        max_n_gp_params, &
@@ -363,7 +363,7 @@ else  ! not myid == 0
 
             if( info > 0  )then
 
-                GP_child_individual_SSE(i_2_individual) = temp_SSE
+                GP_Child_Population_SSE(i_2_individual) = temp_SSE
 
             endif ! abs(temp_SSE)...
 
@@ -373,7 +373,7 @@ else  ! not myid == 0
                 buffer2(jj) =  child_parameters(jj,i_2_individual)
             enddo ! jj
 
-            buffer2(max_n_gp_params+1) = GP_Child_Individual_SSE(i_2_individual)
+            buffer2(max_n_gp_params+1) = GP_Child_Population_SSE(i_2_individual)
             buffer2(max_n_gp_params+2) = &
                 real( individual_quality(i_2_individual), kind=8 )
 
@@ -451,10 +451,10 @@ message_len = n_GP_individuals
 call MPI_BCAST( individual_quality, message_len,    &
                 MPI_INTEGER, 0, MPI_COMM_WORLD, ierr )
 
-! broadcast GP_Child_Individual_SSE
+! broadcast GP_Child_Population_SSE
 
 message_len = n_GP_individuals
-call MPI_BCAST( GP_Child_Individual_SSE, message_len,    &
+call MPI_BCAST( GP_Child_Population_SSE, message_len,    &
                 MPI_DOUBLE_PRECISION, 0, MPI_COMM_WORLD, ierr )
 
 ! broadcast GP_population_node_parameters

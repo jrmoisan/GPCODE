@@ -47,7 +47,7 @@ subroutine GP_produce_first(i_GP_generation)
       call read_all_summary_file( i_GP_generation )
 
       GP_Child_Population_Node_Type = GP_Adult_Population_Node_Type
-      GP_Child_Individual_SSE       = GP_Adult_Population_SSE   ! needed ??
+      GP_Child_Population_SSE       = GP_Adult_Population_SSE   ! needed ??
 
    else
 

@@ -68,7 +68,7 @@ subroutine summary_GP_all( i_GP_generation,  icall  )
       write(GP_summary_output_unit, '(2x,6(1x,I6),1x,E20.10)') &
              i_GP_generation, i_GP_indiv, &
              n_code_equations, n_trees, n_nodes, n_levels, &
-             GP_Child_Individual_SSE(i_GP_indiv)
+             GP_Child_Population_SSE(i_GP_indiv)
 
     ! initial conditions
 

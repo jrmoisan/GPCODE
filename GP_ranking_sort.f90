@@ -50,16 +50,16 @@ do  i_GP_Individual=1,n_GP_Individuals
 
     do  j_GP_Individual=1,n_GP_Individuals-1
 
-        if( GP_Child_Individual_SSE(j_GP_Individual+1) .lt. &
-              GP_Child_Individual_SSE(j_GP_Individual)) then
+        if( GP_Child_Population_SSE(j_GP_Individual+1) .lt. &
+              GP_Child_Population_SSE(j_GP_Individual)) then
 
             !     Swap the two ranked fitness and index array values around
-            cff=GP_Child_Individual_SSE(j_GP_Individual)
+            cff=GP_Child_Population_SSE(j_GP_Individual)
 
-            GP_Child_Individual_SSE(j_GP_Individual) = &
-                 GP_Child_Individual_SSE(j_GP_Individual+1)
+            GP_Child_Population_SSE(j_GP_Individual) = &
+                 GP_Child_Population_SSE(j_GP_Individual+1)
 
-            GP_Child_Individual_SSE(j_GP_Individual+1)=cff
+            GP_Child_Population_SSE(j_GP_Individual+1)=cff
 
             icff=Ranked_Fitness_Index(j_GP_Individual)
 
@@ -68,7 +68,7 @@ do  i_GP_Individual=1,n_GP_Individuals
 
             Ranked_Fitness_Index(j_GP_Individual+1)=icff
 
-        endif !GP_Child_Individual_SSE(j_GP_Individual+1) .lt. ...
+        endif !GP_Child_Population_SSE(j_GP_Individual+1) .lt. ...
 
     enddo ! j_GP_Individual
 
@@ -85,8 +85,7 @@ enddo  ! i_GP_Individual
 
 i_GP_best_parent =  new_GP_best_parent ! should be 1?
 
-GP_Adult_Population_SSE = GP_Child_Individual_SSE
-GP_Adult_Individual_SSE = GP_Child_Individual_SSE
+GP_Adult_Population_SSE = GP_Child_Population_SSE
 
 !-------------------------------------------------------------------------------
 ! Re-rank ALL of the Individuals to keep the code simple 
@@ -129,11 +128,11 @@ GP_population_node_parameters = GP_population_node_parameters_temp
 !!
 !!cff=0.0d0
 !!do  i_GP_Individual=1,n_GP_Individuals
-!!    cff=cff+GP_Child_Individual_SSE(i_GP_Individual)
+!!    cff=cff+GP_Child_Population_SSE(i_GP_Individual)
 !!enddo
 !!
 !!write(6,'(/A, 1x, E15.7)') &
-!!      'gprs: after: sum GP_Child_Individual_SSE ', cff
+!!      'gprs: after: sum GP_Child_Population_SSE ', cff
 !!
 !!! Calculate a simple 'normalized' ranking of the SSE as an estimate of fitness
 !!
@@ -146,7 +145,7 @@ GP_population_node_parameters = GP_population_node_parameters_temp
 !!
 !!    if( cff > 0.0D0 )then
 !!        GP_Population_Ranked_Fitness(i_GP_Individual) = &
-!!                ( cff - GP_Child_Individual_SSE(i_GP_Individual) ) / cff
+!!                ( cff - GP_Child_Population_SSE(i_GP_Individual) ) / cff
 !!    else
 !!        GP_Population_Ranked_Fitness(i_GP_Individual) = 0.0d0
 !!    endif ! cff > 0.0d0
@@ -161,8 +160,8 @@ GP_population_node_parameters = GP_population_node_parameters_temp
 cff=0.0d0
 
 do  i_GP_Individual=1,n_GP_Individuals
-    if( GP_Child_Individual_SSE(i_GP_Individual) < 1.0e13 )then
-        cff=cff+GP_Child_Individual_SSE(i_GP_Individual)
+    if( GP_Child_Population_SSE(i_GP_Individual) < 1.0e13 )then
+        cff=cff+GP_Child_Population_SSE(i_GP_Individual)
     endif
 enddo
 
@@ -170,9 +169,9 @@ GP_Population_Ranked_Fitness = 0.0D0
 
 do  i_GP_Individual=1,n_GP_Individuals
 
-    if( cff > 0.0D0 .and. GP_Child_Individual_SSE(i_GP_Individual) < 1.0e13 )then
+    if( cff > 0.0D0 .and. GP_Child_Population_SSE(i_GP_Individual) < 1.0e13 )then
         GP_Population_Ranked_Fitness(i_GP_Individual) = &
-                abs( ( cff - GP_Child_Individual_SSE(i_GP_Individual) ) / cff  )
+                abs( ( cff - GP_Child_Population_SSE(i_GP_Individual) ) / cff  )
     else
         GP_Population_Ranked_Fitness(i_GP_Individual) = 0.0d0
     endif ! cff > 0.0d0
@@ -188,17 +187,17 @@ enddo  ! i_GP_Individual
 !new     if(  GP_Individual_N_GP_param( i_GP_Individual ) < min_N_param ) cycle
 !new 
 !new 
-!new     if( abs( GP_Child_Individual_SSE(i_GP_Individual) ) > 1.0D-30 )then
+!new     if( abs( GP_Child_Population_SSE(i_GP_Individual) ) > 1.0D-30 )then
 !new 
 !new         GP_Population_Ranked_Fitness(i_GP_Individual) = &
-!new              sse0  /  GP_Child_Individual_SSE(i_GP_Individual)
+!new              sse0  /  GP_Child_Population_SSE(i_GP_Individual)
 !new 
-!new              !1.0d0 /  GP_Child_Individual_SSE(i_GP_Individual)
+!new              !1.0d0 /  GP_Child_Population_SSE(i_GP_Individual)
 !new     else
 !new 
 !new         GP_Population_Ranked_Fitness(i_GP_Individual) = 0.0D0
 !new 
-!new     endif ! abs( GP_Child_Individual_SSE(i_GP_Individual)) > 1.0D-30
+!new     endif ! abs( GP_Child_Population_SSE(i_GP_Individual)) > 1.0D-30
 !new 
 !new 
 !new enddo ! i_GP_Individual
