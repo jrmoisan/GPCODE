@@ -256,30 +256,29 @@ L_skip = .FALSE.
 
 
                     !if( new_rank == 0 )then
-                    !    write(GP_print_unit,'(A,1x,I5,A,1x,i5)')&
-                    !          'gil: skipping this i_GP_Individual', i_GP_individual, &
-                    !          ' --  the number of parameters is ', n_GP_parameters
-                    !    !flush(GP_print_unit)
+                        write(GP_print_unit,'(A,1x,I5,A,1x,i5)')&
+                              'gil: skipping this i_GP_Individual', i_GP_individual, &
+                              ' --  the number of parameters is ', n_GP_parameters
+                        flush(GP_print_unit)
                     !endif !  new_rank == 0
 
 
                     L_skip = .TRUE. 
                     individual_fitness = 0.0d0
-                    Individual_SSE_best_parent = big_real
 
-!                    GP_Child_Individual_SSE(i_GP_individual)         = big_real  ! jjm 20150109
+                    GP_Child_population_SSE(i_GP_individual)         = big_real  ! jjm 20150109
 !                    GP_Adult_Individual_SSE(i_GP_individual)         = big_real  ! jjm 20150109
-!                    GP_Adult_Population_SSE(i_GP_individual)         = big_real  ! jjm 20150109
+                    GP_Adult_Population_SSE(i_GP_individual)         = big_real  ! jjm 20150109
                     GP_Child_Individual_SSE_nolog10(i_GP_individual) = big_real  ! jjm 20150109
 
 
                     !if( new_rank == 0 )then
-                    !    write(GP_print_unit,'(A,7(1x,I5), 1x, E15.7)')&
-                    !     'gil: myid, new_rank, i_part, i_gp_1, i_gp_2, &
-                    !           &i_GP_gen, i_GP_indiv, indiv_fit', &
-                    !           myid, new_rank, i_part, i_gp_1, i_gp_2, &
-                    !           i_GP_generation, i_GP_individual, &
-                    !           individual_fitness
+                        write(GP_print_unit,'(A,5(1x,I5), 1x, E15.7)')&
+                         'gil: myid, new_rank, i_part,  &
+                               &i_GP_gen, i_GP_indiv, indiv_fit', &
+                               myid, new_rank, i_part, &
+                               i_GP_generation, i_GP_individual, &
+                               individual_fitness
                     !endif !  new_rank == 0
 
                 else
@@ -324,6 +323,19 @@ L_skip = .FALSE.
                 ! set the GA_lmdif-optimized CODE parameter set array
                 GP_Population_Node_Parameters(:, :, i_GP_Individual) = &
                      GP_Individual_Node_Parameters(:,:)
+
+                !write(6,*) ' '
+                write(6,'(/A,4(1x,I6))') 'gil: myid, new_rank, color, i_GP_individual ', &
+                                               myid, new_rank, color, i_GP_individual 
+                write(6,'(A,2(1x,I6),2(1x,E15.7))') &
+                      'gil: myid,i_GP_individual, individual_fitness, Individual_SSE_best_parent ', &
+                            myid,i_GP_individual, individual_fitness, Individual_SSE_best_parent 
+                !write(6,*) 'gil: i_GP_individual, GP_Population_Initial_Conditions ', &
+                !                 i_GP_individual, GP_Population_Initial_Conditions 
+                !write(6,*) 'gil: i_GP_individual, GP_Population_node_parameters ', &
+                !                 i_GP_individual, GP_Population_node_parameters
+                !write(6,*) ' '
+
 
             endif !   Run_GP_Calculate_Fitness(i_GP_Individual)
         enddo  gp_ind_loop    !   i_GP_individual
@@ -376,6 +388,27 @@ L_skip = .FALSE.
                 MPI_DOUBLE_PRECISION, 0, MPI_COMM_WORLD, ierr )
 
    call MPI_BARRIER( MPI_COMM_WORLD, ierr )
+
+
+!---------------------------------------------------------------------------------
+
+if( myid == 0 )then
+
+    write(GP_print_unit,'(//A//)' )&
+         '>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>'
+    do  ii = 1, n_GP_individuals
+        write(GP_print_unit,'(A,4(1x,I5), 2(1x, E15.7))')&
+         'gil:5 myid, new_rank, i_GP_gen, ii, GP_pop_fit, child_pop_SSE', &
+                myid, new_rank, i_GP_generation, ii, &
+                           GP_Population_Ranked_Fitness(ii), &
+                         GP_Child_population_SSE(ii)
+    enddo ! i_GP_individual
+
+    flush( GP_print_unit )
+
+endif !  myid == 0
+
+
 
 
 

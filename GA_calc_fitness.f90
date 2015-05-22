@@ -328,6 +328,7 @@ do  i_GA_individual=1,n_GA_individuals
     endif !   individual_quality( i_GA_individual ) > 0
 
 enddo ! i_GA_individual
+
 !write(6,'(A)') ' '
 !flush(6)
 
@@ -502,6 +503,7 @@ do  i_GA_individual=1,n_GA_individuals
 enddo ! i_GA_individual
 
 !-------------------------------------------------------------------------------
+
 if( i_GA_generation == 1                                 .or. &
     mod(i_GA_generation, GA_child_print_interval ) == 0  .or. &
     i_GA_generation == n_GA_generations       )then

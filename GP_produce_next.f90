@@ -32,7 +32,7 @@ integer :: message_len,ierror_t,ierror_m
 
 L_nextloop = .false.
 
-if (i_GP_generation <2 ) return
+if( i_GP_generation < 2 ) return
 
 ierror_t = 0
 ierror_m = 0
@@ -42,11 +42,11 @@ if( myid == 0 )then
 
     ! fill child sse for individuals not  modified in this generation
 
-    ! GP_Child_Population_SSE  = GP_Adult_Population_SSE   ! needed ??  jjm 20140522
+    GP_Child_Population_SSE  = GP_Adult_Population_SSE   ! needed ??  jjm 20140522
 
-    if( i_GP_generation == 1                                  .or. &
-        mod( i_GP_generation, GP_child_print_interval ) == 0  .or. &
-        i_GP_generation == n_GP_generations                          )then
+    !if( i_GP_generation == 1                                  .or. &
+    !    mod( i_GP_generation, GP_child_print_interval ) == 0  .or. &
+    !    i_GP_generation == n_GP_generations                          )then
 
         write(GP_print_unit,'(//A)') 'gpn:3 before modifications'
         write(GP_print_unit,'(A)')&
@@ -61,7 +61,7 @@ if( myid == 0 )then
         enddo ! i_GP_individual
                 !flush(GP_print_unit)
 
-    endif ! i_GP_generation == 1 .or. ...
+    !endif ! i_GP_generation == 1 .or. ...
 
 
     !----------------------------------------------------------------------------------
@@ -122,7 +122,6 @@ if( myid == 0 )then
             write(GP_print_unit,'(/A,1x,I6)') &
                      'gpn: call GP_Tour_Style_Sexual_Repro n_GP_Crossovers =', &
                                                            n_GP_Crossovers
-
             ierror_t = 0
             call GP_Tournament_Style_Sexual_Reproduction( ierror_t )
 
@@ -166,6 +165,9 @@ endif ! myid == 0
 
 !---------------------------------------------------------------------------
 
+GP_Adult_Population_Node_Type = GP_Child_Population_Node_Type   ! keep jjm 20150522
+GP_Adult_Population_SSE       = GP_Child_Population_SSE         ! keep jjm 20150522
+
 
 !write(6,'(/A,1x,I5/)') 'gpn: broadcast ierror_t and ierror_m         myid = ', myid
 
@@ -175,17 +177,14 @@ call MPI_BCAST( ierror_t, message_len,    &
 call MPI_BCAST( ierror_m, message_len,    &
                 MPI_INTEGER,  0, MPI_COMM_WORLD, ierr )
 
-GP_Adult_Population_Node_Type = GP_Child_Population_Node_Type
-GP_Adult_Population_SSE       = GP_Child_Population_SSE
-
 
 if( ierror_t > 0 .or. ierror_m > 0 )then
     write(6,'(A,2(1x,I6))') &
-          '0: error found in GP_Tour or GP_Mut in generation ', &
-                                             i_GP_generation, myid
-    write(6,'(A,2(1x,I6))') '0: ierror_t, myid ', ierror_t, myid
-    write(6,'(A,2(1x,I6))') '0: ierror_m, myid ', ierror_m, myid
-    write(6,'(A,1x,I6)') '0: cycle generation_loop myid =', myid
+          'gpn: error found in GP_Tour or GP_Mut in generation ', &
+                                               i_GP_generation, myid
+    write(6,'(A,2(1x,I6))') 'gpn: ierror_t, myid ', ierror_t, myid
+    write(6,'(A,2(1x,I6))') 'gpn: ierror_m, myid ', ierror_m, myid
+    write(6,'(A,1x,I6)') 'gpn: cycle generation_loop myid =', myid
     !flush(6)
     ierror_t = 0
     ierror_m = 0

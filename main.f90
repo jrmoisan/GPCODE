@@ -427,9 +427,9 @@ endif ! myid == 0
 
     if( myid == 0 )then
 
-        if( i_GP_generation == 1                                  .or. &
-            mod( i_GP_generation, GP_child_print_interval ) == 0  .or. &
-            i_GP_generation == n_GP_generations                          )then
+        !if( i_GP_generation == 1                                  .or. &
+        !    mod( i_GP_generation, GP_child_print_interval ) == 0  .or. &
+        !    i_GP_generation == n_GP_generations                          )then
 
             write(GP_print_unit,'(/A)') &
             '================================================================================='
@@ -479,7 +479,7 @@ endif ! myid == 0
 
             endif ! index( model, 'log10') > 0 .or. index( model, 'LOG10') > 0
 
-        endif ! i_GP_generation == 1 .or. ...
+        !endif ! i_GP_generation == 1 .or. ...
 
     endif ! myid == 0
 
@@ -508,6 +508,7 @@ endif ! myid == 0
 
 
     max_n_gp_params = maxval( GP_Individual_N_GP_param )
+
     ! call GP_para_lmdif_process only after the 2nd generation
     ! calling lmdif for really bad sets of parameters does not
     ! work well, so allow 2 generations to (hopefully) refine the
@@ -520,11 +521,11 @@ endif ! myid == 0
 
 
     !if( i_GP_generation > n_GP_generations / 2 )then
-    if( i_GP_generation > min( 20, n_GP_generations / 2 ) )then
+    !if( i_GP_generation > min( 20, n_GP_generations / 2 ) )then
 
         call GP_para_lmdif_process( i_GP_generation, max_n_gp_params  )
 
-    endif !  i_GP_generation > min( 20, n_GP_generations / 2 )
+    !endif !  i_GP_generation > min( 20, n_GP_generations / 2 )
 
     !endif !  i_GP_generation > n_GP_generations / 2
 
@@ -536,9 +537,9 @@ endif ! myid == 0
 
     if( myid == 0 )then
 
-        if( i_GP_generation == 1                                  .or. &
-            mod( i_GP_generation, GP_child_print_interval ) == 0  .or. &
-            i_GP_generation == n_GP_generations                          )then
+        !if( i_GP_generation == 1                                  .or. &
+        !    mod( i_GP_generation, GP_child_print_interval ) == 0  .or. &
+        !    i_GP_generation == n_GP_generations                          )then
 
             write(GP_print_unit,'(/A)') &
             '================================================================================='
@@ -584,7 +585,7 @@ endif ! myid == 0
 
             endif ! index( model, 'log10') > 0 .or. index( model, 'LOG10') > 0 )then
 
-        endif ! i_GP_generation == 1 .or. ...
+        !endif ! i_GP_generation == 1 .or. ...
 
         endif ! myid == 0
 
@@ -596,9 +597,9 @@ endif ! myid == 0
 
    if( myid == 0 )then
 
-        if( i_GP_generation == 1                                  .or. &
-            mod( i_GP_generation, GP_child_print_interval ) == 0  .or. &
-            i_GP_generation == n_GP_generations                          )then
+        !if( i_GP_generation == 1                                  .or. &
+        !    mod( i_GP_generation, GP_child_print_interval ) == 0  .or. &
+        !    i_GP_generation == n_GP_generations                          )then
 
             write(GP_print_unit,'(/A)')&
             '0:#################################################################'
@@ -610,20 +611,20 @@ endif ! myid == 0
 
             !flush(GP_print_unit)
 
-        endif ! i_GP_generation == 1 .or. ...
+        !endif ! i_GP_generation == 1 .or. ...
 
         !-----------------------------------------------------------------------
 
         ! do fitness calculations for this GP generation
 
-      call GP_calc_fitness( i_GP_generation,  &
+        call GP_calc_fitness( i_GP_generation,  &
                               i_GP_best_parent, nop )
 
         !-----------------------------------------------------------------------
 
-        if( i_GP_generation == 1                                  .or. &
-            mod( i_GP_generation, GP_child_print_interval ) == 0  .or. &
-            i_GP_generation == n_GP_generations                          )then
+        !if( i_GP_generation == 1                                  .or. &
+        !    mod( i_GP_generation, GP_child_print_interval ) == 0  .or. &
+        !    i_GP_generation == n_GP_generations                          )then
 
             write(GP_print_unit,'(/A)')&
             '0:################################################################'
@@ -634,7 +635,7 @@ endif ! myid == 0
             '0:################################################################'
             !flush(GP_print_unit)
 
-        endif ! i_GP_generation == 1 .or. ...
+        !endif ! i_GP_generation == 1 .or. ...
 
         !-----------------------------------------------------------------------
 

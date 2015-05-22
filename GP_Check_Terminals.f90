@@ -37,7 +37,7 @@ integer(kind=i4b),dimension(2) :: dims
 !xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
 i_Error=0
-print*, "nn_Nodes,nn_Trees",nn_Nodes,nn_Trees
+!print*, "nn_Nodes,nn_Trees",nn_Nodes,nn_Trees
 
 
 do  i_Tree=1,nn_Trees

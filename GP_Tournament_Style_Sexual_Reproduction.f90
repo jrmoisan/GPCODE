@@ -41,7 +41,7 @@ character(1) ::  symbol
 
 
 write(GP_print_unit,'(/A,1x,I6)') &
-    '0: call GP_Tour_Style_Sexual_Repro n_GP_Crossovers =', &
+    'gptssr: call GP_Tour_Style_Sexual_Repro n_GP_Crossovers =', &
      n_GP_Crossovers
 
 

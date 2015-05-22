@@ -62,8 +62,8 @@ logical :: L_op
 !--------------------------------------------------------------------------------
                                                                                                                 
 
-write(GP_print_unit,'(A,1x,I5)')&
-      'sgpi: GP_best_summary_output_unit ', GP_best_summary_output_unit
+!write(GP_print_unit,'(A,1x,I5)')&
+!      'sgpi: GP_best_summary_output_unit ', GP_best_summary_output_unit
 
 inquire( unit = GP_best_summary_output_unit,  opened = L_op )
 if( L_op ) then

@@ -147,14 +147,14 @@ if( L_GPSSE_log )then
 
         do  i_GP_Individual=1,n_GP_Individuals
 
-        write(GPSSE_log_unit,'(I6, 1x,I6,2(1x,E15.7))') &
-              i_GP_generation, &
-              i_GP_Individual, GP_Child_Population_SSE(i_GP_Individual), &
-              GP_Child_Population_SSE(i_GP_Individual)/ SSE0
+            write(GPSSE_log_unit,'(I6, 1x,I6,2(1x,E15.7))') &
+                  i_GP_generation, &
+                  i_GP_Individual, GP_Child_Population_SSE(i_GP_Individual), &
+                  GP_Child_Population_SSE(i_GP_Individual)/ SSE0
 
-    enddo ! i_gp_individual
+        enddo ! i_gp_individual
 
-    endif !
+    endif ! index( model, 'LOG10') > 0 ...         
 
     !flush( GPSSE_log_unit )
 
@@ -398,10 +398,10 @@ if( L_GPSSE_log )then
 
     endif !
 
-    write(GPSSE_best_log_unit,'(I6,1x,I6,2(1x,E24.16))') &
-          i_GP_Generation, i_GP_Best_Parent, &
-          GP_Child_Population_SSE(i_GP_Best_Parent), &
-          GP_Child_Population_SSE(i_GP_Best_Parent)/ SSE0
+    !write(GPSSE_best_log_unit,'(I6,1x,I6,2(1x,E24.16))') &
+    !      i_GP_Generation, i_GP_Best_Parent, &
+    !      GP_Child_Population_SSE(i_GP_Best_Parent), &
+    !      GP_Child_Population_SSE(i_GP_Best_Parent)/ SSE0
 
     flush( GPSSE_best_log_unit ) ! DO NOT COMMENT OUT
 
