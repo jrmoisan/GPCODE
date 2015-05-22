@@ -197,53 +197,57 @@ do  i_GP_Mutation = 1,n_GP_Mutations
             ! add by Weiyuan
 
             if( cff .le. GP_Set_Terminal_to_Parameter_Probability ) then
-               Node_variable= 0
-            else
 
+                Node_variable= 0
 
-            ! VARIABLES   [Ranges from: -n_CODE_Equations to -1 ]
+            !else    ! the code with this "else" is wrong since if cff < GP_set..., node is a variable
 
-            if( n_inputs > 0 )then
-
-                ! data processing option 
-
-                Node_Variable =   1 + int( cff*float(n_inputs) )
-
-                Node_Variable = max( Node_Variable , n_CODE_Equations+1 )  ! original
-                Node_Variable = min( Node_Variable , n_inputs        +1 )  ! original
-
-                !write(GP_print_unit,'(A,2(1x,I6),1x,E15.7)') &
-                !           'gpmut: VARIABLE   n_inputs, n_code_equations, cff', &
-                !                              n_inputs, n_code_equations, cff
-
-            else
-
-                Node_Variable=1+int(cff*float(n_CODE_Equations))
+                ! VARIABLES   [Ranges from: -n_CODE_Equations to -1 ]
     
-                Node_Variable = min( Node_Variable, n_CODE_Equations )
+                if( n_inputs > 0 )then
     
-                !write(GP_print_unit,'(A,1x,E15.7, 2(1x,I6))') &
-                !      'gpmut:2 cff, Node_Variable, n_CODE_Equations', &
-                !               cff, Node_Variable, n_CODE_Equations
+                    ! data processing option 
+    
+                    Node_Variable =   1 + int( cff*float(n_inputs) )
+    
+                    Node_Variable = max( Node_Variable , n_CODE_Equations+1 )  ! original
+                    Node_Variable = min( Node_Variable , n_inputs        +1 )  ! original
+    
+                    !write(GP_print_unit,'(A,2(1x,I6),1x,E15.7)') &
+                    !           'gpmut: VARIABLE   n_inputs, n_code_equations, cff', &
+                    !                              n_inputs, n_code_equations, cff
+    
+                else
+    
+                    Node_Variable=1+int(cff*float(n_CODE_Equations))
+        
+                    Node_Variable = min( Node_Variable, n_CODE_Equations )
+        
+                    !write(GP_print_unit,'(A,1x,E15.7, 2(1x,I6))') &
+                    !      'gpmut:2 cff, Node_Variable, n_CODE_Equations', &
+                    !               cff, Node_Variable, n_CODE_Equations
+    
+                endif !  n_inputs > 0 
+    
+                GP_Child_Population_Node_Type(Node_to_Mutate,i_Tree_Mutation,i_GP_Individual) = &
+                                                                                    -Node_Variable
+    
+                !----------------------------------------------------------------------       
+    
+                if( model == 'fasham' ) then 
+    
+                    call random_number(cff)
+                    Node_Variable=1+int(cff*float(n_CODE_Equations))
+                    Node_Variable = min( Node_Variable, n_CODE_Equations )
+                    if( model == 'fasham' .or. model == 'fasham_CDOM_GP') then 
+                        !  set some variables to the forcing functions -5001 -> -5004
+                        call set_forcing_node( node_variable )
+                    endif !  model 
+     
+                endif ! model == 'fasham' 
 
-            endif !  n_inputs > 0 
+            endif !   cff .le. GP_Set_Terminal_to_Parameter_Probability 
 
-            GP_Child_Population_Node_Type(Node_to_Mutate,i_Tree_Mutation,i_GP_Individual) = &
-                                                                                -Node_Variable
-
-            !----------------------------------------------------------------------       
-
-            if( model == 'fasham' ) then 
-
-                call random_number(cff)
-                Node_Variable=1+int(cff*float(n_CODE_Equations))
-                Node_Variable = min( Node_Variable, n_CODE_Equations )
-                if( model == 'fasham' .or. model == 'fasham_CDOM_GP') then 
-                    !  set some variables to the forcing functions -5001 -> -5004
-                    call set_forcing_node( node_variable )
-                endif !  model 
- 
-            endif ! model == 'fasham' 
 
             GP_Child_Population_Node_Type(Node_to_Mutate,i_Tree_Mutation,i_GP_Individual) = &
                                  -Node_Variable
@@ -269,7 +273,7 @@ do  i_GP_Mutation = 1,n_GP_Mutations
 
             GP_Child_Population_Node_Type(Node_to_Mutate,i_Tree_Mutation,i_GP_Individual) = Node_Function
 
-        endif
+        endif ! GP_Child_Population_Node_Type(Node_to_Mutate,i_Tree_Mutation,i_GP_Individual) <= 0 
 
     endif !   icnt_Nodes .gt. 0
 

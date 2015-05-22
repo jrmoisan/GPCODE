@@ -157,7 +157,7 @@ if( myid == 0 )then
     !   Move over any newly created children into the adult arrays
 
     GP_Adult_Population_Node_Type = GP_Child_Population_Node_Type
-    GP_Adult_Population_SSE       = GP_Child_Individual_SSE
+    GP_Adult_Population_SSE       = GP_Child_population_sse
 
 
 

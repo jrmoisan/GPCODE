@@ -62,6 +62,7 @@ real(kind=r8b) ::  sse_local
 logical :: L_node_match
 integer(kind=i4b) :: node_match_count
 integer(kind=i4b) :: undefined_node_count
+integer(kind=i4b) :: i
 
 character(15) :: flag_string
 
@@ -102,8 +103,8 @@ if( i_GP_generation == 1                                 .or. &
 
     do  i_GP_Individual=1,n_GP_Individuals
         write(GP_print_unit,'(6x,I6,2(1x,E15.7))') &
-           i_GP_Individual, GP_Child_Individual_SSE(i_GP_Individual), &
-           GP_Child_Individual_SSE(i_GP_Individual)/SSE0
+           i_GP_Individual, GP_Child_Population_SSE(i_GP_Individual), &
+           GP_Child_Population_SSE(i_GP_Individual)/SSE0
     enddo ! i_gp_individual
 
 endif ! i_GP_generation ...
@@ -203,7 +204,7 @@ enddo ! i_GP_Individual
 !    do  i_GP_Individual=1,n_GP_Individuals
 !        !write(GP_print_unit,'(5x,I6,2x, 2(5x,E20.10))') &
 !        write(GP_print_unit,'(5x,I6,7x, 2(1x,E20.10))') &
-!              i_GP_individual, GP_Child_Individual_SSE(i_GP_Individual), &
+!              i_GP_individual, GP_Child_Population_SSE(i_GP_Individual), &
 !             GP_Population_Ranked_Fitness(i_GP_Individual)
 !    enddo
 !
@@ -228,7 +229,7 @@ enddo
 !do  i_GP_Individual=1,n_GP_Individuals
 !    write(GP_print_unit,'(5x,I6,2(5x,E15.7))') &
 !           i_GP_individual, &
-!           GP_Child_Individual_SSE(i_GP_Individual), &
+!           GP_Child_Population_SSE(i_GP_Individual), &
 !           GP_Integrated_Population_Ranked_Fitness(i_GP_Individual)
 !enddo
 
@@ -267,7 +268,7 @@ enddo ! i_GP_Individual
 !
 !        write(GP_print_unit,'(5x,I6,2x,2(5x,E15.7))') &
 !              i_GP_individual, &
-!              GP_Child_Individual_SSE(i_GP_Individual), &
+!              GP_Child_Population_SSE(i_GP_Individual), &
 !              GP_Integrated_Population_Ranked_Fitness(i_GP_Individual)
 !    enddo
 !
@@ -391,8 +392,8 @@ if( L_GPSSE_log )then
 
         write(GPSSE_best_log_unit,'(I6,1x,I6,2(1x,E15.7))') &
               i_GP_Generation, i_GP_Best_Parent, &
-              GP_Child_Individual_SSE(i_GP_Best_Parent), &
-              GP_Child_Individual_SSE(i_GP_Best_Parent)/ SSE0
+              GP_Child_Population_SSE(i_GP_Best_Parent), &
+              GP_Child_Population_SSE(i_GP_Best_Parent)/ SSE0
 
 
     endif !

@@ -1,4 +1,4 @@
-PROG =	main.x
+PROG =	GP_para_tree
 
 SRCS =	allocate_arrays1.f90 bcast1.f90 bcast2.f90 bcast3.f90 betacf.f90 \
 	betai.f90 build_trees.f90 calc_stats.f90 check_for_elite.f90 \
@@ -19,11 +19,12 @@ SRCS =	allocate_arrays1.f90 bcast1.f90 bcast2.f90 bcast3.f90 betacf.f90 \
 	GP_calc_diversity_index.f90 GP_calc_fitness.f90 \
 	GP_Check_Terminals.f90 GP_Clean_Tree_Nodes.f90 GP_data_module.f90 \
 	GP_Fitness_Proportionate_Asexual_Reproduction.f90 \
-	GP_individual_loop.f90 GP_Mutations.f90 GP_para_lmdif_process.f90 \
-	GP_parameters_module.f90 GP_produce_first.f90 GP_produce_next.f90 \
+	GP_individual_loop.f90  GP_Mutations.f90 \
+	GP_para_lmdif_process.f90 GP_parameters_module.f90 \
+	GP_produce_first.f90 GP_produce_next.f90 GP_random_replace.f90 \
 	GP_ranking_sort.f90 GP_select_best_RK_lmdif_result.f90 \
 	GP_Tournament_Style_Sexual_Reproduction.f90 GP_Tree_Build.f90 \
-	GP_Tree_Swap.f90 GP_variables_module.f90 \
+	GP_Tree_Build_single.f90 GP_Tree_Swap.f90 GP_variables_module.f90 \
 	GPCODE_GA_lmdif_Parameter_Optimization.f90 gser.f90 indiv_fitness.f90 \
 	init_values.f90 init_values_data.f90 init_values_fasham.f90 \
 	init_values_LV.f90 init_values_NPZ.f90 \
@@ -67,8 +68,9 @@ OBJS =	allocate_arrays1.o bcast1.o bcast2.o bcast3.o betacf.o betai.o \
 	GP_calc_diversity_index.o GP_calc_fitness.o GP_Check_Terminals.o \
 	GP_Clean_Tree_Nodes.o GP_data_module.o \
 	GP_Fitness_Proportionate_Asexual_Reproduction.o GP_individual_loop.o \
-	GP_Mutations.o GP_para_lmdif_process.o GP_parameters_module.o \
-	GP_produce_first.o GP_produce_next.o GP_ranking_sort.o \
+	GP_Mutations.o GP_para_lmdif_process.o \
+	GP_parameters_module.o GP_produce_first.o GP_produce_next.o \
+	GP_random_replace.o GP_ranking_sort.o \
 	GP_select_best_RK_lmdif_result.o \
 	GP_Tournament_Style_Sexual_Reproduction.o GP_Tree_Build.o \
 	GP_Tree_Build_single.o GP_Tree_Swap.o GP_variables_module.o \
@@ -104,7 +106,8 @@ CFLAGS = -O
 #F90 = gfortran
 #F90FLAGS = -g
 #LDFLAGS = -Wl,-no_pie
-#LIBS= -L/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.9.sdk/usr/lib -L/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.8.sdk/usr/lib  -L/Developer/SDKs/MacOSX10.6.sdk/usr/lib
+#LIBS= -L/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.8.sdk/usr/lib -L/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.7.sdk/usr/lib  -L/Developer/SDKs/MacOSX10.6.sdk/usr/lib
+
 
 #################################################################################################
 # note: mpif90 is based on gfortran
@@ -142,6 +145,9 @@ LIBS= -L/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Dev
 #LDFLAGS = -lmpi
 ####################################################################################
 
+
+
+
 all: $(PROG)
 
 $(PROG): $(OBJS)
@@ -157,11 +163,6 @@ clean:
 .SUFFIXES: $(SUFFIXES) .f90
 
 .f90.o:
-	$(F90) $(F90FLAGS) -c $<
-
-.SUFFIXES: $(SUFFIXES) .f03
-
-.f03.o:
 	$(F90) $(F90FLAGS) -c $<
 
 allocate_arrays1.o: GA_parameters_module.o GA_variables_module.o \
@@ -260,7 +261,7 @@ gammln.o: kinds_mod.o
 gammp.o: kinds_mod.o mpi_module.o
 gammq.o: kinds_mod.o mpi_module.o
 gcf.o: kinds_mod.o mpi_module.o
-Generate_Dot_Graph.o: GP_parameters_module.o Generate_Dot_Graph.o \
+Generate_Dot_Graph.o: GP_parameters_module.o  \
 	class_tree_node.o kinds_mod.o
 GP_calc_diversity_index.o: GA_parameters_module.o GA_variables_module.o \
 	GP_parameters_module.o GP_variables_module.o kinds_mod.o
@@ -293,6 +294,8 @@ GP_produce_next.o: GA_parameters_module.o GA_variables_module.o \
 	GP_data_module.o GP_parameters_module.o GP_variables_module.o \
 	class_tree_node.o fasham_variables_module.o kinds_mod.o mpi_module.o \
 	tree_node_factory_module.o
+GP_random_replace.o: GA_parameters_module.o GA_variables_module.o \
+	GP_parameters_module.o GP_variables_module.o kinds_mod.o mpi_module.o
 GP_ranking_sort.o: GA_parameters_module.o GA_variables_module.o \
 	GP_data_module.o GP_parameters_module.o GP_variables_module.o \
 	kinds_mod.o

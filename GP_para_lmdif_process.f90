@@ -381,7 +381,7 @@ else  ! not myid == 0
 
             else
 
-                GP_child_individual_SSE(i_2_individual) = save_SSE
+                GP_child_population_SSE(i_2_individual) = save_SSE
 
             endif ! abs(temp_SSE)...
 

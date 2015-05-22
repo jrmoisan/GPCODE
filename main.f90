@@ -378,7 +378,7 @@ endif ! myid == 0
     !----------------------------------------------------------------------------------
     ! needed if GP_para_lmdif_process called
 
-    call MPI_BCAST( GP_Child_Individual_SSE, n_GP_individuals,          &    ! jjm 20150130
+    call MPI_BCAST( GP_Child_population_SSE, n_GP_individuals,          &    ! jjm 20150130
                     MPI_DOUBLE_PRECISION, 0, MPI_COMM_WORLD, ierr )          ! jjm 20150130
 
     call MPI_BCAST( GP_Child_Individual_SSE_nolog10, n_GP_individuals,  &    ! jjm 20150130
@@ -449,8 +449,8 @@ endif ! myid == 0
                 write(GP_print_unit, '(5x,I6,6x,I6,6x,3(1x, E20.10) )') &
                       i_GP_Individual,  &
                       GP_Individual_N_GP_param(i_GP_individual), &
-                      GP_Child_Individual_SSE(i_GP_Individual), &
-                      GP_Child_Individual_SSE(i_GP_Individual)/SSE0, SSE0
+                      GP_Child_population_SSE(i_GP_Individual), &
+                      GP_Child_population_SSE(i_GP_Individual)/SSE0, SSE0
             enddo
 
             write(GP_print_unit,'(/A)') &
@@ -556,8 +556,8 @@ endif ! myid == 0
             do  i_GP_individual = 1, n_GP_individuals
                 write(GP_print_unit, '(5x,I6,6x,I6,6x,2(1x, E20.10) )') &
                 i_GP_Individual,  GP_Individual_N_GP_param(i_GP_individual), &
-                                  GP_Child_Individual_SSE(i_GP_Individual), &
-                                  GP_Child_Individual_SSE(i_GP_Individual)/SSE0
+                                  GP_Child_population_SSE(i_GP_Individual), &
+                                  GP_Child_population_SSE(i_GP_Individual)/SSE0
             enddo
 
             write(GP_print_unit,'(/A)') &
@@ -744,8 +744,8 @@ if( myid == 0 )then
 
     write(GP_print_unit,'(A,1x,I5,2(1x,E15.7)/)') &
     '0: i_GP_best_parent, GP_child_indiv_sse(), SSE/SSE0', &
-        i_GP_best_parent, GP_child_individual_sse(i_GP_best_parent), &
-                          GP_child_individual_sse(i_GP_best_parent)/SSE0
+        i_GP_best_parent, GP_child_population_sse(i_GP_best_parent), &
+                          GP_child_population_sse(i_GP_best_parent)/SSE0
 
     !flush(GP_print_unit)
 

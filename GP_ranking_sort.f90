@@ -65,11 +65,11 @@ enddo
 !
 !write(6,'(/A)') 'gprs: before sort '
 !write(6,'(A)')  'gprs:i_GP_Individual, Ranked_Fitness_Index, &
-!                            &GP_Child_Individual_SSE'
+!                            &GP_Child_Population_SSE'
 !do  i_GP_Individual=1,n_GP_Individuals
 !    write(6,'(5x,I10,1x, I10, 16x, E15.7)') &
 !          i_GP_Individual, Ranked_Fitness_Index(i_GP_Individual), &
-!                           GP_Child_Individual_SSE(i_GP_Individual)
+!                           GP_Child_Population_SSE(i_GP_Individual)
 !enddo
 
 
@@ -122,15 +122,15 @@ enddo  ! i_GP_Individual
 i_GP_best_parent =  new_GP_best_parent ! should be 1?
 
 
-GP_Adult_Population_SSE = GP_Child_Population_SSE
+!GP_Adult_Population_SSE = GP_Child_Population_SSE
 
 !-------------------------------------------------------------------------------
 !-------------------------------------------------------------------------------
 
 
 do  jj = 1, n_GP_Individuals   ! 20131209
-    GP_Adult_Population_SSE(jj) = GP_Child_Individual_SSE(jj)
-    GP_Adult_Individual_SSE(jj) = GP_Child_Individual_SSE(jj)
+    GP_Adult_Population_SSE(jj) = GP_Child_Population_SSE(jj)
+    !GP_Adult_Individual_SSE(jj) = GP_Child_Population_SSE(jj)
 enddo
 
 
@@ -361,7 +361,7 @@ do  i_GP_Individual=1,n_GP_Individuals
 enddo
 
 !write(6,'(/A, 1x, E15.7)') &
-!      'gprs: after: sum GP_Child_Individual_SSE ', cff
+!      'gprs: after: sum GP_Child_Population_SSE ', cff
 
 !------------------------------------------------------------------------------------
 
@@ -461,7 +461,7 @@ endif ! GP_Integrated_Population_Ranked_Fitness(n_GP_Individuals) > 0.0d0
 !          i_GP_Individual, &
 !          GP_Integrated_Population_Ranked_Fitness(i_GP_Individual), &
 !          GP_Population_Ranked_Fitness(i_GP_Individual), &
-!          GP_Child_Individual_SSE(i_GP_Individual)
+!          GP_Child_Population_SSE(i_GP_Individual)
 !enddo   ! i_GP_Individual
 !
 !write(6,'(/A)') 'gprs: at return   '
