@@ -362,6 +362,7 @@ else  ! not myid == 0
             ! GP_Child_Population_SSE array
 
             temp_SSE = GP_Child_Population_SSE(i_2_individual)
+            save_SSE = GP_Child_Population_SSE(i_2_individual)
 
             call setup_run_para_lmdif( i_2_individual, &
                                        max_n_gp_params, &
