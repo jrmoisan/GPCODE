@@ -346,8 +346,8 @@ endif ! myid == 0
       if( trim(model) /= 'fasham_fixed_tree' )then
          if( myid == 0 )then
 
-            write(GP_print_unit,'(/A,1x,I6/)') &
-                  '0: call GP_Clean_Tree_Nodes  Generation =', i_GP_Generation
+            !write(GP_print_unit,'(/A,1x,I6/)') &
+            !      '0: call GP_Clean_Tree_Nodes  Generation =', i_GP_Generation
 
             call GP_Clean_Tree_Nodes
          endif ! myid == 0
@@ -427,9 +427,9 @@ endif ! myid == 0
 
     if( myid == 0 )then
 
-        !if( i_GP_generation == 1                                  .or. &
-        !    mod( i_GP_generation, GP_child_print_interval ) == 0  .or. &
-        !    i_GP_generation == n_GP_generations                          )then
+        if( i_GP_generation == 1                                  .or. &
+            mod( i_GP_generation, GP_child_print_interval ) == 0  .or. &
+            i_GP_generation == n_GP_generations                          )then
 
             write(GP_print_unit,'(/A)') &
             '================================================================================='
@@ -479,7 +479,7 @@ endif ! myid == 0
 
             endif ! index( model, 'log10') > 0 .or. index( model, 'LOG10') > 0
 
-        !endif ! i_GP_generation == 1 .or. ...
+        endif ! i_GP_generation == 1 .or. ...
 
     endif ! myid == 0
 
@@ -535,9 +535,9 @@ endif ! myid == 0
 
     if( myid == 0 )then
 
-        !if( i_GP_generation == 1                                  .or. &
-        !    mod( i_GP_generation, GP_child_print_interval ) == 0  .or. &
-        !    i_GP_generation == n_GP_generations                          )then
+        if( i_GP_generation == 1                                  .or. &
+            mod( i_GP_generation, GP_child_print_interval ) == 0  .or. &
+            i_GP_generation == n_GP_generations                          )then
 
             write(GP_print_unit,'(/A)') &
             '================================================================================='
@@ -583,7 +583,7 @@ endif ! myid == 0
 
             endif ! index( model, 'log10') > 0 .or. index( model, 'LOG10') > 0 )then
 
-        !endif ! i_GP_generation == 1 .or. ...
+        endif ! i_GP_generation == 1 .or. ...
 
         endif ! myid == 0
 
@@ -595,9 +595,9 @@ endif ! myid == 0
 
    if( myid == 0 )then
 
-        !if( i_GP_generation == 1                                  .or. &
-        !    mod( i_GP_generation, GP_child_print_interval ) == 0  .or. &
-        !    i_GP_generation == n_GP_generations                          )then
+        if( i_GP_generation == 1                                  .or. &
+            mod( i_GP_generation, GP_child_print_interval ) == 0  .or. &
+            i_GP_generation == n_GP_generations                          )then
 
             write(GP_print_unit,'(/A)')&
             '0:#################################################################'
@@ -609,7 +609,7 @@ endif ! myid == 0
 
             !flush(GP_print_unit)
 
-        !endif ! i_GP_generation == 1 .or. ...
+        endif ! i_GP_generation == 1 .or. ...
 
         !-----------------------------------------------------------------------
 
@@ -620,9 +620,9 @@ endif ! myid == 0
 
         !-----------------------------------------------------------------------
 
-        !if( i_GP_generation == 1                                  .or. &
-        !    mod( i_GP_generation, GP_child_print_interval ) == 0  .or. &
-        !    i_GP_generation == n_GP_generations                          )then
+        if( i_GP_generation == 1                                  .or. &
+            mod( i_GP_generation, GP_child_print_interval ) == 0  .or. &
+            i_GP_generation == n_GP_generations                          )then
 
             write(GP_print_unit,'(/A)')&
             '0:################################################################'
@@ -633,7 +633,7 @@ endif ! myid == 0
             '0:################################################################'
             !flush(GP_print_unit)
 
-        !endif ! i_GP_generation == 1 .or. ...
+        endif ! i_GP_generation == 1 .or. ...
 
         !-----------------------------------------------------------------------
 

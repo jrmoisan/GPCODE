@@ -44,9 +44,9 @@ if( myid == 0 )then
 
     GP_Child_Population_SSE  = GP_Adult_Population_SSE   ! needed ??  jjm 20140522
 
-    !if( i_GP_generation == 1                                  .or. &
-    !    mod( i_GP_generation, GP_child_print_interval ) == 0  .or. &
-    !    i_GP_generation == n_GP_generations                          )then
+    if( i_GP_generation == 1                                  .or. &
+        mod( i_GP_generation, GP_child_print_interval ) == 0  .or. &
+        i_GP_generation == n_GP_generations                          )then
 
         write(GP_print_unit,'(//A)') 'gpn:3 before modifications'
         write(GP_print_unit,'(A)')&
@@ -61,7 +61,7 @@ if( myid == 0 )then
         enddo ! i_GP_individual
                 !flush(GP_print_unit)
 
-    !endif ! i_GP_generation == 1 .or. ...
+    endif ! i_GP_generation == 1 .or. ...
 
 
     !----------------------------------------------------------------------------------

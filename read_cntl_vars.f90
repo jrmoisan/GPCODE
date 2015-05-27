@@ -75,7 +75,7 @@ if( myid == 0 )then
     do
 
         Aline(1:) = ' '
-  
+
         istat  = 0
         READ( cntl_unitnum, '(A)', IOSTAT = istat ) Aline
         if( istat > 0 ) then
@@ -90,7 +90,7 @@ if( myid == 0 )then
         if( istat < 0 ) then
             EXIT echoloop
         endif
-  
+
         write(GP_print_unit,'(A)') trim( Aline )
 
     enddo echoloop
@@ -190,11 +190,11 @@ L_print_equations = .FALSE.
 L_run_GP_para_lmdif = .FALSE.
 
 
-L_no_forcing = .FALSE.            
+L_no_forcing = .FALSE.
 
 prob_forcing = 0.20
 
-max_forcing_index = -9999                    
+max_forcing_index = -9999
 
 number_GA_child_prints  = 10
 number_GP_child_prints  = 10
@@ -252,6 +252,14 @@ do
 
         READ(Aline(len('GA_Crossover_Probability')+1:), * ) GA_Crossover_Probability
 
+        if( myid == 0 )then
+            write(GP_print_unit,'(A,1x,F10.4)') 'rcntl: GA_Crossover_Probability   = ', &
+                                                        GA_Crossover_Probability
+        endif !myid==0
+
+
+!--------------------------------------------------------------------
+
 
 !GA_Mutation_Probability  = 0.1d0
 ! probability of mutation in parameter string of GA_lmdif
@@ -261,6 +269,14 @@ do
 
         READ(Aline(len('GA_Mutation_Probability')+1:), * ) GA_Mutation_Probability
 
+        if( myid == 0 )then
+            write(GP_print_unit,'(A,1x,F10.4)') 'rcntl: GA_Mutation_Probability    = ', &
+                                                        GA_Mutation_Probability
+        endif !myid==0
+
+
+
+!--------------------------------------------------------------------
 
 !GA_rand_replace_Probability  = 0.005d0   ! probability of rand_replace in binary string
 
@@ -268,6 +284,15 @@ do
             Aline(1:len('GA_rand_replace_Probability')) == "ga_rand_replace_probability" ) then
 
         READ(Aline(len('GA_rand_replace_Probability')+1:), * ) GA_rand_replace_Probability
+
+        if( myid == 0 )then
+            write(GP_print_unit,'(A,1x,F10.4)') 'rcntl: GA_rand_replace_Probability = ', &
+                                                        GA_rand_replace_Probability
+        endif !myid==0
+
+
+
+!--------------------------------------------------------------------
 
 
 !GA_save_elites_Probability  = 0.005d0
@@ -278,6 +303,14 @@ do
 
         READ(Aline(len('GA_save_elites_Probability')+1:), * ) GA_save_elites_Probability
 
+        if( myid == 0 )then
+            write(GP_print_unit,'(A,1x,F10.4)') 'rcntl: GA_save_elites_Probability = ', &
+                                                        GA_save_elites_Probability
+        endif !myid==0
+
+
+!--------------------------------------------------------------------
+
 
 !GP_Tree_Probability  = 0.005d0   ! Estimated from previous work by Joel Cohen
 
@@ -285,6 +318,14 @@ do
             Aline(1:len('GP_Tree_Probability')) == "gp_tree_probability" ) then
 
         READ(Aline(len('GP_Tree_Probability')+1:), * ) GP_Tree_Probability
+
+        if( myid == 0 )then
+            write(GP_print_unit,'(A,1x,F10.4)') 'rcntl: GP_Tree_Probability = ', &
+                                                        GP_Tree_Probability
+        endif !myid==0
+
+
+!--------------------------------------------------------------------
 
 
 !GP_Elitist_Probability  = 0.005d0
@@ -295,6 +336,10 @@ do
 
         READ(Aline(len('GP_Elitist_Probability')+1:), * ) GP_Elitist_Probability
 
+        if( myid == 0 )then
+            write(GP_print_unit,'(A,1x,F10.4)') 'rcntl: GP_Elitist_Probability = ', &
+                                                        GP_Elitist_Probability
+        endif !myid==0
 
 
 !--------------------------------------------------------------------
@@ -306,12 +351,15 @@ do
 
         READ(Aline(len('GP_rand_replace_Probability')+1:), * ) GP_rand_replace_Probability
 
-        write(GP_print_unit,'(A,1x,F10.4)') 'rcntl: GP_rand_replace_Probability = ', &
-                                                    GP_rand_replace_Probability
+        if( myid == 0 )then
+            write(GP_print_unit,'(A,1x,F10.4)') 'rcntl: GP_rand_replace_Probability = ', &
+                                                        GP_rand_replace_Probability
+        endif !myid==0
 
 
 
 
+!--------------------------------------------------------------------
 
 !GP_Asexual_Reproduction_Probability  = 0.005d0   ! probability of asexual reproduction
 
@@ -323,7 +371,13 @@ do
         READ(Aline(len('GP_Asexual_Reproduction_Probability')+1:), * ) &
                         GP_Asexual_Reproduction_Probability
 
+        if( myid == 0 )then
+            write(GP_print_unit,'(A,1x,F10.4)') &
+                  'rcntl: GP_Asexual_Reproduction_Probability = ', &
+                          GP_Asexual_Reproduction_Probability
+        endif !myid==0
 
+!------------------------------------------------------------------------------
 
 !GP_Crossover_Probability  = 0.005d0   !  probability of sexual crossing of binary string
 
@@ -332,6 +386,14 @@ do
 
         READ(Aline(len('GP_Crossover_Probability')+1:), * ) GP_Crossover_Probability
 
+        if( myid == 0 )then
+            write(GP_print_unit,'(A,1x,F10.4)') 'rcntl: GP_Crossover_Probability = ', &
+                                                        GP_Crossover_Probability
+        endif !myid==0
+
+
+
+!--------------------------------------------------------------------
 
 !GP_Mutation_Probability  = 0.005d0   ! probability of mutation in binary string
 
@@ -340,6 +402,14 @@ do
 
         READ(Aline(len('GP_Mutation_Probability')+1:), * ) GP_Mutation_Probability
 
+        if( myid == 0 )then
+            write(GP_print_unit,'(A,1x,F10.4)') 'rcntl: GP_Mutation_Probability = ', &
+                                                        GP_Mutation_Probability
+        endif !myid==0
+
+
+
+!--------------------------------------------------------------------
 
 !n_GA_Generations
 
@@ -348,6 +418,13 @@ do
 
         READ(Aline(len('n_GA_Generations')+1:), * ) n_GA_Generations
 
+        if( myid == 0 )then
+            write(GP_print_unit,'(A,1x,I6)') 'rcntl: n_GA_Generations = ', &
+                                                     n_GA_Generations
+        endif !myid==0
+
+
+!--------------------------------------------------------------------
 
 
 !n_GA_Individuals
@@ -357,6 +434,13 @@ do
 
         READ(Aline(len('n_GA_Individuals')+1:), * ) n_GA_Individuals
 
+        if( myid == 0 )then
+            write(GP_print_unit,'(A,1x,I6)') 'rcntl: n_GA_Individuals = ', &
+                                                     n_GA_Individuals
+        endif !myid==0
+
+
+!--------------------------------------------------------------------
 
 !n_time_steps
 
@@ -364,6 +448,14 @@ do
             Aline(1:len('n_time_steps')) == "n_time_steps" ) then
 
         READ(Aline(len('n_time_steps')+1:), * ) n_time_steps
+
+        if( myid == 0 )then
+            write(GP_print_unit,'(A,1x,I6)') 'rcntl: n_time_steps     = ', &
+                                                     n_time_steps
+        endif !myid==0
+
+
+!--------------------------------------------------------------------
 
 
 !dt = 1.0D+1/(24.0D+0*60.0D+0)   ! [d^-1; 10 minute time step]
@@ -373,13 +465,27 @@ do
 
         READ(Aline(len('DT')+1:), * )  dt_min
 
+        if( myid == 0 )then
+            write(GP_print_unit,'(A,1x,F10.4)') 'rcntl: dt (minutes) = ', dt_min
+        endif !myid==0
 
         dt = dt_min / 1440.0d0
 
 
         Delta_Time_in_Days  = dt
 
-! sse_low_wt  -  weight for data outside the 
+        if( myid == 0 )then
+            write(6,'(/A,2(1x,E15.7))') 'rcntl: dt, Delta_Time_in_Days ',  &
+                                                dt, Delta_Time_in_Days
+            write(GP_print_unit,'(A,1x,F10.4)') 'rcntl: dt (days)    = ', dt
+        endif !myid==0
+
+
+
+!--------------------------------------------------------------------
+
+
+! sse_low_wt  -  weight for data outside the
 !                [sse_min_time , sse_max_time] interval
 
     elseif( Aline(1:len('sse_low_wt')) == "sse_low_wt" .or.     &
@@ -388,7 +494,19 @@ do
         READ(Aline(len('sse_low_wt')+1:), * )  sse_low_wt
 
 
-! sse_min_time  -  start time of interval where data is weighted with 1.0 
+
+        if( myid == 0 )then
+            write(6,'(/A,1x,E15.7)') 'rcntl: sse_low_wt',  &
+                                             sse_low_wt
+        endif !myid==0
+
+
+
+!--------------------------------------------------------------------
+
+
+
+! sse_min_time  -  start time of interval where data is weighted with 1.0
 
     elseif( Aline(1:len('sse_min_time')) == "sse_min_time" .or.     &
             Aline(1:len('sse_min_time')) == "SSE_MIN_TIME" ) then
@@ -396,12 +514,37 @@ do
         READ(Aline(len('sse_min_time')+1:), * )  sse_min_time
 
 
-! sse_max_time  -  stop  time of interval where data is weighted with 1.0 
+
+        if( myid == 0 )then
+            write(6,'(/A,1x,E15.7)') 'rcntl: sse_min_time',  &
+                                             sse_min_time
+        endif !myid==0
+
+
+
+
+!--------------------------------------------------------------------
+
+
+! sse_max_time  -  stop  time of interval where data is weighted with 1.0
 
     elseif( Aline(1:len('sse_max_time')) == "sse_max_time" .or.     &
             Aline(1:len('sse_max_time')) == "SSE_MAX_TIME" ) then
 
         READ(Aline(len('sse_max_time')+1:), * )  sse_max_time
+
+
+
+        if( myid == 0 )then
+            write(6,'(/A,1x,E15.7)') 'rcntl: sse_max_time',  &
+                                             sse_max_time
+        endif !myid==0
+
+
+
+
+!--------------------------------------------------------------------
+
 
 !model = LV  or  NPZ or data or fasham or fasham_fixed_tree
 
@@ -410,6 +553,9 @@ do
 
         READ(Aline(len('model')+1:), * )  model
 
+        if( myid == 0 )then
+            write(GP_print_unit,'(A,1x,A)') 'rcntl: model = ', trim( model )
+        endif !myid==0
 
         if( trim(model) == 'FASHAM' ) model = 'fasham'
         if( trim(model) == 'Fasham' ) model = 'fasham'
@@ -425,12 +571,15 @@ do
 
             max_forcing_index = fasham_max_forcing_index
         else
-            
-            max_forcing_index = -9999                    
 
-        endif !  index( model, 'fasham') > 0 
+            max_forcing_index = -9999
+
+        endif !  index( model, 'fasham') > 0
 
 
+
+
+!--------------------------------------------------------------------
 
 
 !N_GP_individuals
@@ -440,6 +589,14 @@ do
 
         READ(Aline(len('n_gp_individuals')+1:), * )  n_gp_individuals
 
+        if( myid == 0 )then
+            write(GP_print_unit,'(A,1x,I6)') 'rcntl: n_gp_individuals = ', n_gp_individuals
+        endif !myid==0
+
+
+
+!--------------------------------------------------------------------
+
 
 !N_GP_generations
 
@@ -448,6 +605,14 @@ do
 
         READ(Aline(len('n_gp_generations')+1:), * )  n_gp_generations
 
+        if( myid == 0 )then
+            write(GP_print_unit,'(A,1x,I6)') 'rcntl: n_gp_generations = ', n_gp_generations
+        endif !myid==0
+
+
+
+
+!--------------------------------------------------------------------
 
 
 !n_Node_Functions
@@ -461,8 +626,15 @@ do
 
         READ(Aline(len('n_Node_Functions')+1:), * )  n_Node_Functions
 
+        if( myid == 0 )then
+            write(GP_print_unit,'(A,1x,I6)') 'rcntl: n_Node_Functions = ', n_Node_Functions
+        endif !myid==0
 
         L_node_functions = .TRUE.
+
+
+!--------------------------------------------------------------------
+
 
 ! selected_function
 
@@ -487,6 +659,9 @@ do
 
         endif ! i_function_index <= n_functions_max
 
+
+!--------------------------------------------------------------------
+
 ! random_scale_small
 
 ! in random_real, random_scale_small is the smaller of the two scales
@@ -497,6 +672,13 @@ do
 
         READ(Aline(len('random_scale_small')+1:), * )  random_scale_small
 
+        if( myid == 0 )then
+            write(GP_print_unit,'(A,1x,E15.7)') 'rcntl: random_scale_small = ', &
+                                                        random_scale_small
+        endif !myid==0
+
+
+!--------------------------------------------------------------------
 
 ! random_scale_large
 
@@ -507,6 +689,16 @@ do
             Aline(1:len('random_scale_large')) == "random_scale_large" ) then
 
         READ(Aline(len('random_scale_large')+1:), * )  random_scale_large
+
+        if( myid == 0 )then
+            write(GP_print_unit,'(A,1x,E15.7)') 'rcntl: random_scale_large = ', &
+                                                        random_scale_large
+        endif !myid==0
+
+
+
+
+!--------------------------------------------------------------------
 
 
 ! random scale fraction
@@ -520,6 +712,16 @@ do
                         "random_scale_fraction"           ) then
 
         READ(Aline(len('random_scale_fraction')+1:), * )  random_scale_fraction
+
+        if( myid == 0 )then
+            write(GP_print_unit,'(A,1x,E15.7)') 'rcntl: random_scale_fraction = ', &
+                                                        random_scale_fraction
+        endif !myid==0
+
+
+
+
+!--------------------------------------------------------------------
 
 
 ! ga_tournament_style
@@ -535,6 +737,14 @@ do
             Aline(1:len('ga_tournament_style')) == "GA_TOURNAMENT_STYLE"           ) then
 
         READ(Aline(len('ga_tournament_style')+1:), * )  ga_tournament_style
+
+        if( myid == 0 )then
+            write(GP_print_unit,'(A,1x,I6)') 'rcntl: ga_tournament_style = ', &
+                                                     ga_tournament_style
+        endif !myid==0
+
+
+!--------------------------------------------------------------------
 
 
 !  user_input_random_seed
@@ -554,6 +764,10 @@ do
 
         user_input_random_seed = abs( user_input_random_seed  )
 
+        if( myid == 0 )then
+            write(GP_print_unit,'(A,1x,I12)') 'rcntl: user_input_random_seed =', &
+                                                      user_input_random_seed
+        endif !myid==0
 
 
 !--------------------------------------------------------------------
@@ -579,6 +793,12 @@ do
             L_GA_print = .FALSE.
         endif ! GA_print_flag > 0
 
+        if( myid == 0 )then
+            write(GP_print_unit,'(A,1x,I12)') 'rcntl: GA_print_flag =', &
+                                                      GA_print_flag
+            write(GP_print_unit,'(A,4x,L1 )') 'rcntl: L_GA_print =', &
+                                                      L_GA_print
+        endif !myid==0
 
 
 !--------------------------------------------------------------------
@@ -606,6 +826,12 @@ do
             L_GA_output_parameters = .FALSE.
         endif ! GA_output_parameters_flag > 0
 
+        if( myid == 0 )then
+            write(GP_print_unit,'(A,1x,I12)') 'rcntl: GA_output_parameters_flag =', &
+                                                      GA_output_parameters_flag
+            write(GP_print_unit,'(A,4x,L1 )') 'rcntl: L_GA_output_parameters =', &
+                                                      L_GA_output_parameters
+        endif !myid==0
 
 !--------------------------------------------------------------------
 
@@ -636,6 +862,12 @@ do
         endif ! GP_output_parameters_flag > 0
 
 
+        if( myid == 0 )then
+            write(GP_print_unit,'(A,1x,I12)') 'rcntl: GP_output_parameters_flag =', &
+                                                      GP_output_parameters_flag
+            write(GP_print_unit,'(A,4x,L1 )') 'rcntl: L_GP_output_parameters =', &
+                                                      L_GP_output_parameters
+        endif !myid==0
 
 !--------------------------------------------------------------------
 
@@ -660,6 +892,12 @@ do
             L_fort333_output = .FALSE.
         endif ! fort333_output_flag > 0
 
+        if( myid == 0 )then
+            write(GP_print_unit,'(A,1x,I12)') 'rcntl: fort333_output_flag =', &
+                                                      fort333_output_flag
+            write(GP_print_unit,'(A,4x,L1 )') 'rcntl: L_fort333_output =', &
+                                                      L_fort333_output
+        endif !myid==0
 
 
 !--------------------------------------------------------------------
@@ -685,6 +923,12 @@ do
             L_fort444_output = .FALSE.
         endif ! fort444_output_flag > 0
 
+        if( myid == 0 )then
+            write(GP_print_unit,'(A,1x,I12)') 'rcntl: fort444_output_flag =', &
+                                                      fort444_output_flag
+            write(GP_print_unit,'(A,4x,L1 )') 'rcntl: L_fort444_output =', &
+                                                      L_fort444_output
+        endif !myid==0
 
 !--------------------------------------------------------------------
 
@@ -709,6 +953,12 @@ do
             L_fort555_output = .FALSE.
         endif ! fort555_output_flag > 0
 
+        if( myid == 0 )then
+            write(GP_print_unit,'(A,1x,I12)') 'rcntl: fort555_output_flag =', &
+                                                      fort555_output_flag
+            write(GP_print_unit,'(A,4x,L1 )') 'rcntl: L_fort555_output =', &
+                                                      L_fort555_output
+        endif !myid==0
 
 
 
@@ -736,6 +986,12 @@ do
             L_GA_log = .FALSE.
         endif ! GA_log_flag > 0
 
+        if( myid == 0 )then
+            write(GP_print_unit,'(A,1x,I12)') 'rcntl: GA_log_flag =', &
+                                                      GA_log_flag
+            write(GP_print_unit,'(A,4x,L1 )') 'rcntl: L_GA_log =', &
+                                                      L_GA_log
+        endif !myid==0
 
 
 !--------------------------------------------------------------------
@@ -762,6 +1018,12 @@ do
             L_GP_log = .FALSE.
         endif ! GP_log_flag > 0
 
+        if( myid == 0 )then
+            write(GP_print_unit,'(A,1x,I12)') 'rcntl: GP_log_flag =', &
+                                                      GP_log_flag
+            write(GP_print_unit,'(A,4x,L1 )') 'rcntl: L_GP_log =', &
+                                                      L_GP_log
+        endif !myid==0
 
 !--------------------------------------------------------------------
 
@@ -787,6 +1049,12 @@ do
             L_GPSSE_log = .FALSE.
         endif ! GPSSE_log_flag > 0
 
+        if( myid == 0 )then
+            write(GP_print_unit,'(A,1x,I12)') 'rcntl: GPSSE_log_flag =', &
+                                                      GPSSE_log_flag
+            write(GP_print_unit,'(A,4x,L1 )') 'rcntl: L_GPSSE_log =', &
+                                                      L_GPSSE_log
+        endif !myid==0
 
 
 !--------------------------------------------------------------------
@@ -814,6 +1082,12 @@ do
             L_unit50_output = .FALSE.
         endif ! unit50_output_flag > 0
 
+        if( myid == 0 )then
+            write(GP_print_unit,'(A,1x,I12)') 'rcntl: unit50_output_flag =', &
+                                                      unit50_output_flag
+            write(GP_print_unit,'(A,4x,L1 )') 'rcntl: L_unit50_output =', &
+                                                      L_unit50_output
+        endif !myid==0
 
 
 !--------------------------------------------------------------------
@@ -843,6 +1117,18 @@ do
             L_GP_all_summary = .FALSE.
         endif ! GP_all_summary_flag > 0
 
+        if( myid == 0 )then
+            write(GP_print_unit,'(A,1x,I12)') 'rcntl: GP_all_summary_flag =', &
+                                                      GP_all_summary_flag
+            write(GP_print_unit,'(A,4x,L1 )') 'rcntl: L_GP_all_summary =', &
+                                                      L_GP_all_summary
+        endif !myid==0
+
+
+
+
+
+!--------------------------------------------------------------------
 
 ! print equations
 
@@ -866,6 +1152,12 @@ do
             L_print_equations = .FALSE.
         endif ! print_equations_flag > 0
 
+        if( myid == 0 )then
+            write(GP_print_unit,'(A,1x,I12)') 'rcntl: print_equations_flag =', &
+                                                      print_equations_flag
+            write(GP_print_unit,'(A,4x,L1 )') 'rcntl: L_print_equations =', &
+                                                      L_print_equations
+        endif !myid==0
 
 
 !--------------------------------------------------------------------
@@ -880,6 +1172,10 @@ do
 
         READ(Aline(len('number_ga_child_prints')+1:), * )  number_ga_child_prints
 
+        if( myid == 0 )then
+            write(GP_print_unit,'(A,1x,I6)') &
+                  'rcntl: number_ga_child_prints = ', number_ga_child_prints
+        endif !myid==0
 
 
 
@@ -896,6 +1192,10 @@ do
 
         READ(Aline(len('number_GP_child_prints')+1:), * )  number_GP_child_prints
 
+        if( myid == 0 )then
+            write(GP_print_unit,'(A,1x,I6)') &
+                  'rcntl: number_GP_child_prints = ', number_GP_child_prints
+        endif !myid==0
 
 
 
@@ -910,6 +1210,10 @@ do
 
         READ(Aline(len('n_input_vars')+1:), * )  n_input_vars
 
+        if( myid == 0 )then
+            write(GP_print_unit,'(A,1x,I6)') &
+                  'rcntl: n_input_vars = ', n_input_vars
+        endif !myid==0
 
 
 !--------------------------------------------------------------------
@@ -923,6 +1227,11 @@ do
 
         READ(Aline(len('n_levels')+1:), * )  n_levels
 
+        if( myid == 0 )then
+            write(GP_print_unit,'(A,1x,I6)') &
+                  'rcntl: n_levels = ', n_levels
+        endif !myid==0
+
 
 !--------------------------------------------------------------------
 
@@ -934,6 +1243,11 @@ do
             Aline(1:len('prob_no_elite')) == "prob_no_elite" ) then
 
         READ(Aline(len('prob_no_elite')+1:), * )  prob_no_elite
+
+        if( myid == 0 )then
+            write(GP_print_unit,'(A,1x,E15.7)') &
+                  'rcntl: prob_no_elite = ', prob_no_elite
+        endif !myid==0
 
 
 
@@ -952,6 +1266,18 @@ do
 
         READ(Aline(len('term_to_parm_prob')+1:), * )  GP_Set_Terminal_to_Parameter_Probability
 
+        if( myid == 0 )then
+            write(GP_print_unit,'(A,1x,F12.5)') &
+                  'rcntl: GP_Set_Terminal_to_Parameter_Probability =', &
+                          GP_Set_Terminal_to_Parameter_Probability
+        endif !myid==0
+
+
+
+
+
+!--------------------------------------------------------------------
+
 
 ! restart  =  restart random numbers using the input array of seeds
 
@@ -959,8 +1285,8 @@ do
     elseif( Aline(1:len('restart')) == "RESTART" .or.     &
             Aline(1:len('restart')) == "restart" ) then
 
-        write(GP_print_unit,'(A,1x,i6)') &
-              'rcntl: n_seed    = ', n_seed
+        !write(GP_print_unit,'(A,1x,i6)') &
+        !      'rcntl: n_seed    = ', n_seed
         !flush( GP_print_unit )
 
 
@@ -969,6 +1295,20 @@ do
 
         L_restart = .true.
 
+        if( myid == 0 )then
+            write(GP_print_unit,'(A,5x,L1)') &
+                  'rcntl: L_restart = ', L_restart
+    
+            write(GP_print_unit,'(A,1x,i6)') &
+                  'rcntl: n_seed    = ', n_seed
+        endif !myid==0
+
+
+
+
+
+
+!--------------------------------------------------------------------
 
 
 ! n_partitions = number of partitions to be used to divide processors
@@ -980,7 +1320,15 @@ do
 
         READ(Aline(len('n_partitions')+1:), * )  n_partitions
 
+        if( myid == 0 )then
+            write(GP_print_unit,'(A,1x,I6)') &
+                  'rcntl: n_partitions = ', n_partitions
+        endif !myid==0
+
+
         if( n_partitions <=1 ) stop " n_partition <=1"
+
+!--------------------------------------------------------------------
 
 ! run_GP_para_lmdif_flag
 
@@ -995,7 +1343,7 @@ do
             Aline(1:len('run_GP_para_lmdif')) == "RUN_GP_PARA_LMDIF" .or.  &
             Aline(1:len('run_GP_para_lmdif')) == "run_gp_para_lmdif"      ) then
 
-                                                                                                                 
+
         READ(Aline(len('run_GP_para_lmdif')+1:), * )  run_GP_para_lmdif_flag
 
         if( run_GP_para_lmdif_flag > 0 )then
@@ -1004,11 +1352,27 @@ do
             L_run_GP_para_lmdif = .FALSE.
         endif ! run_GP_para_lmdif_flag > 0
 
-!  if L_no_forcing is .TRUE. , 
+        if( myid == 0 )then
+            write(GP_print_unit,'(A,1x,I12)') 'rcntl: run_GP_para_lmdif_flag =', &
+                                                      run_GP_para_lmdif_flag
+            write(GP_print_unit,'(A,4x,L1 )') 'rcntl: L_run_GP_para_lmdif =', &
+                                                      L_run_GP_para_lmdif
+        endif !myid==0
+
+
+
+
+
+!--------------------------------------------------------------------
+
+
+!  if L_no_forcing is .TRUE. ,
 !  set the forcing function node value -5004 to zero
+
     elseif( Aline(1:len('no_forcing')) == "no_forcing" .or.  &
             Aline(1:len('no_forcing')) == "NO_FORCING" .or.  &
             Aline(1:len('no_forcing')) == "No_Forcing"      ) then
+
         ! this now applies only to the daily forcing -5004
         READ(Aline(len('no_forcing')+1:), * )  no_forcing_flag
 
@@ -1017,26 +1381,62 @@ do
         else
             L_no_forcing = .FALSE.
         endif ! no_forcing_flag > 0
-                                                                                                                 
-! prob_forcing      = probability that a variable node will be a 
-!                     forcing function node          
-                                                                                                                       
-                                                                                                                       
-    elseif( Aline(1:len('prob_forcing')) == "PROB_FORCING" .or.     &                                                
-            Aline(1:len('prob_forcing')) == "prob_forcing" ) then                                                    
-                                                                                                                       
-        READ(Aline(len('prob_forcing')+1:), * )  prob_forcing                                                        
-                                                                                                                       
+
+        if( myid == 0 )then
+            write(GP_print_unit,'(A,1x,I12)') 'rcntl: no_forcing_flag =', &
+                                                      no_forcing_flag
+            write(GP_print_unit,'(A,4x,L1 )') 'rcntl: L_no_forcing =', &
+                                                      L_no_forcing
+        endif !myid==0
+
+
+!--------------------------------------------------------------------
+
+
+! prob_forcing      = probability that a variable node will be a
+!                     forcing function node
+
+
+    elseif( Aline(1:len('prob_forcing')) == "PROB_FORCING" .or.     &
+            Aline(1:len('prob_forcing')) == "prob_forcing" ) then
+
+        READ(Aline(len('prob_forcing')+1:), * )  prob_forcing
+
+        if( myid == 0 )then
+            write(GP_print_unit,'(A,1x,E15.7)') &
+                  'rcntl: prob_forcing = ', prob_forcing
+        endif !myid==0
+
+
+
+
+
+!--------------------------------------------------------------------
+
+
+
 ! ignore blank lines
     elseif( trim( Aline ) == '' ) then
-        write(GP_print_unit,'(A)') &
-              'rcntl: blank line --- ignored '
+
+        if( myid == 0 )then
+            write(GP_print_unit,'(A)') &
+                  'rcntl: blank line --- ignored '
+        endif !myid==0
+
         continue
+
+
+!--------------------------------------------------------------------
+
+
+
     else
 
-        write(GP_print_unit,'(/A)')     'rcntl: WARNING: UNRECOGNIZED OPTION '
-        write(GP_print_unit,'(A,1x,A)') 'rcntl: Aline =', trim( Aline )
-        write(GP_print_unit,'(A/)')     'rcntl: WARNING: UNRECOGNIZED OPTION '
+        if( myid == 0 )then
+            write(GP_print_unit,'(/A)')     'rcntl: WARNING: UNRECOGNIZED OPTION '
+            write(GP_print_unit,'(A,1x,A)') 'rcntl: Aline =', trim( Aline )
+            write(GP_print_unit,'(A/)')     'rcntl: WARNING: UNRECOGNIZED OPTION '
+        endif !myid==0
         !ierror = 1
         !return
         continue
@@ -1046,17 +1446,32 @@ do
 
 enddo cntlloop
 
-close(cntl_unitnum)  
+close(cntl_unitnum)
 
 ! check
 if( L_node_functions .and. n_node_functions <=0 )then
+    if( myid == 0 )then
+        write(GP_print_unit,'(//A)') &
+              'rcntl: BAD VALUE FOR n_node_functions '
+        write(GP_print_unit,'(A,1x,I6//)') &
+              'rcntl:               n_node_functions = ', n_node_functions
+    endif !myid==0
+
     ierror = 1
-    stop 'rcntl: bad input n_node_functions'
+    !stop 'rcntl: bad input n_node_functions'
+
+    if( myid == 0 )then
+        write(GP_print_unit,*) &
+           'rcntl:3 return ierror = ', ierror
+    endif !myid==0
+
+    return
+
 endif ! .not. L_node_functions
 
 ! write out what has been read in
 if( myid == 0) then
- 
+
     write(GP_print_unit,'(A,1x,F10.4)') 'rcntl: GA_Crossover_Probability   = ', &
                                     GA_Crossover_Probability
     write(GP_print_unit,'(A,1x,F10.4)') 'rcntl: GA_Mutation_Probability    = ', &
@@ -1166,9 +1581,9 @@ if( myid == 0) then
       'rcntl: n_levels = ', n_levels
     write(GP_print_unit,'(A,1x,E15.7)') &
       'rcntl: prob_no_elite = ', prob_no_elite
-    write(GP_print_unit,'(A,1x,F12.5)') &                                    
-       'rcntl: GP_Set_Terminal_to_Parameter_Probability =', &  
-            GP_Set_Terminal_to_Parameter_Probability      
+    write(GP_print_unit,'(A,1x,F12.5)') &
+       'rcntl: GP_Set_Terminal_to_Parameter_Probability =', &
+            GP_Set_Terminal_to_Parameter_Probability
     write(GP_print_unit,'(A,5x,L1)') &
           'rcntl: L_restart = ', L_restart
     write(GP_print_unit,'(A,1x,i6)') &
@@ -1183,9 +1598,10 @@ if( myid == 0) then
                                                    no_forcing_flag
     write(GP_print_unit,'(A,4x,L1 )') 'rcntl: L_no_forcing =', &
                                                    L_no_forcing
- 
-    write(GP_print_unit,'(A,1x,E15.7)') &                                                                          
-           'rcntl: prob_forcing = ', prob_forcing                                                                 
+
+    write(GP_print_unit,'(A,1x,E15.7)') &
+           'rcntl: prob_forcing = ', prob_forcing
+
     if( .not. L_node_functions )then
         write(GP_print_unit,'(//A,1x,I6)') 'rcntl: n_functions_input', n_functions_input
         do  i = 1, n_functions_input
@@ -1193,8 +1609,10 @@ if( myid == 0) then
                                                         i, selected_functions(i)
         enddo !i
     endif ! .not. L_node_functions
- 
-    write(GP_print_unit,'(//A)') ' '
+
+    write(GP_print_unit,'(//A,1x,I3)') &
+          'rcntl: normal return ierror = ', ierror
+
 endif ! myid==0
 
 return

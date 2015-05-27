@@ -256,10 +256,10 @@ L_skip = .FALSE.
 
 
                     !if( new_rank == 0 )then
-                        write(GP_print_unit,'(A,1x,I5,A,1x,i5)')&
-                              'gil: skipping this i_GP_Individual', i_GP_individual, &
-                              ' --  the number of parameters is ', n_GP_parameters
-                        flush(GP_print_unit)
+                    !    write(GP_print_unit,'(A,1x,I5,A,1x,i5)')&
+                    !          'gil: skipping this i_GP_Individual', i_GP_individual, &
+                    !          ' --  the number of parameters is ', n_GP_parameters
+                    !    flush(GP_print_unit)
                     !endif !  new_rank == 0
 
 
@@ -325,11 +325,11 @@ L_skip = .FALSE.
                      GP_Individual_Node_Parameters(:,:)
 
                 !write(6,*) ' '
-                write(6,'(/A,4(1x,I6))') 'gil: myid, new_rank, color, i_GP_individual ', &
-                                               myid, new_rank, color, i_GP_individual 
-                write(6,'(A,2(1x,I6),2(1x,E15.7))') &
-                      'gil: myid,i_GP_individual, individual_fitness, Individual_SSE_best_parent ', &
-                            myid,i_GP_individual, individual_fitness, Individual_SSE_best_parent 
+                !write(6,'(/A,4(1x,I6))') 'gil: myid, new_rank, color, i_GP_individual ', &
+                !                               myid, new_rank, color, i_GP_individual 
+                !write(6,'(A,2(1x,I6),2(1x,E15.7))') &
+                !      'gil: myid,i_GP_individual, individual_fitness, Individual_SSE_best_parent ', &
+                !            myid,i_GP_individual, individual_fitness, Individual_SSE_best_parent 
                 !write(6,*) 'gil: i_GP_individual, GP_Population_Initial_Conditions ', &
                 !                 i_GP_individual, GP_Population_Initial_Conditions 
                 !write(6,*) 'gil: i_GP_individual, GP_Population_node_parameters ', &
@@ -392,21 +392,21 @@ L_skip = .FALSE.
 
 !---------------------------------------------------------------------------------
 
-if( myid == 0 )then
-
-    write(GP_print_unit,'(//A//)' )&
-         '>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>'
-    do  ii = 1, n_GP_individuals
-        write(GP_print_unit,'(A,4(1x,I5), 2(1x, E15.7))')&
-         'gil:5 myid, new_rank, i_GP_gen, ii, GP_pop_fit, child_pop_SSE', &
-                myid, new_rank, i_GP_generation, ii, &
-                           GP_Population_Ranked_Fitness(ii), &
-                         GP_Child_population_SSE(ii)
-    enddo ! i_GP_individual
-
-    flush( GP_print_unit )
-
-endif !  myid == 0
+!if( myid == 0 )then
+!
+!    write(GP_print_unit,'(//A//)' )&
+!         '>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>'
+!    do  ii = 1, n_GP_individuals
+!        write(GP_print_unit,'(A,4(1x,I5), 2(1x, E15.7))')&
+!         'gil:5 myid, new_rank, i_GP_gen, ii, GP_pop_fit, child_pop_SSE', &
+!                myid, new_rank, i_GP_generation, ii, &
+!                           GP_Population_Ranked_Fitness(ii), &
+!                         GP_Child_population_SSE(ii)
+!    enddo ! i_GP_individual
+!
+!    flush( GP_print_unit )
+!
+!endif !  myid == 0
 
 
 

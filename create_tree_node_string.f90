@@ -35,8 +35,8 @@ do  jj = 1, n_nodes
 
     !write(6,'(A,1x,I6)')'ctns: jj = ', jj
 
-    node_element_string = '     '
-    write(node_element_string,'(I5)') jj
+    node_element_string = '   '
+    write(node_element_string,'(I3)') jj
 
     !write(6,'(A,1x,I6,1x,A )')'ctns: jj, node_element_string  ', &
     !                                 jj, node_element_string

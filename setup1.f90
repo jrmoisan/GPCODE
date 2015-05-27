@@ -340,9 +340,9 @@ answer = 0.0d0 ! set all to zero
 
 n_parameters = 0
 
-if( myid == 0 )then    ! 20131209
-    write(GP_print_unit,'(/A,1x,I6/)') 'set1: n_code_equations ', n_code_equations
-endif ! myid == 0
+!if( myid == 0 )then    ! 20131209
+!    write(GP_print_unit,'(/A,1x,I6/)') 'set1: n_code_equations ', n_code_equations
+!endif ! myid == 0
 
 do  i_CODE_equation=1,n_CODE_equations
     n_parameters=n_parameters+1
@@ -394,10 +394,10 @@ endif
 message_len = 1
 call MPI_BCAST( GA_child_print_interval, message_len,    &
                 MPI_INTEGER,  0, MPI_COMM_WORLD, ierr )
-if( myid == 0 )then
-    write(6, '(A,2(1x,I6)/)') 'set1: 4 bcast ierr ', ierr 
-    !flush(6)
-endif ! myid == 0
+!if( myid == 0 )then
+!    write(6, '(A,2(1x,I6)/)') 'set1: 4 bcast ierr ', ierr 
+!    !flush(6)
+!endif ! myid == 0
 
 
 
@@ -405,10 +405,10 @@ message_len = 1
 call MPI_BCAST( GP_child_print_interval, message_len,    &
                 MPI_INTEGER,  0, MPI_COMM_WORLD, ierr )
 
-if( myid == 0 )then
-    write(6, '(A,2(1x,I6)/)') 'set1: 5 bcast ierr ', ierr 
-    !flush(6)
-endif ! myid == 0
+!if( myid == 0 )then
+!    write(6, '(A,2(1x,I6)/)') 'set1: 5 bcast ierr ', ierr 
+!    !flush(6)
+!endif ! myid == 0
 
 
 !--------------------------------------------------------------------------------
@@ -506,6 +506,11 @@ call set_modified_indiv( )
 !  or prob_no_elite > 0 which means elite individuals might be modified
 
 L_minSSE = n_GP_Elitists ==  0 .or.   prob_no_elite > 0.0D0
+if( myid == 0 )then
+    write(6, '(/A,1x,I6,1x,E15.7,5x,L1/)') 'set1: n_GP_Elitists, prob_no_elite, L_minSSE ', &
+                                                  n_GP_Elitists, prob_no_elite, L_minSSE 
+    !flush(6)
+endif ! myid == 0
 
 if( myid == 0 .and. L_minSSE )then
 

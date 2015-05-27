@@ -63,14 +63,14 @@ enddo
 
 !-------------------------------------------------------------------------------
 
-write(6,'(/A)') 'gprs: before sort '
-write(6,'(A)')  'gprs:i_GP_Individual, Ranked_Fitness_Index, &
-                            &GP_Child_Population_SSE'
-do  i_GP_Individual=1,n_GP_Individuals
-    write(6,'(5x,I10,1x, I10, 16x, E15.7)') &
-          i_GP_Individual, Ranked_Fitness_Index(i_GP_Individual), &
-                           GP_Child_Population_SSE(i_GP_Individual)
-enddo
+!write(6,'(/A)') 'gprs: before sort '
+!write(6,'(A)')  'gprs:i_GP_Individual, Ranked_Fitness_Index, &
+!                            &GP_Child_Population_SSE'
+!do  i_GP_Individual=1,n_GP_Individuals
+!    write(6,'(5x,I10,1x, I10, 16x, E15.7)') &
+!          i_GP_Individual, Ranked_Fitness_Index(i_GP_Individual), &
+!                           GP_Child_Population_SSE(i_GP_Individual)
+!enddo
 
 
 !-------------------------------------------------------------------------------
@@ -126,14 +126,14 @@ i_GP_best_parent =  new_GP_best_parent ! should be 1?
 !GP_Adult_Population_SSE = GP_Child_Population_SSE
 
 !-------------------------------------------------------------------------------
-write(6,'(/A)') 'gprs: after  sort '
-write(6,'(A)')  'gprs:i_GP_Individual, Ranked_Fitness_Index, &
-                            &GP_Child_population_sse'
-do  i_GP_Individual=1,n_GP_Individuals
-    write(6,'(5x,I10,1x, I10, 16x, E15.7)') &
-          i_GP_Individual, Ranked_Fitness_Index(i_GP_Individual), &
-                           GP_Child_population_sse(i_GP_Individual)
-enddo
+!write(6,'(/A)') 'gprs: after  sort '
+!write(6,'(A)')  'gprs:i_GP_Individual, Ranked_Fitness_Index, &
+!                            &GP_Child_population_sse'
+!do  i_GP_Individual=1,n_GP_Individuals
+!    write(6,'(5x,I10,1x, I10, 16x, E15.7)') &
+!          i_GP_Individual, Ranked_Fitness_Index(i_GP_Individual), &
+!                           GP_Child_population_sse(i_GP_Individual)
+!enddo
 
 !-------------------------------------------------------------------------------
 !-------------------------------------------------------------------------------
@@ -403,21 +403,21 @@ endif ! GP_Integrated_Population_Ranked_Fitness(n_GP_Individuals) > 0.0d0
 
 !-------------------------------------------------------------------------------
 
-write(6,'(/A)') 'gprs: after  sort '
-
-write(6,'(A)')                    &
-    'gprs:i_GP_Individual   GP_Integ_Pop_Rank_Fit  &
-    &GP_Pop_Rank_Fit        GP_Child_Indiv_SSE'
-
-do  i_GP_Individual=1,n_GP_Individuals
-    write(6,'(I10, 6x,3(3x, E20.10))') &
-          i_GP_Individual, &
-          GP_Integrated_Population_Ranked_Fitness(i_GP_Individual), &
-          GP_Population_Ranked_Fitness(i_GP_Individual), &
-          GP_Child_Population_SSE(i_GP_Individual)
-enddo   ! i_GP_Individual
-
-write(6,'(/A)') 'gprs: at return   '
+!write(6,'(/A)') 'gprs: after  sort '
+!
+!write(6,'(A)')                    &
+!    'gprs:i_GP_Individual   GP_Integ_Pop_Rank_Fit  &
+!    &GP_Pop_Rank_Fit        GP_Child_Indiv_SSE'
+!
+!do  i_GP_Individual=1,n_GP_Individuals
+!    write(6,'(I10, 6x,3(3x, E20.10))') &
+!          i_GP_Individual, &
+!          GP_Integrated_Population_Ranked_Fitness(i_GP_Individual), &
+!          GP_Population_Ranked_Fitness(i_GP_Individual), &
+!          GP_Child_Population_SSE(i_GP_Individual)
+!enddo   ! i_GP_Individual
+!
+!write(6,'(/A)') 'gprs: at return   '
 
 deallocate(GP_population_node_parameters_temp)
 deallocate(GP_Population_Initial_Conditions_temp)
