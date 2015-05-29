@@ -1,4 +1,4 @@
-subroutine Deserialize_Trees2( Trees, num_Tracked_resources, Tree_count )
+subroutine deserialize_trees2( Trees, num_Tracked_resources, Tree_count )
 
 
 use kinds_mod 
@@ -453,9 +453,9 @@ do  i = 1, Tree_count
                              RK_data_array( &
                                    abs( Nodes(k)%n%variable_index ) - n_code_equations )
 
-                        !write(6,'(A,3(1x,I6))') &
-                        !'DsT2: i, k, abs( Nodes(k)%n%variable_index ) - n_code_equations !!! ', &
-                        !       i, k, abs( Nodes(k)%n%variable_index ) - n_code_equations
+                        write(6,'(A,3(1x,I6))') &
+                        'DsT2: i, k, abs( Nodes(k)%n%variable_index ) - n_code_equations !!! ', &
+                               i, k, abs( Nodes(k)%n%variable_index ) - n_code_equations
                         !flush(6)
 
                         !write(6,'(A,2(1x,I6),1x,E24.16)') &
@@ -526,4 +526,4 @@ enddo ! i
 
 return
 
-end subroutine Deserialize_Trees2
+end subroutine deserialize_trees2
