@@ -1,4 +1,5 @@
 subroutine GA_check_for_elite( index0  )
+
 use kinds_mod 
 use mpi                                                                                                   
 use mpi_module
@@ -46,25 +47,14 @@ do
     endif
 
     call random_number(cff) ! uniform random number generator
+
     dff = cff
 
     index0  = 1 + int(  dff * real( n_GA_Individuals-1, kind=r8b )  )
 
 
-    !if( L_ga_print )then
-    !    write(GA_print_unit,'(A,2(1x,I6))')    &
-    !          'cfe: ksafe, index0 ', ksafe, index0
-    !    write(GA_print_unit,'(A/(15(1x,I6)))') &
-    !          'cfe: ga_individual_elites ',  &
-    !                ga_individual_elites(1:n_GA_save_elites)
-    !endif ! L_ga_print
-
     if( any( ga_individual_elites == index0 ) )then
 
-        !if( L_ga_print )then
-        !    write(GA_print_unit,'(A,1x,I6)') &
-        !       'cfe: index is elite       ', index0
-        !endif ! L_ga_print
         cycle
 
     endif   ! any( ga_individual_elites == index0 )
@@ -74,11 +64,7 @@ do
 
 enddo
 
-!if( L_ga_print )then
-!    write(GA_print_unit,'(A,1x,I6)') &
-!          'cfe: at return index0     ', index0
-!endif ! L_ga_print
-
 
 return
+
 end subroutine GA_check_for_elite

@@ -69,21 +69,12 @@ integer(kind=i4b) :: i
 if(  icall  == 0  )then
 
 
-    !n_levels    = 5
-    !n_functions = 5
-
     n_CODE_equations=3
 
     n_trees=((n_CODE_equations+1)**2)-(n_CODE_equations+1)
 
     n_nodes =  pow2_table( n_levels ) !  n_nodes = int(2**n_levels)-1
 
-    !write(6,'(A,2(1x,I6))') &
-    !   'initNPZ: int(2**n_levels)-1 , pow2_table( n_levels )   ', &
-    !             int(2**n_levels)-1 , pow2_table( n_levels )
-
-    !n_maximum_number_parameters = n_CODE_equations +  n_nodes
-    !n_maximum_number_parameters = n_trees  * n_nodes
 
     n_maximum_number_parameters = n_CODE_equations * n_nodes    
 

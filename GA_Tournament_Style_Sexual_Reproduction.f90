@@ -49,14 +49,10 @@ integer(kind=i4b) :: ksafe
 integer(kind=i4b) :: ierror_tou 
 
 !---------------------------------------------------------------------------
+
 ierror_tou = 0
-
-!if( L_ga_print )then
-!    write(GA_print_unit,'(/A,1x,I6)') &
-!          'gato: n_GA_Crossovers', n_GA_Crossovers
-!endif ! L_ga_print
-
 n_replaced = 0
+
 
 do  i_GA_Crossover=1,n_GA_Crossovers
 
@@ -74,15 +70,6 @@ do  i_GA_Crossover=1,n_GA_Crossovers
     call GA_check_for_elite( k_GA_Individual_Male(1) )
   
   
-    !if( L_ga_print )then
-    !    write(GA_print_unit,'(/A,1x,I6)') &
-    !      'gato: k_GA_Individual_Male(1)  ', k_GA_Individual_Male(1)
-    !    write(GA_print_unit,'(A/(15(1x,I6)))') &
-    !      'gato: ga_individual_elites ', ga_individual_elites
-    !    write(GA_print_unit,'(A,1x,I6)') &
-    !      'gato: ga_individual_elites ', ga_individual_elites(1)
-    !endif ! L_ga_print
-  
   
     !--------------------------------------------------------------------
   
@@ -92,12 +79,6 @@ do  i_GA_Crossover=1,n_GA_Crossovers
     call GA_check_for_elite( k_GA_Individual_Male(2) )
   
   
-    !if( L_ga_print )then
-    !    write(GA_print_unit,'(//A,3(1x,I6))')&
-    !      'gato: aft random i_GA_Crossover, k_GA_Individual_Male(1:2)  ', &
-    !                        i_GA_Crossover, k_GA_Individual_Male(1:2)
-    !endif ! L_ga_print
- 
     !--------------------------------------------------------------------
   
     ! you picked the same individual for both male parents, so choose another
@@ -128,8 +109,7 @@ do  i_GA_Crossover=1,n_GA_Crossovers
                 ierror_tou = 1
                 return
             endif ! ksafe
-            !write(6,'(A,1x,I10)') 'gato:1 ksafe = ', ksafe
-            !write(GA_print_unit,'(A,1x,I10)') 'gato:1 ksafe = ', ksafe
+
         enddo
 
         !--------------------------------------------------------------------
@@ -150,20 +130,9 @@ do  i_GA_Crossover=1,n_GA_Crossovers
 
     !--------------------------------------------------------------------
 
-  
-  
     ! select the individual of the two with the best fitness
     ! best fitness means Individual_Ranked_Fitness is largest
   
-  
-    !if( L_ga_print )then
-    !    write(GA_print_unit,'(A,1x,E15.7)')&
-    !      'gato: Individual_Ranked_Fitness(k_GA_Individual_Male(1)) ', &
-    !             Individual_Ranked_Fitness(k_GA_Individual_Male(1))
-    !    write(GA_print_unit,'(A,1x,E15.7)')&
-    !      'gato: Individual_Ranked_Fitness(k_GA_Individual_Male(2)) ', &
-    !             Individual_Ranked_Fitness(k_GA_Individual_Male(2))
-    !endif ! L_ga_print
   
     if( Individual_Ranked_Fitness(k_GA_Individual_Male(1)) .lt. &
         Individual_Ranked_Fitness(k_GA_Individual_Male(2))        ) then
@@ -172,11 +141,6 @@ do  i_GA_Crossover=1,n_GA_Crossovers
   
     endif !   Individual_Ranked_Fitness(k_GA_Individual_Male(1)) .lt. ...
   
-    !if( L_ga_print )then
-    !    write(GA_print_unit,'(A,3(1x,I6))')&
-    !      'gato: selected male i_GA_Crossover, k_GA_Individual_Male(1) ', &
-    !                           i_GA_Crossover, k_GA_Individual_Male(1)
-    !endif ! L_ga_print
   
     !---------------------------------------------------------------------------------
   
@@ -190,13 +154,6 @@ do  i_GA_Crossover=1,n_GA_Crossovers
     ! pick female parent 2 for sexual crossing of parent parameter strings
   
     call GA_check_for_elite( k_GA_Individual_Female(2) )
-  
-  
-    !if( L_ga_print )then
-    !    write(GA_print_unit,'(/A,3(1x,I6))')&
-    !      'gato: aft random i_GA_Crossover, k_GA_Individual_Female(1:2)', &
-    !                        i_GA_Crossover, k_GA_Individual_Female(1:2)
-    !endif ! L_ga_print
   
     !---------------------------------------------------------------------------------
   
@@ -227,15 +184,13 @@ do  i_GA_Crossover=1,n_GA_Crossovers
                 ierror_tou = 1
                 return
             endif ! ksafe
-            !write(6,'(A,1x,I10)') 'gato:2 ksafe = ', ksafe
-            !write(GA_print_unit,'(A,1x,I10)') 'gato:2 ksafe = ', ksafe
+    
         enddo
     
         !---------------------------------------------------------------------------------
     
         ! at this point, female(1) /= female(2) and 
         ! neither is == any ga_individual_elites
-    
     
       
         if( k_GA_Individual_Female(2) == ga_individual_elites(1) )then
@@ -256,16 +211,6 @@ do  i_GA_Crossover=1,n_GA_Crossovers
   
     ! select the individual of the two with the best fitness
     ! best fitness means Individual_Ranked_Fitness is largest
-  
-  
-    !if( L_ga_print )then
-    !    write(GA_print_unit,'(A,1x,E15.7)')&
-    !      'gato: Individual_Ranked_Fitness(k_GA_Individual_Female(1)) ', &
-    !             Individual_Ranked_Fitness(k_GA_Individual_Female(1))
-    !    write(GA_print_unit,'(A,1x,E15.7)')&
-    !      'gato: Individual_Ranked_Fitness(k_GA_Individual_Female(2)) ', &
-    !             Individual_Ranked_Fitness(k_GA_Individual_Female(2))
-    !endif ! L_ga_print
   
   
     if( Individual_Ranked_Fitness(k_GA_Individual_Female(1)) .lt. &
@@ -297,12 +242,6 @@ do  i_GA_Crossover=1,n_GA_Crossovers
     i_GA_Crossover_Point = 1 + int( dff * real(n_Parameters-2,kind=r8b) )
     i_GA_Crossover_Point = min( i_GA_Crossover_Point , n_Parameters )
     i_GA_Crossover_Point = max( i_GA_Crossover_Point , 1            )
-  
-    !if( L_ga_print )then
-    !    write(GA_print_unit,'(/A,2(1x,I6))')&
-    !      'gato: i_GA_Crossover, i_GA_Crossover_Point ', &
-    !             i_GA_Crossover, i_GA_Crossover_Point
-    !endif ! L_ga_print
   
     !--------------------------------------------------------------------------------
   
@@ -363,7 +302,9 @@ do  i_GA_Crossover=1,n_GA_Crossovers
   
         !  Old_Parameter_Range=Old_Male_Parameter-Old_Female_Parameter
   
-        !  Standard_Deviation=0.5+(0.5*Random_Number)*(Old_Male_Parameter+Old_Female_Parameter)
+        !  Standard_Deviation = 0.5 + &
+        !      (0.5*Random_Number)*(Old_Male_Parameter+Old_Female_Parameter)
+
         !  ==> Essentially this makes the S.D. some % (50% to 100%) of the mean
   
         !   Mean=(Old_Male_Parameter+Old_Female_Parameter)/2.0
@@ -379,22 +320,11 @@ do  i_GA_Crossover=1,n_GA_Crossovers
   
         mean_parm = 0.5d0 * ( old_male + old_female )
   
-        !if( L_ga_print )then
-        !    write(GA_print_unit,'(A,3(1x,E15.7))')&
-        !          'gato:1 old_male, old_female, mean_parm ', &
-        !                  old_male, old_female, mean_parm
-        !endif ! L_ga_print
-  
   
         call random_number( cff )
         std_dev_parm = 0.5d0 + real(cff,kind=r8b) * mean_parm
   
-        !if( L_ga_print )then
-        !    write(GA_print_unit,'(A,3(1x,E15.7))') &
-        !          'gato:1 cff, mean_parm, std_dev_parm    ', &
-        !                  cff, mean_parm, std_dev_parm
-        !endif ! L_ga_print
-  
+
         call random_number( cff )
         cff_1 = real( cff, kind = 8 )
   
@@ -411,12 +341,7 @@ do  i_GA_Crossover=1,n_GA_Crossovers
   
         Child_One_Parameters(i_GA_Crossover_Point) =  abs( dff )  ! jjm 20130604
   
-        !if( L_ga_print )then
-        !    write(GA_print_unit,'(A,3(1x,E15.7))') &
-        !   'gato:1 cff_1, cff_2, Child_One_Parameters(i_GA_Crossover_Point) ', &
-        !           cff_1, cff_2, Child_One_Parameters(i_GA_Crossover_Point)
-        !endif ! L_ga_print
-  
+
     endif
   
   
@@ -453,7 +378,8 @@ do  i_GA_Crossover=1,n_GA_Crossovers
   
         !  Old_Parameter_Range=Old_Male_Parameter-Old_Female_Parameter
   
-        !  Standard_Deviation=0.5+(0.5*Random_Number)*(Old_Male_Parameter+Old_Female_Parameter)
+        !  Standard_Deviation = 0.5 + &
+        !             (0.5*Random_Number)*(Old_Male_Parameter+Old_Female_Parameter)
         !  ==> Essentially this makes the S.D. some % (50% to 100%) of the mean
   
         !   Mean=(Old_Male_Parameter+Old_Female_Parameter)/2.0
@@ -469,21 +395,10 @@ do  i_GA_Crossover=1,n_GA_Crossovers
   
         mean_parm = 0.5d0 * ( old_male + old_female )
   
-        !if( L_ga_print )then
-        !    write(GA_print_unit,'(A,3(1x,E15.7))') &
-        !          'gato:2 old_male, old_female, mean_parm ', &
-        !                  old_male, old_female, mean_parm
-        !endif ! L_ga_print
   
         call random_number( cff )
         std_dev_parm = 0.5d0 + real(cff,kind=r8b) * mean_parm
   
-  
-        !if( L_ga_print )then
-        !    write(GA_print_unit,'(A,3(1x,E15.7))') &
-        !          'gato:2 cff, mean_parm, std_dev_parm    ', &
-        !                  cff, mean_parm, std_dev_parm
-        !endif ! L_ga_print
   
         call random_number( cff )
         cff_1 = real( cff, kind = 8 )
@@ -500,13 +415,7 @@ do  i_GA_Crossover=1,n_GA_Crossovers
   
         Child_Two_Parameters(i_GA_Crossover_Point) = abs(dff)
   
-        !if( L_ga_print )then
-        !    write(GA_print_unit,'(A,3(1x,E15.7))') &
-        !   'gato:2 cff_1, cff_2, Child_Two_Parameters(i_GA_Crossover_Point) ', &
-        !           cff_1, cff_2, Child_Two_Parameters(i_GA_Crossover_Point)
-        !endif ! L_ga_print
-  
-  
+
     endif
   
   
@@ -567,13 +476,6 @@ do  i_GA_Crossover=1,n_GA_Crossovers
     n_replaced = n_replaced + 2
 
 enddo
-
-!if( L_ga_print )then
-!    write(GA_print_unit,'(A,1x,I6,1x,I10)')&
-!      'gato: i_ga_generation, n_replaced in tournament ', &
-!             i_ga_generation, n_replaced
-!endif ! L_ga_print
-
 
 return
 

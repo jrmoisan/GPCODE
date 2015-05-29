@@ -55,9 +55,6 @@ do  i_Tree=1,n_Trees
                       GP_Individual_Node_Type(i_Function, i_Tree), &
                       GP_Individual_Node_Type(i_Node, i_Tree)
 
-                !write(GP_print_unit,'(A,3(1x,I6)/)') &
-                !      'pet: i_function, i_tree, GP_Individual_Node_Type(i_Function, i_Tree)',&
-                !            i_function, i_tree, GP_Individual_Node_Type(i_Function, i_Tree)
 
             endif ! .not. ( GP_Individual_Node_Type(i_Function, i_Tree) == -999 ....
 

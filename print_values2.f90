@@ -26,18 +26,18 @@ implicit none
 
 
 integer(kind=i4b) :: i
-!!real(kind=r8b), dimension(n_parameters) :: answer
+
 
 
 !----------------------------------------------------------------------------------------
 
-!if (myid /=0) return
+
 
 
 write(GP_print_unit,'(/A,1x,I6/)') 'pv2: Total Parameters for this run = ',n_parameters
 write(GP_print_unit,'(A,1x,I6)')   'pv2: n_GA_individuals ', n_GA_individuals
 
-!write(GP_print_unit,'(A,1x,I6)') 'number of initial conditions   = ',n_initial_conditions
+
 write(GP_print_unit,'(A,1x,I6)')   'pv2: n_GA_Generations    ', n_GA_Generations
 write(GP_print_unit,'(A,1x,I6)')   'pv2: n_levels            ', n_levels
 write(GP_print_unit,'(A,1x,I6)')   'pv2: n_functions         ', n_functions
@@ -49,15 +49,13 @@ write(GP_print_unit,'(A,1x,I6)')   'pv2: n_nodes             ', n_nodes
 write(GP_print_unit,'(/A,1x,I6)')  'pv2: n_time_steps        ', n_time_steps
 write(GP_print_unit,'(A,1x,E15.7)')'pv2: dt (days)           ', dt
 write(GP_print_unit,'(A,1x,F10.2)')'pv2: dt (min)            ', dt * 1440.d0
-!write(GP_print_unit,'(A,1x,F10.2)')'pv2: max integ time(days)',  n_time_steps * dt 
+
 
 write(GP_print_unit,'(/A,1x,F10.2)')'pv2: run start time (days)', 0.0d0           
 write(GP_print_unit,'(A,1x,F10.2)') 'pv2: run stop  time (days)', n_time_steps * dt
 write(GP_print_unit,'(A,1x,F10.2)') 'pv2: sse_min_time(days)   ', sse_min_time 
 write(GP_print_unit,'(A,1x,G10.2/)')'pv2: sse_max_time(days)   ', sse_max_time
 
-!write(GP_print_unit,*) individual_fitness
-!write(GP_print_unit,*) data_array
 
 write(GP_print_unit,'(/A,1x,E15.7)') 'pv2: GA_Crossover_Probability  ', &
                                            GA_Crossover_Probability
@@ -68,7 +66,6 @@ write(GP_print_unit,'(A,1x,E15.7)')  'pv2: GA_save_elites_Probability', &
 
 write(GP_print_unit,'(/A)')  'pv2: code calls parallel lmdif at end of each GP  generation'
 write(GP_print_unit,'(A//)')  'pv2: 2-range random_real initialization of child parameters '
-!!write(GP_print_unit,'(A//)')'pv2: replacement of bad individuals used'
 
 
 ! calculate the generation interval for printing the list of children

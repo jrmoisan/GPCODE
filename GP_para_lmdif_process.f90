@@ -5,6 +5,7 @@ subroutine GP_para_lmdif_process( i_GP_Generation, max_n_gp_params  )
 ! program to use a twin experiment to test the effectiveness of
 ! a finding the optimum parameter set for a coupled set of equations
 !xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
 use kinds_mod 
 use mpi
 use mpi_module
@@ -48,10 +49,8 @@ real(kind=r8b) :: buffer2_recv(max_n_gp_params + 3)
 
 
 integer(kind=i4b) :: i
-!integer(kind=i4b) :: ii
 integer(kind=i4b) :: jj
 
-!integer(kind=i4b) :: nparms_i
 integer(kind=i4b) :: n_parms
 integer(kind=i4b) :: n_parms_dim
 integer(kind=i4b) :: nn
@@ -78,7 +77,6 @@ real(kind=r8b) ::  save_SSE
 
 !----------------------------------------------------------------------
 
-!! max_n_gp_params = maxval( GP_Individual_N_GP_param ) 
 
 L_GP_print = .FALSE.
 

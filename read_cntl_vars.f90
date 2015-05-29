@@ -34,7 +34,6 @@ integer(kind=i4b) :: fort333_output_flag
 integer(kind=i4b) :: fort444_output_flag
 integer(kind=i4b) :: fort555_output_flag
 integer(kind=i4b) ::  unit50_output_flag
-!integer(kind=i4b) ::  GP_all_summary_flag
 
 integer(kind=i4b) :: print_equations_flag
 integer(kind=i4b) :: run_GP_para_lmdif_flag
@@ -49,13 +48,15 @@ integer(kind=i4b) :: ierror
 real(kind=r8b) :: dt_min
 
 !----------------------------------------------------------------------
-ierror = 0
 
 ! START OF EXECUTABLE CODE
 
+ierror = 0
+
 ! open the control input file
 
-open( unit = cntl_unitnum, file = 'GPGA_cntl_vars.in', form = 'formatted',&
+open( unit = cntl_unitnum, file = 'GPGA_cntl_vars.in', &
+      form = 'formatted',&
       status = 'old' )
 
 

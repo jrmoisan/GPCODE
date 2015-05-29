@@ -1,11 +1,11 @@
-!
+module Math_Node_Functions
+
+
 ! File:   Math_Node_Functions.f03
 ! Author: Dave Coulter [NASA Summer Intern under John R. Moisan]
-!
-! Created on August 2, 2013, 4:00 PM
-!
 
-module Math_Node_Functions
+! Created on August 2, 2013, 4:00 PM
+
 
 use kinds_mod 
 
@@ -282,45 +282,6 @@ use kinds_mod
     end function
 
 
-
-    !-------------------------------------------------------
-
-!orig     ! math_funcs(9)
-!orig     ! Minimum: a or b, whichever is lower
-!orig     real(kind=r8b) function f_Minimize(a, b)
-!orig         implicit none
-!orig         real(kind=r8b), intent(in) :: a,b
-!orig 
-!orig         f_Minimize = min(a,b)
-!orig     end function
-
-    !-------------------------------------------------------
-
-
-!orig     ! math_funcs(10)
-!orig     ! Maximum: a or b, whichever is greater
-!orig     real(kind=r8b) function f_Maximize(a, b)
-!orig         implicit none
-!orig         real(kind=r8b), intent(in) :: a,b
-!orig 
-!orig         f_Maximize = max(a,b)
-!orig     end function
-
-
-    !-------------------------------------------------------
-
-!orig     ! math_funcs(11)
-!orig     ! EXP: exp(-*a*b)
-!orig     real(kind=r8b) function f_ExponentialDecay(a, b)
-!orig         implicit none
-!orig         real(kind=r8b), intent(in) :: a,b
-!orig         real(kind=r8b) :: cff
-!orig 
-!orig         cff=abs(a*b)
-!orig         f_ExponentialDecay = exp(-1.0D+0*cff)
-!orig     end function
-
-
     !-------------------------------------------------------
 
     ! math_funcs(12)         IF a .ne. 0 THEN b ELSE 0
@@ -427,10 +388,9 @@ use kinds_mod
 
         f_ExponentialLeftPlus = exp( a )
 
-        !f_ExponentialLeftPlus = min( f_ExponentialLeftPlus, 1.0D+99 )
-        !f_ExponentialLeftPlus = max( f_ExponentialLeftPlus, 1.0D-99 )
         f_ExponentialLeftPlus = min( f_ExponentialLeftPlus, 1.0D+19 )
         f_ExponentialLeftPlus = max( f_ExponentialLeftPlus, 1.0D-19 )
+
     end function
 
 
@@ -446,10 +406,10 @@ use kinds_mod
         real(kind=r8b), intent(in) :: a,b
 
         f_ExponentialRightPlus = exp( b )
-        !f_ExponentialRightPlus = min( f_ExponentialRightPlus, 1.0D+99 )
-        !f_ExponentialRightPlus = max( f_ExponentialRightPlus, 1.0D-99 )
+
         f_ExponentialRightPlus = min( f_ExponentialRightPlus, 1.0D+19 )
         f_ExponentialRightPlus = max( f_ExponentialRightPlus, 1.0D-19 )
+
     end function
 
 
@@ -466,10 +426,10 @@ use kinds_mod
         real(kind=r8b), intent(in) :: a,b
 
         f_ExponentialLeftMinus = exp( -1.0d0 * a )
-        !f_ExponentialLeftMinus = min( f_ExponentialLeftMinus, 1.0D+99 )
-        !f_ExponentialLeftMinus = max( f_ExponentialLeftMinus, 1.0D-99 )
+
         f_ExponentialLeftMinus = min( f_ExponentialLeftMinus, 1.0D+19 )
         f_ExponentialLeftMinus = max( f_ExponentialLeftMinus, 1.0D-19 )
+
     end function
 
 
@@ -485,10 +445,10 @@ use kinds_mod
         real(kind=r8b), intent(in) :: a,b
 
         f_ExponentialRightMinus = exp( -1.0d0 * b )
-        !f_ExponentialRightMinus = min( f_ExponentialRightMinus, 1.0D+99 )
-        !f_ExponentialRightMinus = max( f_ExponentialRightMinus, 1.0D-99 )
+
         f_ExponentialRightMinus = min( f_ExponentialRightMinus, 1.0D+19 )
         f_ExponentialRightMinus = max( f_ExponentialRightMinus, 1.0D-19 )
+
     end function
 
 

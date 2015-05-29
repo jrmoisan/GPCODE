@@ -1,5 +1,7 @@
 subroutine GP_Tree_Build( i_Error )
+
 !xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
 use kinds_mod 
 use mpi
 use mpi_module
@@ -27,24 +29,11 @@ integer(kind=i4b) :: n_parms
 integer(kind=i4b) :: n_parms_per_tree
 
 
-!real(kind=r4b),parameter :: prob_forcing = 0.045
 real(kind=r4b),parameter :: prob_choose_forcing_type = 0.25
 integer(kind=i4b) :: iforce
 integer(kind=i4b) :: n_trees_made
 
 !-----------------------------------------------------------------------------
-
-
-
-! allow user to turn off forcing with input card "no_forcing"   ! OLD VERSION
-! prob_forcing = 0.10
-!if( L_no_forcing ) then
-!    prob_forcing = 0.00
-!endif !  L_no_forcing 
-
-
-!write(GP_print_unit,'(A,1x,E15.7 )') 'gtb: prob_forcing ', prob_forcing
-
 
 
 GP_Child_Population_Node_Type=-9999 ! set all to null [-9999]
@@ -58,7 +47,9 @@ do  i_GP_Individual=1,n_GP_Individuals  ! for each GP individual
         if( cff .le. GP_Tree_Probability ) then  ! go ahead - put in an equation
 
             ! always set the first node to zero
+
             GP_Child_Population_Node_Type(1,i_Tree,i_GP_Individual)=0
+
             i_Node=0
             level_loop:&
             do  i_Level=1,n_Levels-1                    !original
@@ -172,6 +163,7 @@ do  i_GP_Individual=1,n_GP_Individuals
         level_loop2:&
         do  i_Level=1,n_Levels
 
+
             n_Nodes_at_Level = pow2_table( i_level - 1 ) + 1  ! int(2**(i_Level-1))
 
 
@@ -194,8 +186,6 @@ do  i_GP_Individual=1,n_GP_Individuals
 
                         ! One of the OBSERVATIONS, one for each equations N, P, Z, etc.
 
-                        !Node_Variable=1+int(cff*float(n_CODE_Equations))
-                        !Node_Variable = min( Node_Variable, n_CODE_Equations )
 
                         if( n_inputs <= n_code_equations )then
 
@@ -204,14 +194,10 @@ do  i_GP_Individual=1,n_GP_Individuals
 
                         else
 
-                            !Node_Variable = 1 + int( cff * float(n_inputs) )
                             Node_Variable = 2 + int( cff * float(n_inputs) )
 
                         endif !  n_inputs <= n_code_equations 
 
-                        !write(GP_print_unit,'(A,1x,E15.7, 3(1x,I6))') &
-                        !      'gtb:2 cff, Node_Variable, n_CODE_Equations, n_inputs', &
-                        !             cff, Node_Variable, n_CODE_Equations, n_inputs
 
                         GP_Child_Population_Node_Type(i_Node,i_Tree,i_GP_Individual) = &
                                                                           -Node_Variable
@@ -221,12 +207,17 @@ do  i_GP_Individual=1,n_GP_Individuals
                         if( model == 'fasham' )then
 
                             !  set some variables to the forcing functions -5001 -> -5004
+
                             call set_forcing_node( node_variable )
+
                         endif ! model == 'fasham'
 
                         if(model == 'fasham_CDOM_GP' )then
+
                             !  set some variables to the forcing functions -5001 -> -5004
+
                             call set_forcing_node( node_variable )
+
                         endif ! model == 'fasham_CDOM_GP
 
 
@@ -234,6 +225,7 @@ do  i_GP_Individual=1,n_GP_Individuals
                                                                           -Node_Variable
 
                     else  !   cff > GP_Set_Terminal_to_Parameter_Probability
+
 
                         ! set as a random parameter
 
@@ -274,7 +266,6 @@ do  i_GP_Individual=1,n_GP_Individuals
 enddo !  i_GP_Individual
 
 GP_Adult_Population_Node_Type=GP_Child_Population_Node_Type
-
 
 
 

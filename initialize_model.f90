@@ -57,13 +57,6 @@ call Build_Trees( GP_Trees(:, 1) ,  buildTrees )
 
 ! Generate_Dot_Graph now called from set_answer_array  and print_time_series*
 
-!if( .not. buildtrees .and.  myid == 0 )then
-!    ! compute trees from fasham functions
-!    write(6,'(/A)') 'inmod: call Generate_Dot_Graph'
-!    call Generate_Dot_Graph( GP_Trees(:,1), n_Trees, output_dir )
-!    write(6,'(/A/)') 'inmod: aft call Generate_Dot_Graph'
-!endif ! myid == 0
-
 !-------------------------------------------------------------------------------
 
 
@@ -87,10 +80,6 @@ logical :: L_bad
 
 !------------------------------------------------------------------------------------
 
-!!!date=(i_Time_Step+time_step_fraction)*Delta_Time_in_Days/(365.D+0)  ! number of years
-!!!thour=mod(((i_Time_Step+time_step_fraction)*Delta_Time_in_Days*24),24.D+0) ! time of day in hours
-!!!dayn=(i_Time_Step+time_step_fraction)*Delta_Time_in_Days ! day number
-
 L_bad = .FALSE. 
 
 date=(i_Time_Step+time_step_fraction)* dt /(365.D+0)  ! number of years
@@ -98,8 +87,6 @@ thour=mod(((i_Time_Step+time_step_fraction)* dt *24),24.D+0) ! time of day in ho
 dayn=(i_Time_Step+time_step_fraction)* dt ! day number
 day=mod(dayn,365.D+0) ! year day [0.D+0 to 365.D+0]
 
-!write(6,'(A,1x,I6,4(1x,E15.7))') 'dof: i_time_step, dt, date, thour, day ', &
-!                                       i_time_step, dt, date, thour, day
 
 
 call mldforce(day, h, aMLD, L_bad )
@@ -121,8 +108,6 @@ Numerical_CODE_Forcing_Functions(abs(5000 + FORCING_MLD_CHANGE_NON_MOTILE))     
 Numerical_CODE_Forcing_Functions(abs(5000 + FORCING_MIXED_LAYER_DEPTH))         = aMLD
 Numerical_CODE_Forcing_Functions(abs(5000 + FORCING_LIGHT_LIMITED_GROWTH_RATE)) = aJ
 
-!write(6,'(A,1x,I6,4(1x,E15.7))') 'dof: i_time_step, h, hplus, aMLD, aJ ', &
-!                                       i_time_step, h, hplus, aMLD, aJ
 
 if( isnan(aJ) .or. isnan(aMLD) )then
     L_bad = .true.

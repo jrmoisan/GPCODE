@@ -7,6 +7,7 @@ subroutine bcast2( )
 ! a finding the optimum equation and parameter sets for a system of
 ! coupled ordinary differential equations
 !xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
 use kinds_mod 
 use mpi
 use mpi_module
@@ -28,6 +29,7 @@ integer(kind=i4b) :: message_len
 
 
 ! broadcast
+
 call MPI_BARRIER( MPI_COMM_WORLD, ierr )  ! necessary ?
 
 ! GP_Child_Population_Node_Type

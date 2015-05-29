@@ -15,11 +15,10 @@ module fasham_fixed_module
    public :: newFasham_fixed
 
 
-   !type,abstract, extends(twin) :: fasham_fixed  ! jjm
-
-   type, extends(twin) :: fasham_fixed  ! orig
+   type, extends(twin) :: fasham_fixed  
 
       real(kind=r8b),allocatable :: cdoms(:)     ! jjm
+
    contains
       procedure :: init
       procedure :: setTruth 
@@ -31,14 +30,13 @@ module fasham_fixed_module
       module procedure newFasham_fixed
    end interface
 
-   !type(fasham_fixed) :: fixed
 
 contains
 
    function newFasham_fixed() result (fasham)
 
       type(fasham_fixed)  :: fasham
-      !type(fasham_fixed),intent(out)   :: fasham
+
 
       integer(kind=i4b) :: i_Tree
       integer(kind=i4b) :: i_Node
@@ -90,10 +88,10 @@ contains
 
 ! initialized as parameters in fasham_variables_module
 
-     !FORCING_MIXED_LAYER_DEPTH         = -5001
-     !FORCING_MLD_CHANGE_NON_MOTILE     = -5002
-     !FORCING_MLD_CHANGE_MOTILE         = -5003
-     !FORCING_LIGHT_LIMITED_GROWTH_RATE = -5004
+     ! FORCING_MIXED_LAYER_DEPTH         = -5001
+     ! FORCING_MLD_CHANGE_NON_MOTILE     = -5002
+     ! FORCING_MLD_CHANGE_MOTILE         = -5003
+     ! FORCING_LIGHT_LIMITED_GROWTH_RATE = -5004
 
       Numerical_CODE_Forcing_Functions = 0.0D+0
       Numerical_CODE_Initial_Conditions = (/aNO3, aNH4, DON, DET, bact, phyto, zoo/)
@@ -109,7 +107,7 @@ contains
    subroutine setTruth(this)
       use GP_data_module
 
-      !class(fasham_fixed):: this
+      
       class(fasham_fixed), intent(inout) :: this
       integer :: i
       integer :: i_GP_individual   ! jjm
@@ -117,7 +115,7 @@ contains
       GP_Adult_Population_Node_Type(:,:,: ) = -9999
       GP_Individual_Node_Type(:,:) =  -9999
 
-! 1 done
+! 1 
 
       GP_Individual_Node_Type(9,1) =  -5002
       GP_Individual_Node_Parameters(8,1) = am
@@ -129,7 +127,7 @@ contains
       GP_Individual_Node_Type(2,1) =  4
       GP_Individual_Node_Type(1,1) =  3
 
-! 8 done
+! 8 
 
       GP_Individual_Node_Type(9,8) =  -5002
       GP_Individual_Node_Parameters(8,8) = am
@@ -140,7 +138,7 @@ contains
       GP_Individual_Node_Type(2,8) =  4
       GP_Individual_Node_Type(1,8) =  3
 
-! 13 done
+! 13 
 
       GP_Individual_Node_Type(19,13) = -1
       GP_Individual_Node_Parameters(18,13) = aK1
@@ -156,7 +154,7 @@ contains
       GP_Individual_Node_Type(2,13) =  3
       GP_Individual_Node_Type(1,13) =  3
 
-! 15 done
+! 15 
 
       GP_Individual_Node_Type(9,15) = -5002
       GP_Individual_Node_Parameters(8,15) = am
@@ -167,7 +165,7 @@ contains
       GP_Individual_Node_Type(2,15) =  4
       GP_Individual_Node_Type(1,15) =  3
 
-! 19 done
+! 19 
 
       GP_Individual_Node_Type(25,19) =  -3
       GP_Individual_Node_Parameters(24,19) = eta
@@ -193,7 +191,7 @@ contains
       GP_Individual_Node_Type(2,19) =  3
       GP_Individual_Node_Type(1,19) =  4
 
-! 20 done
+! 20 
 
       GP_Individual_Node_Type(9,20) =  -2
       GP_Individual_Node_Parameters(8,20) = aK2
@@ -204,7 +202,7 @@ contains
       GP_Individual_Node_Type(2,20) =  3
       GP_Individual_Node_Type(1,20) =  3
 
-! 22 done
+! 22 
 
       GP_Individual_Node_Type(9,22) =  -5002
       GP_Individual_Node_Parameters(8,22) = am
@@ -215,7 +213,7 @@ contains
       GP_Individual_Node_Type(2,22) =  4
       GP_Individual_Node_Type(1,22) =  3
 
-! 26 done
+! 26 
 
       GP_Individual_Node_Type(49,26) =  -3
       GP_Individual_Node_Parameters(48,26) = eta
@@ -236,7 +234,7 @@ contains
       GP_Individual_Node_Type(2,26) =  3
       GP_Individual_Node_Type(1,26) =  4
 
-! 29 done
+! 29 
 
       GP_Individual_Node_Type(17,29) =  -5002
       GP_Individual_Node_Parameters(16,29) = am
@@ -250,14 +248,14 @@ contains
       GP_Individual_Node_Type(2,29) =  4
       GP_Individual_Node_Type(1,29) =  3
 
-! 32 done
+! 32 
 
       GP_Individual_Node_Type(3,32) =  -4
       GP_Individual_Node_Parameters(2,32) = amu4
       GP_Individual_Node_Type(2,32) =  0
       GP_Individual_Node_Type(1,32) =  3
        
-! 35 done
+! 35 
        
       GP_Individual_Node_Type(1,35)= 4   ! "[1] /"];
       GP_Individual_Node_Type(2,35)= 3   ! "[2] *"];
@@ -314,7 +312,7 @@ contains
       GP_Individual_Node_Type(63,35)= 0
       GP_Individual_Node_Parameters(63,35)=  p3   !  "[63] (P)   1.00000000"];
 
-! 36 done
+! 36 
        
       GP_Individual_Node_Type(9,36) =  -5002
       GP_Individual_Node_Parameters(8,36) = am
@@ -325,14 +323,14 @@ contains
       GP_Individual_Node_Type(2,36) =  4
       GP_Individual_Node_Type(1,36) =  3
        
-! 38 done
+! 38 
 
       GP_Individual_Node_Type(3,38) = -5
       GP_Individual_Node_Parameters(2,38) = amu3
       GP_Individual_Node_Type(2,38) =  0
       GP_Individual_Node_Type(1,38) =  3
        
-! 42 done
+! 42 
 
       GP_Individual_Node_Type(1,42)= 4  !  "[1] /"];
       GP_Individual_Node_Type(2,42)= 3  !  "[2] *"];
@@ -389,7 +387,7 @@ contains
       GP_Individual_Node_Type(63,42)= 0
       GP_Individual_Node_Parameters(63,42)= p3  ! "[63] (P)   1.00000000"];
 
-! 43 done
+! 43 
 
       GP_Individual_Node_Type(9,43) =  -5002
       GP_Individual_Node_Parameters(8,43) = am
@@ -400,7 +398,7 @@ contains
       GP_Individual_Node_Type(2,43) =  4
       GP_Individual_Node_Type(1,43) =  3
 
-! 46 done
+! 46 
        
       GP_Individual_Node_Type(67,46) =  -1
       GP_Individual_Node_Parameters(66,46) = aK1
@@ -424,14 +422,14 @@ contains
       GP_Individual_Node_Type(2,46) =  3
       GP_Individual_Node_Type(1,46) =  3
 
-! 47 done
+! 47 
        
       GP_Individual_Node_Type(3,47) = -6
       GP_Individual_Node_Parameters(2,47) = amu1
       GP_Individual_Node_Type(2,47) =  0
       GP_Individual_Node_Type(1,47) =  3
 
-! 49 done
+! 49 
 
       GP_Individual_Node_Type(1,49)= 4  !  "[1] /"];
       GP_Individual_Node_Type(2,49)= 3  !  "[2] *"];
@@ -488,7 +486,7 @@ contains
       GP_Individual_Node_Type(63,49)= 0
       GP_Individual_Node_Parameters(63,49)= p3  ! "[63] (P)   1.00000000"];
        
-! 50 done
+! 50 
 
       GP_Individual_Node_Parameters(13,50) = omega
       GP_Individual_Node_Type(13,50) =  0
@@ -504,7 +502,7 @@ contains
       GP_Individual_Node_Type(2,50) =  4
       GP_Individual_Node_Type(1,50) =  1
        
-! 52 done
+! 52 
        
       GP_Individual_Node_Parameters(17,52) = omega
       GP_Individual_Node_Type(17,52) =  0
@@ -525,7 +523,7 @@ contains
       GP_Individual_Node_Type(2,52) =  3
       GP_Individual_Node_Type(1,52) =  1
        
-! 53 done
+! 53 
        
       GP_Individual_Node_Parameters(9,53) = epsilon
       GP_Individual_Node_Type(9,53) =  0
@@ -538,7 +536,7 @@ contains
       GP_Individual_Node_Type(2,53) =  3
       GP_Individual_Node_Type(1,53) =  3
 
-! 54 done
+! 54 
        
       GP_Individual_Node_Type(1,54)= 1  !  "[1] +"];
       GP_Individual_Node_Type(2,54)= 1  !  "[2] +"];
@@ -749,10 +747,13 @@ contains
 
    end subroutine setTruth
 
+
    subroutine setModel(this)
+
       !class(fasham_fixed) :: this  ! orig
       class(fasham_fixed),intent(inout) :: this  ! jjm
       integer :: i_CODE_Equation,i_Tree,i_Node
+
 !------------------------------------------------------------------------------------------------
 !   FORCING  -5001  : max(d MLD/ dt,0)
 !            -5002  : MLD
@@ -829,7 +830,6 @@ contains
       use GP_variables_module
 
       !class(fasham_fixed):: this
-      !class(fasham_fixed),intent(inout):: this    !jjm
       class(fasham_fixed),intent(in):: this    !jjm
 
       !orig real (kind=8) :: preForce(n_CODE_Equations)

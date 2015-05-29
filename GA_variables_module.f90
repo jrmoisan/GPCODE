@@ -19,13 +19,6 @@ real(kind=r8b) :: GA_Individual_Lowest_SSE
 
 real(kind=r8b),allocatable, dimension(:,:) :: ppex  ! debug
 
-! must be kept for re-evaluations of next generations
-!real(kind=r8b) :: GA_Adult_Individual_SSE(n_GA_Individuals)
-!!real(kind=r8b), allocatable, dimension(:) :: GA_Adult_Individual_SSE
-
-! must be kept for re-evaluations of next generations
-!real(kind=r8b) :: GA_Child_Individual_SSE(n_GA_Individuals)
-!!real(kind=r8b), allocatable, dimension(:) :: GA_Child_Individual_SSE
 
 ! needed to support sexual and "tournament-style" reproduction
 !real(kind=r8b) :: GA_Integrated_SSE(n_GA_Individuals)
@@ -58,9 +51,6 @@ real(kind=r8b),allocatable, dimension(:) :: individual_ranked_fitness
 !real (kind=r8b) :: integrated_ranked_fitness(n_GA_individuals)
 real(kind=r8b),allocatable, dimension(:) :: integrated_ranked_fitness
 
-
-!real (kind=r8b) :: fitness_expectation_value(n_GA_individuals)
-!real(kind=r8b),allocatable, dimension(:) :: fitness_expectation_value
 
 
 real(kind=r8b) :: sum_individual_SSE

@@ -4,11 +4,11 @@ subroutine init_values_DATA( icall  )
 !     written by John R. Moisan [14 November 2012]
 !     for GPCODE testing/developing
 
-! Lotka_Volterra_Example_Set_Up
 !xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 ! This is the tree representation of the CODE System
 !xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
-! this examples is a simple Lotka-Volterra model.
+! Lotka_Volterra_Example_Set_Up
+! this example is a simple Lotka-Volterra model.
 
 ! dP/dt = (grow * P)  - (graze * P * Z)
 ! dZ/dt = (graze * P * Z) - ((1 - efficiency) * graze * P *  Z) - (amort * Z)
@@ -52,29 +52,15 @@ real(kind=r8b) :: increment
 if(  icall  == 0  )then
 
 
-    !n_levels    =  8
-    !n_functions =  n_levels                 
-    !n_levels    =  7
-    !n_functions =  7
-    !n_levels    =  6
-    !n_functions =  6
-
-
     n_CODE_equations =   1
 
     n_trees= 1 ! ((n_CODE_equations+1)**2)-(n_CODE_equations+1)
 
 
-    !    n_CODE_equations =   1 ! debug only
-    !    n_trees =  6           ! debug only
-
     n_nodes = pow2_table( n_levels )  ! n_nodes = int(2**n_levels)-1
 
 
     !orig n_maximum_number_parameters = n_CODE_equations +  n_nodes
-    !n_maximum_number_parameters       = n_CODE_equations *  n_nodes
-    !n_maximum_number_parameters       = n_CODE_equations +  n_nodes
-    !n_maximum_number_parameters = n_trees  * n_nodes
 
     n_maximum_number_parameters = n_CODE_equations * n_nodes    
 
@@ -177,6 +163,8 @@ if( myid == 0 )then
                                                      Node_Probability
     write(GP_print_unit,'(A)') ' '
 endif ! myid == 0 
+
+
 !xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
 

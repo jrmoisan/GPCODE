@@ -705,10 +705,6 @@ endif ! myid == 0
 
         max_n_gp_params = maxval( GP_Individual_N_GP_param )
 
-        !write(GP_print_unit,'(/A,3(1x,I5))') &
-        !'0: call print_time_series  i_GP_best_parent, max_n_gp_params, nop ', &
-        !                            i_GP_best_parent, max_n_gp_params, nop
-
         call print_time_series( i_GP_best_parent, nop, i_GP_generation )
 
         !------------------------------------------------------------------------------------
@@ -718,9 +714,6 @@ endif ! myid == 0
         if( L_GP_all_summary )then
 
             inquire( GP_summary_output_unit_lgen, opened = op )
-
-            !write(GP_print_unit,'(/A,5x,L1)') &
-            !'0: GP_summary_output_unit_lgen op = ', op
 
             if( op ) close( GP_summary_output_unit_lgen )
 

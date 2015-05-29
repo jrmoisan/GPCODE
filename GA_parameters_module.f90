@@ -27,8 +27,6 @@ logical :: Lprint_lmdif
 
 
 
-
-
 ! set the real parameters
 
 !  NOTE: in the next 2 parameters:
@@ -92,7 +90,6 @@ real(kind=r8b), parameter :: PI = 3.141592653589793D0
 integer(kind=i4b) :: n_GA_Generations
 integer(kind=i4b) :: i_GA_Generation
 integer(kind=i4b) :: n_GA_Individuals
-!!!!integer(kind=i4b) :: i_GA_individual
 integer(kind=i4b) :: j_GA_individual
 
 real(kind=r8b) ::  min_sse

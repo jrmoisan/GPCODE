@@ -60,8 +60,6 @@ deallocate( GP_Adult_Population_Node_Type )
 deallocate( GP_Child_Population_Node_Type )
 deallocate( Parent_Tree_Swap_Node_Type )
 
-!deallocate( GP_Adult_Individual_SSE )
-!deallocate( GP_Child_Individual_SSE )
 deallocate( GP_Child_Individual_SSE_nolog10 )
 
 deallocate( GP_Child_Population_SSE )
@@ -125,7 +123,6 @@ deallocate( Truth_Initial_Conditions )
 deallocate( Truth_Node_Type          )
 deallocate( Truth_Node_Parameters    )
                                                                                                         
-!deallocate( Truth_Model_Match  ) 
 !---------------------------------------------------------------                                        
 
 
@@ -148,11 +145,7 @@ endif ! L_print_equations
 
 deallocate( Node_Probability )
 
-!>>>>>>>>>>>>>
 deallocate( GP_Adult_Population_SSE )
-!>>>>>>>>>>>>>
-
-!deallocate( ppex ) 
 
 deallocate( answer       )
 deallocate( output_array ) 

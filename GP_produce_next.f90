@@ -88,16 +88,14 @@ if( myid == 0 )then
 
     if( n_GP_Asexual_Reproductions .gt. 0 )then
 
-        write(GP_print_unit,'(A,1x,I6)') &
-              'gpn: call GP_Fit_Prop_Asexual_Repro &
-              &n_GP_Asexual_Reproductions =', n_GP_Asexual_Reproductions
-        !flush(GP_print_unit)
+        !write(GP_print_unit,'(A,1x,I6)') &
+        !      'gpn: call GP_Fit_Prop_Asexual_Repro &
+        !      &n_GP_Asexual_Reproductions =', n_GP_Asexual_Reproductions
 
         call GP_Fitness_Proportionate_Asexual_Reproduction
 
     endif !  n_GP_Asexual_Reproductions .gt. 0
 
-!       call GP_Fitness_Proportionate_Asexual_Reproduction
 
 
     !----------------------------------------------------------------------------------
@@ -114,6 +112,7 @@ if( myid == 0 )then
     ! sets:
     !    GP_Child_Population_Node_Type
     !    Run_GP_Calculate_Fitness ( to true for modified individuals )
+
 
     if( trim(model) /= 'fasham_fixed_tree' )then
 
@@ -194,6 +193,7 @@ endif ! ierror....
 
 
 !------------------------------------------------------------------------------------
+
 ! for fasham tree version, Run_GP_Calculate_Fitness is set to true at the start
 ! of a generation for all individuals. The code below sets it to false for the
 ! best individual of the last generation, with the hope that this will retain
@@ -224,5 +224,7 @@ endif ! trim(model) == 'fasham_fixed_tree'
 ! Run_GP_Calculate_Fitness
 
 call bcast2()
+
+return
 
 end subroutine GP_produce_next

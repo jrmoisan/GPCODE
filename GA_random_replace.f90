@@ -24,11 +24,6 @@ integer(kind=i4b) :: i_GA_individual
 
 if( n_GA_rand_replaces < 1 ) return
 
-!if( L_ga_print )then
-!    write(GA_print_unit,'(//A,1x,I6/)') &
-!          'garr: n_GA_rand_replaces ', n_GA_rand_replaces
-!endif ! L_ga_print
-
 
 n_replaced  = 0
 
@@ -49,19 +44,6 @@ do  i_GA_replace=1,n_GA_rand_replaces
 
     !--------------------------------------------------------------------
 
-    !if( L_ga_print )then
-    !    write(GA_print_unit,'(A,1x,I6,1x,E15.7,1x,I6)') &
-    !          'garr: i_GA_replace, dff, i_GA_Individual_replace ', &
-    !                 i_GA_replace, dff, i_GA_Individual_replace
-    !    write(GA_print_unit,'(/A/I6,12(1x,E15.7))') &
-    !          'garr: before i_GA_Individual_replace,  &
-    !      &child_parameters(1:n_parameters, i_GA_Individual_replace ) ', &
-    !                        i_GA_Individual_replace,  &
-    !       child_parameters(1:n_parameters, i_GA_Individual_replace)
-    !endif ! L_ga_print
-
-
-    !--------------------------------------------------------------------
 
     ! replace all parameters
 
@@ -74,19 +56,6 @@ do  i_GA_replace=1,n_GA_rand_replaces
         child_parameters(i_Parameter_replace, i_GA_Individual_replace) = dff
 
     enddo  ! i_parameter_replace
-
-    !----------------------------------------------------------------------------
-
-    !if( L_ga_print )then
-    !    write(GA_print_unit,'(A/I6,12(1x,E15.7))') &
-    !      'garr: after ', &
-    !      i_GA_Individual_replace,  &
-    !      child_parameters(1:n_parameters, i_GA_Individual_replace )
-    !    write(GA_print_unit,'(A,1x,I6,1x,E15.7,1x,I6/)') &
-    !      'garr: i_GA_Individual_replace, child_parameters(i_Parm_Mut, i_GA_Ind_Mut) ', &
-    !            i_GA_Individual_replace, &
-    !       child_parameters(i_Parameter_replace, i_GA_Individual_replace)
-    !endif ! L_ga_print
 
 
     !--------------------------------------------------------------------
@@ -108,11 +77,6 @@ do  i_GA_replace=1,n_GA_rand_replaces
 
 enddo
 
-!if( L_ga_print )then
-!    write(GA_print_unit,'(A,1x,I6,1x,I10/)') &
-!      'garr: i_GA_generation, n_replaced ',  &
-!             i_GA_generation, n_replaced
-!endif ! L_ga_print
-
 return
+
 end subroutine GA_random_replace

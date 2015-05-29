@@ -87,27 +87,32 @@ use GP_variables_module
     cloud=oktas/8.D+0
 
     !write(6,'(A,1x,2(1x,E15.7))') 'JQF: cloud, oktas ', cloud, oktas
-
+    !flush(6)
 
 !   cloud corr from Smith and Dobson, [Ecological Modeling, 14, 1-19, 1981]
-    if( zenith .le. 1.55D+0 ) then
+
+
+    if( abs(zenith) .le. 1.55D+0 ) then
         cloudy=0.0375D+0+(cosz*exp(-0.24D+0/cosz)*((cloud*exp(-0.07D+0/cosz))+1.D+0-cloud))
     else
         cloudy=0.0375D+0
     endif
 
     !write(6,'(A,1x,2(1x,E15.7))') 'JQF: zenith, cloudy ', zenith, cloudy
+    !flush(6)
 
 
 
 !   calculate the light value only during the day [night = zenith .ge. pi/2.D+0]
-    if( zenith .lt. pi/2.D+0 ) then
+
+    if( abs(zenith) .lt. pi/2.D+0 ) then
         par0=solar*trans*enot*cosz*0.43D+0*(1.D+0-albedo)*cloudy
     else
         par0=0.D+0
     endif
 
     !write(6,'(A,1x,2(1x,E15.7))') 'JQF: zenith, par0 ', zenith, par0
+    !flush(6)
 
 !   calculate aJ by integrating (simple trapezoidal) PvsI terms over the aMLD
 
@@ -124,20 +129,39 @@ use GP_variables_module
             !write(6,'(A,1x,i6,3(1x,E15.7))') 'JQF: iz, z ', iz, z                
 
             !parz=par0*exp(-z*(akw+(akc*phyto)))    ! original 
-            parz = par0 * exp( -z * ( akw +  akc*abs(phyto) ) )
+            !parz = par0 * exp( -z * ( akw +  akc*abs(phyto) ) )
+
+            if( abs( z * ( akw +  akc*abs(phyto) ) ) < 150.0d0 )then 
+                parz = par0 * exp( -z * ( akw +  akc*abs(phyto) ) )
+            else
+                parz = 1.0D-65
+            endif 
 
             !write(6,'(A,1x,3(1x,E15.7))') 'JQF: phyto, par0, parz ', &
             !                                    phyto, par0, parz 
+            !flush(6)
+
             if( parz > 1.0D+100 )then
                 L_bad = .true. 
                 return
             endif ! parz > 1.0D+100
 
             !tmp=(Vp*alpha*parz)/(sqrt((Vp*Vp)+(alpha*alpha*parz*parz)))    ! original 
-            tmp = (Vp*alpha*parz) / ( sqrt( Vp**2 + (alpha**2 * parz**2) ) )
+            !tmp = (Vp*alpha*parz) / ( sqrt( Vp**2 + (alpha**2 * parz**2) ) )
 
-            !write(6,'(A,1x,3(1x,E15.7))') 'JQF: parz, tmp ', &
-            !                                    parz, tmp 
+            if( Vp**2 + (alpha * parz)**2 > 0.0d0 )then
+
+                tmp = (Vp*alpha*parz) / ( sqrt( Vp**2 + (alpha * parz)**2 ) )
+            else
+
+                tmp = 0.0d0
+
+            endif ! Vp**2 + (alpha * parz)**2 > 0.0d0
+
+            write(6,'(A,1x,3(1x,E15.7))') 'JQF: parz, tmp ', &
+                                                parz, tmp 
+            flush(6)
+
 
             if( isnan( tmp ) )then
                 L_bad = .true. 
@@ -154,6 +178,7 @@ use GP_variables_module
 
         !write(6,'(A,1x,3(1x,E15.7))') 'JQF: aJ, delz, aMLD ', &  
         !                                    aJ, delz, aMLD 
+        !flush(6)
 
         aJ=aJ*delz/aMLD
 
@@ -161,6 +186,7 @@ use GP_variables_module
 
     !write(6,'(A,1x,3(1x,E15.7))') 'JQF: aJ, aMLD ', &  
     !                                    aJ, aMLD
+    !flush(6)
 
 end subroutine JQforce
 

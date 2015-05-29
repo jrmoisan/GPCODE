@@ -1,27 +1,28 @@
 subroutine read_input_data( )
-   use kinds_mod
 
-   use mpi
-   use mpi_module
-   use GP_Parameters_module
-   use GP_variables_module
-   use GA_Parameters_module
-   use GA_Variables_module
-   use GP_Data_module
+use kinds_mod
 
-   IMPLICIT NONE
+use mpi
+use mpi_module
+use GP_Parameters_module
+use GP_variables_module
+use GA_Parameters_module
+use GA_Variables_module
+use GP_Data_module
 
-
-   integer(kind=i4b) :: istat
-   integer(kind=i4b), parameter :: line_length   = 250
-
-   CHARACTER(line_length) :: Aline
-   integer(kind=i4b) ::  ncount               
-   integer(kind=i4b) ::  i                    
-   integer(kind=i4b) ::  j                    
+IMPLICIT NONE
 
 
-   real(kind=r8b), allocatable, dimension(:) ::  temp_array
+integer(kind=i4b) :: istat
+integer(kind=i4b), parameter :: line_length   = 250
+
+CHARACTER(line_length) :: Aline
+integer(kind=i4b) ::  ncount               
+integer(kind=i4b) ::  i                    
+integer(kind=i4b) ::  j                    
+
+
+real(kind=r8b), allocatable, dimension(:) ::  temp_array
 
 !-------------------------------------------------------------------------------
 
@@ -67,40 +68,40 @@ subroutine read_input_data( )
 
 !---------------------------------------------------------------------
 
-   allocate( temp_array( 0:n_input_vars ) ) 
-   allocate( input_data_array( 0:n_input_vars, n_time_steps) )
+allocate( temp_array( 0:n_input_vars ) ) 
+allocate( input_data_array( 0:n_input_vars, n_time_steps) )
 
-   ncount = 0
-   do
+ncount = 0
+do
 
-      read( data_unitnum, *, iostat = istat ) temp_array(0:n_input_vars)
-      if( istat /= 0 )exit
+    read( data_unitnum, *, iostat = istat ) temp_array(0:n_input_vars)
+    if( istat /= 0 )exit
 
-      ncount = ncount + 1
+    ncount = ncount + 1
 
-      input_data_array(0:n_input_vars, ncount ) = temp_array(0:n_input_vars) 
+    input_data_array(0:n_input_vars, ncount ) = temp_array(0:n_input_vars) 
 
-   enddo
+enddo
 
 !---------------------------------------------------------------------
 
 ! echo input data
 
-   if( myid == 0 )then
-       write(6,'(//A/)') 'rid:  input data '
-       write(6,'(10(1x,A20))') ( trim( input_data_names(i) ), i = 0, n_input_vars )
-       do  j = 1, n_time_steps
-          write(6,'(10(1x,E20.10))') &
-                ( input_data_array(i,j), i = 0, n_input_vars ) 
-       enddo 
-   endif ! myid == 0 
+if( myid == 0 )then
+    write(6,'(//A/)') 'rid:  input data '
+    write(6,'(10(1x,A20))') ( trim( input_data_names(i) ), i = 0, n_input_vars )
+    do  j = 1, n_time_steps
+        write(6,'(10(1x,E20.10))') &
+             ( input_data_array(i,j), i = 0, n_input_vars ) 
+    enddo 
+endif ! myid == 0 
 
 
-   deallocate( temp_array ) 
+deallocate( temp_array ) 
 
-   close(data_unitnum)
+close(data_unitnum)
 
-   n_input_data_points = n_time_steps  ! jjm
+n_input_data_points = n_time_steps  ! jjm
 
 return 
 

@@ -38,21 +38,11 @@ if( icall  == 0  )then
  
     n_variables = 7
  
-    !!! n_code_forcing = 4      ! parameter
-    !!! n_Tracked_Resources = 1 ! parameter  ! number of different resources being tracked
- 
- 
     n_trees=  ((n_CODE_equations+1)**2)-(n_CODE_equations+1)
  
     n_nodes = pow2_table( n_levels )  ! n_nodes = int(2**n_levels)-1
  
  
-    !orig n_maximum_number_parameters = n_CODE_equations +  n_nodes
-    !n_maximum_number_parameters       = n_CODE_equations *  n_nodes
- 
-    !n_maximum_number_parameters       = n_CODE_equations +  n_nodes
-    !n_maximum_number_parameters       =  n_trees * 2    +  n_nodes   ! jjm 20140307
-
     n_maximum_number_parameters = n_CODE_equations +  n_nodes        !orig 
 
     if( myid == 0 )then
@@ -224,10 +214,10 @@ enddo ! i_tree
 
 ! initialized as parameters in fasham_variables_module
 
-    !FORCING_MIXED_LAYER_DEPTH         = -5001
-    !FORCING_MLD_CHANGE_NON_MOTILE     = -5002
-    !FORCING_MLD_CHANGE_MOTILE         = -5003
-    !FORCING_LIGHT_LIMITED_GROWTH_RATE = -5004
+    ! FORCING_MIXED_LAYER_DEPTH         = -5001
+    ! FORCING_MLD_CHANGE_NON_MOTILE     = -5002
+    ! FORCING_MLD_CHANGE_MOTILE         = -5003
+    ! FORCING_LIGHT_LIMITED_GROWTH_RATE = -5004
 
 
     Numerical_CODE_Forcing_Functions = 0.0D+0
@@ -241,12 +231,13 @@ enddo ! i_tree
 
 
 if( myid == 0 )then
+
     write(GP_print_unit,'(/A,1x,I6)')   'ivFA: n_CODE_equations  ', n_CODE_equations
     write(GP_print_unit,'(A/(7(1x,E15.7)))') &
           'ivFA: Numerical_CODE_Initial_Conditions(1:n_code_equations)', &
                  Numerical_CODE_Initial_Conditions(1:n_code_equations)
     write(GP_print_unit,'(A/)') ' '
-    !flush(GP_print_unit)
+   
 endif ! myid == 0
 
 

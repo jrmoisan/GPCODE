@@ -7,6 +7,7 @@ subroutine comp_data_variance()
 ! a finding the optimum equation and parameter sets for a system of
 ! coupled ordinary differential equations
 !xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
 use kinds_mod 
 use mpi
 use mpi_module
@@ -31,11 +32,6 @@ integer(kind=i4b) :: n_obs
 real(kind=r8b) :: x_time_step
 real(kind=r8b) :: x_obs            
 
-!integer(kind=i4b) :: nn
-
-!real(kind=r8b) :: sum1, sum2, sum3, mean, variance
-!real(kind=r8b) :: variance2
-!real(kind=r8b) :: M2, delta
 
 real(kind=r8b), dimension(1:n_code_equations )  :: Data_Variance
 
@@ -52,13 +48,6 @@ real(kind=r8b), dimension(1:n_code_equations )  :: Data_Variance
 ! equal weight, and there are other options that can be considered.
 !xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
-!if( myid == 0 )then
-!    write(GP_print_unit,'(A)') ' '
-!endif ! myid == 0
-
-!write(GP_print_unit,'(A,3(1x,I6))') &
-!         'cdv: myid, n_CODE_equations, n_time_steps ', &
-!               myid, n_CODE_equations, n_time_steps
 if( myid == 0 )then
     write(6,'(/A,4(1x,E15.7)/)') &
              'cdv: dt, sse_min_time, sse_max_time, sse_low_wt', &
@@ -80,13 +69,6 @@ if( n_code_equations > 1 )then
         n_obs = 0
         x_obs = 0.0d0
 
-        !write(GP_print_unit,'(/A,3(1x,I6))') &
-        ! 'cdv: i_CODE_equation', &
-        !       i_CODE_equation
-        !write(6,'(/A/)') &
-        !    'cdv: i_time_step, n_obs, x_time_step, &
-        !      &Data_Array(i_time_step,i_CODE_equation), ssum, ssum2 '
-    
         do  i_time_step=1,n_time_steps
     
             x_time_step = real( i_time_step, kind=r8b ) * dt
@@ -101,97 +83,23 @@ if( n_code_equations > 1 )then
             endif
 
 
-            !n_obs = n_obs + 1
             x_obs = x_obs + sse_wt
     
 
             ssum  = ssum  +   Data_Array(i_time_step,i_CODE_equation) * sse_wt
             ssum2 = ssum2 +  (Data_Array(i_time_step,i_CODE_equation) * sse_wt )**2
 
-            !write(6,'(2(1x,i6),4(1x, E15.7))') &
-            !      i_time_step, n_obs, x_time_step, &
-            !      Data_Array(i_time_step,i_CODE_equation), ssum, ssum2 
     
         enddo !   i_time_step
     
         !-------------------------------------------------------------------------------
     
-        !write(GP_print_unit,'(/A,40x,A)') 'cdv: ',  'wt inside **2' 
-
-        !write(GP_print_unit,'(A,1(1x,I6),2(1x,E15.7) )') &
-        !      'cdv: i_CODE_equation, ssum, ssum2', &
-        !            i_CODE_equation, ssum, ssum2
     
         totobs    =  x_obs          ! dble(n_obs)               
         totobs_m1 =  x_obs - 1.0d0  ! dble(n_obs-1)               
-        !totobs    =  dble(n_obs)               
-        !totobs_m1 =  dble(n_obs-1)               
-    
-        !write(GP_print_unit,'(A, 2(1x,E15.7) )') &
-        !      'cdv: totobs, totobs_m1', &
-        !            totobs, totobs_m1
-    
     
         dff=( (totobs*ssum2)-(ssum**2) ) / totobs / totobs_m1
     
-    
-        !write(GP_print_unit,'(/A,2x,E15.7)') 'cdv: original dff ', dff
-    
-        !write(GP_print_unit,'(A, 2(1x,E15.7) )') 'cdv: dff', dff
-    
-        !!-------------------------------------------------------------------------------
-        !nn = 0
-        !sum1 = 0.0D0
-        !do  i_time_step=1,n_time_steps
-        !    x_time_step = real( i_time_step, kind=r8b ) * dt
-        !
-        !    if( x_time_step < sse_min_time ) cycle
-        !    if( x_time_step > sse_max_time ) exit
-        !    nn = nn + 1
-        !    sum1 = sum1 + Data_Array(i_time_step,i_CODE_equation)
-        !enddo
-        !
-        !mean = sum1/real(nn, kind = 8 )
-        !
-        !sum2 = 0.0D0
-        !sum3 = 0.0D0
-        !do  i_time_step=1,n_time_steps
-        !    x_time_step = real( i_time_step, kind=r8b ) * dt
-        !
-        !    if( x_time_step < sse_min_time ) cycle
-        !    if( x_time_step > sse_max_time ) exit
-        !
-        !    sum2 = sum2 + (Data_Array(i_time_step,i_CODE_equation) - mean)**2
-        !    sum3 = sum3 + (Data_Array(i_time_step,i_CODE_equation) - mean)
-        !enddo
-        !
-        !variance = ( sum2 - sum3**2/real(nn, kind=r8b) ) / real(nn-1, kind=r8b)
-        !
-        !write(GP_print_unit,'(/A,2x,E15.7)') 'cdv: 1 variance     ', variance
-        !
-        !!-------------------------------------------------------------------------------
-        !nn = 0
-        !mean = 0.0d0
-        !M2 = 0.0d0
-        !
-        !
-        !do  i_time_step=1,n_time_steps
-        !    x_time_step = real( i_time_step, kind=r8b ) * dt
-        !
-        !    if( x_time_step < sse_min_time ) cycle
-        !    if( x_time_step > sse_max_time ) exit
-        !
-        !    nn = nn + 1
-        !    delta = Data_Array(i_time_step,i_CODE_equation) - mean
-        !    mean = mean + delta / real(nn, kind=r8b)
-        !    M2 = M2 + delta*(Data_Array(i_time_step,i_CODE_equation) - mean)
-        !enddo
-        !
-        !variance2 = M2/real(nn - 1, kind=r8b)
-        !
-        !write(GP_print_unit,'(/A,2x,E15.7)') 'cdv: 2 variance2    ', variance2
-        !
-        !-------------------------------------------------------------------------------
     
         !------------------------------------------------------------------------------ 
 

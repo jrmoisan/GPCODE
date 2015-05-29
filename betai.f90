@@ -24,10 +24,10 @@ endif
 
 if( x.lt.(a+1.0d0)/(a+b+2.0d0) )then 
     betai=bt*betacf(a,b,x)/a 
-    return 
 else 
     betai=1.0d0-bt*betacf(b,a,1.0d0-x)/b 
-    return 
 endif 
+
+return 
 
 END                                           

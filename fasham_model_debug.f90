@@ -31,7 +31,7 @@ GP_Individual_Node_Type(:,:) =  -9999
 
 
 
-! 1 done
+! 1 
 
 GP_Individual_Node_Type(9,1) =  -5002
 GP_Individual_Node_Parameters(8,1) = am
@@ -44,7 +44,7 @@ GP_Individual_Node_Type(2,1) =  4
 GP_Individual_Node_Type(1,1) =  3
  
 
-! 8 done
+! 8 
  
 GP_Individual_Node_Type(9,8) =  -5002
 GP_Individual_Node_Parameters(8,8) = am
@@ -57,7 +57,7 @@ GP_Individual_Node_Type(1,8) =  3
  
 
 
-! 13 done
+! 13 
  
 GP_Individual_Node_Type(19,13) = -1
 GP_Individual_Node_Parameters(18,13) = aK1
@@ -75,7 +75,7 @@ GP_Individual_Node_Type(1,13) =  3
  
  
 
-! 15 done
+! 15 
 
 GP_Individual_Node_Type(9,15) = -5002
 GP_Individual_Node_Parameters(8,15) = am
@@ -88,7 +88,7 @@ GP_Individual_Node_Type(1,15) =  3
  
 
 
-! 19 done
+! 19 
  
 GP_Individual_Node_Type(25,19) =  -3
 GP_Individual_Node_Parameters(24,19) = eta
@@ -116,7 +116,7 @@ GP_Individual_Node_Type(1,19) =  4
  
  
 
-! 20 done
+! 20 
  
 GP_Individual_Node_Type(9,20) =  -2
 GP_Individual_Node_Parameters(8,20) = aK2
@@ -129,7 +129,7 @@ GP_Individual_Node_Type(1,20) =  3
  
  
 
-! 22 done
+! 22 
  
 GP_Individual_Node_Type(9,22) =  -5002
 GP_Individual_Node_Parameters(8,22) = am
@@ -142,7 +142,7 @@ GP_Individual_Node_Type(1,22) =  3
  
  
 
-! 26 done
+! 26 
 
 GP_Individual_Node_Type(49,26) =  -3
 GP_Individual_Node_Parameters(48,26) = eta
@@ -165,7 +165,7 @@ GP_Individual_Node_Type(1,26) =  4
  
  
 
-! 29 done
+! 29 
  
 GP_Individual_Node_Type(17,29) =  -5002
 GP_Individual_Node_Parameters(16,29) = am
@@ -181,7 +181,7 @@ GP_Individual_Node_Type(1,29) =  3
 
 
 
-! 32 done
+! 32 
 
 GP_Individual_Node_Type(3,32) =  -4
 GP_Individual_Node_Parameters(2,32) = amu4
@@ -190,7 +190,7 @@ GP_Individual_Node_Type(1,32) =  3
 
 
 
-! 35 done
+! 35 
 
 GP_Individual_Node_Type(1,35)= 4   ! "[1] /"];
 GP_Individual_Node_Type(2,35)= 3   ! "[2] *"];
@@ -249,7 +249,7 @@ GP_Individual_Node_Parameters(63,35)=  p3   !  "[63] (P)   1.00000000"];
 
 
 
-! 36 done
+! 36 
 
 GP_Individual_Node_Type(9,36) =  -5002
 GP_Individual_Node_Parameters(8,36) = am
@@ -262,7 +262,7 @@ GP_Individual_Node_Type(1,36) =  3
  
 
  
-! 38 done
+! 38 
 
 GP_Individual_Node_Type(3,38) = -5
 GP_Individual_Node_Parameters(2,38) = amu3
@@ -271,7 +271,7 @@ GP_Individual_Node_Type(1,38) =  3
 
 
 
-! 42 done
+! 42 
 
 GP_Individual_Node_Type(1,42)= 4  !  "[1] /"];
 GP_Individual_Node_Type(2,42)= 3  !  "[2] *"];
@@ -330,7 +330,7 @@ GP_Individual_Node_Parameters(63,42)= p3  ! "[63] (P)   1.00000000"];
 
 
 
-! 43 done
+! 43 
 
 GP_Individual_Node_Type(9,43) =  -5002
 GP_Individual_Node_Parameters(8,43) = am
@@ -343,7 +343,7 @@ GP_Individual_Node_Type(1,43) =  3
 
 
 
-! 46 done
+! 46 
 
 GP_Individual_Node_Type(67,46) =  -1
 GP_Individual_Node_Parameters(66,46) = aK1
@@ -369,7 +369,7 @@ GP_Individual_Node_Type(1,46) =  3
 
 
 
-! 47 done
+! 47 
 
 GP_Individual_Node_Type(3,47) = -6
 GP_Individual_Node_Parameters(2,47) = amu1
@@ -378,7 +378,7 @@ GP_Individual_Node_Type(1,47) =  3
 
 
 
-! 49 done
+! 49 
 
 GP_Individual_Node_Type(1,49)= 4  !  "[1] /"];
 GP_Individual_Node_Type(2,49)= 3  !  "[2] *"];
@@ -437,7 +437,7 @@ GP_Individual_Node_Parameters(63,49)= p3  ! "[63] (P)   1.00000000"];
 
 
 
-! 50 done
+! 50 
 
 GP_Individual_Node_Parameters(13,50) = omega
 GP_Individual_Node_Type(13,50) =  0
@@ -455,7 +455,7 @@ GP_Individual_Node_Type(1,50) =  1
 
 
 
-! 52 done
+! 52 
 
 GP_Individual_Node_Parameters(17,52) = omega
 GP_Individual_Node_Type(17,52) =  0
@@ -478,7 +478,7 @@ GP_Individual_Node_Type(1,52) =  1
  
 
  
-! 53 done
+! 53 
  
 GP_Individual_Node_Parameters(9,53) = epsilon
 GP_Individual_Node_Type(9,53) =  0
@@ -493,7 +493,7 @@ GP_Individual_Node_Type(1,53) =  3
 
 
 
-! 54 done
+! 54 
 
 GP_Individual_Node_Type(1,54)= 1  !  "[1] +"];
 GP_Individual_Node_Type(2,54)= 1  !  "[2] +"];

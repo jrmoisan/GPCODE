@@ -40,10 +40,7 @@ integer(kind=i4b) :: j
 real(kind=r8b) :: x_time_step
 
 
-!real(kind=r8b), dimension( n_input_data_points, n_code_equations ) :: resid
 real(kind=r8b), dimension( n_time_steps, n_code_equations ) :: resid
-
-!real(kind=r8b), dimension( n_input_data_points ) :: temp_data_array
 
 
 
@@ -104,10 +101,6 @@ if( myid == 0 )then
 endif ! myid == 0
 
 call Initialize_Model( .true., .true., 6 )
-
-!if( myid == 0 )then
-!    write(6,'(/A/)') 'ptsMS: aft call Initialize_Model  '
-!endif ! myid == 0
 
 
 !------------------------------------------------------------------------------
@@ -224,17 +217,7 @@ if( myid == 0 )then
     ! RK_Box_Model now puts the time series in Numerical_CODE_Solution
 
 
-    !call Runge_Kutta_Box_Model( .true. )  ! print
     call Runge_Kutta_Box_Model( .false. )   ! don't print
-
-
-
-    !write(GP_print_unit,'(/A/)') &
-    ! 'ptsMS: data_point   Numerical_CODE_Solution(data_point,1:n_CODE_equations)'
-    !do  i = 0, n_time_steps  ! n_input_data_points
-    !    write(GP_print_unit,'(I6,2x,10(1x,E14.7))') &
-    !          i, (Numerical_CODE_Solution(i,jj), jj = 1,n_CODE_equations )
-    !enddo ! i
 
 
     open( plotMS_unit, file = 'plotMS.txt', status = 'unknown', &
@@ -270,7 +253,6 @@ if( myid == 0 )then
             sse_wt = sse_low_wt
         endif ! x_time_step < sse_min_time 
 
-        !if( x_time_step > sse_max_time ) exit
 
         do  j = 1, n_code_equations
             resid_SSE = resid_SSE + &
@@ -314,24 +296,19 @@ if( myid == 0 )then
         call calc_stats( n_time_steps,  Numerical_CODE_Solution(1,j), &
                          RKmean(j), RKrms(j), RKstddev(j) , &
                          dt,    0.0d0, 1.0d9, 1.0d0 ) 
-                         !dt, sse_min_time, sse_max_time, sse_low_wt )
+        
 
 
-        !temp_data_array = 0.0d0
-        !do  i = 1, n_time_steps  ! n_input_data_points
-        !    temp_data_array(i) = Data_array(i,1) input_data_array(0,i)
-        !enddo
-    
         call calc_stats( n_time_steps, Data_Array(1,j), &
                          data_mean(j), data_rms(j), data_stddev(j), &
                          dt,    0.0d0, 1.0d9, 1.0d0 ) 
-                         !dt, sse_min_time, sse_max_time, sse_low_wt  )
+       
 
 
         call calc_stats( n_time_steps, resid(1,j) ,              &
                          resid_mean(j), resid_rms(j), resid_stddev(j), &
                          dt,    0.0d0, 1.0d9, 1.0d0 ) 
-                         !dt, sse_min_time, sse_max_time, sse_low_wt  )
+      
 
 
         !call pearsn( Numerical_CODE_Solution(1,1), temp_data_array, &
@@ -377,9 +354,6 @@ if( myid == 0 )then
 
     !--------------------------------------------------------------------------------
 
-    !write(GP_print_unit, '(//A,1x, I6,1x,E24.16/)') &
-    !     'ptsMS: n_input_data_points, resid_SSE', &
-    !             n_input_data_points, resid_SSE
     write(GP_print_unit, '(//A,1x, I6,1x,E24.16/)') &
          'ptsMS: n_time_steps, resid_SSE', &
                  n_time_steps, resid_SSE
@@ -411,13 +385,6 @@ if( myid == 0 )then
     write(GP_print_unit, '(A,1x,E15.7/)')  'ptsMS: y_max', y_max
 
 
-    !write(GP_print_unit, '(A,1x,5(1x,E15.7))') &
-    !      'ptsMS: R probability     ', prob_r
-    !write(GP_print_unit, '(A,1x,5(1x,E15.7)/)') &
-    !      'ptsMS: Fisher''s Z        ', fisher_z
-
-    !flush(GP_print_unit) 
-
     !--------------------------------------------------------------------------------
 
     ! write results to file
@@ -444,13 +411,6 @@ if( myid == 0 )then
 
     write(plotMS_unit, '(A,1x,E15.7)') '#ptsMS: y_min', y_min
     write(plotMS_unit, '(A,1x,E15.7)') '#ptsMS: y_max', y_max
-
-    !write(plotMS_unit, '(A,1x,5(1x,E15.7))') &
-    !      '#ptsMS: R probability     ', prob_r
-    !write(plotMS_unit, '(A,1x,5(1x,E15.7))') &
-    !      '#ptsMS: Fisher''s Z        ', fisher_z
-
-    !flush( plotMS_unit )
 
 
     close( plotMS_unit )

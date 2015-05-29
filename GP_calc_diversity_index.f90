@@ -5,6 +5,7 @@ subroutine GP_calc_diversity_index( n_indiv, indiv_node_type, &
 ! Mutations in this subroutine are targeted to the nodes only.
 ! The terminals are optimized later on using GA_lmdif.
 !xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
 use kinds_mod 
 use GP_Parameters_module
 use GA_Parameters_module

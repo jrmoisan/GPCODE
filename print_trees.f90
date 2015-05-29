@@ -11,9 +11,6 @@ subroutine print_trees( i_gen, n_indiv_start, n_indiv_stop, &
 
 use kinds_mod 
 
-!use mpi
-!use mpi_module
-
 use GP_Parameters_module
 use GA_Parameters_module
 use GP_Variables_module
@@ -81,25 +78,17 @@ if( n_nodes < node_boundary ) then
     tree_type_fmt = tree_type_fmt1 // &
                     trim( tree_type_fmt2 ) // tree_type_fmt3
 
-    !write(6,'(A,A)') 'pt: tree_type_fmt1 ', tree_type_fmt1
-    !write(6,'(A,A)') 'pt: tree_type_fmt2 ', tree_type_fmt2
-    !write(6,'(A,A)') 'pt: tree_type_fmt3 ', tree_type_fmt3
-    !write(6,'(A,A)') 'pt: tree_type_fmt  ', tree_type_fmt 
-
 endif ! n_nodes < node_boundary 
 
 !-----------------------------------------------
-
-!write(6,'(/A,2(1x,I6)/)' ) 'pt: n_nodes ', n_nodes
 
 ! print trees
 
 write(GP_print_unit,'(/A)')  &
  'pt: ############################################################################'
+
 if( len( trim(tree_descrip) ) > 0 )write(GP_print_unit,'(A)')  tree_descrip
 
-!write(6,'(A,2(1x,I6))' ) &
-!     'pt: n_indiv_start, n_indiv_stop ', n_indiv_start, n_indiv_stop  ! debug
 
 do  i_GP_individual = n_indiv_start, n_indiv_stop
 
@@ -122,13 +111,9 @@ do  i_GP_individual = n_indiv_start, n_indiv_stop
     endif ! n_nodes < node_boundary 
 
 
-    !write(6,'(/A,2(1x,I6)/)') &
-    !      'pt: begin tree loop n_trees = ', n_trees   ! debug
 
     do  i_Tree=1,n_Trees
 
-        !write(6,'(I6,4x,20(1x,I2))' ) &
-        !     i_tree, Tree_Type( 1:n_nodes, i_tree,i_GP_individual)  ! debug
 
         if( .not. any( Tree_Type > -9999 )  ) cycle 
 
@@ -137,10 +122,6 @@ do  i_GP_individual = n_indiv_start, n_indiv_stop
             tree_type_string = '  '
             do  i_node = 1, n_nodes
     
-                !write(6,'(A,3(1x,I6))' ) &
-                !     'pt: i_tree, i_node, Tree_Type( i_node, i_tree,i_GP_individual ) ', &
-                !          i_tree, i_node, Tree_Type( i_node, i_tree,i_GP_individual )  ! debug
-    
                 if( Tree_Type( i_node, i_tree, i_GP_individual) == -9999 )then
                     tree_type_string(i_node)  = ' .'
                 else
@@ -148,18 +129,11 @@ do  i_GP_individual = n_indiv_start, n_indiv_stop
                           tree_type( i_node, i_tree, i_GP_individual )
                 endif ! tree_type(...-9999
     
-                !write(6,'(A,2(1x,I6), 1x, A)' ) &
-                !     'pt: i_tree, i_node, Tree_Type_string( i_node ) ', &
-                !          i_tree, i_node, Tree_Type_string( i_node )  ! debug
     
             enddo ! i_node
     
     
-            !write(6,'(I6,4x,20(1x,I5))' ) &
-            !     i_tree, ( Tree_Type(jj, i_tree,i_GP_individual), jj = 1, n_nodes )  ! debug
-    
 
-            !write(GP_print_unit,'(I6,4x,50(1x,A))' ) &
             write(GP_print_unit, tree_type_fmt  ) &
                  i_tree, Tree_Type_string(1:n_nodes)
 
@@ -177,9 +151,6 @@ do  i_GP_individual = n_indiv_start, n_indiv_stop
 
                 if( Tree_Type( i_node, i_tree, i_GP_individual) > -9999 ) then
 
-                    !write(node_element_string2, '(I7)') i_node
-                    !write(value_element_string2, '(I7)') &
-
                     write( node_element_string2,  element_format ) i_node
                     write( value_element_string2, element_format )          &
                                   Tree_Type( i_node, i_tree, i_GP_individual)
@@ -192,7 +163,6 @@ do  i_GP_individual = n_indiv_start, n_indiv_stop
 
             enddo ! i_node 
 
-            !write(6,'(/A, 2(1x,I6)/)') 'pt; i_tree, nodes_filled ', i_tree, nodes_filled ! debug
 
             if( nodes_filled > 0 ) then 
 
@@ -200,17 +170,14 @@ do  i_GP_individual = n_indiv_start, n_indiv_stop
                   '-------------------------------------------------------------------------------------'
 
                 do  i = 1, nodes_filled/nodes_on_line + 1
-                    !write(GP_print_unit,'(A, 1x,I6 )')  'pt; i ', i
 
-                    !isub1 = 1 + (i-1) * 7 * nodes_on_line
-                    !isub2 =         i * 7 * nodes_on_line
                     isub1 = 1 + (i-1) * element_length * nodes_on_line
                     isub2 =         i * element_length * nodes_on_line
 
                     if( nodes_filled - (i-1)*nodes_on_line > 0 )then
                         write(GP_print_unit,'(A, A      )') &
                                   'node: ', trim( node_string( isub1: isub2    ) )
-                        !write(GP_print_unit,'(A, A     /)') &
+                    
                         write(GP_print_unit,'(A, A     )') &
                                   'value:', trim( value_string( isub1: isub2   ) )
                     endif ! nodes_filled - (i-1)*nodes_on_line > 0 
@@ -220,7 +187,6 @@ do  i_GP_individual = n_indiv_start, n_indiv_stop
 
         endif ! n_nodes < node_boundary
 
-        !!write(GP_print_unit,'(A)') ' '
 
     enddo ! i_tree
 
@@ -229,13 +195,9 @@ do  i_GP_individual = n_indiv_start, n_indiv_stop
 
     ! print equations corresponding to the tree
 
-    if( L_print_equations )then
-
-        !write(6,'(/A/)' ) &
-        !         'pt: call create_equations '  ! debug
-
-        call create_equations( i_gen, i_GP_individual, tree_type )
-    endif ! L_print_equations
+    !if( L_print_equations )then
+    !    call create_equations( i_gen, i_GP_individual, tree_type )
+    !endif ! L_print_equations
 
     !---------------------------------------------------------------
 

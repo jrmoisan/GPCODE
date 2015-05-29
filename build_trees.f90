@@ -1,4 +1,5 @@
 subroutine Build_Trees( treeSlice, buildtrees ) 
+
 use kinds_mod 
 use mpi
 use mpi_module
@@ -15,25 +16,14 @@ type(Tree_Node_Pointer), dimension(n_Trees) :: treeSlice
     
 logical, intent(in) :: buildtrees
 
-!integer(kind=i4b) :: itree
-!integer(kind=i4b) :: inode
 
 
 !------------------------------------------------------------------------------------------------
 
-!write(6,'(A,1x,A /)') 'build_trees: model   ', trim(model) 
-!write(6,'(A,5x,L1)')  'build_trees: buildtrees ', buildtrees 
 
 if( buildtrees )then
 
     !  create trees from the GP_Individual_Node_Type which was read in
-    
-    !if( myid == 1 )then
-    !    write(6,'(/A/)')      'build_trees: create trees from GP_Individual_Node_Type  '
-    !    write(6,'(/A/)')      'build_trees: call Deserialize_Trees2 '
-    !    write(6,'(A,1x,I6)')  'build_trees: n_Tracked_resources ', n_Tracked_resources
-    !    write(6,'(A,1x,I6/)') 'build_trees: n_trees ', n_trees
-    !endif ! myid == 1
     
     
     ! Deserialize_Trees2 should create trees 
@@ -42,10 +32,6 @@ if( buildtrees )then
     
     call deserialize_trees2( treeSlice, n_Tracked_resources, n_trees    )
     
-    
-    !if( myid == 1 )then
-    !    write(6,'(/A/)') 'build_trees: aft call Deserialize_Trees2 '
-    !endif ! myid == 1
     
 
 else 

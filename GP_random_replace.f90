@@ -1,6 +1,7 @@
 subroutine GP_random_replace( ierror_r )
 
 !xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
 use kinds_mod
 use mpi
 use mpi_module

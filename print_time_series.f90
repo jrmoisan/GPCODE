@@ -45,14 +45,11 @@ real(kind=r8b) :: x_time_step
 
 real(kind=r8b) :: xtime
 
-!real(kind=r8b), dimension( n_input_data_points, n_code_equations ) :: resid
 real(kind=r8b), dimension( n_time_steps, n_code_equations ) :: resid
 
-!real(kind=r8b), dimension( n_input_data_points ) :: temp_data_array
 
 real(kind=r8b), dimension( n_time_steps ) :: temp_data_array
 
-!real(kind=r8b), intent(in),dimension( nop ) :: output_array
 
 
 real(kind=r8b),dimension(n_code_equations)  :: RKmean
@@ -113,11 +110,7 @@ logical :: L_myprint
 
 if( myid == 0 )then
 
-    !if( L_myprint )write(GP_print_unit,'(/A)') 'pts: call Generate_Dot_Graph'
-
     call Generate_Dot_Graph( GP_Trees(:,1), n_Trees, './pts')
-
-    !if( L_myprint )write(GP_print_unit,'(/A/)') 'pts: aft call Generate_Dot_Graph'
 
 endif ! myid == 0
 
@@ -202,7 +195,6 @@ if( myid == 0 )then
         enddo ! i_node
     enddo ! i_tree
 
-    !if( L_myprint )write(GP_print_unit,'(A)') ' '
 
 endif ! myid == 0
 
@@ -221,23 +213,14 @@ if( myid == 0 )then
 
     if( n_inputs == 0 )then
 
-        !call Runge_Kutta_Box_Model( .true. )  ! print
         call Runge_Kutta_Box_Model( .false. )   ! don't print
 
     else
 
-        !call Runge_Kutta_Box_Model_data( .true. )  ! print
         call Runge_Kutta_Box_Model_data( .false. )   ! don't print
 
     endif ! n_inputs == 0
 
-
-    !if( L_myprint )write(GP_print_unit,'(/A/)') &
-    ! 'pts: data_point   Numerical_CODE_Solution(data_point,1:n_CODE_equations)'
-    !do  i = 1, n_time_steps   !n_input_data_points
-    !    if( L_myprint )write(GP_print_unit,'(I6,2x,10(1x,E14.7))') &
-    !          i, (Numerical_CODE_Solution(i,jj), jj = 1,n_CODE_equations )
-    !enddo ! i
 
 
 
@@ -253,14 +236,6 @@ if( myid == 0 )then
                        '         RK_Soln      input_data  resid'
     enddo
 
-
-!    if( index( model, 'LOG10' ) .or. &
-!        index( model, 'log10' )        )then
-
-!    if( L_myprint )write(GP_print_unit,'(/A/)') 'pts: LOG10 DATA'
-!    write(plot_unit,'(A)')  '#pts: LOG10 DATA'
-
-!    endif !  index( model, 'DATA' ) ...
 
     if( L_myprint )write(GP_print_unit,'(/A/)')  trim( title_string )
     write(plot_unit,'(A)')        trim( title_string )
@@ -293,14 +268,11 @@ if( myid == 0 )then
 
 
         do  j = 1, n_code_equations
+    
             resid_SSE = resid_SSE + &
                        ( Data_Array(i,j) - Numerical_CODE_Solution(i,j) )**2  * &
                                                      Data_Variance_inv(j) * &
                                                      sse_wt
-            !if( L_myprint )write(GP_print_unit,'(A,1x,I6,1x,I3,1x,5(1x,E15.7))') &
-            !      'pts: i, j, Soln, Data, Data_Var_inv, sse_wt, SSE', &
-            !      i, j, Numerical_CODE_Solution(i,j),  Data_Array(i,j), &
-            !           Data_Variance_inv(j), sse_wt, resid_SSE
 
         enddo ! j
 
@@ -356,29 +328,6 @@ if( myid == 0 )then
                    n_time_steps, 0, r_corr(j) , &
                    dt,    0.0d0, 1.0d9, 1.0d0 )
 
-
-        !RK_min(j) = minval( Numerical_CODE_Solution(:,j) )
-        !RK_max(j) = maxval( Numerical_CODE_Solution(:,j) )
-
-
-        !data_min(j) = minval( Data_Array(:,j) )
-        !data_max(j) = maxval( Data_Array(:,j) )
-
-        !resid_min(j) = minval( resid(:,j) )
-        !resid_max(j) = maxval( resid(:,j) )
-
-        !if( L_myprint )write(GP_print_unit,'(A,1x,I6,2x,2(1x,E12.5))') &
-        !      'pts: j, RK_min(j), RK_max(j)      ', &
-        !            j, RK_min(j), RK_max(j)
-
-        !if( L_myprint )write(GP_print_unit,'(A,1x,I6,2x,2(1x,E12.5))') &
-        !      'pts: j, data_min(j), data_max(j)  ', &
-        !            j, data_min(j), data_max(j)
-
-        !if( L_myprint )write(GP_print_unit,'(A,1x,I6,2x,2(1x,E12.5))') &
-        !      'pts: j, resid_min(j), resid_max(j)', &
-        !            j, resid_min(j), resid_max(j)
-
     enddo ! j
 
     !--------------------------------------------------------------------------------
@@ -393,10 +342,6 @@ if( myid == 0 )then
         rk_min(j) =  minval( temp_data_array )
         rk_max(j) =  maxval( temp_data_array )
 
-        !if( L_myprint )write(GP_print_unit,'(A,1x,I3,2x,2(1x,E12.5))') &
-        !      'pts:2 j, RK_min(j), RK_max(j)      ', &
-        !             j, RK_min(j), RK_max(j)
-
 
         temp_data_array = 0.0d0
         do  i = 1, n_time_steps
@@ -406,11 +351,6 @@ if( myid == 0 )then
         data_min(j) =  minval( temp_data_array )
         data_max(j) =  maxval( temp_data_array )
 
-        !if( L_myprint )write(GP_print_unit,'(A,1x,I3,2x,2(1x,E12.5))') &
-        !      'pts:2 j, data_min(j), data_max(j)  ', &
-        !             j, data_min(j), data_max(j)
-
-
 
         temp_data_array = 0.0d0
         do  i = 1, n_time_steps
@@ -419,23 +359,6 @@ if( myid == 0 )then
 
         resid_min(j) =  minval( temp_data_array )
         resid_max(j) =  maxval( temp_data_array )
-
-        !if( L_myprint )write(GP_print_unit,'(A,1x,I3,2x,2(1x,E12.5))') &
-        !      'pts:2 j, resid_min(j), resid_max(j)', &
-        !             j, resid_min(j), resid_max(j)
-
-
-        !if( L_myprint )write(GP_print_unit,'(A,1x,I6,2x,2(1x,E12.5))') &
-        !      'pts: j, RK_min(j), RK_max(j)      ', &
-        !            j, RK_min(j), RK_max(j)
-
-        !if( L_myprint )write(GP_print_unit,'(A,1x,I6,2x,2(1x,E12.5))') &
-        !      'pts: j, data_min(j), data_max(j)  ', &
-        !            j, data_min(j), data_max(j)
-
-        !if( L_myprint )write(GP_print_unit,'(A,1x,I6,2x,2(1x,E12.5))') &
-        !      'pts: j, resid_min(j), resid_max(j)', &
-        !            j, resid_min(j), resid_max(j)
 
     enddo ! j
 
@@ -448,30 +371,17 @@ if( myid == 0 )then
             temp_data_array(i) = Numerical_CODE_Solution(i,j)
         enddo ! i
 
-        !if( L_myprint )write(GP_print_unit,'(A,1x,I6,2x,2(1x,E12.5))') &
-        !      'pts:2 j, RK_min(j), RK_max(j)      ', &
-        !             j, minval( temp_data_array ), maxval( temp_data_array )
-
 
         temp_data_array = 0.0d0
         do  i = 1, n_time_steps
             temp_data_array(i) = data_array(i,j)
         enddo ! i
 
-        !if( L_myprint )write(GP_print_unit,'(A,1x,I6,2x,2(1x,E12.5))') &
-        !      'pts:2 j, data_min(j), data_max(j)      ', &
-        !             j, minval( temp_data_array ), maxval( temp_data_array )
-
-
 
         temp_data_array = 0.0d0
         do  i = 1, n_time_steps
             temp_data_array(i) = resid(i,j)
         enddo ! i
-
-        !if( L_myprint )write(GP_print_unit,'(A,1x,I6,2x,2(1x,E12.5))') &
-        !      'pts:2 j, resid_min(j), resid_max(j)      ', &
-        !             j, minval( temp_data_array ), maxval( temp_data_array )
 
 
     enddo ! j
@@ -499,28 +409,25 @@ if( myid == 0 )then
 
     if( L_myprint )then
 
-        !write(GP_print_unit, '(//A,1x, I6,1x,E15.7, 1x,E24.16/)') &
-        !     'pts: n_time_steps, dt, resid_SSE', &
-        !           n_time_steps, dt, resid_SSE
 
     ! print results
 
     do  j = 1, n_code_equations
 
-            write(GP_print_unit, '(/A)') &
-                  'pts: i_code_eq           mean            rms             &
-                  &stddev            min            max'
-            write(GP_print_unit, '(A,1x,I2, 5(1x,E15.7))') &
-                  'pts: RK_Soln', &
-                  j, RKmean(j), RKrms(j), RKstddev(j), RK_min(j), RK_max(j)
-            write(GP_print_unit, '(A,1x,I2, 5(1x,E15.7))') &
-                  'pts: data   ', &
-                  j, data_mean(j), data_rms(j), data_stddev(j), data_min(j), data_max(j)
-            write(GP_print_unit, '(A,1x,I2, 5(1x,E15.7)/)') &
-                  'pts: resid  ', &
-                  j, resid_mean(j), resid_rms(j), resid_stddev(j), resid_min(j), resid_max(j)
-            write(GP_print_unit, '(A,1x,I2, 5(1x,E15.7))') &
-                  'pts: corr coef. ', j, r_corr(j)
+        write(GP_print_unit, '(/A)') &
+              'pts: i_code_eq           mean            rms             &
+              &stddev            min            max'
+        write(GP_print_unit, '(A,1x,I2, 5(1x,E15.7))') &
+              'pts: RK_Soln', &
+              j, RKmean(j), RKrms(j), RKstddev(j), RK_min(j), RK_max(j)
+        write(GP_print_unit, '(A,1x,I2, 5(1x,E15.7))') &
+              'pts: data   ', &
+              j, data_mean(j), data_rms(j), data_stddev(j), data_min(j), data_max(j)
+        write(GP_print_unit, '(A,1x,I2, 5(1x,E15.7)/)') &
+              'pts: resid  ', &
+              j, resid_mean(j), resid_rms(j), resid_stddev(j), resid_min(j), resid_max(j)
+        write(GP_print_unit, '(A,1x,I2, 5(1x,E15.7))') &
+              'pts: corr coef. ', j, r_corr(j)
 
     enddo ! j
 
@@ -531,13 +438,6 @@ if( myid == 0 )then
          '#pts: i_GP_generation, n_time_steps, dt, resid_SSE', &
                 i_GP_generation, n_time_steps, dt, resid_SSE
     endif ! L_myprint
-
-    !if( L_myprint )write(GP_print_unit, '(A,1x,5(1x,E15.7))') &
-    !      'pts: R probability     ', prob_r
-    !if( L_myprint )write(GP_print_unit, '(A,1x,5(1x,E15.7)/)') &
-    !      'pts: Fisher''s Z        ', fisher_z
-
-    !flush(GP_print_unit) 
 
 
     !--------------------------------------------------------------------------------
@@ -570,13 +470,6 @@ if( myid == 0 )then
     write(plot_unit, '(A,2(1x, I6),1x,E15.7, 1x,E24.16)') &
          '#pts: i_GP_generation, n_time_steps, dt, resid_SSE', &
                 i_GP_generation, n_time_steps, dt, resid_SSE
-
-    !write(plot_unit, '(A,1x,5(1x,E15.7))') &
-    !      '#pts: R probability     ', prob_r
-    !write(plot_unit, '(A,1x,5(1x,E15.7))') &
-    !      '#pts: Fisher''s Z        ', fisher_z
-
-    !flush(plot_unit)
 
     close( plot_unit )
 

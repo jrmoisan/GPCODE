@@ -7,6 +7,7 @@ subroutine GP_Tournament_Style_Sexual_Reproduction( i_error )
 ! modifies    GP_Child_Population_Node_Type
 
 !xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
 use kinds_mod 
 use mpi
 use mpi_module
@@ -40,9 +41,9 @@ character(1) ::  symbol
 !----------------------------------------------------------------------------------
 
 
-write(GP_print_unit,'(/A,1x,I6)') &
-    'gptssr: call GP_Tour_Style_Sexual_Repro n_GP_Crossovers =', &
-     n_GP_Crossovers
+!write(GP_print_unit,'(/A,1x,I6)') &
+!    'gptssr: call GP_Tour_Style_Sexual_Repro n_GP_Crossovers =', &
+!     n_GP_Crossovers
 
 
 i_GP_Individual = n_GP_Elitists + n_GP_Asexual_Reproductions
@@ -74,14 +75,10 @@ do
     i_GP_Crossover = i_GP_Crossover + 1
 
     if( i_GP_crossover > n_GP_crossovers )then
-        !write(6,'(A,2(1x,I12))') &
-        !      'gptssr: return i_GP_crossover > n_GP_crossovers', &
-        !                      i_GP_crossover,  n_GP_crossovers
-        !write(6,'(A,3(1x,I12))') &
-        !      'gptssr: i_GP_Crossover, i_GP_individual, i_safe ', &
-        !               i_GP_Crossover, i_GP_individual, i_safe
+
         i_error = 0
         return
+
     endif ! i_GP_crossover > n_GP_crossovers
 
 
@@ -97,10 +94,12 @@ do
     ! pick the male parent for sexual crossing of parameter strings
 
     call random_number(cff) ! uniform random number generator
+
     k_GP_Individual_Male(1) = 1+int(cff*float(n_GP_Individuals))
     k_GP_Individual_Male(1) = min( k_GP_Individual_Male(1) , n_GP_Individuals )
 
     call random_number(cff) ! uniform random number generator
+
     k_GP_Individual_Male(2) = 1+int(cff*float(n_GP_Individuals))
     k_GP_Individual_Male(2) = min( k_GP_Individual_Male(2) , n_GP_Individuals )
 
@@ -113,6 +112,7 @@ do
         else
             k_GP_Individual_Male(2) = k_GP_Individual_Male(1) - 1
         endif !   k_GP_Individual_Male(1) .ne. n_GP_Individuals
+
     endif !   k_GP_Individual_Male(2) .eq. k_GP_Individual_Male(1)
 
     k_GP_Individual_Male(2) = min( k_GP_Individual_Male(2) , n_GP_Individuals )
@@ -135,10 +135,12 @@ do
     ! pick the female parent for sexual crossing of parent parameter strings
 
     call Random_Number(cff) ! uniform random number generator
+
     k_GP_Individual_Female(1)  =  1+int(cff*float(n_GP_Individuals))
     k_GP_Individual_Female(1) = min( k_GP_Individual_Female(1) , n_GP_Individuals )
 
     call Random_Number(cff) ! uniform random number generator
+
     k_GP_Individual_Female(2)  =  1+int(cff*float(n_GP_Individuals))
     k_GP_Individual_Female(2) = min( k_GP_Individual_Female(2) , n_GP_Individuals )
 
@@ -187,6 +189,7 @@ do
 
 
     call Random_Number(cff) ! uniform random number generator
+
     i_Female_Tree=1+int(cff*float(n_Trees))  ! pick a tree
     i_Female_Tree = min( i_Female_Tree , n_Trees )
 
@@ -230,7 +233,9 @@ do
 
     endif
 
+
     call GP_Tree_Swap    !   perform the random tree swap
+
 
     !-----------------------------------------------------------------------------------
 
@@ -259,8 +264,10 @@ do
 
     endif ! i_Error > 0
 
+
     GP_Child_Population_Node_Type(1:n_Nodes,i_Male_Tree, i_GP_Individual)  =  &
                   Parent_Tree_Swap_Node_Type(1:n_Nodes,1)
+
 
     Run_GP_Calculate_Fitness(i_GP_Individual) = .true.
 

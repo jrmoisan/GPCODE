@@ -8,17 +8,17 @@ subroutine allocate_arrays1()
 ! coupled ordinary differential equations
 !xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
-   use kinds_mod 
-   use mpi
-   use mpi_module
+use kinds_mod 
+use mpi
+use mpi_module
 
-   use GP_Parameters_module
-   use GP_variables_module
-   use GA_Parameters_module
-   use GA_Variables_module
-   use GP_Data_module
+use GP_Parameters_module
+use GP_variables_module
+use GA_Parameters_module
+use GA_Variables_module
+use GP_Data_module
 
-   implicit none
+implicit none
 
 integer :: maxno
 
@@ -50,16 +50,10 @@ allocate( ratio_Data_Variance_inv( n_CODE_equations )  )
 allocate( Parent_Tree_Swap_Node_Type(n_Nodes,2) )
 allocate( Run_GP_Calculate_Fitness(n_GP_Individuals) )
 
-!allocate( GP_Adult_Individual_SSE(n_GP_Individuals) )
-!allocate( GP_Child_Individual_SSE(n_GP_Individuals) )
 allocate( GP_Child_Population_SSE(n_GP_Individuals) )
 
-!if( index( model, 'log10') > 0 .or. &
-!    index( model, 'LOG10') > 0        )then
 maxno= max( n_GA_individuals, n_GP_individuals ) 
 allocate( GP_Child_Individual_SSE_nolog10(maxno) )
-
-!endif ! index( model, 'log10') > 0 .or. ...
 
 
 allocate( individual_SSE( n_GA_individuals )  )
@@ -111,19 +105,11 @@ allocate( Truth_Initial_Conditions( 1:n_code_equations )  )
 allocate( Truth_Node_Type( n_nodes, n_trees )  )
 allocate( Truth_Node_Parameters( n_nodes, n_trees )  )
 
-
-!allocate( Truth_Model_Match( n_gp_generations ) )
-
-
-
 !---------------------------------------------------------------
 
 
 allocate( Node_Values(n_nodes,n_trees) )
 allocate( Tree_Evaluation(n_nodes,n_trees) )
-
-
-!allocate( GP_Trees( n_trees,  1 )  )
 
 
 allocate( Tree_Value(n_trees) )
@@ -155,7 +141,6 @@ allocate( bioflo(0:n_CODE_equations,0:n_CODE_equations) )
 allocate( bioflo_map( 1:n_CODE_equations,1:n_Tracked_Resources ) )
 
 allocate( b_tmp( n_CODE_equations) )
-!allocate( b_tmp(n_variables)      )
 
 allocate( GP_Trees( n_Trees, n_Tracked_Resources) )
 
@@ -165,9 +150,6 @@ allocate( kval(4,n_CODE_equations) )
 allocate( btmp( n_CODE_equations) )
 allocate( fbio( n_CODE_equations) )
 
-!allocate( kval(4, n_variables) )
-!allocate( btmp(n_variables) )
-!allocate( fbio(n_variables) )
 
 if( n_input_vars > 0 )then
     allocate( RK_data_array( 1:n_input_vars ) )
@@ -245,7 +227,6 @@ GP_Node_Type_for_Plotting = -9999
 Truth_Initial_Conditions  = 0.0d0
 Truth_Node_Type           = -9999
 Truth_Node_Parameters     = 0.0d0
-!Truth_Model_Match         = .FALSE.
 
 !---------------------------------------------------------------
 
@@ -254,8 +235,6 @@ Truth_Node_Parameters     = 0.0d0
 GP_Adult_Population_Node_Type = -9999
 GP_Child_Population_Node_Type = -9999
 
-!GP_Adult_Individual_SSE = -3.3d0  ! 0.0d0
-!GP_Child_Individual_SSE = -3.0d0  ! 0.0d0
 GP_Child_Population_SSE = -3.0d0
 
 GP_Child_Individual_SSE_nolog10 = -4.0d0
@@ -295,10 +274,10 @@ endif ! L_print_equations
 
 
 Node_Probability = 0.0d0
-!>>>>>>>>>>>>>
+
 GP_Adult_Population_SSE = -6.0d0
-!ppex = 0.0d0
-!!>>>>>>>>>>>>>
+
+
 answer       = 0.0d0
 output_array = 0.0d0
 

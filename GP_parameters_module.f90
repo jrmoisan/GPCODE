@@ -1,6 +1,7 @@
 module GP_parameters_module
 
 ! set the GP related parameters
+
 use kinds_mod 
 implicit none
 
@@ -26,7 +27,7 @@ integer(kind=i4b), dimension(n_functions_max) :: selected_functions
 integer(kind=i4b) :: n_CODE_equations
 
 ! n_inputs allows putting n_inputs - 1 extra inputs in as -2, -3... for n_code_equations = 1
-!integer(kind=i4b),parameter :: n_inputs = 7
+
 integer(kind=i4b)           :: n_inputs 
 
 ! number of possible node functions
@@ -182,11 +183,11 @@ real(kind=r8b) :: GP_Mutation_Probability
 !character(4), dimension( n_nodes, n_trees )       ::  node_parameters_string
 !character(str_len), dimension( n_nodes, n_trees ) ::  tree_evaluation_string
 
-character(4), allocatable, dimension( : , : )       ::  node_type_string
-character(4), allocatable, dimension( : , : )       ::  node_parameters_string
-character(str_len), allocatable, dimension( : , : ) ::  tree_evaluation_string
+!character(4), allocatable, dimension( : , : )       ::  node_type_string
+!character(4), allocatable, dimension( : , : )       ::  node_parameters_string
+!character(str_len), allocatable, dimension( : , : ) ::  tree_evaluation_string
 
-character(str_len), allocatable, dimension( : )     ::  tree_value_string
+!character(str_len), allocatable, dimension( : )     ::  tree_value_string
 
 !-------------------------------------------------------------------
 
@@ -225,7 +226,7 @@ logical :: L_bad_result
 
 integer(kind=i4b) :: ier_file,idummy,iwkid,iwktype  ! NCAR Graphics
 
-! orig !character (len=*), parameter :: output_dir = 'Output/'//Model_Name
+
 character (len=*), parameter :: output_dir = '.'
 
 character (len=*), parameter :: input_dir = 'Input'
@@ -233,13 +234,6 @@ character (len=*), parameter :: input_dir = 'Input'
 
 !The temporal unit depends on the delta time in days
 
-!!!!real(kind=r4b), dimension(0:n_Time_Steps) :: x_Time_Steps = 0.D+0
-!!!real(kind=r4b), dimension(:),allocatable :: x_Time_Steps
-
-
-
-! real(kind=r8b), parameter :: dt = 1.0D+0 /(24.0D+0*60.0D+0)   ! [d^-1; 1 minute time step]
-!!real(kind=r8b), parameter :: dt = 10.0D+0/(24.0D+0*60.0D+0)   ! [d^-1; 10 minute time step]
 
 real(kind=r8b) :: dt
 
@@ -320,8 +314,6 @@ integer,dimension(:),allocatable    :: ranks_temp
 integer(kind=i4b) :: divider                                                                                                            
 integer(kind=i4b) :: orig_group
 
-!!integer(kind=i4b) :: new_group                                                                                              
-!!integer(kind=i4b) :: new_comm                                                                                                           
                                                                                                                               
 real(kind=r8b) :: sum_if
 

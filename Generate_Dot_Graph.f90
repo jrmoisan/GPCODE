@@ -1,4 +1,6 @@
+
 ! Generate_Dot_Graph
+
 ! Written by Erik Wisuri [14 June, 2013]
 ! These subroutines generate DOT output from a tree array,
 ! and use the dot executable to create PDF files.
@@ -142,6 +144,7 @@ subroutine Generate_Dot_Graph( Trees, Tree_count, output_dir1 )
     gFile = 85;
 
     ! clear directory of Trees written into it before this call 
+
     command = 'rm -f '// output_dir1 // '/Trees/*'
     call system( command ) 
 
@@ -230,6 +233,7 @@ end subroutine Dot_Graph_Function
 
 
 subroutine Dot_Graph_Hierarchy( File, Node_Index )
+
     use kinds_mod 
     implicit none
 
@@ -243,5 +247,6 @@ subroutine Dot_Graph_Hierarchy( File, Node_Index )
     if( parent_Node .gt. 0) then
         write(File,*) parent_Node, ' -> ', Node_Index, ';'
     endif
+
 
 end subroutine Dot_Graph_Hierarchy

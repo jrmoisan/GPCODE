@@ -8,6 +8,7 @@ subroutine GP_Check_Terminals( temp_Node_Type,nn_Nodes,nn_Trees, i_Error)
 ! else i_Error=0
 
 !xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
 use kinds_mod 
 use mpi
 use mpi_module
@@ -34,11 +35,9 @@ integer(kind=i4b), dimension(1:nn_Nodes,1:nn_Trees), intent(in) :: temp_Node_Typ
 
 integer(kind=i4b),dimension(2) :: dims
 
-!xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+!-----------------------------------------------------------------------------------
 
 i_Error=0
-!print*, "nn_Nodes,nn_Trees",nn_Nodes,nn_Trees
-
 
 do  i_Tree=1,nn_Trees
 
@@ -79,24 +78,12 @@ do  i_Tree=1,nn_Trees
 
 
 
-            !write(GP_print_unit,'(/A,6(1x,I6))') &
-            !      'gct: i_Tree, i_Level, i_Function, i_Node, i_Node_Left, i_Node_Right ', &
-            !            i_Tree, i_Level, i_Function, i_Node, i_Node_Left, i_Node_Right
-            !write(GP_print_unit,'(A,6(1x,I6))') 'gct: n_CODE_Equations ', n_CODE_Equations
-            !write(GP_print_unit,'(A,3(1x,I6)/)') &
-            !      'gct: i_function, i_tree, Node_Type(i_Function, i_Tree)',&
-            !            i_function, i_tree, temp_Node_Type(i_Function, i_Tree)
-
-
             if( temp_Node_Type(i_Function,i_Tree) .gt. 0) then
 
                 ! It is a function node if > 0
 
                 ! check Left node
 
-                !write(GP_print_unit,'(A,3(1x,I6))') &
-                !      'gct: i_Node_Left,  i_tree, Node_Type(i_Node_Left,i_Tree) ',&
-                !            i_Node_Left,  i_tree, temp_Node_Type(i_Node_Left,i_Tree)
 
 
                 if( ( n_input_vars == 0 .and. &
@@ -107,10 +94,6 @@ do  i_Tree=1,nn_Trees
                       temp_Node_Type(i_Node_Left,i_Tree) > max_forcing_index        ) .or. &
                      temp_Node_Type(i_Node_Left,i_Tree) == -9999                        ) then
 
-                !if( ( n_input_vars == 0 .and. temp_Node_Type(i_Node_Left,i_Tree) < -n_CODE_Equations ) .or. &
-                !    ( n_input_vars > 0 .and.                                            &
-                !      temp_Node_Type(i_Node_Left,i_Tree) <   -(n_inputs+1)       ) .or. &
-                !     temp_Node_Type(i_Node_Left,i_Tree) == -9999                        ) then
 
                     if( myid == 0 )then
                         write(GP_print_unit,'(/A,6(1x,I10))') &
@@ -147,9 +130,6 @@ do  i_Tree=1,nn_Trees
 
                 ! check Right node
 
-                !write(GP_print_unit,'(A,3(1x,I6))') &
-                !      'gct: i_Node_Right, i_tree, Node_Type(i_Node_Right,i_Tree)',&
-                !            i_Node_Right, i_tree, temp_Node_Type(i_Node_Right,i_Tree)
 
                 if( (n_input_vars == 0 .and.  &
                      temp_Node_Type(i_Node_Right,i_Tree) < -n_CODE_Equations .and.       &
@@ -159,10 +139,6 @@ do  i_Tree=1,nn_Trees
                       temp_Node_Type(i_Node_Right,i_Tree) > max_forcing_index     ) .or. &
                      temp_Node_Type(i_Node_Right,i_Tree) == -9999                        ) then
 
-                !if( (n_input_vars == 0 .and. temp_Node_Type(i_Node_Right,i_Tree) < -n_CODE_Equations ) .or. &
-                !    ( n_input_vars > 0 .and.                                             &
-                !      temp_Node_Type(i_Node_Right,i_Tree) <   -(n_inputs+1)       ) .or. &
-                !     temp_Node_Type(i_Node_Right,i_Tree) == -9999                        ) then
 
                     if( myid == 0 )then
                         write(GP_print_unit,'(/A,6(1x,I10))') &

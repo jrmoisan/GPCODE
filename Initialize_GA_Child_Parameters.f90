@@ -35,43 +35,22 @@ Run_GA_lmdif=.true.
 
 
 if( L_ga_print )then
-    !write(6,'(A,3(1x, I6))')  'Init: myid, new_rank, n_parameters', &
-    !                                 myid, new_rank, n_Parameters
-    !write(6,'(A,1x, I6)')  'Init: n_GP_parameters ', n_GP_Parameters
-    !write(6,'(A,1x, I6/)') 'Init: n_GA_individuals', n_GA_individuals
-    !write(6,'(/A/)') &
-    !      'Init:  i_GA_individual  child parameters(:,i_GA_individual)  '
     write(GA_print_unit,'(A,3(1x, I6))')  'Init: myid, new_rank, n_parameters', &
                                                  myid, new_rank, n_Parameters
     write(GA_print_unit,'(/A,1x, I6/)')  'Init: n_parameters  ', n_Parameters
     write(GA_print_unit,'(A,1x, I6/)') 'Init: n_GA_individuals', n_GA_individuals
-    !write(GA_print_unit,'(/A/)') &
-    !      'Init:  i_GA_individual  child parameters(:,i_GA_individual)  '
 endif ! L_ga_print
 
 
 do  i_GA_Individual=1,n_GA_individuals
 
-    !write(6,'(A,1x, I6)')  'Init: i_GA_Individual ', i_GA_Individual
 
     do  i_Parameter=1,n_Parameters
 
         call random_real(dff) ! random real number generator
 
-        !write(6,'(A,2(1x, I6),1x,E15.7 )') &
-        !         'Init: new_rank, i_GA_individual, dff', &
-        !                new_rank, i_GA_individual, dff
-
         Child_Parameters(i_Parameter,i_GA_Individual) = dff
 
-        !if( L_ga_print )then
-        !    write(6,'(A,2(1x, I6),1x,E15.7 )') &
-        !         'Init: ', i_GA_individual, i_Parameter, &
-        !                   child_parameters(i_parameter, i_GA_individual)
-        !    write(GA_print_unit,'(A,2(1x, I6),1x,E15.7 )') &
-        !         'Init: ', i_GA_individual, i_Parameter, &
-        !                   child_parameters(i_parameter, i_GA_individual)
-        !endif ! L_ga_print
 
     enddo ! i_parameter
 
@@ -88,10 +67,8 @@ do  i_GA_Individual=1,n_GA_individuals
 
     !Child_Parameters(1:7,i_GA_Individual) = 1.05d0 * &
     !                  Child_Parameters(1:7,i_GA_Individual) ! debug only
-
     !debug only <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 
-    !debug only >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 
     if( trim(model) == 'fasham_fixed_tree' ) then 
         ! fasham model
@@ -111,6 +88,8 @@ do  i_GA_Individual=1,n_GA_individuals
         Child_Parameters(i_parameter,i_GA_Individual) = 0.1D+0 ! Zooplankton       [mmol N m-3] 
     endif !  trim(model) == 'fasham_fixed_tree' 
 
+
+    !debug only >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 !!
 !!    do  ii = 1, 7                                                                           ! debug only
 !!        Child_Parameters(ii,i_GA_Individual) = &                                            ! debug only
@@ -162,29 +141,8 @@ do  i_GA_Individual=1,n_GA_individuals
 !!    !debug only <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 
 
-    !write(6,'(A,1x, I6,1x,12(1x,E15.7))') &
-    !      'Init: ', i_GA_individual, &
-    !      ( child_parameters(jj, i_GA_individual), jj = 1,n_parameters )
-
-
-    !if( L_ga_print )then
-    !    do  jj = 1, n_parameters
-    !        write(GA_print_unit,'(A,2(1x, I6),2x,E15.7)') &
-    !             'Init: ', i_GA_individual, jj, &
-    !               child_parameters(jj, i_GA_individual)
-    !    enddo !  jj = 1, n_parameters
-    !endif ! L_ga_print
-
 
 enddo ! i_ga_individual
-
-
-
-!!--------------------------------------------------------------------------------
-!!do  i_GA_Individual=1,n_GA_individuals                           ! debug_only
-!!    read(5,*) Child_Parameters(1:n_parameters,i_GA_Individual)   ! debug_only
-!!enddo ! i_ga_individual                                          ! debug_only
-!!--------------------------------------------------------------------------------
 
 
 return
