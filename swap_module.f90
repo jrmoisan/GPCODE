@@ -20,6 +20,7 @@ a=b
 b=dum
 END SUBROUTINE swap_r
 
+
 SUBROUTINE masked_swap_rs(a,b,mask)
 real(kind=r8b), INTENT(INOUT) :: a,b
 LOGICAL, INTENT(IN) :: mask
@@ -30,5 +31,6 @@ if( mask ) then
     b=swp
 endif
 END SUBROUTINE masked_swap_rs
+
 
 end module swap_module

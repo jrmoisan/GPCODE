@@ -39,7 +39,6 @@ integer(kind=i4b),intent(in)  :: GP_minSSE_indiv
 
 integer(kind=i4b) :: i_Tree
 integer(kind=i4b) :: i_Node
-!integer(kind=i4b) :: nparm_temp
 
 logical :: Lprint
 
@@ -128,11 +127,6 @@ write(GP_minSSE_summary_output_unit, '(A,2(1x,I6))') '> ', GP_minSSE_generation,
 ! print the node types if node /= -9999
 
 
-!!if( Lprint )then
-!    write(GP_print_unit,'(A)')  &
-!    'sgpMSi: i_GP_gen  i_GP_indiv   i_tree     i_node    GP_Indiv_Node_Type'
-!!endif ! Lprint
-
 !  write node types to summary file
 
 do  i_Tree=1,n_Trees
@@ -140,12 +134,6 @@ do  i_Tree=1,n_Trees
 
         if( GP_minSSE_individual_Node_Type(i_Node,i_Tree) .ne. -9999 ) then
 
-
-            !if( Lprint )then
-            !    write(GP_print_unit,'(2(1x,I10),3(1x,I10))') &
-            !          i_GP_generation, i_GP_indiv,i_tree, i_node, &
-            !          GP_Adult_Population_Node_Type(i_Node,i_Tree,i_GP_indiv)
-            !endif ! Lprint
 
             write(GP_minSSE_summary_output_unit, '(2x,2(1x,I6),3(1x,I6))') &
                   GP_minSSE_generation, GP_minSSE_indiv, i_tree, i_node, &
@@ -188,14 +176,6 @@ if( Lprint )then
     enddo  ! i_tree
 
 endif ! Lprint
-
-
-!---------------------------------------------------------------------------------
-
-!if( Lprint )then
-!    call print_trees( i_GP_generation, i_GP_indiv, i_GP_indiv, &
-!                      GP_Adult_Population_Node_Type, ' ' )
-!endif ! Lprint
 
 
 !---------------------------------------------------------------------------------

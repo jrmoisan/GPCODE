@@ -26,9 +26,6 @@ use kinds_mod
     integer(kind=i4b), parameter :: ExponentialDecay = 9
     integer(kind=i4b), parameter :: Minimize = 10
     integer(kind=i4b), parameter :: Maximize = 11
-!orig    integer(kind=i4b), parameter :: Minimize = 9
-!orig    integer(kind=i4b), parameter :: Maximize = 10
-!orig    integer(kind=i4b), parameter :: ExponentialDecay = 11
     integer(kind=i4b), parameter :: IfThen = 12
     integer(kind=i4b), parameter :: IfGt = 13
     integer(kind=i4b), parameter :: IfGte = 14

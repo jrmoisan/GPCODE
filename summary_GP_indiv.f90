@@ -1,4 +1,4 @@
-subroutine summary_GP_indiv( i_GP_generation, i_GP_indiv ) !, icall  )
+subroutine summary_GP_indiv( i_GP_generation, i_GP_indiv ) 
 
 ! program written by: Dr. John R. Moisan [NASA/GSFC] 31 January, 2013
 
@@ -36,11 +36,9 @@ integer(kind=i4b) :: i_code_eq
 
 integer(kind=i4b),intent(in)  :: i_GP_Generation
 integer(kind=i4b),intent(in)  :: i_GP_indiv
-!integer(kind=i4b),intent(in)  :: icall       
 
 integer(kind=i4b) :: i_Tree
 integer(kind=i4b) :: i_Node
-!integer(kind=i4b) :: nparm_temp
 
 logical :: Lprint
 logical :: L_op
@@ -62,8 +60,6 @@ logical :: L_op
 !--------------------------------------------------------------------------------
                                                                                                                 
 
-!write(GP_print_unit,'(A,1x,I5)')&
-!      'sgpi: GP_best_summary_output_unit ', GP_best_summary_output_unit
 
 inquire( unit = GP_best_summary_output_unit,  opened = L_op )
 if( L_op ) then
@@ -77,13 +73,15 @@ open( GP_best_summary_output_unit, file='GP_summary_file', &
 
 ! set Lprint so printing is done only under the conditions in the if-test
 
-!!Lprint = .TRUE.   ! debug only
+
 Lprint = .FALSE. 
 
 if( i_GP_generation == 1                                  .or. &
     mod( i_GP_generation, GP_child_print_interval ) == 0  .or. &
     i_GP_generation == n_GP_generations                          )then
+
     Lprint = .TRUE.
+
 endif ! i_GP_generation == 1 .or. ...
 
 !--------------------------------------------------------------------------------

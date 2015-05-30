@@ -52,18 +52,6 @@ n_GP_Mutations = n_GP_Individuals - &
 n_GP_Mutations = max( 0, n_GP_Mutations )
 
 
-!n_GP_Mutations = &
-!min( nint( GP_Mutation_Probability * n_GP_individuals ) , n_GP_Mutations )
-
-!if( myid == 0 )then
-!    write(GP_print_unit,'(A,1x,i6,1x,I6)') &
-!      !'smi: n_GP_Mut, min(nint(GP_Mut_Prob*n_GP_indiv),n_GP_Mut) ', &
-!      'smi: n_GP_Mut, min(nint(GP_Mut_Prob*n_GP_indiv),n_GP_Mut) ', &
-!            n_GP_Mutations, &
-!            min(nint(GP_Mutation_Probability*n_GP_individuals),n_GP_Mutations)
-!endif ! myid == 0
-
-
 if( myid == 0 )then
 
     write(GP_print_unit,'(/A,1x,I6)')   'smi: n_gp_individuals           ', &

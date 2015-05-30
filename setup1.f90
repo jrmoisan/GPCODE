@@ -190,11 +190,6 @@ if( myid == 0 )then
 endif ! myid == 0
 
 
-!if( myid == 0 )then
-!    write(6, '(A,2(1x,I6)/)') 'set1: after set_answer_arrays'
-!    !flush(6)
-!endif ! myid == 0
-
 !------------------------------------------------------------------------
 
 ! then broadcast the R-K result: Runge_Kutta_Solution
@@ -246,8 +241,6 @@ endif ! n_input_vars == 0
 if( myid == 0 )then 
     write(6,'(/A,2(1x,I6))') 'set1: n_input_vars, message_len       ', &
                                     n_input_vars, message_len
-    !write(6,'(A,2(1x,I6))') 'set1: n_input_data_points, message_len', &
-    !                               n_input_data_points, message_len
 endif ! myid == 0
 
 
@@ -290,6 +283,8 @@ if( myid == 0 )then
     write(6, '(A,2(1x,I6)/)') 'set1: n_time_steps ', n_time_steps
 endif ! myid == 0
 
+
+
 if( n_input_vars == 0 )then
     message_len = ( n_time_steps + 1 ) * n_CODE_equations
 else
@@ -299,6 +294,8 @@ endif ! n_input_vars == 0
 call MPI_BCAST( Numerical_CODE_Solution, message_len,    &
                 MPI_DOUBLE_PRECISION, 0, MPI_COMM_WORLD, ierr )
 
+
+
 if( index( model,'LOG10') > 0 .or. &
     index( model,'log10') > 0         )then
 
@@ -307,11 +304,6 @@ if( index( model,'LOG10') > 0 .or. &
 
 endif!  index( model,'LOG10') > 0 ...
 
-
-!if( myid == 0 )then
-!    write(6, '(A,2(1x,I6)/)') 'set1: 2 bcast ierr ', ierr 
-!    !flush(6)
-!endif ! myid == 0
 
 
 !--------------------------------------------------------------------------------
@@ -339,10 +331,6 @@ call MPI_BCAST( Data_Variance_inv, message_len,    &
 answer = 0.0d0 ! set all to zero
 
 n_parameters = 0
-
-!if( myid == 0 )then    ! 20131209
-!    write(GP_print_unit,'(/A,1x,I6/)') 'set1: n_code_equations ', n_code_equations
-!endif ! myid == 0
 
 do  i_CODE_equation=1,n_CODE_equations
     n_parameters=n_parameters+1
@@ -388,27 +376,14 @@ if( GP_child_print_interval == 0) then
 endif
 
 
-!call MPI_BARRIER( MPI_COMM_WORLD, ierr )  ! necessary ?
-
-
 message_len = 1
 call MPI_BCAST( GA_child_print_interval, message_len,    &
                 MPI_INTEGER,  0, MPI_COMM_WORLD, ierr )
-!if( myid == 0 )then
-!    write(6, '(A,2(1x,I6)/)') 'set1: 4 bcast ierr ', ierr 
-!    !flush(6)
-!endif ! myid == 0
-
-
 
 message_len = 1
 call MPI_BCAST( GP_child_print_interval, message_len,    &
                 MPI_INTEGER,  0, MPI_COMM_WORLD, ierr )
 
-!if( myid == 0 )then
-!    write(6, '(A,2(1x,I6)/)') 'set1: 5 bcast ierr ', ierr 
-!    !flush(6)
-!endif ! myid == 0
 
 
 !--------------------------------------------------------------------------------
@@ -441,11 +416,6 @@ if( myid == 0 )then
 
 
     call sse0_calc( )
-
-    !if( myid == 0 )then
-    !    write(6, '(A,2(1x,I6)/)') 'set1: after sse0_calc'
-    !    !flush(6)
-    !endif ! myid == 0
 
 
     !---------------------------------------------------------------------------
@@ -486,11 +456,6 @@ if( index( model,'LOG10') > 0 .or. &
 
 endif!  index( model,'LOG10') > 0 ...
 
-
-!if( myid == 0 )then
-!    write(6, '(A,2(1x,I6)/)') 'set1: 6 bcast ierr ', ierr 
-!    !flush(6)
-!endif ! myid == 0
 
 !---------------------------------------------------------------------------
 

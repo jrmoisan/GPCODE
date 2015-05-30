@@ -60,7 +60,6 @@ else
 endif ! model == 'fasham'
 
 
-!write(6,'(/A/)') 'saa: aft call Initialize_Model  '
 
 !------------------------------------------------------------------------------
 
@@ -69,11 +68,7 @@ if( myid == 0 )then
 
     ! print the trees made from fasham functions
 
-    write(6,'(/A)') 'saa: call Generate_Dot_Graph'
-
     call Generate_Dot_Graph( GP_Trees(:,1), n_Trees, output_dir )
-
-    !write(6,'(/A/)') 'saa: aft call Generate_Dot_Graph'
 
 endif ! myid == 0
 
@@ -193,14 +188,8 @@ if( myid == 0 )then
 
     ! Runge_Kutta_Box_Model now put the time series in Numerical_CODE_Solution
 
-    !call Runge_Kutta_Box_Model( .false. )  ! 1 )
-
-
-
     write(GP_print_unit,'(A,1x,I6)') &
           'saa: call Runge_Kutta_Box_Model  n_input_vars ',  n_input_vars
-
-    !flush(GP_print_unit)
 
     if( n_input_vars == 0 )then
 

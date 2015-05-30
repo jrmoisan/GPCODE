@@ -33,18 +33,6 @@ data frac_forcing_type(2,4) / 0.210526 /
 !-----------------------------------------------------------------------------
 
 
-
-! allow user to turn off forcing with input card "no_forcing"   ! OLD VERSION
-!prob_forcing = 0.10
-!if( L_no_forcing ) then
-!    prob_forcing = 0.00
-!endif !  L_no_forcing 
-
-
-!write(GP_print_unit,'(A,1x,E15.7 )') 'sfn: prob_forcing ', prob_forcing
-
-!----------------------------------------------------------------------
-
 node_variable = 0
 
 
@@ -54,8 +42,6 @@ node_variable = 0
 
 call random_number(cff)
 
-!write(GP_print_unit,'(A,2(1x,E15.7))') &
-!      'sfn:3 cff, prob_forcing', cff, prob_forcing
 
 if( cff < prob_forcing )then
 
@@ -91,22 +77,8 @@ if( cff < prob_forcing )then
 
 
 
-    !write(GP_print_unit,'(A,2(1x,I6))') &
-    !      'sfn:4 node_variable', node_variable
 
 endif !  cff < prob_forcing
-
-!----------------------------------------------------------------------
-
-!write(GP_print_unit,'(A,4(1x,I6))') &
-!    'sfn:5 i_GP_Individual, i_Tree, i_Node, &
-!        &GP_Child_Population_Node_Type', &
-!           i_GP_Individual, i_Tree, i_Node, &
-!         GP_Child_Population_Node_Type(i_Node,i_Tree,i_GP_Individual)
-
-!----------------------------------------------------------------------
-
-!endif ! model == 'fasham'
 
 
 return
