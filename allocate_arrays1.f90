@@ -155,13 +155,13 @@ if( n_input_vars > 0 )then
     allocate( RK_data_array( 1:n_input_vars ) )
 endif
 
-if( L_print_equations )then
-    allocate( bioflo_string(0:n_CODE_equations,0:n_CODE_equations) )
-    allocate( node_type_string( n_nodes, n_trees ) )
-    allocate( node_parameters_string( n_nodes, n_trees ) )
-    allocate( tree_evaluation_string( n_nodes, n_trees ) )
-    allocate( tree_value_string( n_trees ) )
-endif ! L_print_equations
+!if( L_print_equations )then
+!    allocate( bioflo_string(0:n_CODE_equations,0:n_CODE_equations) )
+!    allocate( node_type_string( n_nodes, n_trees ) )
+!    allocate( node_parameters_string( n_nodes, n_trees ) )
+!    allocate( tree_evaluation_string( n_nodes, n_trees ) )
+!    allocate( tree_value_string( n_trees ) )
+!endif ! L_print_equations
 
 
 allocate( Node_Probability( n_levels ) )
@@ -263,13 +263,13 @@ kval = 0.0d0
 btmp = 0.0d0
 fbio = 0.0d0
 
-if( L_print_equations )then
-    bioflo_string = ' '
-    node_type_string = ' '
-    node_parameters_string = ' '
-    tree_evaluation_string = ' '
-    tree_value_string = ' '
-endif ! L_print_equations
+!if( L_print_equations )then
+!    bioflo_string = ' '
+!    node_type_string = ' '
+!    node_parameters_string = ' '
+!    tree_evaluation_string = ' '
+!    tree_value_string = ' '
+!endif ! L_print_equations
 
 
 
