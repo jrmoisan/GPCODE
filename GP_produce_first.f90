@@ -80,6 +80,7 @@ integer :: message_len,ierror_tb
              write(GP_print_unit,'(/A,1x,I6)') &
                       'gpf: call GP_Tree_Build        Generation =',i_GP_Generation
 
+             flush(GP_print_unit)
             ! set
             ! GP_Adult_Population_Node_Type array with random trees
             ! GP_Child_Population_Node_Type = Adult
@@ -87,6 +88,11 @@ integer :: message_len,ierror_tb
             ierror_tb = 0
 
             call GP_Tree_Build( ierror_tb )
+
+             write(GP_print_unit,'(/A,1x,I6)') &
+                      'gpf: AFT call GP_Tree_Build        Generation =',i_GP_Generation
+
+             flush(GP_print_unit)
 
          endif ! myid == 0
 
@@ -114,6 +120,11 @@ integer :: message_len,ierror_tb
 L_restart = .false.
 
 !---------------------------------------------------------------------------
+
+write(GP_print_unit,'(/A,1x,I6)') &
+      'gpf: return'
+flush(GP_print_unit)
+
 
 return
 
