@@ -182,12 +182,12 @@ do  i_GP_Mutation = 1,n_GP_Mutations
 
         if( GP_Child_Population_Node_Type(Node_to_Mutate,i_Tree_Mutation,i_GP_Individual) <= 0 ) then
 
-            call random_number(cff)
+            !call random_number(cff)
             ! add by Weiyuan
 
-            if( cff .le. GP_Set_Terminal_to_Parameter_Probability ) then
+            !if( cff .le. GP_Set_Terminal_to_Parameter_Probability ) then
 
-                Node_variable= 0
+            !    Node_variable= 0
 
             !else    ! the code with this "else" is wrong since if cff < GP_set..., node is a variable
 
@@ -234,7 +234,7 @@ do  i_GP_Mutation = 1,n_GP_Mutations
      
                 endif ! model == 'fasham' 
 
-            endif !   cff .le. GP_Set_Terminal_to_Parameter_Probability 
+            !endif !   cff .le. GP_Set_Terminal_to_Parameter_Probability 
 
 
             GP_Child_Population_Node_Type(Node_to_Mutate,i_Tree_Mutation,i_GP_Individual) = &
