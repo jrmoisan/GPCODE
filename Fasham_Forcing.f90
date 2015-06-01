@@ -158,9 +158,9 @@ use GP_variables_module
 
             endif ! Vp**2 + (alpha * parz)**2 > 0.0d0
 
-            write(6,'(A,1x,3(1x,E15.7))') 'JQF: parz, tmp ', &
-                                                parz, tmp 
-            flush(6)
+            !write(6,'(A,1x,3(1x,E15.7))') 'JQF: parz, tmp ', &
+            !                                    parz, tmp 
+            !flush(6)
 
 
             if( isnan( tmp ) )then
