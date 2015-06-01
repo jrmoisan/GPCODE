@@ -77,8 +77,9 @@ integer :: message_len,ierror_tb
 
          if( myid ==0) then
 
-             write(GP_print_unit,'(/A,1x,I6)') &
-                      'gpf: call GP_Tree_Build        Generation =',i_GP_Generation
+             !write(GP_print_unit,'(/A,1x,I6)') &
+             !         'gpf: call GP_Tree_Build        Generation =',i_GP_Generation
+             !write(6,'(//A,1x,I10/)') 'gpf:  n_input_vars = ', n_input_vars
 
              flush(GP_print_unit)
             ! set
@@ -89,10 +90,11 @@ integer :: message_len,ierror_tb
 
             call GP_Tree_Build( ierror_tb )
 
-             write(GP_print_unit,'(/A,1x,I6)') &
-                      'gpf: AFT call GP_Tree_Build        Generation =',i_GP_Generation
+             !write(GP_print_unit,'(/A,1x,I6)') &
+             !         'gpf: AFT call GP_Tree_Build        Generation =',i_GP_Generation
+             !write(6,'(//A,1x,I10/)') 'gpf:  n_input_vars = ', n_input_vars
 
-             flush(GP_print_unit)
+             !flush(GP_print_unit)
 
          endif ! myid == 0
 
@@ -121,9 +123,9 @@ L_restart = .false.
 
 !---------------------------------------------------------------------------
 
-write(GP_print_unit,'(/A,1x,I6)') &
-      'gpf: return'
-flush(GP_print_unit)
+!write(GP_print_unit,'(/A,1x,I6)') &
+!      'gpf: return'
+!flush(GP_print_unit)
 
 
 return

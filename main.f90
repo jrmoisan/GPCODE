@@ -124,6 +124,11 @@ program main
    call RANDOM_SEED(size = n_seed)
 
    call read_cntl_vars( ierror  )
+   
+   n_inputs = n_input_vars
+
+   !write(6,'(/A,1x,I10)') '0:  n_input_vars = ', n_input_vars
+   !write(6,'(A,1x,I10/)') '0:  n_inputs     = ', n_inputs    
 
    call setup_math_functions()
 
@@ -332,17 +337,19 @@ endif ! myid == 0
     ! randomly create the initial tree arrays for each individual and
     ! send them all to GA_lmdif for parameter optimization on generation 1
 
-      write(GP_print_unit,'(/A,1x,I6/)') &
-                  '0: call GP_produce_first'
-      flush(GP_print_unit)
+      !write(GP_print_unit,'(/A,1x,I6/)') &
+      !            '0: call GP_produce_first'
+      !flush(GP_print_unit)
 
       call GP_produce_first(i_GP_generation)
 
-      write(GP_print_unit,'(/A,1x,I6/)') &
-                  '0: call GP_produce_next'
-      flush(GP_print_unit)
+      !write(GP_print_unit,'(/A,1x,I6/)') &
+      !            '0: call GP_produce_next'
+      !flush(GP_print_unit)
 
       call GP_produce_next(i_GP_generation,i_GP_best_parent,L_nextloop)
+
+      !write(6,'(//A,1x,I10/)') '0:  n_input_vars = ', n_input_vars
 
       if(L_nextloop) cycle
 
@@ -359,6 +366,7 @@ endif ! myid == 0
                   '0: call GP_Clean_Tree_Nodes  Generation =', i_GP_Generation
 
             call GP_Clean_Tree_Nodes
+
          endif ! myid == 0
       endif ! trim(model) /= 'fasham_fixed_tree'
 
@@ -377,15 +385,17 @@ endif ! myid == 0
 
    if( .not.  any( Run_GP_Calculate_Fitness ) ) exit generation_loop
 
-   write(GP_print_unit,'(/A,1x,I6/)') &
-         '0: call GP_individual_loop'
-   flush(GP_print_unit)
+   !write(GP_print_unit,'(/A,1x,I6/)') &
+   !      '0: call GP_individual_loop'
+   !flush(GP_print_unit)
+
+   !write(6,'(//A,1x,I10/)') '0:  n_input_vars = ', n_input_vars
 
    call GP_individual_loop( new_comm, i_GP_generation )
 
-   write(GP_print_unit,'(/A,1x,I6/)') &
-         '0: AFT call GP_individual_loop'
-   flush(GP_print_unit)
+   !write(GP_print_unit,'(/A,1x,I6/)') &
+   !      '0: AFT call GP_individual_loop'
+   !flush(GP_print_unit)
 
     !xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
     ! GA_lmdif subroutine segment
