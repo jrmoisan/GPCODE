@@ -124,6 +124,11 @@ program main
    call RANDOM_SEED(size = n_seed)
 
    call read_cntl_vars( ierror  )
+   
+   n_inputs = n_input_vars
+
+   !write(6,'(/A,1x,I10)') '0:  n_input_vars = ', n_input_vars
+   !write(6,'(A,1x,I10/)') '0:  n_inputs     = ', n_inputs    
 
    call setup_math_functions()
 
@@ -332,8 +337,19 @@ endif ! myid == 0
     ! randomly create the initial tree arrays for each individual and
     ! send them all to GA_lmdif for parameter optimization on generation 1
 
+      !write(GP_print_unit,'(/A,1x,I6/)') &
+      !            '0: call GP_produce_first'
+      !flush(GP_print_unit)
+
       call GP_produce_first(i_GP_generation)
+
+      !write(GP_print_unit,'(/A,1x,I6/)') &
+      !            '0: call GP_produce_next'
+      !flush(GP_print_unit)
+
       call GP_produce_next(i_GP_generation,i_GP_best_parent,L_nextloop)
+
+      !write(6,'(//A,1x,I10/)') '0:  n_input_vars = ', n_input_vars
 
       if(L_nextloop) cycle
 
@@ -346,10 +362,11 @@ endif ! myid == 0
       if( trim(model) /= 'fasham_fixed_tree' )then
          if( myid == 0 )then
 
-            !write(GP_print_unit,'(/A,1x,I6/)') &
-            !      '0: call GP_Clean_Tree_Nodes  Generation =', i_GP_Generation
+            write(GP_print_unit,'(/A,1x,I6/)') &
+                  '0: call GP_Clean_Tree_Nodes  Generation =', i_GP_Generation
 
             call GP_Clean_Tree_Nodes
+
          endif ! myid == 0
       endif ! trim(model) /= 'fasham_fixed_tree'
 
@@ -368,8 +385,17 @@ endif ! myid == 0
 
    if( .not.  any( Run_GP_Calculate_Fitness ) ) exit generation_loop
 
+   !write(GP_print_unit,'(/A,1x,I6/)') &
+   !      '0: call GP_individual_loop'
+   !flush(GP_print_unit)
+
+   !write(6,'(//A,1x,I10/)') '0:  n_input_vars = ', n_input_vars
+
    call GP_individual_loop( new_comm, i_GP_generation )
 
+   !write(GP_print_unit,'(/A,1x,I6/)') &
+   !      '0: AFT call GP_individual_loop'
+   !flush(GP_print_unit)
 
     !xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
     ! GA_lmdif subroutine segment
@@ -390,10 +416,10 @@ endif ! myid == 0
 
     if( L_GP_all_summary .and. myid == 0 )then
 
-        !write(6,'(/A,5x,L1,2x,I5)')  &
-        !      '0: L_GP_all_summary, GP_all_summary_flag', &
-        !          L_GP_all_summary, GP_all_summary_flag
-        !flush(6)
+        write(6,'(/A,5x,L1,2x,I5)')  &
+              '0: L_GP_all_summary, GP_all_summary_flag', &
+                  L_GP_all_summary, GP_all_summary_flag
+        flush(6)
 
         !----------------------------------------------------------------------------
 
@@ -401,9 +427,9 @@ endif ! myid == 0
 
             ! write this generation out to the GP_all_summary_file
 
-            !write(GP_print_unit,'(A,1x,I6)')  &
-            !  '0:2 call summary_GP_all GP_summary_output_unit_all  ', &
-            !                           GP_summary_output_unit_all
+            write(GP_print_unit,'(A,1x,I6)')  &
+              '0:2 call summary_GP_all GP_summary_output_unit_all  ', &
+                                       GP_summary_output_unit_all
 
             call summary_GP_all( GP_summary_output_unit_all, i_GP_generation, zero )
 
@@ -413,9 +439,9 @@ endif ! myid == 0
 
         ! write this generation out to the GP_last_gen_summary_file
 
-        !write(GP_print_unit,'(A,1x,I6)')  &
-        !      '0:3 call summary_GP_all GP_summary_output_unit_lgen ', &
-        !                               GP_summary_output_unit_lgen
+        write(GP_print_unit,'(A,1x,I6)')  &
+              '0:3 call summary_GP_all GP_summary_output_unit_lgen ', &
+                                       GP_summary_output_unit_lgen
 
         call summary_GP_all( GP_summary_output_unit_lgen, i_GP_generation, zero )
 
@@ -475,7 +501,7 @@ endif ! myid == 0
                     GP_Child_Individual_SSE_nolog10(i_GP_Individual)/SSE0_nolog10
                 enddo
 
-                !flush(GP_print_unit)
+                flush(GP_print_unit)
 
             endif ! index( model, 'log10') > 0 .or. index( model, 'LOG10') > 0
 
