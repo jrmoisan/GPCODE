@@ -8,7 +8,7 @@ integer(kind=i4b) :: n_GA_Asexual_Repoductions
 integer(kind=i4b) :: n_GA_Crossovers
 integer(kind=i4b) :: n_GA_Mutations
 
-integer(kind=i4b) :: n_GA_rand_replaces
+integer(kind=i4b) :: n_GA_rand_recruits
 
 integer(kind=i4b) :: n_GA_save_elites
 

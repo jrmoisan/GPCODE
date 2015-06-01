@@ -227,12 +227,12 @@ real(kind=r8b) :: t2
 
             !-------------------------------------------------------------------------------
 
-            !   do "GA Parameter rand_replace" Operations
+            !   do "GA Parameter rand_recruit" Operations
 
             !   select a random, non-elite individual and put new random numbers into
             !   its parameters
 
-            if( n_GA_rand_replaces > 0) then
+            if( n_GA_rand_recruits > 0) then
 
 
                 ! uses:
@@ -243,10 +243,10 @@ real(kind=r8b) :: t2
                 !  individual_quality
 
 
-                call GA_random_replace( Child_Parameters, individual_quality )
+                call GA_random_recruit( Child_Parameters, individual_quality )
 
 
-            endif !   n_GA_rand_replaces .gt. 0
+            endif !   n_GA_rand_recruits .gt. 0
 
         endif ! i_GA_generation .eq. 1
 

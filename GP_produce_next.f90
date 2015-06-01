@@ -19,7 +19,10 @@ integer(kind=i4b),intent(in) :: i_GP_generation
 integer(kind=i4b),intent(in) :: i_GP_best_parent
 logical,intent(inout) :: L_nextloop
 integer(kind=i4b) :: i_GP_individual
-integer :: message_len,ierror_t,ierror_m
+integer :: message_len
+integer :: ierror_t
+integer :: ierror_m
+integer :: ierror_rr
 
 
 !----------------------------------------------------------------------------------
@@ -34,8 +37,9 @@ L_nextloop = .false.
 
 if( i_GP_generation < 2 ) return
 
-ierror_t = 0
-ierror_m = 0
+ierror_t  = 0
+ierror_m  = 0
+ierror_rr = 0
 
 
 if( myid == 0 )then
@@ -150,6 +154,34 @@ if( myid == 0 )then
         endif !  n_GP_Mutations .gt. 0
 
     endif ! trim(model) /= 'fasham_fixed_tree'
+
+
+    !----------------------------------------------------------------------------------
+
+
+    !   iv ) Carry out "GP_random_recruitment" Operations
+
+    ! uses:
+    !  GP_Adult_Population_Node_Type
+
+    ! sets:
+    !  GP_Child_Population_Node_Type
+    !  Run_GP_Calculate_Fitness  ( to true for modified individuals )
+
+
+    if( trim(model) /= 'fasham_fixed_tree' )then
+
+        if( n_GP_rand_recruits .gt. 0 )then
+
+            ierror_rr = 0
+            call GP_random_recruit( ierror_rr )
+
+        endif !  n_GP_rand_recruits .gt. 0
+
+    endif ! trim(model) /= 'fasham_fixed_tree'
+
+
+    !----------------------------------------------------------------------------------
 
 
     !   Move over any newly created children into the adult arrays

@@ -127,7 +127,7 @@ n_GP_generations = 1
 
 GA_Crossover_Probability     = 0.4d0
 GA_Mutation_Probability      = 0.2d0
-GA_rand_replace_Probability  = 0.01d0
+GA_rand_recruit_Probability  = 0.01d0
 GA_save_elites_Probability   = 0.0d0
 
 GP_Tree_Probability=0.5d0
@@ -138,7 +138,7 @@ GP_Asexual_Reproduction_Probability = 0.4d0
 GP_Crossover_Probability            = 0.4d0
 GP_Mutation_Probability             = 0.1d0
 
-GP_rand_replace_Probability  = 0.00d0
+GP_rand_recruit_Probability  = 0.00d0
 
 prob_no_elite = 0.0d0
 
@@ -279,16 +279,16 @@ do
 
 !--------------------------------------------------------------------
 
-!GA_rand_replace_Probability  = 0.005d0   ! probability of rand_replace in binary string
+!GA_rand_recruit_Probability  = 0.005d0   ! probability of rand_recruit in binary string
 
-    elseif( Aline(1:len('GA_rand_replace_Probability')) == "GA_Rand_Replace_Probability" .or. &
-            Aline(1:len('GA_rand_replace_Probability')) == "ga_rand_replace_probability" ) then
+    elseif( Aline(1:len('GA_rand_recruit_Probability')) == "GA_Rand_Recruit_Probability" .or. &
+            Aline(1:len('GA_rand_recruit_Probability')) == "ga_rand_recruit_probability" ) then
 
-        READ(Aline(len('GA_rand_replace_Probability')+1:), * ) GA_rand_replace_Probability
+        READ(Aline(len('GA_rand_recruit_Probability')+1:), * ) GA_rand_recruit_Probability
 
         if( myid == 0 )then
-            write(GP_print_unit,'(A,1x,F10.4)') 'rcntl: GA_rand_replace_Probability = ', &
-                                                        GA_rand_replace_Probability
+            write(GP_print_unit,'(A,1x,F10.4)') 'rcntl: GA_rand_recruit_Probability = ', &
+                                                        GA_rand_recruit_Probability
         endif !myid==0
 
 
@@ -345,16 +345,16 @@ do
 
 !--------------------------------------------------------------------
 
-!GP_rand_replace_Probability  = 0.005d0   ! probability of rand_replace in binary string
+!GP_rand_Recruit_Probability  = 0.005d0   ! probability of rand_recruit in binary string
 
-    elseif( Aline(1:len('GP_rand_replace_Probability')) == "GP_Rand_Replace_Probability" .or. &
-            Aline(1:len('GP_rand_replace_Probability')) == "gp_rand_replace_probability" ) then
+    elseif( Aline(1:len('GP_rand_Recruit_Probability')) == "GP_Rand_Recruit_Probability" .or. &
+            Aline(1:len('GP_rand_recruit_Probability')) == "gp_rand_recruit_probability" ) then
 
-        READ(Aline(len('GP_rand_replace_Probability')+1:), * ) GP_rand_replace_Probability
+        READ(Aline(len('GP_rand_recruit_Probability')+1:), * ) GP_rand_recruit_Probability
 
         if( myid == 0 )then
-            write(GP_print_unit,'(A,1x,F10.4)') 'rcntl: GP_rand_replace_Probability = ', &
-                                                        GP_rand_replace_Probability
+            write(GP_print_unit,'(A,1x,F10.4)') 'rcntl: GP_rand_recruit_Probability = ', &
+                                                        GP_rand_recruit_Probability
         endif !myid==0
 
 
@@ -1477,8 +1477,8 @@ if( myid == 0) then
                                     GA_Crossover_Probability
     write(GP_print_unit,'(A,1x,F10.4)') 'rcntl: GA_Mutation_Probability    = ', &
                                     GA_Mutation_Probability
-    write(GP_print_unit,'(A,1x,F10.4)') 'rcntl: GA_rand_replace_Probability = ', &
-                                    GA_rand_replace_Probability
+    write(GP_print_unit,'(A,1x,F10.4)') 'rcntl: GA_rand_recruit_Probability = ', &
+                                    GA_rand_recruit_Probability
     write(GP_print_unit,'(A,1x,F10.4)') 'rcntl: GA_save_elites_Probability = ', &
                                     GA_save_elites_Probability
     write(GP_print_unit,'(A,1x,F10.4)') 'rcntl: GP_Tree_Probability = ', &

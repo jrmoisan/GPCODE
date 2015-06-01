@@ -115,7 +115,7 @@ integer(kind=i4b) :: n_GP_Generations
 
 integer(kind=i4b) :: n_GP_parameters
 
-real(kind=r8b) :: GP_rand_replace_Probability 
+real(kind=r8b) :: GP_rand_recruit_Probability 
 
 character(80) :: model
 
