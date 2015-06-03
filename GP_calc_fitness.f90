@@ -457,13 +457,18 @@ endif ! i_GP_generation == 1 .or. ...
 !
 !  compare the current models to the "truth" model
 
-!  set logical to .TRUE. if all nodes match the nodes in the truth model
-!  record relative differences in the parameters but do not include in the
-!  logical calculation
+!  execute only if L_truth_model is .TRUE.
 
-if( i_GP_generation == 1                                 .or. &
-    mod( i_GP_generation, GP_child_print_interval ) == 0 .or. &
-    i_GP_generation == n_GP_generations                          ) then
+!  set logical Truth_Model_Match to .TRUE. 
+!  if all nodes match the nodes in the truth model
+!  record relative differences in the parameters 
+!  but do not include in the logical calculation
+
+if( L_truth_model                                        .and.  &
+    ( i_GP_generation == 1                                 .or. &
+    mod( i_GP_generation, GP_child_print_interval ) == 0   .or. &
+    i_GP_generation == n_GP_generations  )                        ) then
+
 
 
     write(GP_print_unit, '(/A,T89,A/)') &
@@ -550,7 +555,7 @@ if( i_GP_generation == 1                                 .or. &
          n_nodes*n_trees, undefined_node_count, 'Truth'
 
 
-endif ! i_GP_generation == 1 ...  
+endif !  L_truth_model .and. ...
 
 
 GP_Adult_Population_SSE  =  GP_Child_Population_SSE

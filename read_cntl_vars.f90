@@ -212,6 +212,16 @@ L_restart = .false.
 GP_Set_Terminal_to_Parameter_Probability = 0.6d0
 
 n_partitions = 2
+
+truth_model = 0 
+L_truth_model = .FALSE.
+
+
+gp_para_lmdif_start_gen  = 0
+gp_para_lmdif_modulus = 0
+L_gp_para_lmdif = .FALSE. 
+ 
+
 !---------------------------------------------------------------------
 
 
@@ -1411,6 +1421,60 @@ do
 
 
 
+!--------------------------------------------------------------------
+
+
+! truth_model       = turn on comparisons of the current tree with the 
+!                     truth model tree and print results
+
+
+    elseif( Aline(1:len('truth_model')) == "TRUTH_MODEL" .or.     &
+            Aline(1:len('truth_model')) == "Truth_Model" .or.     &
+            Aline(1:len('truth_model')) == "truth_model"     ) then
+
+        READ(Aline(len('truth_model')+1:), * )  truth_model
+
+        if( myid == 0 )then
+            write(GP_print_unit,'(A,1x,I3)') &
+                  'rcntl: truth_model = ', truth_model
+        endif !myid==0
+
+        if( truth_model > 0 ) L_truth_model = .true.
+
+
+
+
+!--------------------------------------------------------------------
+
+
+! gp_para_lmdif   = turn on call to GP_para_lmdif_process 
+!                   set first GP generation to call GP_para_lmdif_process
+!                   set modulus for GP generations  to call GP_para_lmdif_process
+
+
+    elseif( Aline(1:len('gp_para_lmdif')) == "GP_PARA_LMDIF" .or.     &
+            Aline(1:len('gp_para_lmdif')) == "GP_Para_Lmdif" .or.     &
+            Aline(1:len('gp_para_lmdif')) == "gp_para_lmdif"     ) then
+
+        READ(Aline(len('gp_para_lmdif')+1:), * )  &
+             gp_para_lmdif_start_gen, gp_para_lmdif_modulus
+
+        L_gp_para_lmdif = .true.
+        if( gp_para_lmdif_modulus == 0 ) gp_para_lmdif_modulus = 1
+
+        if( myid == 0 )then
+            write(GP_print_unit,'(A,3x,L1)') &
+                  'rcntl: L_gp_para_lmdif = ', L_gp_para_lmdif
+            write(GP_print_unit,'(A,1x,I6)') &
+                  'rcntl: gp_para_lmdif_modulus ', &
+                          gp_para_lmdif_modulus
+        endif !myid==0
+
+
+
+
+
+
 
 !--------------------------------------------------------------------
 
@@ -1478,35 +1542,35 @@ endif ! .not. L_node_functions
 if( myid == 0) then
 
     write(GP_print_unit,'(A,1x,F10.4)') 'rcntl: GA_Crossover_Probability   = ', &
-                                    GA_Crossover_Probability
+                                                GA_Crossover_Probability
     write(GP_print_unit,'(A,1x,F10.4)') 'rcntl: GA_Mutation_Probability    = ', &
-                                    GA_Mutation_Probability
+                                                GA_Mutation_Probability
     write(GP_print_unit,'(A,1x,F10.4)') 'rcntl: GA_rand_recruit_Probability = ', &
-                                    GA_rand_recruit_Probability
+                                                GA_rand_recruit_Probability
     write(GP_print_unit,'(A,1x,F10.4)') 'rcntl: GA_save_elites_Probability = ', &
-                                    GA_save_elites_Probability
+                                                GA_save_elites_Probability
     write(GP_print_unit,'(A,1x,F10.4)') 'rcntl: GP_Tree_Probability = ', &
-                                    GP_Tree_Probability
+                                                GP_Tree_Probability
     write(GP_print_unit,'(A,1x,F10.4)') 'rcntl: GP_Elitist_Probability = ', &
-                                   GP_Elitist_Probability
+                                                GP_Elitist_Probability
     write(GP_print_unit,'(A,1x,F10.4)') &
                'rcntl: GP_Asexual_Reproduction_Probability = ', &
                        GP_Asexual_Reproduction_Probability
     write(GP_print_unit,'(A,1x,F10.4)') 'rcntl: GP_Crossover_Probability = ', &
-                                     GP_Crossover_Probability
+                                                GP_Crossover_Probability
     write(GP_print_unit,'(A,1x,F10.4)') 'rcntl: GP_Mutation_Probability = ', &
-                                     GP_Mutation_Probability
+                                                GP_Mutation_Probability
     write(GP_print_unit,'(A,1x,F10.4)') 'rcntl: GP_rand_recruit_Probability = ', &
-                                    GP_rand_recruit_Probability
+                                                GP_rand_recruit_Probability
     write(GP_print_unit,'(A,1x,I6)') 'rcntl: n_GA_Generations = ', &
-                                     n_GA_Generations
+                                             n_GA_Generations
     write(GP_print_unit,'(A,1x,I6)') 'rcntl: n_GA_Individuals = ', &
-                                     n_GA_Individuals
+                                             n_GA_Individuals
     write(GP_print_unit,'(A,1x,I6)') 'rcntl: n_time_steps     = ', &
-                                     n_time_steps
+                                             n_time_steps
     write(GP_print_unit,'(A,1x,F10.4)') 'rcntl: dt (minutes) = ', dt_min
     write(6,'(/A,2(1x,E15.7))') 'rcntl: dt, Delta_Time_in_Days ',  &
-                                     dt, Delta_Time_in_Days
+                                        dt, Delta_Time_in_Days
     write(GP_print_unit,'(A,1x,F10.4)') 'rcntl: dt (days)    = ', dt
     write(6,'(/A,1x,E15.7)') 'rcntl: sse_low_wt',  &
                                      sse_low_wt
@@ -1519,65 +1583,65 @@ if( myid == 0) then
     write(GP_print_unit,'(A,1x,I6)') 'rcntl: n_gp_generations = ', n_gp_generations
     write(GP_print_unit,'(A,1x,I6)') 'rcntl: n_Node_Functions = ', n_Node_Functions
     write(GP_print_unit,'(A,4x,L1 )') 'rcntl: L_node_functions =', &
-                                       L_node_functions
+                                              L_node_functions
     write(GP_print_unit,'(A,1x,E15.7)') 'rcntl: random_scale_small = ', &
-                                       random_scale_small
+                                                random_scale_small
     write(GP_print_unit,'(A,1x,E15.7)') 'rcntl: random_scale_large = ', &
-                                       random_scale_large
+                                                random_scale_large
     write(GP_print_unit,'(A,1x,E15.7)') 'rcntl: random_scale_fraction = ', &
-                                       random_scale_fraction
+                                                random_scale_fraction
     write(GP_print_unit,'(A,1x,I6)') 'rcntl: ga_tournament_style = ', &
-                                ga_tournament_style
+                                             ga_tournament_style
     write(GP_print_unit,'(A,1x,I12)') 'rcntl: user_input_random_seed =', &
-                                      user_input_random_seed
+                                              user_input_random_seed
     write(GP_print_unit,'(A,1x,I12)') 'rcntl: GA_print_flag =', &
-                                      GA_print_flag
+                                              GA_print_flag
     write(GP_print_unit,'(A,4x,L1 )') 'rcntl: L_GA_print =', &
-                                       L_GA_print
+                                              L_GA_print
     write(GP_print_unit,'(A,1x,I12)') 'rcntl: GA_output_parameters_flag =', &
-                                      GA_output_parameters_flag
+                                              GA_output_parameters_flag
     write(GP_print_unit,'(A,4x,L1 )') 'rcntl: L_GA_output_parameters =', &
-                                      L_GA_output_parameters
+                                              L_GA_output_parameters
     write(GP_print_unit,'(A,1x,I12)') 'rcntl: GP_output_parameters_flag =', &
-                                      GP_output_parameters_flag
+                                              GP_output_parameters_flag
     write(GP_print_unit,'(A,4x,L1 )') 'rcntl: L_GP_output_parameters =', &
-                                       L_GP_output_parameters
+                                              L_GP_output_parameters
     write(GP_print_unit,'(A,1x,I12)') 'rcntl: fort333_output_flag =', &
-                                       fort333_output_flag
+                                              fort333_output_flag
     write(GP_print_unit,'(A,4x,L1 )') 'rcntl: L_fort333_output =', &
-                                        L_fort333_output
+                                              L_fort333_output
     write(GP_print_unit,'(A,1x,I12)') 'rcntl: fort444_output_flag =', &
-                                        fort444_output_flag
+                                              fort444_output_flag
     write(GP_print_unit,'(A,4x,L1 )') 'rcntl: L_fort444_output =', &
-                                         L_fort444_output
+                                              L_fort444_output
     write(GP_print_unit,'(A,1x,I12)') 'rcntl: fort555_output_flag =', &
-                                                   fort555_output_flag
+                                              fort555_output_flag
     write(GP_print_unit,'(A,4x,L1 )') 'rcntl: L_fort555_output =', &
-                                                   L_fort555_output
+                                              L_fort555_output
     write(GP_print_unit,'(A,1x,I12)') 'rcntl: GA_log_flag =', &
-                                     GA_log_flag
+                                              GA_log_flag
     write(GP_print_unit,'(A,4x,L1 )') 'rcntl: L_GA_log =', &
-                                     L_GA_log
+                                              L_GA_log
     write(GP_print_unit,'(A,1x,I12)') 'rcntl: GP_log_flag =', &
-                                                   GP_log_flag
+                                              GP_log_flag
     write(GP_print_unit,'(A,4x,L1 )') 'rcntl: L_GP_log =', &
-                                                   L_GP_log
+                                              L_GP_log
     write(GP_print_unit,'(A,1x,I12)') 'rcntl: GPSSE_log_flag =', &
-                                                   GPSSE_log_flag
+                                              GPSSE_log_flag
     write(GP_print_unit,'(A,4x,L1 )') 'rcntl: L_GPSSE_log =', &
-                                                   L_GPSSE_log
+                                              L_GPSSE_log
     write(GP_print_unit,'(A,1x,I12)') 'rcntl: unit50_output_flag =', &
-                  unit50_output_flag
+                                              unit50_output_flag
     write(GP_print_unit,'(A,4x,L1 )') 'rcntl: L_unit50_output =', &
-                  L_unit50_output
+                                              L_unit50_output
     write(GP_print_unit,'(A,1x,I12)') 'rcntl: GP_all_summary_flag =', &
-                  GP_all_summary_flag
+                                              GP_all_summary_flag
     write(GP_print_unit,'(A,4x,L1 )') 'rcntl: L_GP_all_summary =', &
-                  L_GP_all_summary
+                                              L_GP_all_summary
     write(GP_print_unit,'(A,1x,I12)') 'rcntl: print_equations_flag =', &
-                  print_equations_flag
+                                              print_equations_flag
     write(GP_print_unit,'(A,4x,L1 )') 'rcntl: L_print_equations =', &
-                  L_print_equations
+                                              L_print_equations
     write(GP_print_unit,'(A,1x,I6)') &
       'rcntl: number_ga_child_prints = ', number_ga_child_prints
     write(GP_print_unit,'(A,1x,I6)') &
@@ -1590,7 +1654,7 @@ if( myid == 0) then
       'rcntl: prob_no_elite = ', prob_no_elite
     write(GP_print_unit,'(A,1x,F12.5)') &
        'rcntl: GP_Set_Terminal_to_Parameter_Probability =', &
-            GP_Set_Terminal_to_Parameter_Probability
+               GP_Set_Terminal_to_Parameter_Probability
     write(GP_print_unit,'(A,5x,L1)') &
           'rcntl: L_restart = ', L_restart
     write(GP_print_unit,'(A,1x,i6)') &
@@ -1598,16 +1662,35 @@ if( myid == 0) then
     write(GP_print_unit,'(A,1x,I6)') &
                'rcntl: n_partitions = ', n_partitions
     write(GP_print_unit,'(A,1x,I12)') 'rcntl: run_GP_para_lmdif_flag =', &
-                                          run_GP_para_lmdif_flag
+                                              run_GP_para_lmdif_flag
     write(GP_print_unit,'(A,4x,L1 )') 'rcntl: L_run_GP_para_lmdif =', &
-                                                   L_run_GP_para_lmdif
+                                              L_run_GP_para_lmdif
     write(GP_print_unit,'(A,1x,I12)') 'rcntl: no_forcing_flag =', &
-                                                   no_forcing_flag
+                                              no_forcing_flag
     write(GP_print_unit,'(A,4x,L1 )') 'rcntl: L_no_forcing =', &
-                                                   L_no_forcing
+                                              L_no_forcing
 
     write(GP_print_unit,'(A,1x,E15.7)') &
            'rcntl: prob_forcing = ', prob_forcing
+
+    write(GP_print_unit,'(A,4x,L1 )') 'rcntl: L_truth_model =', &
+                                              L_truth_model
+
+    write(GP_print_unit,'(A,4x,L1 )') 'rcntl: L_gp_para_lmdif =', &
+                                              L_gp_para_lmdif
+    if( L_gp_para_lmdif               .and. &
+        gp_para_lmdif_start_gen  == 0        ) then
+
+        gp_para_lmdif_start_gen  = n_GP_generations / 2
+
+    endif ! gp_para_lmdif_start_gen  == 0 
+
+    write(GP_print_unit,'(A,1x,I12)') &
+          'rcntl: gp_para_lmdif_start_gen =', &
+                  gp_para_lmdif_start_gen
+    write(GP_print_unit,'(A,1x,I12)') &
+          'rcntl: gp_para_lmdif_modulus =', &
+                  gp_para_lmdif_modulus
 
     if( .not. L_node_functions )then
         write(GP_print_unit,'(//A,1x,I6)') 'rcntl: n_functions_input', n_functions_input

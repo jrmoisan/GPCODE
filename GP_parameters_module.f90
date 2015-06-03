@@ -324,5 +324,12 @@ real(kind=r4b) :: prob_forcing
 integer(kind=i4b)           :: max_forcing_index 
 integer(kind=i4b),parameter :: fasham_max_forcing_index = -5001
 
+integer(kind=i4b) :: truth_model               
+logical ::  L_truth_model
+
+
+integer(kind=i4b) :: gp_para_lmdif_start_gen
+integer(kind=i4b) :: gp_para_lmdif_modulus
+logical ::  L_gp_para_lmdif 
 
 end module GP_parameters_module

@@ -8,64 +8,64 @@ program main
 ! coupled ordinary differential equations
 !xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
-   use kinds_mod
+use kinds_mod
 
-   use mpi
-   use mpi_module
+use mpi
+use mpi_module
 
-   use GP_Parameters_module
-   use GP_variables_module
-   use GA_Parameters_module
-   use GA_Variables_module
-   use GP_Data_module
+use GP_Parameters_module
+use GP_variables_module
+use GA_Parameters_module
+use GA_Variables_module
+use GP_Data_module
 
-   use fasham_variables_module
-   use Tree_Node_Factory_module
-   use class_Tree_Node
+use fasham_variables_module
+use Tree_Node_Factory_module
+use class_Tree_Node
 
-   implicit none
+implicit none
 
-   logical :: op,L_nextloop
+logical :: op,L_nextloop
 
-   integer(kind=i4b) :: i
-   integer(kind=i4b) :: ii
+integer(kind=i4b) :: i
+integer(kind=i4b) :: ii
 
-   !integer(kind=i4b) :: i_diversity
-   integer(kind=i4b) :: message_len
+!integer(kind=i4b) :: i_diversity
+integer(kind=i4b) :: message_len
 
-   integer(kind=i4b) :: i_GP_individual
-   integer(kind=i4b) :: i_GP_Generation
-   integer(kind=i4b) :: GP_minSSE_Individual
-   integer(kind=i4b) :: GP_minSSE_generation
-   integer(kind=i4b) :: i_Tree
-   integer(kind=i4b) :: i_Node
+integer(kind=i4b) :: i_GP_individual
+integer(kind=i4b) :: i_GP_Generation
+integer(kind=i4b) :: GP_minSSE_Individual
+integer(kind=i4b) :: GP_minSSE_generation
+integer(kind=i4b) :: i_Tree
+integer(kind=i4b) :: i_Node
 
-   integer(kind=i4b) :: max_n_gp_params
+integer(kind=i4b) :: max_n_gp_params
 
-   integer(kind=i4b) :: nop
+integer(kind=i4b) :: nop
 
-   integer(kind=i4b) :: i_GP_best_parent
-   integer(kind=i4b) :: ierror
-   integer(kind=i4b) :: ierror_t
-   integer(kind=i4b) :: ierror_m
-   integer(kind=i4b) :: ierror_tb
+integer(kind=i4b) :: i_GP_best_parent
+integer(kind=i4b) :: ierror
+integer(kind=i4b) :: ierror_t
+integer(kind=i4b) :: ierror_m
+integer(kind=i4b) :: ierror_tb
 
-   integer(kind=i4b) :: new_group
-   integer(kind=i4b) :: new_comm
-   integer(kind=i4b) :: my_size
-   integer(kind=i4b) :: j
-   integer(kind=i4b),allocatable :: tmprank0(:)
+integer(kind=i4b) :: new_group
+integer(kind=i4b) :: new_comm
+integer(kind=i4b) :: my_size
+integer(kind=i4b) :: j
+integer(kind=i4b),allocatable :: tmprank0(:)
 
-   integer(kind=i4b) :: comm_world
+integer(kind=i4b) :: comm_world
 
-   real(kind=r8b) :: t1
-   real(kind=r8b) :: t2
+real(kind=r8b) :: t1
+real(kind=r8b) :: t2
 
-   character(15),parameter :: program_version   = '201501.001_v16'
-   character(10),parameter :: modification_date = '20150602'
-   character(50),parameter :: branch  =  'master'
+character(15),parameter :: program_version   = '201501.001_v16'
+character(10),parameter :: modification_date = '20150603'
+character(50),parameter :: branch  =  'master'
 
-   integer(kind=i4b), parameter ::  zero = 0
+integer(kind=i4b), parameter ::  zero = 0
 
 !---------------------------------------------------------------------------------------
 
@@ -548,11 +548,17 @@ endif ! myid == 0
                     MPI_DOUBLE_PRECISION, 0, MPI_COMM_WORLD, ierr )          ! jjm 20150130
 
 
-    if( i_GP_generation > min( 20, n_GP_generations / 2 ) )then
+    if( L_gp_para_lmdif )then 
 
-        call GP_para_lmdif_process( i_GP_generation, max_n_gp_params  )
+        if( i_GP_generation >=  gp_para_lmdif_start_gen              .and. &
+            mod( i_GP_generation, gp_para_lmdif_modulus ) == 0     )then
 
-    endif !  i_GP_generation > min( 20, n_GP_generations / 2 )
+            call GP_para_lmdif_process( i_GP_generation, max_n_gp_params  )
+
+        endif !  i_GP_generation > min( 20, n_GP_generations / 2 )
+
+
+    endif !  L_gp_para_lmdif 
 
 
     !---------------------------------------------------------------

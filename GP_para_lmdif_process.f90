@@ -77,6 +77,13 @@ real(kind=r8b) ::  save_SSE
 
 !----------------------------------------------------------------------
 
+!if( myid == 0 )then
+!    write(6,'(/A,2(1x,I6))') &
+!        'gplp:  myid, i_GP_generation', &
+!                myid, i_GP_generation
+!endif ! myid == 0
+
+
 
 L_GP_print = .FALSE.
 
