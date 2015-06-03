@@ -37,6 +37,9 @@ integer(kind=i4b),dimension(2) :: dims
 
 !-----------------------------------------------------------------------------------
 
+!write(GP_print_unit,'(A,2(1x,I10)/)') &
+!      'gct: nn_Nodes, nn_Trees ', nn_Nodes, nn_Trees
+
 i_Error=0
 
 do  i_Tree=1,nn_Trees

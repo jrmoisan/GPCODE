@@ -263,18 +263,21 @@ enddo !  i_Tree
 
 !---------------------------------------------------------------------------------
 
+!write(6,'(/A,2(1x,I6))') &
+!  'gtbs: call GP_Check_Error in GP_Tree_Build_single n_nodes, n_trees', n_nodes, n_trees
+
 call GP_Check_Terminals(&
-     GP_Child_Population_Node_Type( 1, 1, i_GP_Individual) , i_Error )
+     GP_Child_Population_Node_Type( 1, 1, i_GP_Individual), n_Nodes, n_Trees, i_Error )
 
 
 if( i_Error .eq. 1 ) then
     if( myid == 0 )then
-        write(6,'(/A)') 'gtbs: GP_Check_Error in GP_Tree_Build'
+        write(6,'(/A)') 'gtbs: GP_Check_Error in GP_Tree_Build_single'
         write(6,'(A,2(1x,I6)/)') 'gtbs: i_GP_Individual, i_Error  ', &
                                         i_GP_Individual, i_Error
     endif ! myid == 0
     call MPI_FINALIZE(ierr)
-    stop  'GP Tree Build error'
+    stop  'GP Tree Build_single error'
 endif !   i_Error .eq. 1
 
 

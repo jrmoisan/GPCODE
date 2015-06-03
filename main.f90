@@ -61,8 +61,8 @@ program main
    real(kind=r8b) :: t1
    real(kind=r8b) :: t2
 
-   character(15),parameter :: program_version   = '201401.002_v15'
-   character(10),parameter :: modification_date = '20141022'
+   character(15),parameter :: program_version   = '201501.001_v16'
+   character(10),parameter :: modification_date = '20150602'
    character(50),parameter :: branch  =  'master'
 
    integer(kind=i4b), parameter ::  zero = 0
@@ -123,7 +123,9 @@ program main
 
    call RANDOM_SEED(size = n_seed)
 
+   
    call read_cntl_vars( ierror  )
+  
    
    n_inputs = n_input_vars
 

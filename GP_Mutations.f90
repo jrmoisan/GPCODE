@@ -106,6 +106,9 @@ do  i_GP_Mutation = 1,n_GP_Mutations
 
     !----------------------------------------------------------------------------------
 
+    !write(GP_print_unit,'(A,4(1x,I6))' ) &
+    !  'gpmut:1 n_nodes, n_trees ', n_nodes, n_trees
+
     call GP_Check_Terminals( &
          GP_Child_Population_Node_Type(1, 1, i_GP_Individual),n_Nodes,n_Trees , i_Error)
 
@@ -272,6 +275,9 @@ do  i_GP_Mutation = 1,n_GP_Mutations
 
     Run_GP_Calculate_Fitness(i_GP_Individual) = .true.
 
+
+    !write(GP_print_unit,'(A,4(1x,I6))' ) &
+    !  'gpmut:2 n_nodes, n_trees ', n_nodes, n_trees
 
     call GP_Check_Terminals( &
          GP_Child_Population_Node_Type(1,1, i_GP_Individual),n_Nodes,n_Trees, i_Error)

@@ -1470,7 +1470,11 @@ if( L_node_functions .and. n_node_functions <=0 )then
 
 endif ! .not. L_node_functions
 
+
+
+
 ! write out what has been read in
+
 if( myid == 0) then
 
     write(GP_print_unit,'(A,1x,F10.4)') 'rcntl: GA_Crossover_Probability   = ', &
@@ -1492,6 +1496,8 @@ if( myid == 0) then
                                      GP_Crossover_Probability
     write(GP_print_unit,'(A,1x,F10.4)') 'rcntl: GP_Mutation_Probability = ', &
                                      GP_Mutation_Probability
+    write(GP_print_unit,'(A,1x,F10.4)') 'rcntl: GP_rand_recruit_Probability = ', &
+                                    GP_rand_recruit_Probability
     write(GP_print_unit,'(A,1x,I6)') 'rcntl: n_GA_Generations = ', &
                                      n_GA_Generations
     write(GP_print_unit,'(A,1x,I6)') 'rcntl: n_GA_Individuals = ', &

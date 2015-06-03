@@ -97,6 +97,8 @@ write(GP_print_unit,'(A,1x,E12.5)') &
 
 write(GP_print_unit,'(A,1x,I6)') &
       'pv1: n_GP_rand_recruits             ', n_GP_rand_recruits
+write(GP_print_unit,'(A,1x,E12.5)') &
+      'pv1: GP_rand_recruit_Probability ', GP_rand_recruit_Probability
 
 
 return
