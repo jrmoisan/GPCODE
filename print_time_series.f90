@@ -85,7 +85,7 @@ logical :: L_myprint
 
    write(GP_print_unit,'(/A,2(1x,I6)/)') 'pts: i_GP_generation', i_GP_generation 
 
-   !L_myprint = .TRUE. ! .FALSE.             
+   !!!L_myprint = .TRUE. ! .FALSE.             
    L_myprint = .FALSE.
    if( i_GP_generation == 0 )then
       L_myprint = .TRUE.

@@ -25,7 +25,8 @@ use class_Tree_Node
 
 implicit none
 
-logical :: op,L_nextloop
+logical :: op
+logical :: L_nextloop
 
 integer(kind=i4b) :: i
 integer(kind=i4b) :: ii
@@ -112,12 +113,10 @@ integer(kind=i4b), parameter ::  zero = 0
    ierror_m  = 0
    ierror_tb = 0
 
-   GP_para_flag = .FALSE.
    ierror = 0
 
    GP_minSSE_Individual = 0
    GP_minSSE_generation = 0
-   GP_para_flag = .FALSE.  ! .True.
    Lprint_lmdif = .TRUE.
 
 
@@ -254,9 +253,9 @@ endif ! myid == 0
 
 !----------------------------------------------------------------------
 
-if( myid == 0 )then
-    write(6,'(/A,1x,I5)')     '0: start generation loop  myid = ', myid
-endif ! myid == 0
+!if( myid == 0 )then
+!    write(6,'(/A,1x,I5)')     '0: start generation loop  myid = ', myid
+!endif ! myid == 0
 
    generation_loop:&
    do  i_GP_Generation= 1, n_GP_Generations
@@ -300,6 +299,8 @@ endif ! myid == 0
           ' is underway.   n_Nodes * n_Trees = ', n_Nodes*n_Trees, &
           '==============================================================================='
 
+        flush(GP_print_unit)
+
         !--------------------------------------------------------------------------------
 
         ! at each generation, get the value of the current seed
@@ -319,7 +320,7 @@ endif ! myid == 0
 
     endif ! myid == 0
 
-      GP_Child_Population_Node_Type = GP_Adult_Population_Node_Type
+    GP_Child_Population_Node_Type = GP_Adult_Population_Node_Type
 
     ! Run_GP_Calculate_Fitness determines if the new GP child
     ! has to be put through the R-K process for parameter optimization
@@ -330,30 +331,31 @@ endif ! myid == 0
     ! if the individual did not change on the last generation
     ! (so it needs no recalculation)
 
-      if( trim(model) == 'fasham_fixed_tree' )then
+    if( trim(model) == 'fasham_fixed_tree' )then
          Run_GP_Calculate_Fitness= .true.   ! for fasham fixed tree
-      else
+    else
          Run_GP_Calculate_Fitness= .false.
-      endif !  trim(model) == 'fasham_fixed_tree'
+    endif !  trim(model) == 'fasham_fixed_tree'
 
     ! randomly create the initial tree arrays for each individual and
     ! send them all to GA_lmdif for parameter optimization on generation 1
 
-      !write(GP_print_unit,'(/A,1x,I6/)') &
-      !            '0: call GP_produce_first'
-      !flush(GP_print_unit)
+    !write(GP_print_unit,'(/A,1x,I6/)') &
+    !              '0: call GP_produce_first'
+    !flush(GP_print_unit)
 
-      call GP_produce_first(i_GP_generation)
+    call GP_produce_first(i_GP_generation)
 
-      !write(GP_print_unit,'(/A,1x,I6/)') &
-      !            '0: call GP_produce_next'
-      !flush(GP_print_unit)
+    !write(GP_print_unit,'(/A,1x,I6/)') &
+    !              '0: call GP_produce_next'
+    !flush(GP_print_unit)
 
-      call GP_produce_next(i_GP_generation,i_GP_best_parent,L_nextloop)
+    call GP_produce_next(i_GP_generation,i_GP_best_parent,L_nextloop)
 
-      !write(6,'(//A,1x,I10/)') '0:  n_input_vars = ', n_input_vars
+    !write(6,'(//A,1x,I10/)') '0:  n_input_vars = ', n_input_vars
+    !write(6,'(//A,5x,l1 /)') '0:  L_nextloop   = ', L_nextloop  
 
-      if(L_nextloop) cycle
+    if(L_nextloop) cycle
 
     !-----------------------------------------------------------------------------------------
 
@@ -361,67 +363,104 @@ endif ! myid == 0
     ! to replace function nodes that have both terminals set as parameters
     ! and to set the replaced node to a parameter itself
 
-      if( trim(model) /= 'fasham_fixed_tree' )then
-         if( myid == 0 )then
+    if( trim(model) /= 'fasham_fixed_tree' )then
+        if( myid == 0 )then
 
             write(GP_print_unit,'(/A,1x,I6/)') &
                   '0: call GP_Clean_Tree_Nodes  Generation =', i_GP_Generation
 
             call GP_Clean_Tree_Nodes
 
-         endif ! myid == 0
-      endif ! trim(model) /= 'fasham_fixed_tree'
+        endif ! myid == 0
+    endif ! trim(model) /= 'fasham_fixed_tree'
 
-! broadcast GP_Adult_Population_Node_Type changed by GP_Clean_Tree_Nodes
+    ! broadcast GP_Adult_Population_Node_Type changed by GP_Clean_Tree_Nodes
 
-   message_len = n_GP_Individuals * n_Nodes * n_Trees
-   call MPI_BCAST( GP_Adult_Population_Node_Type, message_len,    &
+
+    !if( myid == 0 )then
+    !    write(GP_print_unit,'(/A,1x,I6/)') &
+    !          '0:1 bef mpi_bcast GP_Adult_Population_Node_Type ierr = ', ierr
+    !endif ! myid == 0
+
+    message_len = n_GP_Individuals * n_Nodes * n_Trees
+    call MPI_BCAST( GP_Adult_Population_Node_Type, message_len,    &
                  MPI_INTEGER,  0, MPI_COMM_WORLD, ierr )
 
-   GP_Child_Population_Node_Type =  GP_Adult_Population_Node_Type
+    !if( myid == 0 )then
+    !    write(GP_print_unit,'(/A,1x,I6/)') &
+    !          '0:1 aft mpi_bcast GP_Adult_Population_Node_Type ierr = ', ierr
+    !endif ! myid == 0
 
-   !-----------------------------------------------------------------------------------------
+    GP_Child_Population_Node_Type =  GP_Adult_Population_Node_Type
+
+    !-----------------------------------------------------------------------------------------
 
 
-   ! if there are no more individuals to evaluate fitness for, exit
+    ! if there are no more individuals to evaluate fitness for, exit
+    !write(GP_print_unit,'(/A,1x,I6,5x,L1/)') &
+    !      '0: i_GP_generation , any( Run_GP_Calculate_Fitness ) ', &
+    !          i_GP_generation , any( Run_GP_Calculate_Fitness )
+    !flush(GP_print_unit)
 
-   if( .not.  any( Run_GP_Calculate_Fitness ) ) exit generation_loop
+    if( .not.  any( Run_GP_Calculate_Fitness ) ) exit generation_loop
 
-   !write(GP_print_unit,'(/A,1x,I6/)') &
-   !      '0: call GP_individual_loop'
-   !flush(GP_print_unit)
+    !write(GP_print_unit,'(/A,1x,I6/)') &
+    !      '0: call GP_individual_loop'
+    !flush(GP_print_unit)
 
-   !write(6,'(//A,1x,I10/)') '0:  n_input_vars = ', n_input_vars
+    !write(6,'(//A,1x,I10/)') '0:  n_input_vars = ', n_input_vars
 
-   call GP_individual_loop( new_comm, i_GP_generation )
+    call GP_individual_loop( new_comm, i_GP_generation )
 
-   !write(GP_print_unit,'(/A,1x,I6/)') &
-   !      '0: AFT call GP_individual_loop'
-   !flush(GP_print_unit)
+    !write(GP_print_unit,'(/A,1x,I6/)') &
+    !      '0: AFT call GP_individual_loop'
+    !flush(GP_print_unit)
 
     !xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
     ! GA_lmdif subroutine segment
     !xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
     !----------------------------------------------------------------------------------
+
     ! needed if GP_para_lmdif_process called
+
+    !if( myid == 0 )then
+    !    write(GP_print_unit,'(/A,1x,I6/)') &
+    !          '0:2 bef mpi_bcast GP_Child_population_SSE       ierr = ', ierr
+    !endif ! myid == 0
 
     call MPI_BCAST( GP_Child_population_SSE, n_GP_individuals,          &    ! jjm 20150130
                     MPI_DOUBLE_PRECISION, 0, MPI_COMM_WORLD, ierr )          ! jjm 20150130
+    !if( myid == 0 )then
+    !    write(GP_print_unit,'(/A,1x,I6/)') &
+    !          '0:2 aft mpi_bcast GP_Child_population_SSE       ierr = ', ierr
+    !endif ! myid == 0
+
+
+    !if( myid == 0 )then
+    !    write(GP_print_unit,'(/A,1x,I6/)') &
+    !          '0:3 bef mpi_bcast GP_Child_Individual_SSE_nolog10 ierr = ', ierr
+    !endif ! myid == 0
 
     call MPI_BCAST( GP_Child_Individual_SSE_nolog10, n_GP_individuals,  &    ! jjm 20150130
                     MPI_DOUBLE_PRECISION, 0, MPI_COMM_WORLD, ierr )          ! jjm 20150130
+
+    !if( myid == 0 )then
+    !    write(GP_print_unit,'(/A,1x,I6/)') &
+    !          '0:3 aft mpi_bcast GP_Child_Individual_SSE_nolog10 ierr = ', ierr
+    !endif ! myid == 0
+
+
+
     !----------------------------------------------------------------------------------
-
-
 
 
     if( L_GP_all_summary .and. myid == 0 )then
 
-        write(6,'(/A,5x,L1,2x,I5)')  &
-              '0: L_GP_all_summary, GP_all_summary_flag', &
-                  L_GP_all_summary, GP_all_summary_flag
-        flush(6)
+        !write(6,'(/A,5x,L1,2x,I5)')  &
+        !      '0: L_GP_all_summary, GP_all_summary_flag', &
+        !          L_GP_all_summary, GP_all_summary_flag
+        !flush(6)
 
         !----------------------------------------------------------------------------
 
@@ -429,9 +468,9 @@ endif ! myid == 0
 
             ! write this generation out to the GP_all_summary_file
 
-            write(GP_print_unit,'(A,1x,I6)')  &
-              '0:2 call summary_GP_all GP_summary_output_unit_all  ', &
-                                       GP_summary_output_unit_all
+            !write(GP_print_unit,'(A,1x,I6)')  &
+            !  '0:2 call summary_GP_all GP_summary_output_unit_all  ', &
+            !                           GP_summary_output_unit_all
 
             call summary_GP_all( GP_summary_output_unit_all, i_GP_generation, zero )
 
@@ -441,9 +480,9 @@ endif ! myid == 0
 
         ! write this generation out to the GP_last_gen_summary_file
 
-        write(GP_print_unit,'(A,1x,I6)')  &
-              '0:3 call summary_GP_all GP_summary_output_unit_lgen ', &
-                                       GP_summary_output_unit_lgen
+        !write(GP_print_unit,'(A,1x,I6)')  &
+        !      '0:3 call summary_GP_all GP_summary_output_unit_lgen ', &
+        !                               GP_summary_output_unit_lgen
 
         call summary_GP_all( GP_summary_output_unit_lgen, i_GP_generation, zero )
 
@@ -468,10 +507,13 @@ endif ! myid == 0
             write(GP_print_unit,'(A/)') &
             '================================================================================='
 
+            flush(GP_print_unit)
 
             write(GP_print_unit, '(A )') &
                  '0:i_GP_Indiv  GP_Indiv_N_param  &
                   &  GP_Child_Indiv_SSE   GP_Child_Indiv_SSE/SSE0  SSE0'
+
+            flush(GP_print_unit)
 
             do  i_GP_individual = 1, n_GP_individuals
                 write(GP_print_unit, '(5x,I6,6x,I6,6x,3(1x, E20.10) )') &
@@ -489,6 +531,7 @@ endif ! myid == 0
               i_GP_Generation
             write(GP_print_unit,'(A/)') &
             '================================================================================='
+            flush(GP_print_unit)
 
             if( index( model, 'log10') > 0 .or. index( model, 'LOG10') > 0 )then
 
@@ -532,8 +575,6 @@ endif ! myid == 0
     !  individual_quality
     !  GP_n_parms
 
-    GP_para_flag = .TRUE.
-
 
     max_n_gp_params = maxval( GP_Individual_N_GP_param )
 
@@ -544,28 +585,67 @@ endif ! myid == 0
 
     ! needed if GP_para_lmdif_process called
 
+    !if( myid == 0 )then
+    !    write(GP_print_unit,'(/A,1x,I6/)') &
+    !          '0:4 bef mpi_bcast GP_Child_Population_SSE  ierr = ', ierr
+    !endif ! myid == 0
+
+
     call MPI_BCAST( GP_Child_Population_SSE, n_GP_individuals,          &    ! jjm 20150130
                     MPI_DOUBLE_PRECISION, 0, MPI_COMM_WORLD, ierr )          ! jjm 20150130
+
+    !if( myid == 0 )then
+    !    write(GP_print_unit,'(/A,1x,I6/)') &
+    !          '0:4 aft mpi_bcast GP_Child_Population_SSE  ierr = ', ierr
+    !endif ! myid == 0
+
+    !----------------------------------------------------------------------------------------
+
+
+    !if( myid == 0 )then
+    !    write(6,'(/A,1x,I6,5x,L1)') &
+    !     '0: before i_GP_generation, L_gp_para_lmdif ', &
+    !                i_GP_generation, L_gp_para_lmdif
+    !    write(6,'(A,3(1x,I6))') &
+    !     '0: i_GP_generation, gp_para_lmdif_start_gen, gp_para_lmdif_modulus ', &
+    !         i_GP_generation, gp_para_lmdif_start_gen, gp_para_lmdif_modulus
+    !    write(6,'(A,3(1x,I6)/)') &
+    !     '0: mod( i_GP_generation, gp_para_lmdif_modulus )  ', &
+    !         mod( i_GP_generation, gp_para_lmdif_modulus )  
+    !    flush(6)
+    !endif ! myid == 0 
 
 
     if( L_gp_para_lmdif )then 
 
-        if( i_GP_generation >=  gp_para_lmdif_start_gen              .and. &
-            mod( i_GP_generation, gp_para_lmdif_modulus ) == 0     )then
+        if( i_GP_generation >=  gp_para_lmdif_start_gen        .and. &
+            mod( i_GP_generation, gp_para_lmdif_modulus ) == 0         )then
 
             call GP_para_lmdif_process( i_GP_generation, max_n_gp_params  )
 
-        endif !  i_GP_generation > min( 20, n_GP_generations / 2 )
-
+        endif !  i_GP_generation >=  gp_para_lmdif_start_gen  .and. ...
 
     endif !  L_gp_para_lmdif 
 
 
-    !---------------------------------------------------------------
 
-    !GP_para_flag = .FALSE.
+    !if( myid == 0 )then
+    !    write(6,'(/A,1x,I6,5x,L1)') &
+    !     '0: after i_GP_generation, L_gp_para_lmdif ', &
+    !               i_GP_generation, L_gp_para_lmdif
+    !    write(6,'(A,3(1x,I6))') &
+    !     '0: i_GP_generation, gp_para_lmdif_start_gen, gp_para_lmdif_modulus ', &
+    !         i_GP_generation, gp_para_lmdif_start_gen, gp_para_lmdif_modulus
+    !    write(6,'(A,3(1x,I6)/)') &
+    !     '0: mod( i_GP_generation, gp_para_lmdif_modulus )  ', &
+    !         mod( i_GP_generation, gp_para_lmdif_modulus )  
+    !    flush(6)
+    !endif ! myid == 0 
 
-    !-------------------------------------------------------------------------------------
+
+
+    !----------------------------------------------------------------------------------------
+
 
     if( myid == 0 )then
 
@@ -581,6 +661,7 @@ endif ! myid == 0
               i_GP_Generation
             write(GP_print_unit,'(A/)') &
             '================================================================================='
+            flush(GP_print_unit)
 
             write(GP_print_unit, '(/A )') &
                  '0:i_GP_Indiv  GP_Indiv_N_param   &
@@ -602,6 +683,8 @@ endif ! myid == 0
             write(GP_print_unit,'(A/)') &
             '================================================================================='
 
+            flush(GP_print_unit)
+
             if( index( model, 'log10') > 0 .or. index( model, 'LOG10') > 0 )then
 
                 write(GP_print_unit, '(/A )') &
@@ -616,10 +699,11 @@ endif ! myid == 0
                 enddo
 
             endif ! index( model, 'log10') > 0 .or. index( model, 'LOG10') > 0 )then
+            flush(GP_print_unit)
 
         endif ! i_GP_generation == 1 .or. ...
 
-        endif ! myid == 0
+    endif ! myid == 0
 
     !-------------------------------------------------------------------------------------
     !-------------------------------------------------------------------------------------
@@ -641,7 +725,7 @@ endif ! myid == 0
             write(GP_print_unit,'(A/)')&
             '0:#################################################################'
 
-            !flush(GP_print_unit)
+            flush(GP_print_unit)
 
         endif ! i_GP_generation == 1 .or. ...
 
@@ -663,59 +747,59 @@ endif ! myid == 0
             write(GP_print_unit,'(A,3(1x,I6))') &
               '0: aft call GP_calc_fitness n_GP_indiv, i_GP_gen, i_GP_best_parent =', &
                               n_GP_individuals, i_GP_Generation, i_GP_best_parent
-            write(GP_print_unit,'(A)')&
+            write(GP_print_unit,'(A/)')&
             '0:################################################################'
-            !flush(GP_print_unit)
+            flush(GP_print_unit)
 
         endif ! i_GP_generation == 1 .or. ...
 
         !-----------------------------------------------------------------------
 
-        if( L_minSSE )then
-
-         ! whenever the SSE for the best parent is less than
-         ! GP_minSSE_Individual_SSE, load the GP_minSSE* arrays with
-         ! the corresponding arrays for the best parent
-
-         ! thus, at the end of the run, the GP_minSSE* arrays will have
-         ! the values of the best individual over all generations
-
-         ! this is needed only if the prob_no_elite parameter > 0,
-         ! so that it is possible that the best individual on the
-         ! final generation is not the best found in the run
-
-
-         if( GP_Child_Population_SSE(i_GP_best_parent) <  GP_minSSE_Individual_SSE  ) then
-
-            GP_minSSE_Individual_SSE = GP_Child_Population_SSE(i_GP_best_parent)
-
-            GP_minSSE_Individual_Initial_Conditions(1:n_CODE_equations)  = &
-                 GP_Population_Initial_Conditions(1:n_CODE_equations, i_GP_best_parent)
-
-            do  i_tree=1,n_trees
-               do  i_node=1,n_nodes
-
-                  if( GP_Adult_population_Node_Type(i_Node,i_Tree,i_GP_best_parent) == 0 ) then
-
-                     GP_minSSE_Individual_Node_Parameters(i_node,i_tree) = &
-                         GP_population_node_parameters(i_node,i_tree,i_GP_best_parent)
-
-                   endif ! GP_Adult_population_Node_Type(i_Node,i_Tree,i_GP_best_parent) == 0
-
-               enddo ! i_node
-            enddo  ! i_tree
-
-            GP_minSSE_Individual_Node_Type(1:n_nodes,1:n_trees)  = &
-                 GP_Adult_population_Node_Type(1:n_Nodes,1:n_Trees, i_GP_best_parent)
-
-            GP_minSSE_Individual_N_GP_param =  GP_Individual_N_GP_param(i_GP_best_parent)
-
-            GP_minSSE_Individual =  i_GP_best_parent
-                GP_minSSE_generation =  i_GP_generation
-
-         endif  !  GP_Child_Population_SSE(i_GP_best_parent) <  GP_minSSE_Individual_SSE
-
-      endif ! L_minSSE
+!!        if( L_minSSE )then
+!!
+!!         ! whenever the SSE for the best parent is less than
+!!         ! GP_minSSE_Individual_SSE, load the GP_minSSE* arrays with
+!!         ! the corresponding arrays for the best parent
+!!
+!!         ! thus, at the end of the run, the GP_minSSE* arrays will have
+!!         ! the values of the best individual over all generations
+!!
+!!         ! this is needed only if the prob_no_elite parameter > 0,
+!!         ! so that it is possible that the best individual on the
+!!         ! final generation is not the best found in the run
+!!
+!!
+!!         if( GP_Child_Population_SSE(i_GP_best_parent) <  GP_minSSE_Individual_SSE  ) then
+!!
+!!            GP_minSSE_Individual_SSE = GP_Child_Population_SSE(i_GP_best_parent)
+!!
+!!            GP_minSSE_Individual_Initial_Conditions(1:n_CODE_equations)  = &
+!!                 GP_Population_Initial_Conditions(1:n_CODE_equations, i_GP_best_parent)
+!!
+!!            do  i_tree=1,n_trees
+!!               do  i_node=1,n_nodes
+!!
+!!                  if( GP_Adult_population_Node_Type(i_Node,i_Tree,i_GP_best_parent) == 0 ) then
+!!
+!!                     GP_minSSE_Individual_Node_Parameters(i_node,i_tree) = &
+!!                         GP_population_node_parameters(i_node,i_tree,i_GP_best_parent)
+!!
+!!                   endif ! GP_Adult_population_Node_Type(i_Node,i_Tree,i_GP_best_parent) == 0
+!!
+!!               enddo ! i_node
+!!            enddo  ! i_tree
+!!
+!!            GP_minSSE_Individual_Node_Type(1:n_nodes,1:n_trees)  = &
+!!                 GP_Adult_population_Node_Type(1:n_Nodes,1:n_Trees, i_GP_best_parent)
+!!
+!!            GP_minSSE_Individual_N_GP_param =  GP_Individual_N_GP_param(i_GP_best_parent)
+!!
+!!            GP_minSSE_Individual =  i_GP_best_parent
+!!                GP_minSSE_generation =  i_GP_generation
+!!
+!!         endif  !  GP_Child_Population_SSE(i_GP_best_parent) <  GP_minSSE_Individual_SSE
+!!
+!!      endif ! L_minSSE
 
     endif ! myid == 0
 
@@ -728,8 +812,21 @@ endif ! myid == 0
     !  GP_Population_Ranked_Fitness
     !  GP_Integrated_Population_Ranked_Fitness
 
-      call MPI_BARRIER( MPI_COMM_WORLD, ierr )
-      call bcast3( )
+    !write(GP_print_unit,'(A)')&
+    !      '0: call mpi_barrier'
+    !flush(GP_print_unit)
+
+    call MPI_BARRIER( MPI_COMM_WORLD, ierr )
+
+    !write(GP_print_unit,'(A)')&
+    !      '0: call bcast3     '
+    !flush(GP_print_unit)
+
+    call bcast3( )
+
+    !write(GP_print_unit,'(A)')&
+    !      '0: AFT call bcast3     '
+    !flush(GP_print_unit)
 
 
 
@@ -739,7 +836,15 @@ endif ! myid == 0
 
         max_n_gp_params = maxval( GP_Individual_N_GP_param )
 
+        !write(GP_print_unit,'(A)')&
+        !      '0: call print_time_series'
+        !flush(GP_print_unit)
+
         call print_time_series( i_GP_best_parent, nop, i_GP_generation )
+
+        !write(GP_print_unit,'(A)')&
+        !      '0: AFT call print_time_series'
+        !flush(GP_print_unit)
 
         !------------------------------------------------------------------------------------
 
@@ -773,7 +878,7 @@ if( myid == 0 )then
         i_GP_best_parent, GP_child_population_sse(i_GP_best_parent), &
                           GP_child_population_sse(i_GP_best_parent)/SSE0
 
-    !flush(GP_print_unit)
+    flush(GP_print_unit)
 
     ! GP_select_best_RK_lmdif_result runs lmdif on the best parent
 

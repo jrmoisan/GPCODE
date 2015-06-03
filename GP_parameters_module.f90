@@ -104,7 +104,6 @@ logical ::   L_GPSSE_log
 logical ::   L_GP_output_parameters
 logical ::   L_print_equations
 
-logical ::   L_run_GP_para_lmdif
 
 logical ::   L_no_forcing           
 
@@ -273,7 +272,7 @@ integer, dimension(0:max_level) :: pow2_table
 ! number of parameters for each GP individual
 
 integer, allocatable, dimension(:) :: GP_n_parms
-logical :: GP_para_flag
+!logical :: GP_para_flag
 
 !--------------------------------------------------------------------
 
@@ -328,6 +327,7 @@ integer(kind=i4b) :: truth_model
 logical ::  L_truth_model
 
 
+!!!logical ::   L_run_GP_para_lmdif
 integer(kind=i4b) :: gp_para_lmdif_start_gen
 integer(kind=i4b) :: gp_para_lmdif_modulus
 logical ::  L_gp_para_lmdif 

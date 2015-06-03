@@ -36,7 +36,6 @@ integer(kind=i4b) :: fort555_output_flag
 integer(kind=i4b) ::  unit50_output_flag
 
 integer(kind=i4b) :: print_equations_flag
-integer(kind=i4b) :: run_GP_para_lmdif_flag
 
 integer(kind=i4b) :: no_forcing_flag
 
@@ -188,7 +187,6 @@ L_unit50_output = .FALSE.
 print_equations_flag = 0
 L_print_equations = .FALSE.
 
-L_run_GP_para_lmdif = .FALSE.
 
 
 L_no_forcing = .FALSE.
@@ -1341,41 +1339,6 @@ do
 
 !--------------------------------------------------------------------
 
-! run_GP_para_lmdif_flag
-
-
-! if run_GP_para_lmdif_flag >  0 - call subroutine GP_para_lmdif
-! if run_GP_para_lmdif_flag <= 0 - do not call subroutine GP_para_lmdif
-
-!  DEFAULT =   run_GP_para_lmdif_flag ==  0
-!              - do not write printout to run_GP_para_lmdif_unit
-
-    elseif( Aline(1:len('run_GP_para_lmdif')) == "run_GP_para_lmdif" .or.  &
-            Aline(1:len('run_GP_para_lmdif')) == "RUN_GP_PARA_LMDIF" .or.  &
-            Aline(1:len('run_GP_para_lmdif')) == "run_gp_para_lmdif"      ) then
-
-
-        READ(Aline(len('run_GP_para_lmdif')+1:), * )  run_GP_para_lmdif_flag
-
-        if( run_GP_para_lmdif_flag > 0 )then
-            L_run_GP_para_lmdif = .TRUE.
-        else
-            L_run_GP_para_lmdif = .FALSE.
-        endif ! run_GP_para_lmdif_flag > 0
-
-        if( myid == 0 )then
-            write(GP_print_unit,'(A,1x,I12)') 'rcntl: run_GP_para_lmdif_flag =', &
-                                                      run_GP_para_lmdif_flag
-            write(GP_print_unit,'(A,4x,L1 )') 'rcntl: L_run_GP_para_lmdif =', &
-                                                      L_run_GP_para_lmdif
-        endif !myid==0
-
-
-
-
-
-!--------------------------------------------------------------------
-
 
 !  if L_no_forcing is .TRUE. ,
 !  set the forcing function node value -5004 to zero
@@ -1456,11 +1419,17 @@ do
             Aline(1:len('gp_para_lmdif')) == "GP_Para_Lmdif" .or.     &
             Aline(1:len('gp_para_lmdif')) == "gp_para_lmdif"     ) then
 
-        READ(Aline(len('gp_para_lmdif')+1:), * )  &
+        READ(Aline(len('gp_para_lmdif')+1:), * , iostat = istat )  &
              gp_para_lmdif_start_gen, gp_para_lmdif_modulus
 
+        !if( myid == 0 )then
+        !    write(GP_print_unit,'(A,1x,I6)') &
+        !          'rcntl: istat = ', istat                            
+        !endif !myid==0
+
         L_gp_para_lmdif = .true.
-        if( gp_para_lmdif_modulus == 0 ) gp_para_lmdif_modulus = 1
+
+        if( gp_para_lmdif_modulus == 0 ) gp_para_lmdif_modulus = 5
 
         if( myid == 0 )then
             write(GP_print_unit,'(A,3x,L1)') &
@@ -1535,6 +1504,13 @@ if( L_node_functions .and. n_node_functions <=0 )then
 endif ! .not. L_node_functions
 
 
+
+if( L_gp_para_lmdif               .and. &
+    gp_para_lmdif_start_gen  == 0        ) then
+
+    gp_para_lmdif_start_gen  = n_GP_generations / 2
+
+endif ! gp_para_lmdif_start_gen  == 0 
 
 
 ! write out what has been read in
@@ -1661,10 +1637,7 @@ if( myid == 0) then
           'rcntl: n_seed    = ', n_seed
     write(GP_print_unit,'(A,1x,I6)') &
                'rcntl: n_partitions = ', n_partitions
-    write(GP_print_unit,'(A,1x,I12)') 'rcntl: run_GP_para_lmdif_flag =', &
-                                              run_GP_para_lmdif_flag
-    write(GP_print_unit,'(A,4x,L1 )') 'rcntl: L_run_GP_para_lmdif =', &
-                                              L_run_GP_para_lmdif
+
     write(GP_print_unit,'(A,1x,I12)') 'rcntl: no_forcing_flag =', &
                                               no_forcing_flag
     write(GP_print_unit,'(A,4x,L1 )') 'rcntl: L_no_forcing =', &
@@ -1678,18 +1651,12 @@ if( myid == 0) then
 
     write(GP_print_unit,'(A,4x,L1 )') 'rcntl: L_gp_para_lmdif =', &
                                               L_gp_para_lmdif
-    if( L_gp_para_lmdif               .and. &
-        gp_para_lmdif_start_gen  == 0        ) then
-
-        gp_para_lmdif_start_gen  = n_GP_generations / 2
-
-    endif ! gp_para_lmdif_start_gen  == 0 
-
-    write(GP_print_unit,'(A,1x,I12)') &
+    write(GP_print_unit,'(A,1x,I6 )') &
           'rcntl: gp_para_lmdif_start_gen =', &
                   gp_para_lmdif_start_gen
-    write(GP_print_unit,'(A,1x,I12)') &
-          'rcntl: gp_para_lmdif_modulus =', &
+
+    write(GP_print_unit,'(A,1x,I6 )') &
+          'rcntl: gp_para_lmdif_modulus =  ', &
                   gp_para_lmdif_modulus
 
     if( .not. L_node_functions )then
