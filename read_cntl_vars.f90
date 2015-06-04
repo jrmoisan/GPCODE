@@ -43,6 +43,7 @@ integer(kind=i4b) :: i_function_index
 integer(kind=i4b) :: selected_function
 integer(kind=i4b) :: i
 integer(kind=i4b) :: ierror
+integer(kind=i4b) :: hash_index
 
 real(kind=r8b) :: dt_min
 
@@ -248,6 +249,10 @@ do
         EXIT cntlloop
     endif
 
+!------------------------------------------------------------------------------
+
+    hash_index = index( Aline, '#' ) 
+    if( hash_index > 0 ) Aline( hash_index: ) = ' '
 
 !------------------------------------------------------------------------------
 
