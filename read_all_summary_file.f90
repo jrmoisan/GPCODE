@@ -23,7 +23,7 @@ use GP_variables_module
 implicit none
 
 integer(kind=i4b) :: i_code_eq
-integer(kind=i4b) :: i
+!integer(kind=i4b) :: i
 integer(kind=i4b) :: istat
 
 integer(kind=i4b),intent(in)  :: i_GP_Generation
@@ -35,8 +35,8 @@ integer(kind=i4b) :: i_Node
 
 logical :: Lprint
 
-character(2) :: arrow1
-character(2) :: arrow2
+!character(2) :: arrow1
+!character(2) :: arrow2
 character(200) :: Aline
 
 !-------------------------------------------------------------------------------

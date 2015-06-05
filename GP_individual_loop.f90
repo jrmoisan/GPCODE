@@ -32,13 +32,13 @@ integer(kind=i4b),intent(in) :: i_GP_Generation
 integer(kind=i4b) :: i_GP_individual
 integer(kind=i4b) :: i_Tree
 integer(kind=i4b) :: i_Node
-integer(kind=i4b) :: i_code_equation
+!integer(kind=i4b) :: i_code_equation
 
 integer(kind=i4b) :: ii
-integer(kind=i4b) :: ii2
-integer(kind=i4b) :: ii3
+!integer(kind=i4b) :: ii2
+!integer(kind=i4b) :: ii3
 integer(kind=i4b) :: jj
-integer(kind=i4b) :: jj2
+!integer(kind=i4b) :: jj2
 
 integer(kind=i4b) :: message_len
 
@@ -58,16 +58,16 @@ integer(kind=i4b),parameter :: tag_node_type    = 600000
 integer(kind=i4b),parameter :: tag_init_cond    = 700000
 integer(kind=i4b),parameter :: tag_node_parm    = 800000
 
-integer(kind=i4b) :: tag_fit_r
-integer(kind=i4b) :: tag_fit_s
-integer(kind=i4b) :: tag_sse_r
-integer(kind=i4b) :: tag_sse_s
-integer(kind=i4b) :: tag_tmp
+!integer(kind=i4b) :: tag_fit_r
+!integer(kind=i4b) :: tag_fit_s
+!integer(kind=i4b) :: tag_sse_r
+!integer(kind=i4b) :: tag_sse_s
+!integer(kind=i4b) :: tag_tmp
 
-real(kind=r8b),allocatable ::   fit_buffer_send(:)
-real(kind=r8b),allocatable ::   sse_buffer_send(:)
-integer(kind=i4b),allocatable ::   buff_parm_send(:)
-integer(kind=i4b) :: i_sender,i_GP_ind, tmpresult,i_tag,isource
+!real(kind=r8b),allocatable ::   fit_buffer_send(:)
+!real(kind=r8b),allocatable ::   sse_buffer_send(:)
+!integer(kind=i4b),allocatable ::   buff_parm_send(:)
+!integer(kind=i4b) :: i_sender,i_GP_ind, tmpresult,i_tag,isource
 
 logical :: L_skip
 

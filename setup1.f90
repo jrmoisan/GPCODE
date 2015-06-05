@@ -30,31 +30,31 @@ implicit none
 integer(kind=i4b) :: i
 integer(kind=i4b) :: message_len
 
-integer(kind=i4b) :: i_GP_individual
-integer(kind=i4b) :: i_GP_Generation
-integer(kind=i4b) :: GP_minSSE_Individual
-integer(kind=i4b) :: GP_minSSE_generation
+!integer(kind=i4b) :: i_GP_individual
+!integer(kind=i4b) :: i_GP_Generation
+!integer(kind=i4b) :: GP_minSSE_Individual
+!integer(kind=i4b) :: GP_minSSE_generation
 integer(kind=i4b) :: i_Tree
 integer(kind=i4b) :: i_Node
 
 integer(kind=i4b) :: jj
 
 integer(kind=i4b) :: i_CODE_equation
-integer(kind=i4b) :: max_n_gp_params
+!integer(kind=i4b) :: max_n_gp_params
 
-integer(kind=i4b) :: n_GP_vars
-integer(kind=i4b) :: nop
+!integer(kind=i4b) :: n_GP_vars
+!integer(kind=i4b) :: nop
 
-integer(kind=i4b) :: i_GP_best_parent
-integer(kind=i4b) :: ierror
-integer(kind=i4b) :: ierror_t
-integer(kind=i4b) :: ierror_m
-integer(kind=i4b) :: ierror_tb
-integer(kind=i4b) :: i_start_generation
+!integer(kind=i4b) :: i_GP_best_parent
+!integer(kind=i4b) :: ierror
+!integer(kind=i4b) :: ierror_t
+!integer(kind=i4b) :: ierror_m
+!integer(kind=i4b) :: ierror_tb
+!integer(kind=i4b) :: i_start_generation
 
 
 
-character(200) :: tree_descrip
+!character(200) :: tree_descrip
 
 
 !---------------------------------------------------------------------------------------

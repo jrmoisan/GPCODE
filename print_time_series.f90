@@ -37,7 +37,7 @@ integer(kind=i4b) :: i_node
 integer(kind=i4b) :: ii
 integer(kind=i4b) :: i
 integer(kind=i4b) :: j
-integer(kind=i4b) :: jj
+!integer(kind=i4b) :: jj
 
 
 

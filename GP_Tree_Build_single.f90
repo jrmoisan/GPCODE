@@ -29,8 +29,8 @@ integer(kind=i4b) :: n_parms_per_tree
 
 
 real(kind=r4b),parameter :: prob_choose_forcing_type = 0.25
-integer(kind=i4b) :: iforce
-integer(kind=i4b) :: n_trees_made
+!integer(kind=i4b) :: iforce
+!integer(kind=i4b) :: n_trees_made
 
 !-----------------------------------------------------------------------------
 

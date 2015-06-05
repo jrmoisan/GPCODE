@@ -1,4 +1,4 @@
-subroutine set_answer_arrays(  )  ! buildTrees )
+subroutine set_answer_arrays(  )  
 !
 ! Weiyuan note : This program get the answer for the truth model.
 !  if the model truth is from node_type, use RK model to get the answer
@@ -39,7 +39,6 @@ integer(kind=i4b) :: i_node
 integer(kind=i4b) :: ii
 integer(kind=i4b) :: i
 
-logical :: buildTrees
 
 
 !------------------------------------------------------------------------------

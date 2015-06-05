@@ -37,11 +37,15 @@ integer(kind=i4b) :: i_GP_individual
 integer(kind=i4b) :: i_Error
 integer(kind=i4b) :: test_function_index
 
-logical Node_Not_Found
+logical :: Node_Not_Found
 
-character(200) :: tree_descrip
+!character(200) :: tree_descrip
 
-integer(kind=i4b) :: iforce                   
+!integer(kind=i4b) :: iforce                   
+
+
+!-------------------------------------------------------------------------------
+
 
 i_Error = 0
 Node_to_Mutate = 0
@@ -54,7 +58,6 @@ write(GP_print_unit,'(A,4(1x,I6))' ) &
   'gpmut: n_GP_Elites, n_GP_Asexual_Repro, n_GP_Cross, n_GP_Mut', &
           n_GP_Elitists, n_GP_Asexual_Reproductions, n_GP_Crossovers, n_GP_Mutations
 
-!--------------------------------------------------------------------------------
 
 ! if the cff < prob_no_elite (which is a small number) then the mutations are allowed
 ! on any individual,  

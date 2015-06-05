@@ -29,7 +29,7 @@ logical :: op
 logical :: L_nextloop
 
 integer(kind=i4b) :: i
-integer(kind=i4b) :: ii
+!integer(kind=i4b) :: ii
 
 !integer(kind=i4b) :: i_diversity
 integer(kind=i4b) :: message_len
@@ -38,8 +38,8 @@ integer(kind=i4b) :: i_GP_individual
 integer(kind=i4b) :: i_GP_Generation
 integer(kind=i4b) :: GP_minSSE_Individual
 integer(kind=i4b) :: GP_minSSE_generation
-integer(kind=i4b) :: i_Tree
-integer(kind=i4b) :: i_Node
+!integer(kind=i4b) :: i_Tree
+!integer(kind=i4b) :: i_Node
 
 integer(kind=i4b) :: max_n_gp_params
 
@@ -51,16 +51,16 @@ integer(kind=i4b) :: ierror_t
 integer(kind=i4b) :: ierror_m
 integer(kind=i4b) :: ierror_tb
 
-integer(kind=i4b) :: new_group
+!integer(kind=i4b) :: new_group
 integer(kind=i4b) :: new_comm
 integer(kind=i4b) :: my_size
-integer(kind=i4b) :: j
+!integer(kind=i4b) :: j
 integer(kind=i4b),allocatable :: tmprank0(:)
 
 integer(kind=i4b) :: comm_world
 
-real(kind=r8b) :: t1
-real(kind=r8b) :: t2
+!real(kind=r8b) :: t1
+!real(kind=r8b) :: t2
 
 character(15),parameter :: program_version   = '201501.001_v16'
 character(10),parameter :: modification_date = '20150605'
@@ -472,7 +472,7 @@ endif ! myid == 0
             !  '0:2 call summary_GP_all GP_summary_output_unit_all  ', &
             !                           GP_summary_output_unit_all
 
-            call summary_GP_all( GP_summary_output_unit_all, i_GP_generation, zero )
+            call summary_GP_all( GP_summary_output_unit_all, i_GP_generation ) !, zero )
 
         endif ! GP_all_summary_flag > 1
 
@@ -484,7 +484,7 @@ endif ! myid == 0
         !      '0:3 call summary_GP_all GP_summary_output_unit_lgen ', &
         !                               GP_summary_output_unit_lgen
 
-        call summary_GP_all( GP_summary_output_unit_lgen, i_GP_generation, zero )
+        call summary_GP_all( GP_summary_output_unit_lgen, i_GP_generation ) !, zero )
 
 
     endif ! myid == 0

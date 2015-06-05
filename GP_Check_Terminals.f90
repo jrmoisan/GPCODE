@@ -33,7 +33,7 @@ integer(kind=i4b),intent(in) :: nn_Nodes
 
 integer(kind=i4b), dimension(1:nn_Nodes,1:nn_Trees), intent(in) :: temp_Node_Type
 
-integer(kind=i4b),dimension(2) :: dims
+!integer(kind=i4b),dimension(2) :: dims
 
 !-----------------------------------------------------------------------------------
 

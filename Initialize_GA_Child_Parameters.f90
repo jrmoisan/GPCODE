@@ -16,17 +16,17 @@ implicit none
 
 
 real(kind=r8b) :: Child_Parameters(n_GP_parameters,n_GA_Individuals)
-real(kind=r4b) :: cff
+!real(kind=r4b) :: cff
 real(kind=r8b) :: dff
 
 integer(kind=i4b) :: i_parameter
-integer(kind=i4b) :: jj
+!integer(kind=i4b) :: jj
 integer(kind=i4b) :: i_GA_individual
 
-integer(kind=i4b) :: inode
-integer(kind=i4b) :: itree
-integer(kind=i4b) :: nparm
-integer(kind=i4b) :: ii    
+!integer(kind=i4b) :: inode
+!integer(kind=i4b) :: itree
+!integer(kind=i4b) :: nparm
+!integer(kind=i4b) :: ii    
 
 !----------------------------------------------------------------------------
 
