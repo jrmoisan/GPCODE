@@ -34,7 +34,7 @@ do  jj = 1, n_nodes
 
 
     node_element_string = '   '
-    write(node_element_string,'(I3)') jj
+    write(node_element_string,'(I3)') jj   ! I5 ??
 
 
     tree_node_string = trim(tree_node_string)  // node_element_string

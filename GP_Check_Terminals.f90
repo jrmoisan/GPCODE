@@ -1,4 +1,4 @@
-subroutine GP_Check_Terminals( temp_Node_Type,nn_Nodes,nn_Trees, i_Error)
+subroutine GP_Check_Terminals( temp_Node_Type, nn_Nodes, nn_Trees, i_Error)
 
 ! This subroutine looks through a specific temp_Node_Type array
 ! for nodes that do not correctly set terminals.
