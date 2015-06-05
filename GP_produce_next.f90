@@ -200,25 +200,29 @@ GP_Adult_Population_Node_Type = GP_Child_Population_Node_Type   ! keep jjm 20150
 GP_Adult_Population_SSE       = GP_Child_Population_SSE         ! keep jjm 20150522
 
 
-!write(6,'(/A,1x,I5/)') 'gpn: broadcast ierror_t and ierror_m         myid = ', myid
+!write(6,'(/A,1x,I5/)') 'gpn: broadcast ierror_t, ierror_m, ierror_rr    myid = ', myid
 
 message_len =  1
 call MPI_BCAST( ierror_t, message_len,    &
                 MPI_INTEGER,  0, MPI_COMM_WORLD, ierr )
 call MPI_BCAST( ierror_m, message_len,    &
                 MPI_INTEGER,  0, MPI_COMM_WORLD, ierr )
+call MPI_BCAST( ierror_rr, message_len,    &
+                MPI_INTEGER,  0, MPI_COMM_WORLD, ierr )
 
 
-if( ierror_t > 0 .or. ierror_m > 0 )then
+if( ierror_t > 0 .or. ierror_m > 0 .or. ierror_rr > 0 )then
     write(6,'(A,2(1x,I6))') &
           'gpn: error found in GP_Tour or GP_Mut in generation ', &
                                                i_GP_generation, myid
-    write(6,'(A,2(1x,I6))') 'gpn: ierror_t, myid ', ierror_t, myid
-    write(6,'(A,2(1x,I6))') 'gpn: ierror_m, myid ', ierror_m, myid
+    write(6,'(A,2(1x,I6))') 'gpn: ierror_t,  myid ', ierror_t,  myid
+    write(6,'(A,2(1x,I6))') 'gpn: ierror_m,  myid ', ierror_m,  myid
+    write(6,'(A,2(1x,I6))') 'gpn: ierror_rr, myid ', ierror_rr, myid
     write(6,'(A,1x,I6)') 'gpn: cycle generation_loop myid =', myid
     !flush(6)
-    ierror_t = 0
-    ierror_m = 0
+    ierror_t  = 0
+    ierror_m  = 0
+    ierror_rr = 0
     L_nextloop = .true.
     return
 endif ! ierror....

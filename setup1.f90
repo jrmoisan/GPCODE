@@ -471,6 +471,7 @@ call set_modified_indiv( )
 !  or prob_no_elite > 0 which means elite individuals might be modified
 
 L_minSSE = n_GP_Elitists ==  0 .or.   prob_no_elite > 0.0D0
+
 if( myid == 0 )then
     write(6, '(/A,1x,I6,1x,E15.7,5x,L1/)') 'set1: n_GP_Elitists, prob_no_elite, L_minSSE ', &
                                                   n_GP_Elitists, prob_no_elite, L_minSSE 
