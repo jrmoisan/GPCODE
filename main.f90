@@ -29,7 +29,7 @@ logical :: op
 logical :: L_nextloop
 
 integer(kind=i4b) :: i
-integer(kind=i4b) :: ii
+!integer(kind=i4b) :: ii
 
 !integer(kind=i4b) :: i_diversity
 integer(kind=i4b) :: message_len
@@ -38,8 +38,8 @@ integer(kind=i4b) :: i_GP_individual
 integer(kind=i4b) :: i_GP_Generation
 integer(kind=i4b) :: GP_minSSE_Individual
 integer(kind=i4b) :: GP_minSSE_generation
-integer(kind=i4b) :: i_Tree
-integer(kind=i4b) :: i_Node
+!integer(kind=i4b) :: i_Tree
+!integer(kind=i4b) :: i_Node
 
 integer(kind=i4b) :: max_n_gp_params
 
@@ -51,28 +51,28 @@ integer(kind=i4b) :: ierror_t
 integer(kind=i4b) :: ierror_m
 integer(kind=i4b) :: ierror_tb
 
-integer(kind=i4b) :: new_group
+!integer(kind=i4b) :: new_group
 integer(kind=i4b) :: new_comm
 integer(kind=i4b) :: my_size
-integer(kind=i4b) :: j
+!integer(kind=i4b) :: j
 integer(kind=i4b),allocatable :: tmprank0(:)
 
 integer(kind=i4b) :: comm_world
 
-real(kind=r8b) :: t1
-real(kind=r8b) :: t2
+!real(kind=r8b) :: t1
+!real(kind=r8b) :: t2
 
 character(15),parameter :: program_version   = '201501.001_v16'
-character(10),parameter :: modification_date = '20150603'
+character(10),parameter :: modification_date = '20150608'
 character(50),parameter :: branch  =  'master'
 
 integer(kind=i4b), parameter ::  zero = 0
 
 !---------------------------------------------------------------------------------------
 
-!  About version 15
+!  About version 16
 
-!  version 15 derived from version 13 '
+!  version 15 derived from version 15 which was derived frm  version 13 '
 !  fixed the problem with sort and the best individual'
 !  DO NOT run lmdif in parallel on each GP generation'
 !  fixed bug in GA_Tournament* '
@@ -86,18 +86,18 @@ integer(kind=i4b), parameter ::  zero = 0
 !  removed barrier in GPCODE aft bcast of L_stop'
 !  removed several barriers in 0*f90 and GPCODE*f90'
 
-   call MPI_INIT(ierr)
-   call MPI_COMM_RANK(MPI_COMM_WORLD, myid, ierr)
-   call MPI_COMM_SIZE(MPI_COMM_WORLD, numprocs, ierr)
+call MPI_INIT(ierr)
+call MPI_COMM_RANK(MPI_COMM_WORLD, myid, ierr)
+call MPI_COMM_SIZE(MPI_COMM_WORLD, numprocs, ierr)
 
-   if( myid == 0 )then
+if( myid == 0 )then
 
-      write(GP_print_unit, '(/3(A,1x,A,1x)//)') &
+    write(GP_print_unit, '(/3(A,1x,A,1x)//)') &
          '0: GPGACODE program version', trim(program_version), &
          '   branch:', trim( branch ) , &
          '   Last modified on:', trim( modification_date )
 
-   endif ! myid == 0
+endif ! myid == 0
 
 !--------------------------------------------------------------
 ! current setup
@@ -109,50 +109,50 @@ integer(kind=i4b), parameter ::  zero = 0
 ! max interations in lmdif is 100
 !--------------------------------------------------------------
 
-   ierror_t  = 0
-   ierror_m  = 0
-   ierror_tb = 0
+ierror_t  = 0
+ierror_m  = 0
+ierror_tb = 0
 
-   ierror = 0
+ierror = 0
 
-   GP_minSSE_Individual = 0
-   GP_minSSE_generation = 0
-   Lprint_lmdif = .TRUE.
+GP_minSSE_Individual = 0
+GP_minSSE_generation = 0
+Lprint_lmdif = .TRUE.
 
 
-   call RANDOM_SEED(size = n_seed)
+call RANDOM_SEED(size = n_seed)
 
-   
-   call read_cntl_vars( ierror  )
+
+call read_cntl_vars( ierror  )
   
-   
-   n_inputs = n_input_vars
 
-   !write(6,'(/A,1x,I10)') '0:  n_input_vars = ', n_input_vars
-   !write(6,'(A,1x,I10/)') '0:  n_inputs     = ', n_inputs    
+n_inputs = n_input_vars
 
-   call setup_math_functions()
+!write(6,'(/A,1x,I10)') '0:  n_input_vars = ', n_input_vars
+!write(6,'(A,1x,I10/)') '0:  n_inputs     = ', n_inputs    
 
-   call load_pow2_table()
+call setup_math_functions()
 
-   call setup_output_unit()
+call load_pow2_table()
+
+call setup_output_unit()
 
 
-   ! for reading input files for the "DATA" model
-   call read_input_data()
+! for reading input files for the "DATA" model
+call read_input_data()
 
-   ALLOCATE(seed(n_seed))
-   ALLOCATE(current_seed(n_seed))
+ALLOCATE(seed(n_seed))
+ALLOCATE(current_seed(n_seed))
 
-   if( user_input_random_seed > 0 )then
-      clock = user_input_random_seed
-   else
-      CALL SYSTEM_CLOCK(COUNT=clock)
-   endif ! user_input_random_seed > 0
+if( user_input_random_seed > 0 )then
+   clock = user_input_random_seed
+else
+   CALL SYSTEM_CLOCK(COUNT=clock)
+endif ! user_input_random_seed > 0
 
-   seed = clock + 37 * (/ (i_seed - 1, i_seed = 1, n_seed) /)
+seed = clock + 37 * (/ (i_seed - 1, i_seed = 1, n_seed) /)
 
-   CALL RANDOM_SEED(PUT = seed)
+CALL RANDOM_SEED(PUT = seed)
 
 
 if( myid == 0 )then
@@ -472,7 +472,7 @@ endif ! myid == 0
             !  '0:2 call summary_GP_all GP_summary_output_unit_all  ', &
             !                           GP_summary_output_unit_all
 
-            call summary_GP_all( GP_summary_output_unit_all, i_GP_generation, zero )
+            call summary_GP_all( GP_summary_output_unit_all, i_GP_generation ) !, zero )
 
         endif ! GP_all_summary_flag > 1
 
@@ -484,7 +484,7 @@ endif ! myid == 0
         !      '0:3 call summary_GP_all GP_summary_output_unit_lgen ', &
         !                               GP_summary_output_unit_lgen
 
-        call summary_GP_all( GP_summary_output_unit_lgen, i_GP_generation, zero )
+        call summary_GP_all( GP_summary_output_unit_lgen, i_GP_generation ) !, zero )
 
 
     endif ! myid == 0

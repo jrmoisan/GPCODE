@@ -88,7 +88,7 @@ CFLAGS = -O
 # note: mpif90 is based on gfortran
 FC = /opt/openmpi-1.8.1/bin/mpif90
 #FFLAGS =  -O3 -g -fbacktrace -ffree-form # -fcheck=bounds #-fbacktrace  -fcheck=bounds  # -Wall  #-fdefault-integer-8  # -FR = -free
-FFLAGS =   -g  -ffree-form  -fcheck=bounds -fbacktrace # -Wall # #-ffpe-trap='overflow,underflow,denormal' #  #-fdefault-integer-8  
+FFLAGS =   -g  -ffree-form  -fcheck=bounds -fbacktrace  # -Wall # #-ffpe-trap='overflow,underflow,denormal' #  #-fdefault-integer-8  
 #FFLAGS =  -O3  -ffree-form #-g -fbacktrace  -fcheck=bounds  # -Wall  # -fdefault-integer-8  # -FR = -free
 
 # note: mpif90 is based on gfortran

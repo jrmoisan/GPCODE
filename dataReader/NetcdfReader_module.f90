@@ -24,7 +24,9 @@ module NetcdfReader_module
          real :: d
       end function
    end interface
+
 contains
+
    function binarysearch(length, array, value, delta)
    ! Given an array and a value, returns the index of the element that
    ! is closest to, but less than, the given value.

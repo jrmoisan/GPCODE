@@ -36,7 +36,7 @@ real(kind=r8b) :: cff
 integer(kind=i4b) :: iter
 integer(kind=i4b) :: i_Time_Step, i_Track, i_Tree
 integer(kind=i4b) :: i_CODE_Equation, j_CODE_Equation, i_Variable
-integer(kind=i4b) :: i_node
+!integer(kind=i4b) :: i_node
 
 integer(kind=i4b) :: tree_node_count
 

@@ -263,13 +263,6 @@ kval = 0.0d0
 btmp = 0.0d0
 fbio = 0.0d0
 
-!if( L_print_equations )then
-!    bioflo_string = ' '
-!    node_type_string = ' '
-!    node_parameters_string = ' '
-!    tree_evaluation_string = ' '
-!    tree_value_string = ' '
-!endif ! L_print_equations
 
 
 

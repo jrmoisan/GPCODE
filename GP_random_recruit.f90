@@ -15,13 +15,13 @@ implicit none
 real(kind=r4b) :: cff
 
 integer(kind=i4b) :: ierror_r
-integer(kind=i4b) :: i
-integer(kind=i4b) :: icff
+!integer(kind=i4b) :: i
+!integer(kind=i4b) :: icff
 integer(kind=i4b) :: i_GP_recruit
 
 integer(kind=i4b) :: n_GP_recruited
 
-real(kind=r8b) :: sse_ind
+!real(kind=r8b) :: sse_ind
 
 !-----------------------------------------------------------------------------
 

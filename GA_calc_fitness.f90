@@ -70,7 +70,7 @@ real(kind=r8b), external :: indiv_fitness
 logical :: L_stop_run
 logical :: op
 
-integer(kind=i4b) :: jj
+!integer(kind=i4b) :: jj
 integer(kind=i4b) :: i_parameter
 integer(kind=i4b) :: i_GA_individual
 

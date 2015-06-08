@@ -1492,6 +1492,7 @@ close(cntl_unitnum)
 
 ! check
 if( L_node_functions .and. n_node_functions <=0 )then
+
     if( myid == 0 )then
         write(GP_print_unit,'(//A)') &
               'rcntl: BAD VALUE FOR n_node_functions '

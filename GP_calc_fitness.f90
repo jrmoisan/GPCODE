@@ -53,10 +53,10 @@ integer(kind=i4b) :: max_n_gp_parameters
 
 real(kind=r8b) ::  dff
 
-real(kind=r8b) ::  mean_fit
-real(kind=r8b) ::  rms_fit
-real(kind=r8b) ::  std_dev_fit
-real(kind=r8b) ::  sse_local      
+!real(kind=r8b) ::  mean_fit
+!real(kind=r8b) ::  rms_fit
+!real(kind=r8b) ::  std_dev_fit
+!real(kind=r8b) ::  sse_local      
 
 
 logical :: L_node_match
@@ -129,8 +129,6 @@ if( L_GPSSE_log )then
                   i_GP_generation, &
                   i_GP_Individual, GP_Child_Individual_SSE_nolog10(i_GP_Individual), &
                   GP_Child_Individual_SSE_nolog10(i_GP_Individual)/ SSE0_nolog10
-                  !i_GP_Individual, sse_local, &
-                  !sse_local / SSE0_nolog10
 
         enddo ! i_gp_individual
 

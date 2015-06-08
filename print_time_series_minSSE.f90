@@ -60,8 +60,8 @@ real(kind=r8b),dimension(n_code_equations)  :: RK_max
 real(kind=r8b),dimension(n_code_equations)  :: data_max
 real(kind=r8b),dimension(n_code_equations)  :: resid_max
 real(kind=r8b),dimension(n_code_equations)  :: r_corr
-real(kind=r8b),dimension(n_code_equations)  :: prob_r
-real(kind=r8b),dimension(n_code_equations)  :: fisher_z
+!real(kind=r8b),dimension(n_code_equations)  :: prob_r
+!real(kind=r8b),dimension(n_code_equations)  :: fisher_z
 
 real(kind=r8b) :: resid_SSE
 real(kind=r8b) :: y_min    

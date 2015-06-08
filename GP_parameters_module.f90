@@ -178,18 +178,6 @@ real(kind=r8b) :: GP_Mutation_Probability
 !---------------------------------------------------------------------------------------
 
 
-!character(4), dimension( n_nodes, n_trees )       ::  node_type_string
-!character(4), dimension( n_nodes, n_trees )       ::  node_parameters_string
-!character(str_len), dimension( n_nodes, n_trees ) ::  tree_evaluation_string
-
-!character(4), allocatable, dimension( : , : )       ::  node_type_string
-!character(4), allocatable, dimension( : , : )       ::  node_parameters_string
-!character(str_len), allocatable, dimension( : , : ) ::  tree_evaluation_string
-
-!character(str_len), allocatable, dimension( : )     ::  tree_value_string
-
-!-------------------------------------------------------------------
-
 ! with 2500 steps, the LV predator-prey cycle curve is closed
 !integer(kind=i4b), parameter :: n_time_steps= 2500 ! 8 ! 10
 
@@ -272,7 +260,6 @@ integer, dimension(0:max_level) :: pow2_table
 ! number of parameters for each GP individual
 
 integer, allocatable, dimension(:) :: GP_n_parms
-!logical :: GP_para_flag
 
 !--------------------------------------------------------------------
 
@@ -327,7 +314,7 @@ integer(kind=i4b) :: truth_model
 logical ::  L_truth_model
 
 
-!!!logical ::   L_run_GP_para_lmdif
+
 integer(kind=i4b) :: gp_para_lmdif_start_gen
 integer(kind=i4b) :: gp_para_lmdif_modulus
 logical ::  L_gp_para_lmdif 

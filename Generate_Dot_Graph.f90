@@ -102,6 +102,7 @@ contains
                          this%node_id, '[label="[', this%node_id, '] '
         !write(this%funit,'(A,E12.5)',advance='no') '(V) ', node%val()
         !write(this%funit,'(A,I5)',advance='no') '(V) ', abs(node%variable_index)
+
         if( n_inputs == 0 )then                                                                                                    
             write(this%funit,'(A,I5)',advance='no') '(V) ', &                                                                      
                                       abs(node%variable_index)                                                           
@@ -109,6 +110,7 @@ contains
             write(this%funit,'(A,I5)',advance='no') '(V) ', &                                                                      
                                       abs(node%variable_index) - n_code_equations                                        
         endif ! n_inputs == 0 
+
         write(this%funit,'(A)') '"];'
 
         call Dot_Graph_Hierarchy(this%funit, this%node_id)

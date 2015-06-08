@@ -215,11 +215,11 @@ Numerical_CODE_Initial_Conditions( izoo )   = 0.1D0   ! [Zooplankton]    [mmol N
 
 !---------------------------------------------------------------
 
-!Truth_Initial_Conditions  = 0.0d0
+Truth_Initial_Conditions  = 0.0d0
 
-!Truth_Initial_Conditions( iNO3 )   = 1.6D0   ! [NO3]            [mmol N m-3]
-!Truth_Initial_Conditions( iphyto ) = 0.3D0   ! [Phytoplankton]  [mmol N m-3]
-!Truth_Initial_Conditions( izoo )   = 0.1D0   ! [Zooplankton]    [mmol N m-3]
+Truth_Initial_Conditions( iNO3 )   = 1.6D0   ! [NO3]            [mmol N m-3]
+Truth_Initial_Conditions( iphyto ) = 0.3D0   ! [Phytoplankton]  [mmol N m-3]
+Truth_Initial_Conditions( izoo )   = 0.1D0   ! [Zooplankton]    [mmol N m-3]
 
 !---------------------------------------------------------------
 
@@ -274,61 +274,61 @@ GP_Individual_Node_Parameters(22,11)=1.0D+0  ! Grazing Control; Ranges between 0
 GP_Individual_Node_Type(23,11)=-2            ! Phytoplankton
 
 !-------------------------------------------------------------------------------
-!
-!
-!Truth_Node_Type           = -9999
-!
-!Truth_Node_Type(1,5) = 3          ! '*'
-!Truth_Node_Type(2,5) = 3          ! '*'
-!Truth_Node_Type(3,5) = 0          ! Phytoplankton Maximum Growth Rate
-!Truth_Node_Type(4,5) = 6          ! Michealis-Menton Term'
-!Truth_Node_Type(5,5) = -2         ! Phytoplankton
-!Truth_Node_Type(8,5) = 0          ! K_NO3, Half-Satur Term for Michaelis-Menton [ug-at N l-1]
-!Truth_Node_Type(9,5) = -1         ! [NO3]
-!
-!Truth_Node_Type(1,8) = 3          ! '*'
-!Truth_Node_Type(2,8) = -2         ! Phytoplankton
-!Truth_Node_Type(3,8) = 0          ! Phytoplankton Mortality Rate; [d-1]
-!
-!Truth_Node_Type(1,9) = 3          ! '*'
-!Truth_Node_Type(2,9) = -3         ! Zooplankton
-!Truth_Node_Type(3,9) = 3          ! '*'
-!Truth_Node_Type(6,9) = 0          ! Zooplankton Maximum Grazing Rate
-!Truth_Node_Type(7,9) = 5          ! Ivlev Exponential Function (1 - e^-abs(left*right))
-!Truth_Node_Type(14,9) = 0         ! Grazing_Control
-!Truth_Node_Type(15,9) = -2        ! Phytoplankton
-!
-!Truth_Node_Type(1,11) = 1         ! '+'
-!Truth_Node_Type(2,11) = 3         ! '*'
-!Truth_Node_Type(3,11) = 3         ! '*'
-!Truth_Node_Type(4,11) = 0         ! Zooplankton Assimilation Rate; [d-1]
-!Truth_Node_Type(5,11) = 3         ! '*'
-!Truth_Node_Type(6,11) = -3        ! Zooplankton
-!Truth_Node_Type(7,11) = 0         ! Zooplnakton Mortality Rate; [d-1]
-!Truth_Node_Type(10,11) = 3        ! '*'
-!Truth_Node_Type(11,11) = 5        ! Ivlev Exponential Function (1 - e^-abs(left*right))
-!Truth_Node_Type(20,11) = 0        ! Zooplankton Maximum Grazing Rate
-!Truth_Node_Type(21,11) = -3       ! Zooplankton
-!Truth_Node_Type(22,11) = 0        ! Grazing_control
-!Truth_Node_Type(23,11) = -2       ! Phytoplankton
-!
-!
-!!---------------------------------------------------------------
-!Truth_Node_Parameters        = 0.0d0
-!
-!Truth_Node_Parameters(3,5)   = 2.0D+0    ! Phyto Max Growth Rate, between 0.20 <==> 3.0 [d-1]
-!Truth_Node_Parameters(8,5)   = 1.0D+0    ! K_NO3, Half-Satur Term for Michaelis-Menton [ug-at N l-1]
-!
-!Truth_Node_Parameters(3,8)   = 0.1D+0    ! Phytoplankton Mortality Rate; [d-1]
-!
-!Truth_Node_Parameters(6,9)   = 1.5D+0    ! Zoo Maximum Grazing Rate; between 0.16 <==> 1.5 [d-1]
-!Truth_Node_Parameters(14,9)  = 1.0D+0    ! Grazing Control; Ranges between 0.10 <==> 2.0 [d-1]
-!
-!Truth_Node_Parameters(4,11)  = 0.3D+0    ! Zoon Assimilation Rate; [d-1]
-!Truth_Node_Parameters(7,11)  = 0.2D+0    ! Zoo Mortality Rate; [d-1]
-!Truth_Node_Parameters(20,11) = 1.5D+0    ! Zoo Maximum Grazing Rate; between 0.16 <==> 1.5 [d-1]
-!Truth_Node_Parameters(22,11) = 1.0D+0    ! Grazing Control; Ranges between 0.10 <==> 2.0 [d-1]
-!
+
+
+Truth_Node_Type           = -9999
+
+Truth_Node_Type(1,5) = 3          ! '*'
+Truth_Node_Type(2,5) = 3          ! '*'
+Truth_Node_Type(3,5) = 0          ! Phytoplankton Maximum Growth Rate
+Truth_Node_Type(4,5) = 6          ! Michealis-Menton Term'
+Truth_Node_Type(5,5) = -2         ! Phytoplankton
+Truth_Node_Type(8,5) = 0          ! K_NO3, Half-Satur Term for Michaelis-Menton [ug-at N l-1]
+Truth_Node_Type(9,5) = -1         ! [NO3]
+
+Truth_Node_Type(1,8) = 3          ! '*'
+Truth_Node_Type(2,8) = -2         ! Phytoplankton
+Truth_Node_Type(3,8) = 0          ! Phytoplankton Mortality Rate; [d-1]
+
+Truth_Node_Type(1,9) = 3          ! '*'
+Truth_Node_Type(2,9) = -3         ! Zooplankton
+Truth_Node_Type(3,9) = 3          ! '*'
+Truth_Node_Type(6,9) = 0          ! Zooplankton Maximum Grazing Rate
+Truth_Node_Type(7,9) = 5          ! Ivlev Exponential Function (1 - e^-abs(left*right))
+Truth_Node_Type(14,9) = 0         ! Grazing_Control
+Truth_Node_Type(15,9) = -2        ! Phytoplankton
+
+Truth_Node_Type(1,11) = 1         ! '+'
+Truth_Node_Type(2,11) = 3         ! '*'
+Truth_Node_Type(3,11) = 3         ! '*'
+Truth_Node_Type(4,11) = 0         ! Zooplankton Assimilation Rate; [d-1]
+Truth_Node_Type(5,11) = 3         ! '*'
+Truth_Node_Type(6,11) = -3        ! Zooplankton
+Truth_Node_Type(7,11) = 0         ! Zooplnakton Mortality Rate; [d-1]
+Truth_Node_Type(10,11) = 3        ! '*'
+Truth_Node_Type(11,11) = 5        ! Ivlev Exponential Function (1 - e^-abs(left*right))
+Truth_Node_Type(20,11) = 0        ! Zooplankton Maximum Grazing Rate
+Truth_Node_Type(21,11) = -3       ! Zooplankton
+Truth_Node_Type(22,11) = 0        ! Grazing_control
+Truth_Node_Type(23,11) = -2       ! Phytoplankton
+
+
+!---------------------------------------------------------------
+Truth_Node_Parameters        = 0.0d0
+
+Truth_Node_Parameters(3,5)   = 2.0D+0    ! Phyto Max Growth Rate, between 0.20 <==> 3.0 [d-1]
+Truth_Node_Parameters(8,5)   = 1.0D+0    ! K_NO3, Half-Satur Term for Michaelis-Menton [ug-at N l-1]
+
+Truth_Node_Parameters(3,8)   = 0.1D+0    ! Phytoplankton Mortality Rate; [d-1]
+
+Truth_Node_Parameters(6,9)   = 1.5D+0    ! Zoo Maximum Grazing Rate; between 0.16 <==> 1.5 [d-1]
+Truth_Node_Parameters(14,9)  = 1.0D+0    ! Grazing Control; Ranges between 0.10 <==> 2.0 [d-1]
+
+Truth_Node_Parameters(4,11)  = 0.3D+0    ! Zoon Assimilation Rate; [d-1]
+Truth_Node_Parameters(7,11)  = 0.2D+0    ! Zoo Mortality Rate; [d-1]
+Truth_Node_Parameters(20,11) = 1.5D+0    ! Zoo Maximum Grazing Rate; between 0.16 <==> 1.5 [d-1]
+Truth_Node_Parameters(22,11) = 1.0D+0    ! Grazing Control; Ranges between 0.10 <==> 2.0 [d-1]
+
 !---------------------------------------------------------------
 
 

@@ -32,7 +32,7 @@ integer(kind=i4b):: inode
 integer(kind=i4b):: inodec
 integer(kind=i4b):: counter
 integer(kind=i4b):: parm_counter
-integer(kind=i4b):: n_inode
+!integer(kind=i4b):: n_inode
 
 !integer(kind=i4b):: i_node
 !integer(kind=i4b):: i_tree

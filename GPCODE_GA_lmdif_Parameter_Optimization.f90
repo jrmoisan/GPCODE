@@ -86,8 +86,8 @@ integer(kind=i4b) :: ierror_tou
 
 integer(kind=i4b) :: n_procs   
 
-real(kind=r8b) :: t1
-real(kind=r8b) :: t2
+!real(kind=r8b) :: t1
+!real(kind=r8b) :: t2
 
 !----------------------------------------------------------------------
 
