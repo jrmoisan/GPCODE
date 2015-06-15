@@ -216,8 +216,8 @@ truth_model = 0
 L_truth_model = .FALSE.
 
 
-gp_para_lmdif_start_gen  = 0
-gp_para_lmdif_modulus = 0
+gp_para_lmdif_start_gen  = 1
+gp_para_lmdif_modulus = 1
 L_gp_para_lmdif = .FALSE. 
  
 

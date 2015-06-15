@@ -356,6 +356,12 @@ else  ! lmdif is best
 
 endif ! individual_ranked_fitness...
 
+!write(6,'(/A,3(1x,E15.7))')&
+!      'sbrl: individual_fitness, Individual_SSE_best_parent, Individual_SSE_best_parent_nolog10 ',&
+!             individual_fitness, Individual_SSE_best_parent, Individual_SSE_best_parent_nolog10
+
+
+
 
 return
 
