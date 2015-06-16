@@ -234,6 +234,7 @@ integer(kind=i4b) :: n_procs
 
             if( n_GA_rand_recruits > 0) then
 
+
                 ! uses:
 
                 ! sets:
@@ -241,7 +242,9 @@ integer(kind=i4b) :: n_procs
                 !  Run_GA_lmdif
                 !  individual_quality
 
+
                 call GA_random_recruit( Child_Parameters, individual_quality )
+
 
             endif !   n_GA_rand_recruits .gt. 0
 

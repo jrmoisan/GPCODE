@@ -46,6 +46,7 @@ integer(kind=i4b) :: ierror
 integer(kind=i4b) :: hash_index
 
 real(kind=r8b) :: dt_min
+logical ::  L_op_cntl 
 
 !----------------------------------------------------------------------
 
@@ -55,10 +56,14 @@ ierror = 0
 
 ! open the control input file
 
-open( unit = cntl_unitnum, file = 'GPGA_cntl_vars.in', &
-      form = 'formatted',&
-      status = 'old' )
+inquire( unit = cntl_unitnum, opened = L_op_cntl )
 
+if( .not. L_op_cntl )then
+    open( unit = cntl_unitnum, file = 'GPGA_cntl_vars.in', &
+          form = 'formatted',&
+          status = 'old' )
+
+endif ! .not. L_op_cntl 
 
 rewind(cntl_unitnum)
 
@@ -80,9 +85,11 @@ if( myid == 0 )then
         istat  = 0
         READ( cntl_unitnum, '(A)', IOSTAT = istat ) Aline
         if( istat > 0 ) then
-            write(GP_print_unit,*) &
+            write( GP_print_unit,'(/A/)' ) &
              'rcntl: ERROR *** Problem reading GPGACODE_cntl &
                                &in subroutine read_cntl_stuff'
+            flush( GP_print_unit )
+
             ierror = 1
             close(cntl_unitnum)
              stop  'rcntl: ERROR *** Problem reading GPGACODE_cntl &
@@ -103,6 +110,7 @@ if( myid == 0 )then
 
 endif !myid==0
 
+flush( GP_print_unit )
 
 
 !---------------------------------------------------------------------
@@ -217,7 +225,7 @@ L_truth_model = .FALSE.
 
 
 gp_para_lmdif_start_gen  = 1
-gp_para_lmdif_modulus = 1
+gp_para_lmdif_modulus = 10
 L_gp_para_lmdif = .FALSE. 
  
 
@@ -241,6 +249,7 @@ do
     if( istat > 0 ) then
         write(GP_print_unit,'(/A/)') &
          'rcntl: ERROR *** Problem reading GPGACODE_cntl.'
+        flush( GP_print_unit )
         ierror = 1
         close(cntl_unitnum)
         stop 'rcntl: ERROR *** Problem reading GPGACODE_cntl.'

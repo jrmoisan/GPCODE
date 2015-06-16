@@ -61,7 +61,7 @@ if( myid == 0 )then
     !    i_GP_generation == n_GP_generations                          )then
     !    write(GP_print_unit,'(//A)') 'gpn:3 before modifications'
     !    write(GP_print_unit,'(A)')&
-    !       'gpn:3 i_GP_gen i_GP_indiv    GP_Child_Pop_SSE  &
+    !       'gpn:3 i_GP_gen i_GP_indiv        GP_Child_Pop_SSE       &
     !        &   GP_Child_Pop_SSE/SSE0'
     !    flush(GP_print_unit)
     !    do  i_GP_individual = 1, n_GP_individuals
@@ -70,6 +70,7 @@ if( myid == 0 )then
     !              GP_Child_Population_SSE(i_GP_Individual), &
     !              GP_Child_Population_SSE(i_GP_Individual)/SSE0
     !    enddo ! i_GP_individual
+    !    write(GP_print_unit,'(A)') ' '
     !    flush(GP_print_unit)
     !endif ! i_GP_generation == 1 .or. ...
 
@@ -220,7 +221,7 @@ GP_Adult_Population_Node_Type = GP_Child_Population_Node_Type   ! keep jjm 20150
 GP_Adult_Population_SSE       = GP_Child_Population_SSE         ! keep jjm 20150522
 
 
-!write(6,'(/A,1x,I5/)') 'gpn: broadcast ierror_t, ierror_m, ierror_rr    myid = ', myid
+!write(6,'(/A,1x,I5)') 'gpn: broadcast ierror_t, ierror_m, ierror_rr    myid = ', myid
 !flush(6)
 
 message_len =  1
@@ -284,10 +285,6 @@ endif ! trim(model) == 'fasham_fixed_tree'
 ! GP_Integrated_Population_Ranked_Fitness
 ! GP_Population_Ranked_Fitness
 ! Run_GP_Calculate_Fitness
-if( myid == 0 )then
-    write(GP_print_unit,'(/A)') 'gpn: call bcast2             '
-    flush(GP_print_unit)
-endif ! myid == 0 
 
 !if( myid == 0 )then
 !    write(GP_print_unit,'(/A)') 'gpn: call bcast2             '
