@@ -33,10 +33,6 @@ contains
    function newFasham_CDOM() result (fasham)
       type(fasham_CDOM) :: fasham
 
-      !integer(kind=i4b) :: i_Tree
-      !integer(kind=i4b) :: i_Node
-      !integer(kind=i4b) :: i
-
       n_CODE_equations =   1
       n_variables = 1
 
@@ -104,9 +100,9 @@ contains
       this%dmxddts(0) = this%dmxddts(1)
 
       close(data_unitnum)   
-!
-!   allocate and initialize all the globals
-! 
+
+      !   allocate and initialize all the globals
+
       call allocate_arrays1()
    
       increment = 1.0d0 / real( n_levels, kind=8 )
@@ -146,11 +142,13 @@ contains
       integer :: i_CODE_Equation
       integer :: i_Tree
       integer :: i_Node
+
 !------------------------------------------------------------------------------------------------
 !   FORCING  -5001  : max(d MLD/ dt,0)
 !            -5002  : MLD
 !            -5003  : PAR
 !            -5004  : Kd
+!------------------------------------------------------------------------------------------------
 
 ! initialize GP_Individual_Node_Parameters and GP_Individual_Node_Type
 
@@ -236,7 +234,7 @@ contains
       k = i_time_step
       iter = time_step_fraction
 
-!     the last step uses the previous step info
+      !     the last step uses the previous step info
       if (k == n_time_steps) k = n_time_steps-1
 
       aDMXDDT =this%dmxddts(k)+iter*(this%dmxddts(k+1)-this%dmxddts(k))

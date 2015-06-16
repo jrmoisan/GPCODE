@@ -32,14 +32,12 @@ real(kind=r8b) :: x( nn )
 
 real(kind=r8b) :: sse_local
 
-!real(kind=r8b) :: min_x
 real(kind=r8b) :: max_x
 
 integer(kind=i4b) :: iflag
 
 integer(kind=i4b) :: i_Tree
 integer(kind=i4b) :: i_Node
-!integer(kind=i4b) :: ii
 integer(kind=i4b) :: i
 integer(kind=i4b) :: tree_node_count
 
@@ -195,7 +193,6 @@ do  i_CODE_equation=1,n_CODE_equations
     max_x = 0.0d0
     do  i_time_step=1,n_time_steps
 
-        !min_x = min( min_x, Numerical_CODE_Solution(i_time_step,i_CODE_equation)  ) 
         max_x = max( max_x, Numerical_CODE_Solution(i_time_step,i_CODE_equation)  ) 
 
     enddo ! i_time_step
@@ -217,6 +214,7 @@ do  i_CODE_equation=1,n_CODE_equations
     endif !  max_x < 1.0d-6
 
 enddo ! i_CODE_equation
+
 !---------------------------------------------------------------------
 
 ! if the result of the RK process was good,
@@ -325,7 +323,7 @@ do  i = 1, n_trees
 enddo ! i 
 
 !---------------------------------------------------------------------------------
-!write(6,'(A,1x,E15.7)') 'fcn: sse_local_nolog10 ', sse_local_nolog10
+
 
 return
 

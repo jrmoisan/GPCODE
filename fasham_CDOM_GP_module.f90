@@ -34,8 +34,6 @@ contains
    function newFasham_CDOM_GP() result (fasham)
       type(fasham_CDOM_GP) :: fasham
 
-      !integer(kind=i4b) :: i_Tree
-      !integer(kind=i4b) :: i_Node
       integer(kind=i4b) :: i
 
       n_CODE_equations =   1
@@ -147,6 +145,7 @@ contains
 
        L_minSSE = n_GP_Elitists ==  0 .or.   prob_no_elite > 0.0D0
        call print_values2()
+
    end subroutine setTruth
 
    subroutine setModel(this)

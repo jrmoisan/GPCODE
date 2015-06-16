@@ -22,19 +22,14 @@ integer :: message_len,ierror_tb
  
 if(i_GP_generation > 1) return
 
-   ierror_tb = 0
+ierror_tb = 0
 
-   ! determines if the new GP child
-   ! has to be sent to GA_lmdif for parameter optimization
+! determines if the new GP child
+! has to be sent to GA_lmdif for parameter optimization
 
-   Run_GP_Calculate_Fitness=.true.
+Run_GP_Calculate_Fitness=.true.
 
 !----------------------------------------------------------------------------
-
-!if( myid == 0 ) then
-!    write(GP_print_unit,'(/A,5x,l1/)') &
-!          'gpf: L_restart ', L_restart
-!endif
 
 
 if( L_restart) then
@@ -42,19 +37,9 @@ if( L_restart) then
     ! do this section to restart the run
 
 
-    !if( myid == 0 ) then
-    !    write(GP_print_unit,'(/A/)') &
-    !          'gpf: RESTART  call read_all_summary_file '
-    !endif
-
     call read_all_summary_file( i_GP_generation )
 
     call MPI_BARRIER( MPI_COMM_WORLD, ierr )
-
-    !if( myid == 0 ) then
-    !    write(GP_print_unit,'(/A/)') &
-    !          'gpf: RESTART  AFTER  call read_all_summary_file '
-    !endif
 
     GP_Child_Population_Node_Type = GP_Adult_Population_Node_Type
     GP_Child_Population_SSE       = GP_Adult_Population_SSE   ! needed ??
@@ -82,11 +67,6 @@ else
 
         if( myid ==0) then
 
-            !write(GP_print_unit,'(/A,1x,I6)') &
-            !'gpf: call GP_Tree_Build        Generation =',i_GP_Generation
-
-
-            flush(GP_print_unit)
 
             ! set
             ! GP_Adult_Population_Node_Type array with random trees
@@ -96,11 +76,6 @@ else
 
             call GP_Tree_Build( ierror_tb )
 
-            !write(GP_print_unit,'(/A,1x,I6)') &
-            ! 'gpf: AFT call GP_Tree_Build        Generation =',i_GP_Generation
-
-
-            !flush(GP_print_unit)
 
         endif ! myid == 0
 
@@ -155,15 +130,6 @@ if( trim(model) == 'fasham_CDOM' )then
 
     return
 endif
-
-!---------------------------------------------------------------------------
-
-!if( myid == 0 ) then
-!    write(GP_print_unit,'(/A,1x,I6)') &
-!      'gpf: return'
-!    flush(GP_print_unit)
-!endif
-
 
 
 return

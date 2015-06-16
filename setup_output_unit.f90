@@ -11,6 +11,7 @@ use GA_Parameters_module
 
 if( myid == 0 )then
 
+
     ! open output units
 
     if( L_unit50_output )then
@@ -18,6 +19,7 @@ if( myid == 0 )then
               form = 'unformatted', access='sequential', &
               status = 'unknown' )
     endif ! L_unit50_output
+
 
 
     if( L_GPSSE_log )then
@@ -32,17 +34,23 @@ if( myid == 0 )then
 
     endif ! L_GPSSE_log
 
+
+
     if( L_GP_log )then
         open( GP_log_unit, file = 'GP_log', &
               form = 'unformatted', access='sequential', &
               status = 'unknown' )
     endif ! L_GP_log
 
+
+
     if( L_GA_log )then
         open( GA_log_unit, file = 'GA_log', &
               form = 'unformatted', access='sequential', &
               status = 'unknown' )
     endif ! L_GA_log
+
+
 
     if( L_fort333_output )then
 
@@ -54,6 +62,8 @@ if( myid == 0 )then
 
     endif ! L_fort333_output
 
+
+
     if( L_fort555_output )then
         open( GA_555_unit, file = 'GA_555', &
               form = 'unformatted', access='sequential', &
@@ -64,10 +74,14 @@ if( myid == 0 )then
 
     endif ! L_fort555_output
 
+
+
 endif !   myid == 0
 
 
+
 ! calculate the generation interval for printing the list of children
+
 
 GA_child_print_interval = n_GA_generations /  number_GA_child_prints
 

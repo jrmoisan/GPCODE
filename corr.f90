@@ -1,5 +1,5 @@
-      SUBROUTINE CORR(X,Y,N,IWRITE,C , &
-                   dt, sse_min_time, sse_max_time, sse_low_wt  ) 
+SUBROUTINE CORR( X,Y,N,IWRITE,C , &
+                 dt, sse_min_time, sse_max_time, sse_low_wt  ) 
 !                                                                       
 !     PURPOSE--THIS SUBROUTINE COMPUTES THE                             
 !              SAMPLE CORRELATION COEFFICIENT                           
@@ -109,8 +109,18 @@ integer(kind=i4b) :: I
       C=0.0d0 
 
       IFLAG=0 
-      IF(N.LT.1)GO TO 50 
-      IF(N.EQ.1)GO TO 55 
+      IF( N .LT. 1 )then
+          WRITE(IPR,25) 
+          write(ipr,'(A)') 'The third argument is the number of points = dimension of the input array'
+          WRITE(IPR,47)N 
+          RETURN 
+      endif !(N.LT.1)
+
+      if( N .EQ. 1 )then
+          WRITE(IPR,28) 
+          RETURN 
+      endif ! N.EQ.1
+
       HOLD=X(1) 
       DO  60 I=2,N 
           IF(X(I).NE.HOLD)GO TO 65 
@@ -129,14 +139,6 @@ integer(kind=i4b) :: I
       IFLAG=1 
    80 IF(IFLAG.EQ.1)RETURN 
 
-      GO TO 90 
-   50 WRITE(IPR,25) 
-      write(ipr,'(A)') 'The third argument is the number of points = dimension of the input array'
-      WRITE(IPR,47)N 
-      RETURN 
-
-   55 WRITE(IPR,28) 
-      RETURN 
 
    90 CONTINUE 
 
@@ -192,5 +194,7 @@ integer(kind=i4b) :: I
   205 FORMAT(1x, &
        'THE LINEAR        CORRELATION COEFFICIENT OF THE 2 SETS OF ', &
              I6,' OBSERVATIONS IS ',F14.5)                            
+
       RETURN 
+
       END                                           

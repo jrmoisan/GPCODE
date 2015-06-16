@@ -1,5 +1,5 @@
 subroutine lmdif ( fcn, m, n, x, fvec, ftol, xtol, gtol, maxfev, epsfcn, &
-  diag, mode, factor, nprint, info, nfev, fjac, ldfjac, ipvt, qtf ) !, iunit ) ! 20131209
+  diag, mode, factor, nprint, info, nfev, fjac, ldfjac, ipvt, qtf )
 
 !*****************************************************************************80
 !
@@ -151,7 +151,6 @@ use kinds_mod
 
   implicit none
 
-  !integer(kind=i4b),intent(in) ::  iunit   ! jjm
 
   integer(kind=i4b) ldfjac
   integer(kind=i4b) m

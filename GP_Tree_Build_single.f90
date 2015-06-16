@@ -29,13 +29,10 @@ integer(kind=i4b) :: n_parms_per_tree
 
 
 real(kind=r4b),parameter :: prob_choose_forcing_type = 0.25
-!integer(kind=i4b) :: iforce
-!integer(kind=i4b) :: n_trees_made
 
 !-----------------------------------------------------------------------------
 
 ! do the tree build for only one individual
-
 
 
 GP_Child_Population_Node_Type(:,:,i_GP_Individual) =-9999 ! set all to null [-9999]
@@ -263,8 +260,6 @@ enddo !  i_Tree
 
 !---------------------------------------------------------------------------------
 
-!write(6,'(/A,2(1x,I6))') &
-!  'gtbs: call GP_Check_Error in GP_Tree_Build_single n_nodes, n_trees', n_nodes, n_trees
 
 call GP_Check_Terminals(&
      GP_Child_Population_Node_Type( 1, 1, i_GP_Individual), n_Nodes, n_Trees, i_Error )

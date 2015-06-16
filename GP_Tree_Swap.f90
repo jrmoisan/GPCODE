@@ -29,7 +29,6 @@ integer(kind=i4b) :: j_Node
 integer(kind=i4b) :: k_Node
 integer(kind=i4b) :: i_Node_Count
 integer(kind=i4b) :: i
-!integer(kind=i4b) :: kk
 integer(kind=i4b) :: icnt
 integer(kind=i4b) :: icff
 integer(kind=i4b) :: icnt_parent_one_nodes
@@ -556,4 +555,3 @@ return
 
 
 end subroutine GP_Tree_Swap
-

@@ -36,8 +36,6 @@ integer(kind=i4b) :: i_safe
 integer(kind=i4b) :: i_safe_max
 
 
-!character(1) ::  symbol
-
 !----------------------------------------------------------------------------------
 
 
@@ -233,6 +231,7 @@ do
 
     endif
 
+    !-----------------------------------------------------------------------------------
 
     call GP_Tree_Swap    !   perform the random tree swap
 
@@ -247,8 +246,8 @@ do
 
     if( i_Error .eq. 1) then
 
-    !  if you found an error in the tree, reset i_GP_Crossover
-    !  and try making a new tree and with a new random i_GP_Individual
+        !  if you found an error in the tree, reset i_GP_Crossover
+        !  and try making a new tree and with a new random i_GP_Individual
 
         write(6,'(/A/)')&
               'gptssr: ERROR: i_Error = 1 so subtract 1 &

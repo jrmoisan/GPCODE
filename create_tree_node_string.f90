@@ -27,6 +27,7 @@ integer(kind=i4b) :: jj
 
 !----------------------------------------------------------------------------------------
 
+! create string for the node header in print_tree
 
 tree_node_string = ''
 

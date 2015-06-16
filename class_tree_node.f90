@@ -72,8 +72,7 @@ contains
 
     subroutine Tree_Node_Delete(this)
         class(Tree_Node), intent(inout) :: this
-        !!call this%delete()                 ! jjm 20140207
-        !write(*,*) 'Tree_Node_Delete'
+        
     end subroutine Tree_Node_Delete
 
 
@@ -82,20 +81,13 @@ contains
         call this%left%delete()
         call this%right%delete()
         deallocate(this%left, this%right)
-        !write(*,*) 'Tree_Math_Node_Delete'
+       
     end subroutine Tree_Math_Node_Delete
 
 
     !---------------------------------------------------------------------
     ! Value methods
     !---------------------------------------------------------------------
-
-!    function Tree_Node_Val(this) result(v)
-!        use kinds_mod
-!        class(Tree_Node), intent(in) :: this
-!        real(kind=r8b) :: v
-!        v = 0.D+0
-!    end function Tree_Node_Val
 
 
     recursive function Tree_Math_Node_Val(this) result(v)
@@ -107,7 +99,6 @@ contains
 
         v = math_funcs( this%operation )%f( this%left%val(), this%right%val() )
 
-        !write(6,'(A,1x,I6,1x,E24.16)')     'tMnv: this%operation, v', this%operation, v
 
     end function Tree_Math_Node_Val
 
@@ -119,7 +110,6 @@ contains
 
         v = this%param
 
-        !write(6,'(A,1x,E24.16)')  'tPnv: parm       = ', v
 
     end function Tree_Parameter_Node_Val
 
@@ -134,7 +124,6 @@ contains
 
         v_index = this%variable_index
  
-        !write(6,'(A,1x,I6,1x,E24.16)')     'tVnv: v_index, v', v_index,  v
 
     end function Tree_Variable_Node_Val
 
@@ -181,7 +170,7 @@ contains
 
     subroutine Tree_Node_Get_Pointers(this, pointers, pointer_count, index)
         use kinds_mod
-       !class(Tree_Node), intent(inout)        :: this   ! orig 
+       
         class(Tree_Node), intent(inout),target :: this   ! jjm
         integer(kind=i4b), intent(in) :: pointer_count
         class(Tree_Node_Pointer), dimension(pointer_count) :: pointers
@@ -193,13 +182,13 @@ contains
             pointers(index)%n => a
         endselect
         index = index + 1
-        !write(*,*)'Tree_Node_Get_Pointers: index = ', index
+      
     end subroutine Tree_Node_Get_Pointers
 
 
     subroutine Tree_Math_Node_Get_Pointers(this, pointers, pointer_count, index)
         use kinds_mod
-       !class(Tree_Node), intent(inout)        :: this  ! orig 
+     
         class(Tree_Node), intent(inout),target :: this  ! jjm
         integer(kind=i4b), intent(in) :: pointer_count
         class(Tree_Node_Pointer), dimension(pointer_count) :: pointers
@@ -211,9 +200,10 @@ contains
             pointers(index)%n => a
         endselect
         index = index + 1
-        !write(*,*)'Tree_Math_Node_Get_Pointers: index = ', index
+    
         call this%left%GetNodePointers( pointers, pointer_count, index)
         call this%right%GetNodePointers(pointers, pointer_count, index)
+
     end subroutine Tree_Math_Node_Get_Pointers
 
 
@@ -262,7 +252,6 @@ contains
 
     subroutine Tree_Node_Swap(this, node)
         use kinds_mod
-        !orig class(Tree_Node), intent(inout) :: this, node
         class(Tree_Node), intent(inout),target :: this, node   ! jjm
         type(Tree_Node), pointer :: tmp
         integer(kind=i4b) :: ct_diff
@@ -270,7 +259,6 @@ contains
         type(Tree_Node), pointer       :: a   !jjm
         type(Tree_Node), pointer       :: b   !jjm
 
-        !write(*,*) 'Tree_Node_Swap: '
 
         select type(a => this)
             type is (Tree_Node)

@@ -132,16 +132,6 @@ deallocate( kval )
 deallocate( btmp )
 deallocate( fbio )
 
-!if( L_print_equations )then                                                                                 
-!    deallocate( bioflo_string  )
-!    deallocate( node_type_string )
-!    deallocate( node_parameters_string )
-!    deallocate( tree_evaluation_string )
-!    deallocate( tree_value_string )
-!endif ! L_print_equations                
-
-
-
 
 deallocate( Node_Probability )
 

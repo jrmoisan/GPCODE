@@ -23,7 +23,6 @@ use GP_variables_module
 implicit none
 
 integer(kind=i4b) :: i_code_eq
-!integer(kind=i4b) :: i
 integer(kind=i4b) :: istat
 
 integer(kind=i4b),intent(in)  :: i_GP_Generation
@@ -35,13 +34,10 @@ integer(kind=i4b) :: i_Node
 
 logical :: Lprint
 
-!character(2) :: arrow1
-!character(2) :: arrow2
 character(200) :: Aline
 
 !-------------------------------------------------------------------------------
 
-!write(6,'(/A/)')'rasf: at entry'
 
 !---------------------------------------------------
 ! assume this subroutine is called by all processes. W.J noted
@@ -57,12 +53,9 @@ open( GP_restart_file_input_unit, file='GP_restart_file', &
       form = 'formatted', access = 'sequential', &
       status = 'old' )
 
-!write(6,'(A)')'rasf: after open of GP_restart_file'
-!flush(6)
 
 ! set Lprint so printing is done only under the conditions in the if-test
 
-!Lprint = .TRUE.   ! debug only
 Lprint = .FALSE.
 
 if( i_GP_generation == 1                                  .or. &
@@ -87,20 +80,10 @@ do
 
     if( istat /= 0 ) exit readloop
 
-    !write(6,'(A,6(1x,I6))') &
-    ! 'rasf: i_GP_Gen, i_GP_indiv, n_code_equations, n_trees, n_nodes, n_levels', &
-    !        i_GP_Gen, i_GP_indiv, n_code_equations, n_trees, n_nodes, n_levels
 
     !---------------------------------------------------------------------------
 
     ! read initial conditions
-
-
-    !if( Lprint )then
-    !    write(GP_print_unit,'(/A)')&
-    !      'rasf: i_GP_gen  i_GP_indiv  i_code_eq  &
-    !            &GP_Pop_Init_Cond(i_code_eq, i_GP_Indiv) '
-    !endif ! Lprint
 
     do
 
@@ -110,20 +93,12 @@ do
             exit readloop
         endif ! istat /=0
 
-        !write(6,'(A,1x,A)')'rasf: Aline: ', trim(Aline)
 
         if( Aline(1:2) == '> '   ) exit
 
         read(Aline, *)&
              i_GP_Gen, i_GP_indiv, i_code_eq, &
              GP_Population_Initial_Conditions( i_code_eq, i_GP_indiv )
-
-
-        !write(6,'(A,3(1x,I6),1x,E15.7)') &
-        !   'rasf: i_GP_Gen, i_GP_indiv, i_code_eq, &
-        !    &GP_Population_Initial_Conditions(i_code_eq,i_GP_indiv)', &
-        !          i_GP_Gen, i_GP_indiv, i_code_eq, &
-        !     GP_Population_Initial_Conditions(i_code_eq,i_GP_indiv)
 
 
     enddo  ! i
@@ -143,19 +118,12 @@ do
             exit readloop
         endif ! istat /=0
 
-        !write(6,'(A,1x,A)')'rasf: Aline: ', trim(Aline)
 
         if( Aline(1:2) == '> '   ) exit
 
         read(Aline, * ) &
              i_GP_Gen, i_GP_indiv,i_tree, i_node, &
              GP_Adult_Population_Node_Type(i_Node,i_Tree,i_GP_indiv)
-
-        !write(6,'(A,5(1x,I6))') &
-        !   'rasf:i_GP_Gen,i_GP_indiv,i_tree,i_node,&
-        !    &GP_Adult_Population_Node_Type(i_Node,i_Tree,i_GP_indiv)',&
-        !         i_GP_Gen,i_GP_indiv,i_tree,i_node,&
-        !     GP_Adult_Population_Node_Type(i_Node,i_Tree,i_GP_indiv)
 
     enddo
 
@@ -173,7 +141,6 @@ do
             exit readloop
         endif ! istat /=0
 
-        !write(6,'(A,1x,A)')'rasf: Aline: ', trim(Aline)
 
 
         if( Aline(1:2) == '>>' ) exit
@@ -183,12 +150,6 @@ do
               GP_population_node_parameters( i_node,i_tree, i_GP_indiv)
 
 
-
-        !write(6,'(A,4(1x,I4),1x,E15.7)') &
-        !  'rasf: i_GP_Gen, i_GP_indiv, i_tree, i_node, &
-        !         &GP_population_node_parameters( i_node,i_tree, i_GP_indiv)', &
-        !         i_GP_Gen, i_GP_indiv, i_tree, i_node, &
-        !          GP_population_node_parameters( i_node,i_tree, i_GP_indiv)
 
         !-----------------------------------------------------------------------
         ! add this so that if the restart file has more individuals than the 
@@ -209,7 +170,6 @@ enddo readloop
 
 close( GP_restart_file_input_unit  )
 
-!write(6,'(A/)')'rasf: at return'
 
 return
 

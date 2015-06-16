@@ -26,7 +26,6 @@ integer(kind=i4b) :: icff
 integer(kind=i4b) :: i_tree
 integer(kind=i4b) :: i_node
 
-!integer(kind=i4b) :: i_parm
 integer(kind=i4b) :: jj
 
 real(kind=r8b),allocatable, dimension(:,:,:) :: &
@@ -188,10 +187,6 @@ enddo ! i_GP_individual
 !-------------------------------------------------------------------------------
 !-------------------------------------------------------------------------------
 
-
-! GP_Population_Initial_Conditions(1:n_CODE_Equations, 1:n_GP_Individuals )
-
-!-------------------------------------------------------------------------------
 
 ! sort the GP_population_initial_conditions
 

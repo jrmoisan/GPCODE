@@ -33,7 +33,6 @@ if( myid == 0 )then
     write(6,'(A,1x,I6)') 'allo: n_trees          = ', n_trees
     write(6,'(A,1x,I6)') 'allo: n_levels         = ', n_levels
     write(6,'(A,1x,I6/)')'allo: n_Tracked_Resources', n_Tracked_Resources
-    !flush(6)
 endif ! myid == 0
 
 
@@ -154,14 +153,6 @@ allocate( fbio( n_CODE_equations) )
 if( n_input_vars > 0 )then
     allocate( RK_data_array( 1:n_input_vars ) )
 endif
-
-!if( L_print_equations )then
-!    allocate( bioflo_string(0:n_CODE_equations,0:n_CODE_equations) )
-!    allocate( node_type_string( n_nodes, n_trees ) )
-!    allocate( node_parameters_string( n_nodes, n_trees ) )
-!    allocate( tree_evaluation_string( n_nodes, n_trees ) )
-!    allocate( tree_value_string( n_trees ) )
-!endif ! L_print_equations
 
 
 allocate( Node_Probability( n_levels ) )

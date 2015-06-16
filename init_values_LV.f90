@@ -301,16 +301,16 @@ if( LV_model1 )then
 
     Truth_Node_Parameters(2,1)  = 0.4d0  ! [0.04, 0.4; prey growth rate [d-1]
     Truth_Node_Parameters(2,4)  = 0.02d0 ! [0.0005, 0.02; predator biomass-specific feeding rate [d-1]
-    Truth_Node_Parameters(4,5)  = 0.6d0 ! [0.1, 0.6; predator biomass-specific mortality rate [d-1]
-    Truth_Node_Parameters(12,5) = 0.5d0 ! [0.2, 0.5; predator assimilation efficiency [fraction 0<==>1]
+    Truth_Node_Parameters(4,5)  = 0.6d0  ! [0.1, 0.6; predator biomass-specific mortality rate [d-1]
+    Truth_Node_Parameters(12,5) = 0.5d0  ! [0.2, 0.5; predator assimilation efficiency [fraction 0<==>1]
     Truth_Node_Parameters(14,5) = 0.02d0 ! [0.0005, 0.02; predator biomass-specific feeding rate [d-1]
 
 else
 
-    Truth_Node_Parameters(2,1)  = 5.599795d0  ! 0.4    ! [0.04, 0.4; prey growth rate [d-1]
-    Truth_Node_Parameters(2,4)  = 1.56521d0 !0.02! predator biomass-specific feeding rate [d-1]
-    Truth_Node_Parameters(4,5)  = 0.8346865d-06 !0.6![ predator biomass-specific mortality rate [d-1]
-    Truth_Node_Parameters(12,5) = 0.2416847d+01 ! 0.5 predator assimilation efficiency [fraction 0<==>1]
+    Truth_Node_Parameters(2,1)  = 5.599795d0     ! 0.4    ! [0.04, 0.4; prey growth rate [d-1]
+    Truth_Node_Parameters(2,4)  = 1.56521d0      ! 0.02! predator biomass-specific feeding rate [d-1]
+    Truth_Node_Parameters(4,5)  = 0.8346865d-06  ! 0.6![ predator biomass-specific mortality rate [d-1]
+    Truth_Node_Parameters(12,5) = 0.2416847d+01  ! 0.5 predator assimilation efficiency [fraction 0<==>1]
     Truth_Node_Parameters(14,5) = 0.2585400D+00  ! 0.02  ! predator biomass-specific feeding rate [d-1]
 
 endif  ! LV_model1

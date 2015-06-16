@@ -50,4 +50,4 @@ subroutine setup_math_functions()
 
     math_funcs(ExponentialRightMinus)%f => f_ExponentialRightMinus 
 
-end subroutine
+end subroutine setup_math_functions
