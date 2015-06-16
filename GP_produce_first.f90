@@ -88,7 +88,6 @@ else
 
             flush(GP_print_unit)
 
-             flush(GP_print_unit)
             ! set
             ! GP_Adult_Population_Node_Type array with random trees
             ! GP_Child_Population_Node_Type = Adult

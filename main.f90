@@ -350,16 +350,13 @@ endif ! myid == 0
     ! randomly create the initial tree arrays for each individual and
     ! send them all to GA_lmdif for parameter optimization on generation 1
 
-    !write(GP_print_unit,'(/A,1x,I6/)') &
-    !              '0: call GP_produce_first'
-    !flush(GP_print_unit)
+    !if( myid == 0 ) then
+    !    write(GP_print_unit,'(/A,1x,I6)') &
+    !                  '0: call GP_produce_first'
+    !    flush(GP_print_unit)
+    !endif ! myid == 0
 
     call GP_produce_first(i_GP_generation)
-
-    !write(GP_print_unit,'(/A,1x,I6/)') &
-    !              '0: call GP_produce_next'
-    !flush(GP_print_unit)
-
 
     !if( myid == 0 ) then
     !    write(GP_print_unit,'(/A,1x,I6)') &
@@ -517,10 +514,10 @@ endif ! myid == 0
 
     if( L_GP_all_summary .and. myid == 0 )then
 
-        write(6,'(/A,5x,L1,2x,I5)')  &
-              '0: L_GP_all_summary, GP_all_summary_flag', &
-                  L_GP_all_summary, GP_all_summary_flag
-        flush(6)
+        !write(6,'(/A,5x,L1,2x,I5)')  &
+        !      '0: L_GP_all_summary, GP_all_summary_flag', &
+        !          L_GP_all_summary, GP_all_summary_flag
+        !flush(6)
 
         !----------------------------------------------------------------------------
 
