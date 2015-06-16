@@ -14,7 +14,7 @@ implicit none
 
 real(kind=r4b) :: cff
 
-integer(kind=i4b) :: i
+!integer(kind=i4b) :: i
 integer(kind=i4b) :: icff
 integer(kind=i4b) :: i_GP_individual
 integer(kind=i4b) :: j_GP_Individual

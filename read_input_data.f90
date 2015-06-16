@@ -26,11 +26,12 @@ real(kind=r8b), allocatable, dimension(:) ::  temp_array
 
 !-------------------------------------------------------------------------------
 
+!write(6,'(//A,1x,I10/)') 'rid:  n_input_vars = ', n_input_vars
 
 
-   if( n_input_vars <= 0 ) return
+if( n_input_vars <= 0 ) return
 
-   open( unit = data_unitnum, file = 'GPGACODE_data', form = 'formatted',&
+open( unit = data_unitnum, file = 'GPGACODE_data', form = 'formatted',&
         status = 'old' )
 
 ! count number of data points

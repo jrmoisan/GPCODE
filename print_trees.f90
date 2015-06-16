@@ -52,7 +52,7 @@ integer(kind=i4b) :: i_Tree
 integer(kind=i4b) :: i_node
 integer(kind=i4b) :: i_gen
 integer(kind=i4b) :: i
-integer(kind=i4b) :: jj
+!integer(kind=i4b) :: jj
 
 integer(kind=i4b) :: nodes_filled
 integer(kind=i4b) :: isub1         

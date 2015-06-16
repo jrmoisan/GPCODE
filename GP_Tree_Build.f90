@@ -30,8 +30,8 @@ integer(kind=i4b) :: n_parms_per_tree
 
 
 real(kind=r4b),parameter :: prob_choose_forcing_type = 0.25
-integer(kind=i4b) :: iforce
-integer(kind=i4b) :: n_trees_made
+!integer(kind=i4b) :: iforce
+!integer(kind=i4b) :: n_trees_made
 
 !-----------------------------------------------------------------------------
 
@@ -234,6 +234,7 @@ do  i_GP_Individual=1,n_GP_Individuals
 
 
                         GP_Child_Population_Node_Type(i_Node,i_Tree,i_GP_Individual) = 0
+
                         n_parms = n_parms + 1
                         n_parms_per_tree = n_parms_per_tree + 1
 
@@ -251,6 +252,29 @@ do  i_GP_Individual=1,n_GP_Individuals
         enddo level_loop2 !  i_Level
 
     enddo !  i_Tree
+
+
+    !------------------------------------------------------------------------
+
+    !write(GP_print_unit,'(/A,3(1x,I6))') &
+    !      'gtb:2 i_GP_individual, n_trees, n_nodes ',  i_GP_individual, n_trees, n_nodes
+
+    !write(GP_print_unit,'(A)') &
+    !      'gtb: i_tree, i_node, &
+    !              &GP_Child_Population_Node_Type( i_Node,i_Tree,i_GP_Individual)'
+    !do  i_Tree=1,n_Trees
+    !    do  i_Node=1,n_Nodes
+    !        if( GP_Child_Population_Node_Type( i_Node,i_Tree,i_GP_Individual) /= -9999 )then
+    !            write(GP_print_unit,'(3(1x,I8))') &
+    !                i_tree, i_node, GP_Child_Population_Node_Type( i_Node,i_Tree,i_GP_Individual)
+    !        endif ! GP_Child_Population_Node_Type(i_Node,i_Tree,i_GP_Individual) /= -9999
+    !    enddo ! i_node
+    !enddo ! i_tree
+    !write(GP_print_unit,'(/A)') ' '
+
+
+    !---------------------------------------------------------------------------------
+
 
     call GP_Check_Terminals(&
          GP_Child_Population_Node_Type( 1, 1, i_GP_Individual),n_Nodes,n_Trees , i_Error )

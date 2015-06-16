@@ -106,7 +106,7 @@ do  i_data_point = 1, n_input_data_points
     !call DoForcing(btmp, Runge_Kutta_Time_Step(iter), i_data_point)
 
 
-    !!!! Call Model_Diagnostics()
+    !!!! call Model_Diagnostics()
 
 
     if( associated( GP_Trees(i_Tree, i_Track)%n) ) then

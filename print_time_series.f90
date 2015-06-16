@@ -37,7 +37,7 @@ integer(kind=i4b) :: i_node
 integer(kind=i4b) :: ii
 integer(kind=i4b) :: i
 integer(kind=i4b) :: j
-integer(kind=i4b) :: jj
+!integer(kind=i4b) :: jj
 
 
 
@@ -85,7 +85,7 @@ logical :: L_myprint
 
    write(GP_print_unit,'(/A,2(1x,I6)/)') 'pts: i_GP_generation', i_GP_generation 
 
-   !L_myprint = .TRUE. ! .FALSE.             
+   !!!L_myprint = .TRUE. ! .FALSE.             
    L_myprint = .FALSE.
    if( i_GP_generation == 0 )then
       L_myprint = .TRUE.
@@ -410,26 +410,26 @@ if( myid == 0 )then
     if( L_myprint )then
 
 
-    ! print results
-
-    do  j = 1, n_code_equations
-
-        write(GP_print_unit, '(/A)') &
-              'pts: i_code_eq           mean            rms             &
-              &stddev            min            max'
-        write(GP_print_unit, '(A,1x,I2, 5(1x,E15.7))') &
-              'pts: RK_Soln', &
-              j, RKmean(j), RKrms(j), RKstddev(j), RK_min(j), RK_max(j)
-        write(GP_print_unit, '(A,1x,I2, 5(1x,E15.7))') &
-              'pts: data   ', &
-              j, data_mean(j), data_rms(j), data_stddev(j), data_min(j), data_max(j)
-        write(GP_print_unit, '(A,1x,I2, 5(1x,E15.7)/)') &
-              'pts: resid  ', &
-              j, resid_mean(j), resid_rms(j), resid_stddev(j), resid_min(j), resid_max(j)
-        write(GP_print_unit, '(A,1x,I2, 5(1x,E15.7))') &
-              'pts: corr coef. ', j, r_corr(j)
-
-    enddo ! j
+        ! print results
+    
+        do  j = 1, n_code_equations
+    
+            write(GP_print_unit, '(/A)') &
+                  'pts: i_code_eq           mean            rms             &
+                  &stddev            min            max'
+            write(GP_print_unit, '(A,1x,I2, 5(1x,E15.7))') &
+                  'pts: RK_Soln', &
+                  j, RKmean(j), RKrms(j), RKstddev(j), RK_min(j), RK_max(j)
+            write(GP_print_unit, '(A,1x,I2, 5(1x,E15.7))') &
+                  'pts: data   ', &
+                  j, data_mean(j), data_rms(j), data_stddev(j), data_min(j), data_max(j)
+            write(GP_print_unit, '(A,1x,I2, 5(1x,E15.7)/)') &
+                  'pts: resid  ', &
+                  j, resid_mean(j), resid_rms(j), resid_stddev(j), resid_min(j), resid_max(j)
+            write(GP_print_unit, '(A,1x,I2, 5(1x,E15.7))') &
+                  'pts: corr coef. ', j, r_corr(j)
+    
+        enddo ! j
 
         write(GP_print_unit, '(/A,1x,E15.7)') 'pts: y_min', y_min
         write(GP_print_unit, '(A,1x,E15.7/)') 'pts: y_max', y_max

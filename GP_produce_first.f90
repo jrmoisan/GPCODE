@@ -18,9 +18,9 @@ integer(kind=i4b),intent(in) :: i_GP_generation
 integer :: message_len,ierror_tb
 
 
-!---------------------------------------------------------------------------------
+!-------------------------------------------------------------------------------
  
-   if(i_GP_generation > 1) return
+if(i_GP_generation > 1) return
 
    ierror_tb = 0
 
@@ -29,56 +29,64 @@ integer :: message_len,ierror_tb
 
    Run_GP_Calculate_Fitness=.true.
 
-   if( trim(model) == 'fasham_CDOM' )then
+!----------------------------------------------------------------------------
 
-     ! fasham CDOM
-     ! set
-
-     ! GP_Adult_Population_Node_Type(:,:,:)
-     ! GP_Population_Node_parameters(:,:,:)
-
-      GP_Adult_Population_Node_Type(:,:,1)=GP_Individual_Node_Type(:,:)
-      GP_Population_Node_Parameters(:,:,1)=GP_Individual_Node_Parameters(:,:)
-      GP_Child_Population_Node_Type=GP_Adult_Population_Node_Type
-
-      return
-   endif
-
-   !---------------------------------------------------------------------------------
+!if( myid == 0 ) then
+!    write(GP_print_unit,'(/A,5x,l1/)') &
+!          'gpf: L_restart ', L_restart
+!endif
 
 
-   if( L_restart) then
+if( L_restart) then
 
-      if( myid == 0 ) then
-         write(GP_print_unit,'(/A/)') &
-              'gpf: call read_all_summary_file '
-      endif
-
-      call read_all_summary_file( i_GP_generation )
-
-      GP_Child_Population_Node_Type = GP_Adult_Population_Node_Type
-      GP_Child_Population_SSE       = GP_Adult_Population_SSE   ! needed ??
-
-   else
-
-   ! do this section if not restarting the run
+    ! do this section to restart the run
 
 
-      if( trim(model) == 'fasham_fixed_tree' )then
+    !if( myid == 0 ) then
+    !    write(GP_print_unit,'(/A/)') &
+    !          'gpf: RESTART  call read_all_summary_file '
+    !endif
 
-           ! fasham model
-           ! set
-           ! GP_Adult_Population_Node_Type(:,:,:)
-           ! GP_Population_Node_parameters(:,:,:)
+    call read_all_summary_file( i_GP_generation )
 
-            call fasham_model_debug()
+    call MPI_BARRIER( MPI_COMM_WORLD, ierr )
 
-      else
+    !if( myid == 0 ) then
+    !    write(GP_print_unit,'(/A/)') &
+    !          'gpf: RESTART  AFTER  call read_all_summary_file '
+    !endif
 
-         if( myid ==0) then
+    GP_Child_Population_Node_Type = GP_Adult_Population_Node_Type
+    GP_Child_Population_SSE       = GP_Adult_Population_SSE   ! needed ??
 
-             write(GP_print_unit,'(/A,1x,I6)') &
-                      'gpf: call GP_Tree_Build        Generation =',i_GP_Generation
+else
+
+    ! do this section if not restarting the run
+
+
+    if( trim(model) == 'fasham_fixed_tree' )then
+
+        ! fasham model
+        ! set
+        ! GP_Adult_Population_Node_Type(:,:,:)
+        ! GP_Population_Node_parameters(:,:,:)
+
+        if( myid == 0 ) then
+            write(GP_print_unit,'(/A/)') &
+                  'gpf: call fasham_model_debug    '
+        endif
+
+        call fasham_model_debug()
+
+    else
+
+        if( myid ==0) then
+
+            !write(GP_print_unit,'(/A,1x,I6)') &
+            !'gpf: call GP_Tree_Build        Generation =',i_GP_Generation
+
+
+            flush(GP_print_unit)
 
              flush(GP_print_unit)
             ! set
@@ -89,41 +97,74 @@ integer :: message_len,ierror_tb
 
             call GP_Tree_Build( ierror_tb )
 
-             write(GP_print_unit,'(/A,1x,I6)') &
-                      'gpf: AFT call GP_Tree_Build        Generation =',i_GP_Generation
-
-             flush(GP_print_unit)
-
-         endif ! myid == 0
+            !write(GP_print_unit,'(/A,1x,I6)') &
+            ! 'gpf: AFT call GP_Tree_Build        Generation =',i_GP_Generation
 
 
-         message_len =  1
-         call MPI_BCAST( ierror_tb, message_len,    &
+            !flush(GP_print_unit)
+
+        endif ! myid == 0
+
+
+        message_len =  1
+        call MPI_BCAST( ierror_tb, message_len,    &
                         MPI_INTEGER,  0, MPI_COMM_WORLD, ierr )
 
-         if( ierror_tb > 0 )then
-                call MPI_FINALIZE( ierr )
-                stop ' GP_produce_first,ierror_tb'
-         endif ! ierror_tb
+        if( ierror_tb > 0 )then
 
-         message_len = n_GP_Individuals * n_Nodes * n_Trees
-         call MPI_BCAST( GP_Adult_Population_Node_Type, message_len,    &
-                            MPI_INTEGER,  0, MPI_COMM_WORLD, ierr )
+            if( myid == 0 ) then
+                write(GP_print_unit,'(/A,1x,I6)') &
+                      'gpf: ierror_tb ', ierror_tb                                    
+            endif
 
-         GP_Child_Population_Node_Type =  GP_Adult_Population_Node_Type
+            call MPI_FINALIZE( ierr )
+            stop ' GP_produce_first,ierror_tb'
+        endif ! ierror_tb
+
+        message_len = n_GP_Individuals * n_Nodes * n_Trees
+        call MPI_BCAST( GP_Adult_Population_Node_Type, message_len,    &
+                           MPI_INTEGER,  0, MPI_COMM_WORLD, ierr )
+
+        GP_Child_Population_Node_Type =  GP_Adult_Population_Node_Type
 
 
-      endif !  trim(model) == 'fasham_fixed_tree'
+    endif !  trim(model) == 'fasham_fixed_tree'
 
-   endif ! L_restart
+endif ! L_restart
 
 L_restart = .false.
 
+
+ierror_tb = 0
+
+! determines if the new GP child
+! has to be sent to GA_lmdif for parameter optimization
+
+Run_GP_Calculate_Fitness=.true.   ! jjm 20150607
+
+if( trim(model) == 'fasham_CDOM' )then
+
+    ! fasham CDOM
+    ! set
+  
+    ! GP_Adult_Population_Node_Type(:,:,:)
+    ! GP_Population_Node_parameters(:,:,:)
+
+    GP_Adult_Population_Node_Type(:,:,1)=GP_Individual_Node_Type(:,:)
+    GP_Population_Node_Parameters(:,:,1)=GP_Individual_Node_Parameters(:,:)
+    GP_Child_Population_Node_Type=GP_Adult_Population_Node_Type
+
+    return
+endif
+
 !---------------------------------------------------------------------------
 
-write(GP_print_unit,'(/A,1x,I6)') &
-      'gpf: return'
-flush(GP_print_unit)
+!if( myid == 0 ) then
+!    write(GP_print_unit,'(/A,1x,I6)') &
+!      'gpf: return'
+!    flush(GP_print_unit)
+!endif
+
 
 
 return

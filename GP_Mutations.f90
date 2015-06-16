@@ -37,11 +37,15 @@ integer(kind=i4b) :: i_GP_individual
 integer(kind=i4b) :: i_Error
 integer(kind=i4b) :: test_function_index
 
-logical Node_Not_Found
+logical :: Node_Not_Found
 
-character(200) :: tree_descrip
+!character(200) :: tree_descrip
 
-integer(kind=i4b) :: iforce                   
+!integer(kind=i4b) :: iforce                   
+
+
+!-------------------------------------------------------------------------------
+
 
 i_Error = 0
 Node_to_Mutate = 0
@@ -54,7 +58,6 @@ write(GP_print_unit,'(A,4(1x,I6))' ) &
   'gpmut: n_GP_Elites, n_GP_Asexual_Repro, n_GP_Cross, n_GP_Mut', &
           n_GP_Elitists, n_GP_Asexual_Reproductions, n_GP_Crossovers, n_GP_Mutations
 
-!--------------------------------------------------------------------------------
 
 ! if the cff < prob_no_elite (which is a small number) then the mutations are allowed
 ! on any individual,  
@@ -105,6 +108,9 @@ do  i_GP_Mutation = 1,n_GP_Mutations
          GP_Adult_Population_Node_Type(1:n_Nodes,1:n_Trees, i_GP_Individual_Mutation)
 
     !----------------------------------------------------------------------------------
+
+    !write(GP_print_unit,'(A,4(1x,I6))' ) &
+    !  'gpmut:1 n_nodes, n_trees ', n_nodes, n_trees
 
     call GP_Check_Terminals( &
          GP_Child_Population_Node_Type(1, 1, i_GP_Individual),n_Nodes,n_Trees , i_Error)
@@ -182,12 +188,12 @@ do  i_GP_Mutation = 1,n_GP_Mutations
 
         if( GP_Child_Population_Node_Type(Node_to_Mutate,i_Tree_Mutation,i_GP_Individual) <= 0 ) then
 
-            call random_number(cff)
+            !call random_number(cff)
             ! add by Weiyuan
 
-            if( cff .le. GP_Set_Terminal_to_Parameter_Probability ) then
+            !if( cff .le. GP_Set_Terminal_to_Parameter_Probability ) then
 
-                Node_variable= 0
+            !    Node_variable= 0
 
             !else    ! the code with this "else" is wrong since if cff < GP_set..., node is a variable
 
@@ -234,7 +240,9 @@ do  i_GP_Mutation = 1,n_GP_Mutations
      
                 endif ! model == 'fasham' 
 
-            endif !   cff .le. GP_Set_Terminal_to_Parameter_Probability 
+                !----------------------------------------------------------------------       
+
+            !endif !   cff .le. GP_Set_Terminal_to_Parameter_Probability 
 
 
             GP_Child_Population_Node_Type(Node_to_Mutate,i_Tree_Mutation,i_GP_Individual) = &
@@ -270,6 +278,9 @@ do  i_GP_Mutation = 1,n_GP_Mutations
 
     Run_GP_Calculate_Fitness(i_GP_Individual) = .true.
 
+
+    !write(GP_print_unit,'(A,4(1x,I6))' ) &
+    !  'gpmut:2 n_nodes, n_trees ', n_nodes, n_trees
 
     call GP_Check_Terminals( &
          GP_Child_Population_Node_Type(1,1, i_GP_Individual),n_Nodes,n_Trees, i_Error)

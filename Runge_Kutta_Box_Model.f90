@@ -36,7 +36,7 @@ real(kind=r8b) :: cff
 integer(kind=i4b) :: iter
 integer(kind=i4b) :: i_Time_Step, i_Track, i_Tree
 integer(kind=i4b) :: i_CODE_Equation, j_CODE_Equation, i_Variable
-integer(kind=i4b) :: i_node
+!integer(kind=i4b) :: i_node
 
 integer(kind=i4b) :: tree_node_count
 
@@ -87,6 +87,7 @@ do  i_Time_Step = 1, n_Time_Steps
             trim(model) == 'fasham_fixed_tree'      )then
 
             call DoForcing( btmp, Runge_Kutta_Time_Step(iter), i_Time_Step-1, L_bad_result )
+
             if( L_bad_result ) then
                 write(6,'(/A)') 'rkbm: bad result from DoForcing '
                 return

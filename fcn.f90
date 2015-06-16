@@ -32,14 +32,14 @@ real(kind=r8b) :: x( nn )
 
 real(kind=r8b) :: sse_local
 
-real(kind=r8b) :: min_x
+!real(kind=r8b) :: min_x
 real(kind=r8b) :: max_x
 
 integer(kind=i4b) :: iflag
 
 integer(kind=i4b) :: i_Tree
 integer(kind=i4b) :: i_Node
-integer(kind=i4b) :: ii
+!integer(kind=i4b) :: ii
 integer(kind=i4b) :: i
 integer(kind=i4b) :: tree_node_count
 
@@ -325,6 +325,7 @@ do  i = 1, n_trees
 enddo ! i 
 
 !---------------------------------------------------------------------------------
+!write(6,'(A,1x,E15.7)') 'fcn: sse_local_nolog10 ', sse_local_nolog10
 
 return
 

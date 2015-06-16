@@ -36,7 +36,7 @@ integer(kind=i4b) :: i_safe
 integer(kind=i4b) :: i_safe_max
 
 
-character(1) ::  symbol
+!character(1) ::  symbol
 
 !----------------------------------------------------------------------------------
 

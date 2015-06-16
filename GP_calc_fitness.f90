@@ -53,10 +53,10 @@ integer(kind=i4b) :: max_n_gp_parameters
 
 real(kind=r8b) ::  dff
 
-real(kind=r8b) ::  mean_fit
-real(kind=r8b) ::  rms_fit
-real(kind=r8b) ::  std_dev_fit
-real(kind=r8b) ::  sse_local      
+!real(kind=r8b) ::  mean_fit
+!real(kind=r8b) ::  rms_fit
+!real(kind=r8b) ::  std_dev_fit
+!real(kind=r8b) ::  sse_local      
 
 
 logical :: L_node_match
@@ -129,8 +129,6 @@ if( L_GPSSE_log )then
                   i_GP_generation, &
                   i_GP_Individual, GP_Child_Individual_SSE_nolog10(i_GP_Individual), &
                   GP_Child_Individual_SSE_nolog10(i_GP_Individual)/ SSE0_nolog10
-                  !i_GP_Individual, sse_local, &
-                  !sse_local / SSE0_nolog10
 
         enddo ! i_gp_individual
 
@@ -457,95 +455,105 @@ endif ! i_GP_generation == 1 .or. ...
 !
 !  compare the current models to the "truth" model
 
-!  set logical to .TRUE. if all nodes match the nodes in the truth model
-!  record relative differences in the parameters but do not include in the
-!  logical calculation
+!  execute only if L_truth_model is .TRUE.
+
+!  set logical Truth_Model_Match to .TRUE. 
+!  if all nodes match the nodes in the truth model
+!  record relative differences in the parameters 
+!  but do not include in the logical calculation
+
+if( L_truth_model                                        .and.  &
+    ( i_GP_generation == 1                                 .or. &
+    mod( i_GP_generation, GP_child_print_interval ) == 0   .or. &
+    i_GP_generation == n_GP_generations  )                        ) then
 
 
-write(GP_print_unit, '(/A,T89,A/)') &
-  'gpcf: i     GP_Pop_Initial_Cond   Truth_initial_cond        diff', 'Truth'
 
-do  i = 1, n_code_equations
+    write(GP_print_unit, '(/A,T89,A/)') &
+      'gpcf: i     GP_Pop_Initial_Cond   Truth_initial_cond        diff', 'Truth'
+    
+    do  i = 1, n_code_equations
+    
+        write(GP_print_unit, '(1x,I6,3(6x,E15.7),T89,A)') &
+              i, &
+              GP_Population_Initial_Conditions( i,i_GP_Best_Parent ), &
+              truth_initial_conditions(i), &
+              ( GP_Population_Initial_Conditions( i,i_GP_Best_Parent )  - &
+                                              truth_initial_conditions(i)   ), &
+              'Truth'
+    enddo ! i
+    
+    
+    node_match_count = 0
+    undefined_node_count = 0
+    Truth_Model_Match = .FALSE.
+    
+    write(GP_print_unit,'(/A,T89,A/)') &
+          'gpcf: i_tree  i_node   GP_pop_node_params   Truth_Node_Params        diff', 'Truth'
+    
+    
+    tree_loop2:&
+    do  i_tree=1,n_trees
+    
+        node_loop2:&
+        do  i_node=1,n_nodes
+    
+            !------------------------------------------------------------------------
+            if( GP_Adult_Population_Node_Type(i_Node,i_Tree,i_GP_Best_Parent) == -9999 )then
+    
+                undefined_node_count = undefined_node_count + 1
+    
+                if( Truth_Node_Type( i_Node,i_Tree ) == -9999   )then
+    
+                    cycle node_loop2
+    
+                endif ! Truth_Node_Type... == -9999...
+            endif ! GP_Adult_...Node_Type... == -9999...
+            !------------------------------------------------------------------------
+    
+            flag_string = ' '
+            L_node_match = &
+               ( GP_Adult_Population_Node_Type(i_Node,i_Tree,i_GP_Best_Parent) == &
+                                                     Truth_Node_Type( i_Node,i_Tree ) )
+    
+    
+            Truth_Model_Match = Truth_Model_Match .and.  L_node_match
+    
+    
+            if( L_node_match ) then
+                node_match_count =  node_match_count + 1
+                flag_string = 'node type match'
+            endif ! L_node_match
+    
+            if( GP_Adult_Population_Node_Type(i_Node,i_Tree,i_GP_Best_Parent) == 0 .or. &
+                Truth_Node_Type(i_Node,i_Tree) == 0                                 )then
+    
+                write(GP_print_unit,'(3x,2(1x,I6),3(6x,E15.7),T89,A,5x,A)') &
+                  i_tree, i_node, &
+                  GP_population_node_parameters(i_node,i_tree,i_GP_Best_Parent), &
+                  Truth_Node_Parameters(i_node,i_tree),  &
+                  ( GP_population_node_parameters(i_node,i_tree,i_GP_Best_Parent) -  &
+                                                  Truth_Node_Parameters(i_node,i_tree) ), &
+                  'Truth', trim(flag_string) 
+    
+            endif ! GP_Adult_Population_Node_Type(i_Node,i_Tree,i_GP_Best_Parent) == 0
+    
+        enddo node_loop2 ! i_node
+    
+    enddo tree_loop2 ! i_tree
+    
+    
+    write(GP_print_unit,'(/A,1x, i6,5x,L1, 1x,I6, T89,A)') &
+      'gpcf: i_gp_gen, Truth_Model_Match, node_match_count', &
+             i_gp_generation, &
+                       Truth_Model_Match, node_match_count, 'Truth'
+    
+    write(GP_print_unit,'(A,1x, 2(1x,I6),T89,A/)') &
+      'gpcf: total_nodes, undefined_nodes  ',     &
+         n_nodes*n_trees, undefined_node_count, 'Truth'
 
-    write(GP_print_unit, '(1x,I6,3(6x,E15.7),T89,A)') &
-          i, &
-          GP_Population_Initial_Conditions( i,i_GP_Best_Parent ), &
-          truth_initial_conditions(i), &
-          ( GP_Population_Initial_Conditions( i,i_GP_Best_Parent )  - &
-                                          truth_initial_conditions(i)   ), &
-          'Truth'
-enddo ! i
 
-
-node_match_count = 0
-undefined_node_count = 0
-Truth_Model_Match = .FALSE.
-
-write(GP_print_unit,'(/A,T89,A/)') &
-      'gpcf: i_tree  i_node   GP_pop_node_params   Truth_Node_Params        diff', 'Truth'
-
-
-tree_loop2:&
-do  i_tree=1,n_trees
-
-    node_loop2:&
-    do  i_node=1,n_nodes
-
-        !------------------------------------------------------------------------
-        if( GP_Adult_Population_Node_Type(i_Node,i_Tree,i_GP_Best_Parent) == -9999 )then
-
-            undefined_node_count = undefined_node_count + 1
-
-            if( Truth_Node_Type( i_Node,i_Tree ) == -9999   )then
-
-                cycle node_loop2
-
-            endif ! Truth_Node_Type... == -9999...
-        endif ! GP_Adult_...Node_Type... == -9999...
-        !------------------------------------------------------------------------
-
-        flag_string = ' '
-        L_node_match = &
-           ( GP_Adult_Population_Node_Type(i_Node,i_Tree,i_GP_Best_Parent) == &
-                                                 Truth_Node_Type( i_Node,i_Tree ) )
-
-
-        Truth_Model_Match = Truth_Model_Match .and.  L_node_match
-
-
-        if( L_node_match ) then
-            node_match_count =  node_match_count + 1
-            flag_string = 'node type match'
-        endif ! L_node_match
-
-        if( GP_Adult_Population_Node_Type(i_Node,i_Tree,i_GP_Best_Parent) == 0 .or. &
-            Truth_Node_Type(i_Node,i_Tree) == 0                                 )then
-
-            write(GP_print_unit,'(3x,2(1x,I6),3(6x,E15.7),T89,A,5x,A)') &
-              i_tree, i_node, &
-              GP_population_node_parameters(i_node,i_tree,i_GP_Best_Parent), &
-              Truth_Node_Parameters(i_node,i_tree),  &
-              ( GP_population_node_parameters(i_node,i_tree,i_GP_Best_Parent) -  &
-                                              Truth_Node_Parameters(i_node,i_tree) ), &
-              'Truth', trim(flag_string) 
-
-        endif ! GP_Adult_Population_Node_Type(i_Node,i_Tree,i_GP_Best_Parent) == 0
-
-    enddo node_loop2 ! i_node
-
-enddo tree_loop2 ! i_tree
-
-
-write(GP_print_unit,'(/A,1x, i6,5x,L1, 1x,I6, T89,A)') &
-  'gpcf: i_gp_gen, Truth_Model_Match, node_match_count', &
-         i_gp_generation, &
-                   Truth_Model_Match, node_match_count, 'Truth'
-
-write(GP_print_unit,'(A,1x, 2(1x,I6),T89,A/)') &
-  'gpcf: total_nodes, undefined_nodes  ',     &
-     n_nodes*n_trees, undefined_node_count, 'Truth'
-
-
+endif !  L_truth_model .and. ...
 
 
 GP_Adult_Population_SSE  =  GP_Child_Population_SSE

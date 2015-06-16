@@ -69,7 +69,7 @@ integer(kind=i4b) :: n_GP_Asexual_Reproductions
 integer(kind=i4b) :: n_GP_Crossovers
 integer(kind=i4b) :: n_GP_Mutations
 
-integer(kind=i4b) :: n_GP_rand_replaces
+integer(kind=i4b) :: n_GP_rand_recruits
 
 
 

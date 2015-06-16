@@ -34,8 +34,8 @@ contains
    function newFasham_CDOM_GP() result (fasham)
       type(fasham_CDOM_GP) :: fasham
 
-      integer(kind=i4b) :: i_Tree
-      integer(kind=i4b) :: i_Node
+      !integer(kind=i4b) :: i_Tree
+      !integer(kind=i4b) :: i_Node
       integer(kind=i4b) :: i
 
       n_CODE_equations =   1

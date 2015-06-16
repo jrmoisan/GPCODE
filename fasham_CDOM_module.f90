@@ -33,9 +33,9 @@ contains
    function newFasham_CDOM() result (fasham)
       type(fasham_CDOM) :: fasham
 
-      integer(kind=i4b) :: i_Tree
-      integer(kind=i4b) :: i_Node
-      integer(kind=i4b) :: i
+      !integer(kind=i4b) :: i_Tree
+      !integer(kind=i4b) :: i_Node
+      !integer(kind=i4b) :: i
 
       n_CODE_equations =   1
       n_variables = 1
@@ -138,9 +138,14 @@ contains
 
    end subroutine setTruth
 
+
    subroutine setModel(this)
+
       class(fasham_CDOM),intent(inout) :: this
-      integer :: i_CODE_Equation,i_Tree,i_Node
+
+      integer :: i_CODE_Equation
+      integer :: i_Tree
+      integer :: i_Node
 !------------------------------------------------------------------------------------------------
 !   FORCING  -5001  : max(d MLD/ dt,0)
 !            -5002  : MLD
