@@ -102,21 +102,25 @@ CFLAGS = -O
 #LIBS= -L/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.9.sdk/usr/lib \
 #      -L/Developer/SDKs/MacOSX10.6.sdk/usr/lib
 #
-#####################################################################################
+####################################################################################
 #FC = mpif90  #mpiifort
-FC = mpiifort
+#FC = mpiifort
+FC = ifort
 #FFLAGS = -O3  -free   -traceback #-warn all #-C -ftrapuv  # -warn all   # -ftrace=full    # -fzero -Wall
-#FFLAGS = -g   -free #-check bounds   #  -g -traceback  #-ftrapuv #-warn all #-C -ftrapuv  # -warn all   # -ftrace=full    # -fzero -Wall
-FFLAGS = -O3  -free  -assume realloc_lhs -mkl -heap-arrays  -check bounds  -g -traceback
+#FFLAGS = -O3  -free #-check bounds   #  -g -traceback  #-ftrapuv #-warn all #-C -ftrapuv  # -warn all   # -ftrace=full    # -fzero -Wall
+#FFLAGS =  -free -check bounds     -g -traceback  #-ftrapuv #-warn all #-C  # -ftrace=full    # -fzero -Wall
+FFLAGS = -O3  -free  -assume realloc_lhs -mkl -heap-arrays -g -traceback -check bounds
 #FFLAGS = -g  -free -traceback -debug all #-check bounds   #  -g -traceback  #-ftrapuv #-warn all #-C -ftrapuv  # -warn all   # -ftrace=full    # -fzero -Wall
 #F90 = mpif90  #mpiifort
-F90 = mpiifort
-#F90FLAGS = -O3  -free -traceback #-warn all #-C -ftrapuv  # -warn all   #  -ftrace=full    # -fzero -Wall
-#F90FLAGS = -O3  -free #-check bounds  #  -g -traceback  #-ftrapuv  #-warn all #-C -ftrapuv  # -warn all   #  -ftrace=full    # -fzero -Wall
-F90FLAGS = -O3  -free  -assume realloc_lhs -mkl -heap-arrays -check bounds  -g -traceback
+#F90 = mpiifort
+F90 = ifort
+#F90FLAGS = -O3  -free -traceback #-warn all #-C -ftrapuv  # -warn all   #  -ftrace=full    # -fzero -Wall 
+#F90FLAGS = -g  -free -check bounds   -traceback  #-ftrapuv  #-warn all #-C -ftrapuv  # -warn all   #  -ftrace=full    # -fzero -Wall
+F90FLAGS = -O3  -free  -assume realloc_lhs -mkl -heap-arrays -g -traceback -check bounds
 #F90FLAGS = -g  -free -traceback -debug all  #-check bounds  #  -g -traceback  #-ftrapuv  #-warn all #-C -ftrapuv  # -warn all   #  -ftrace=full    # -fzero -Wall
-LDFLAGS =
-#####################################################################################
+LDFLAGS = -lmpi
+####################################################################################
+
 
 
 
