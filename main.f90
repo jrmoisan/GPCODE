@@ -94,14 +94,23 @@ call MPI_INIT(ierr)
 call MPI_COMM_RANK(MPI_COMM_WORLD, myid, ierr)
 call MPI_COMM_SIZE(MPI_COMM_WORLD, numprocs, ierr)
 
+
 if( myid == 0 )then
 
+
+    write(6,'(/A)') '0: version 16 derived from version 15 '
+    write(6,'(A)')  '0: new compiler options  -assume realloc_lhs -mkl -heap-arrays '
+    write(6,'(A/)') '0: GP_Fit* always replaces the individual regardless of the SSE'
+
+    !------------------------------------------------------
     write(GP_print_unit, '(/3(A,1x,A,1x)//)') &
          '0: GPGACODE program version', trim(program_version), &
          '   branch:', trim( branch ) , &
          '   Last modified on:', trim( modification_date )
+    !------------------------------------------------------
 
 endif ! myid == 0
+
 
 !--------------------------------------------------------------
 ! current setup
