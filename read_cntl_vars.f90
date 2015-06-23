@@ -92,7 +92,7 @@ if( myid == 0 )then
 
             ierror = 1
             close(cntl_unitnum)
-             stop  'rcntl: ERROR *** Problem reading GPGACODE_cntl &
+            stop  'rcntl: ERROR *** Problem reading GPGACODE_cntl &
                                &in subroutine read_cntl_stuff'
         endif
         if( istat < 0 ) then
@@ -671,11 +671,9 @@ do
 
         L_node_functions = .FALSE.
 
-        !write(GP_print_unit,'(A,1x,I6)') 'rcntl: input selected_function = ', selected_function
 
         i_function_index = i_function_index + 1
 
-        !write(GP_print_unit,'(A,1x,I6)') 'rcntl: i_function_index', i_function_index
 
         if( i_function_index <= n_functions_max ) then
 
@@ -1311,10 +1309,6 @@ do
     elseif( Aline(1:len('restart')) == "RESTART" .or.     &
             Aline(1:len('restart')) == "restart" ) then
 
-        !write(GP_print_unit,'(A,1x,i6)') &
-        !      'rcntl: n_seed    = ', n_seed
-        !flush( GP_print_unit )
-
 
         READ(Aline(len('restart')+1:), * ) !temp_seed(1:n_seed)
 
@@ -1439,10 +1433,6 @@ do
         READ(Aline(len('gp_para_lmdif')+1:), * , iostat = istat )  &
              gp_para_lmdif_start_gen, gp_para_lmdif_modulus
 
-        !if( myid == 0 )then
-        !    write(GP_print_unit,'(A,1x,I6)') &
-        !          'rcntl: istat = ', istat                            
-        !endif !myid==0
 
         L_gp_para_lmdif = .true.
 
@@ -1469,10 +1459,6 @@ do
 ! ignore blank lines
     elseif( trim( Aline ) == '' ) then
 
-        !if( myid == 0 )then
-        !    write(GP_print_unit,'(A)') &
-        !          'rcntl: blank line --- ignored '
-        !endif !myid==0
 
         continue
 
@@ -1488,8 +1474,7 @@ do
             write(GP_print_unit,'(A,1x,A)') 'rcntl: Aline =', trim( Aline )
             write(GP_print_unit,'(A/)')     'rcntl: WARNING: UNRECOGNIZED OPTION '
         endif !myid==0
-        !ierror = 1
-        !return
+
         continue
 
     endif !   Aline(1:6) == ???
@@ -1499,7 +1484,10 @@ enddo cntlloop
 
 close(cntl_unitnum)
 
+
+
 ! check
+
 if( L_node_functions .and. n_node_functions <=0 )then
 
     if( myid == 0 )then
@@ -1510,7 +1498,7 @@ if( L_node_functions .and. n_node_functions <=0 )then
     endif !myid==0
 
     ierror = 1
-    !stop 'rcntl: bad input n_node_functions'
+
 
     if( myid == 0 )then
         write(GP_print_unit,*) &
@@ -1531,7 +1519,8 @@ if( L_gp_para_lmdif               .and. &
 endif ! gp_para_lmdif_start_gen  == 0 
 
 
-! write out what has been read in
+
+! write out interpreted input
 
 if( myid == 0) then
 

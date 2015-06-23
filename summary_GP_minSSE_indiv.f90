@@ -54,10 +54,12 @@ logical :: Lprint
 !---------------------------------------------------
 ! assume this subroutine is called only by cpu 0
 !---------------------------------------------------
-   if(myid /=0) return
-   if( .not. L_minSSE) return
 
-   write(GP_print_unit,'(A,2(1x,I6))') &
+if(myid /=0) return
+
+if( .not. L_minSSE) return
+
+write(GP_print_unit,'(A,2(1x,I6))') &
       '0: call summary_GP_minSSE_indiv GP_minSSE_generation, GP_minSSE_Individual ', &
                               GP_minSSE_generation, GP_minSSE_indiv
 
@@ -100,6 +102,7 @@ if( Lprint )then
       'sgpMSi:   gen    indiv   i_code_eq  &
             &GP_minSSE_indiv_Init_Cond(i_code_eq) '
 endif ! Lprint
+
 
 do  i_code_eq = 1, n_CODE_Equations
 
@@ -150,11 +153,11 @@ enddo ! i_tree
 write(GP_minSSE_summary_output_unit, '(A,2(1x,I6))') '> ',GP_minSSE_generation, GP_minSSE_indiv
 
 
-!!---------------------------------------------------------------------------------
-!
-!
-!! print the node parameters (if there are any)
-!
+!---------------------------------------------------------------------------------
+
+
+! print the node parameters (if there are any)
+
 
 if( Lprint )then
     write(GP_print_unit,'(/A/)') &
@@ -200,7 +203,8 @@ enddo  ! i_tree
 
 
 
-write(GP_minSSE_summary_output_unit, '(A,2(1x,I6))') '>>',GP_minSSE_generation, GP_minSSE_indiv
+write(GP_minSSE_summary_output_unit, '(A,2(1x,I6))') &
+       '>>',GP_minSSE_generation, GP_minSSE_indiv
 
 
 !! write for each indiv.  first write in 0*.f90

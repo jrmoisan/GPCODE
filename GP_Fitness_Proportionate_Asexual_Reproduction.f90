@@ -14,7 +14,6 @@ implicit none
 
 real(kind=r4b) :: cff
 
-!integer(kind=i4b) :: i
 integer(kind=i4b) :: icff
 integer(kind=i4b) :: i_GP_individual
 integer(kind=i4b) :: j_GP_Individual
@@ -82,7 +81,6 @@ do  i_GP_Asexual_Reproduction=1,n_GP_Asexual_Reproductions
     ! give the child the adult's SSE value
 
     GP_Child_Population_SSE(i_GP_Individual) = GP_Adult_Population_SSE(j_GP_Individual)
-    !!!!GP_Child_Population_SSE(i_GP_Individual) = GP_Child_Population_SSE(j_GP_Individual)
 
     Run_GP_Calculate_Fitness(i_GP_Individual) = .false.
 

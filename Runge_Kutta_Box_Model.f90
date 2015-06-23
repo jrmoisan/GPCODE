@@ -36,7 +36,6 @@ real(kind=r8b) :: cff
 integer(kind=i4b) :: iter
 integer(kind=i4b) :: i_Time_Step, i_Track, i_Tree
 integer(kind=i4b) :: i_CODE_Equation, j_CODE_Equation, i_Variable
-!integer(kind=i4b) :: i_node
 
 integer(kind=i4b) :: tree_node_count
 
@@ -61,7 +60,10 @@ if( L_print_RK )then
     write(6,'(A,1x,E20.10/)') 'rkbm: dt', dt
 endif ! L_print_RK
 
+
+
 ! start the time stepping loop
+
 
 do  i_Time_Step = 1, n_Time_Steps
 
@@ -71,7 +73,7 @@ do  i_Time_Step = 1, n_Time_Steps
 
         write(6,'(/A,1x,I6/)') &
           'rkbm: bad b_tmp  i_time_step', i_time_step
-        !flush(6)
+        flush(6)
         L_bad_result = .TRUE.
         return
     endif !  any( isnan( b_tmp ) ) .or.  any( abs(b_tmp)  > big_real
@@ -79,6 +81,7 @@ do  i_Time_Step = 1, n_Time_Steps
     btmp = b_tmp
 
     ! carry out a Runge-Kutta time step
+
     do  iter=1,4
 
         ! Call forcing functions for the Fasham box model
@@ -154,6 +157,7 @@ do  i_Time_Step = 1, n_Time_Steps
                     else
    
                         ! never flow to/from same component
+
                         bioflo(i_CODE_Equation,j_CODE_Equation)=0.0D+0
    
                     endif ! i_CODE_Equation .ne. j_CODE_Equation
@@ -242,9 +246,6 @@ do  i_Time_Step = 1, n_Time_Steps
    
     Numerical_CODE_Solution(i_Time_Step,1:n_Variables)=max(b_tmp(1:n_Variables),0.0D+0)
    
-    !write(6,'(A,1x,I4,10(1x,E15.7)/ )') &
-    !      'rkbm: i_time_step, Numerical_CODE_Solution(i_time_step,:)', &
-    !             i_time_step, Numerical_CODE_Solution(i_time_step,:)
 
 enddo ! End Time step loop
 

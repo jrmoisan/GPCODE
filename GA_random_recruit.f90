@@ -18,9 +18,8 @@ integer(kind=i4b) :: i_GA_Individual_recruit, i_Parameter_recruit
 integer(kind=i4b) :: individual_quality(n_GA_individuals)
 
 integer(kind=i4b) :: n_recruited
-!integer(kind=i4b) :: i_GA_individual
 
-!---------------------------------------------------------------------
+!----------------------------------------------------------------------------------
 
 if( n_GA_rand_recruits < 1 ) return
 

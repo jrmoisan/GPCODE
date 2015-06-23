@@ -7,6 +7,7 @@ subroutine bcast3( )
 ! a finding the optimum equation and parameter sets for a system of
 ! coupled ordinary differential equations
 !xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
 use kinds_mod
 use mpi
 use mpi_module
@@ -21,10 +22,7 @@ use GP_variables_module
 
 implicit none
 
-
-
 integer(kind=i4b) :: buffer_length
-
 
 !-------------------------------------------------------------------------------
 

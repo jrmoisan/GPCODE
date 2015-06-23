@@ -1,5 +1,7 @@
 subroutine set_forcing_node( node_variable )
+
 !xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
 use kinds_mod 
 use mpi
 use mpi_module
@@ -36,7 +38,6 @@ data frac_forcing_type(2,4) / 0.210526 /
 node_variable = 0
 
 
-!if( model == 'fasham' )then
 
 !  set some variables to the forcing functions -5001 -> -5004
 

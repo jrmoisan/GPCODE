@@ -76,7 +76,7 @@ if(  icall  == 0  )then
         write(GP_print_unit,'(A,2(1x,I6))')&
               'ivDA: int(2**n_levels)-1 , pow2_table( n_levels )', &
                      int(2**n_levels)-1 , pow2_table( n_levels )
-        !write(GP_print_unit,'(A,1x,I6)') 'ivDA: n_functions       ', n_functions
+
         write(GP_print_unit,'(A,1x,I6)') 'ivDA: n_CODE_equations  ', n_CODE_equations
         write(GP_print_unit,'(A,1x,I6)') 'ivDA: n_input_vars      ', n_input_vars    
         write(GP_print_unit,'(A,1x,I6)') 'ivDA: n_trees           ', n_trees

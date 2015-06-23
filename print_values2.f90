@@ -1,4 +1,4 @@
-subroutine print_values2( )  ! answer )
+subroutine print_values2( )
 
 ! program written by: Dr. John R. Moisan [NASA/GSFC] 31 January, 2013
 

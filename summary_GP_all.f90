@@ -1,4 +1,4 @@
-subroutine summary_GP_all( GP_unit, i_GP_generation ) ! ,  icall  )
+subroutine summary_GP_all( GP_unit, i_GP_generation )
 
 ! program written by: Dr. John R. Moisan [NASA/GSFC] 31 January, 2013
 
@@ -30,7 +30,7 @@ implicit none
 
 integer(kind=i4b) :: i_code_eq
 integer(kind=i4b),intent(in)  :: i_GP_Generation
-!integer(kind=i4b),intent(in)  :: icall
+
 
 integer(kind=i4b) :: i_GP_indiv
 integer(kind=i4b) :: i_Tree

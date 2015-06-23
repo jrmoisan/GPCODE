@@ -125,7 +125,7 @@ if( myid == 0 )then
                     ii, Numerical_CODE_Initial_Conditions(ii)
     enddo ! ii
 
-    !write(6,'(A)') ' '
+    
 
     do  ii = 1, n_CODE_equations
         write(6,'(A,1x,I6,1x,E15.7)') &

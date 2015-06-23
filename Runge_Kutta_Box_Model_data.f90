@@ -27,13 +27,6 @@ use GP_Data_module
 implicit none
 
 
-
-
-! Forcing functions are used in computations, so are included here for book keeping purposes
-
-
-
-
 integer(kind=i4b) :: iter
 integer(kind=i4b) :: i_data_point, i_Track, i_Tree
 
@@ -128,18 +121,6 @@ do  i_data_point = 1, n_input_data_points
             L_bad_result = .TRUE.
             return
         endif !  isnan( Tree_Value(i_Tree) ) .or. abs(Tree_Value(i_Tree)) > big_real
-
-
-        !---------------------------------------------------------------------------------
-        ! I think that the current code is correct and does not need this 20140108 jjm
-        !tree_node_count = GetNodeCount( GP_Trees( i_Tree, i_Track )%n )
-        !if( tree_node_count <= 1 )   Tree_Value(i_Tree) = 0.0d0   ! jjm 20131213
-        !---------------------------------------------------------------------------------
-
-        !if( myid == 0 )then
-        !write(6,'(A,22x,I6,1x,I6/)') &
-        !'rkbm: i_tree,tree_node_count    ',i_tree,tree_node_count
-        !endif ! myid == 0
 
 
     endif ! associated(GP_Trees...

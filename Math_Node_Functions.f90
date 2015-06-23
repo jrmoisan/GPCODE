@@ -83,7 +83,6 @@ use kinds_mod
 
         f_Multiply = a * b
 
-        !write(6,'(A,3(1x,E24.16))') 'f_Mul:  a, b, a*b ', a, b, a*b
     end function
 
 
@@ -183,19 +182,16 @@ use kinds_mod
         real(kind=r8b), intent(in) :: a,b
 
         if( isnan(a) .or. isnan(b) ) then
-            !write(*,*)'f8:  a, b ', a, b
             f_Power = 0.0D0
             return
         endif 
 
         if( abs(a) <= 1.0D-99 ) then
-            !write(*,*)'f8:  a, b ', a, b
             f_Power = 0.0d0
             return
         endif
 
         if( abs(b) <= 1.0D-99 ) then
-            !write(*,*)'f8:  a, b ', a, b
             f_Power = 1.0d0
             return
         endif
@@ -205,7 +201,6 @@ use kinds_mod
         ! try to eliminate a**a functions
 
         if( abs( a - b ) <= 1.0D-99 )then
-            !write(*,*)'f8:  a, b ', a, b
             f_Power = 0.0d0 
             return
         endif 
@@ -214,12 +209,9 @@ use kinds_mod
 
         f_Power = abs(a)**b
 
-        !f_Power = min( f_Power, 1.0D+99 )
-        !f_Power = max( f_Power, 1.0D-99 )
         f_Power = min( f_Power, 1.0D+19 )
         f_Power = max( f_Power, 1.0D-19 )
 
-        !write(*,*)'f8:  a, b, f_Power ', a, b, f_Power
 
     end function
 
@@ -237,7 +229,6 @@ use kinds_mod
         real(kind=r8b) :: cff
 
         if( isnan(a) .or. isnan(b) ) then
-            !write(*,*)'f9:  a, b ', a, b
             f_ExponentialDecay = 0.0D0
             return
         endif 
@@ -248,7 +239,6 @@ use kinds_mod
         else
             f_ExponentialDecay = 0.0D0
         endif 
-        !write(*,*)'f9:  a, b, f_ExponentialDecay ', a, b, f_ExponentialDecay
     end function
 
 

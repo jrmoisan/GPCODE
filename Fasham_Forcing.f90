@@ -47,11 +47,6 @@ use GP_variables_module
 
     phyto = species(max(1,abs(SPECIES_PHYTOPLANKTON)))
 
-    !write(6,'(A,1x,10(1x,E15.7))') 'JQF: species', species
-    !write(6,'(A,1x,2(1x,E15.7))') 'JQF: phyto     ', phyto    
-    !write(6,'(A,1x,2(1x,E15.7))') 'JQF: day, aMLD ', day, aMLD
-
-    !pi=acos(-1.D+0)
 
     dec=-0.406D+0*cos(2.D+0*pi*day/365.D+0) ! in radians and from Evans and Parlsow, 1985
     alatr=alatd*2.D+0*pi/360.D+0
@@ -69,25 +64,15 @@ use GP_variables_module
     albedo=0.04D+0
     trans=1.0D+0
 
-    !write(6,'(A,1x,2(1x,E15.7))') 'JQF: dec, alatr', dec, alatr
-    !write(6,'(A,1x,2(1x,E15.7))') 'JQF: enot, th  ', enot, th  
-    !write(6,'(A,1x,2(1x,E15.7))') 'JQF: cosz, zenith ', cosz, zenith
-    !write(6,'(A,1x,2(1x,E15.7))') 'JQF: saltd, albedo', saltd, albedo
-    !write(6,'(A,1x,2(1x,E15.7))') 'JQF: trans', trans
-
     do  i=1,13
         if( day .ge. daym(i) .and. day .le. daym(i+1) ) then
             ratio=(day-daym(i))/(daym(i+1)-daym(i))
             oktas=coktas(i)+(ratio*(coktas(i+1)-coktas(i)))
-            !write(6,'(A,1x,I3,2(1x,E15.7))') 'JQF: i, ratio, oktas ', &
-            !                                       i, ratio, oktas 
         endif
     enddo ! i
 
     cloud=oktas/8.D+0
 
-    !write(6,'(A,1x,2(1x,E15.7))') 'JQF: cloud, oktas ', cloud, oktas
-    !flush(6)
 
 !   cloud corr from Smith and Dobson, [Ecological Modeling, 14, 1-19, 1981]
 
@@ -98,10 +83,6 @@ use GP_variables_module
         cloudy=0.0375D+0
     endif
 
-    !write(6,'(A,1x,2(1x,E15.7))') 'JQF: zenith, cloudy ', zenith, cloudy
-    !flush(6)
-
-
 
 !   calculate the light value only during the day [night = zenith .ge. pi/2.D+0]
 
@@ -111,13 +92,9 @@ use GP_variables_module
         par0=0.D+0
     endif
 
-    !write(6,'(A,1x,2(1x,E15.7))') 'JQF: zenith, par0 ', zenith, par0
-    !flush(6)
 
 !   calculate aJ by integrating (simple trapezoidal) PvsI terms over the aMLD
 
-    !write(6,'(A,1x,2(1x,E15.7))') 'JQF: Vp, alpha', Vp, alpha
-    !write(6,'(A,1x,2(1x,E15.7))') 'JQF: akw, akc ', akw, akc 
 
     aJ=0.D+0
     if( par0 .gt. 0.D+0) then
@@ -126,28 +103,17 @@ use GP_variables_module
         do  iz=0,100
             z=float(iz)*delz
 
-            !write(6,'(A,1x,i6,3(1x,E15.7))') 'JQF: iz, z ', iz, z                
-
-            !parz=par0*exp(-z*(akw+(akc*phyto)))    ! original 
-            !parz = par0 * exp( -z * ( akw +  akc*abs(phyto) ) )
-
             if( abs( z * ( akw +  akc*abs(phyto) ) ) < 150.0d0 )then 
                 parz = par0 * exp( -z * ( akw +  akc*abs(phyto) ) )
             else
                 parz = 1.0D-65
             endif 
 
-            !write(6,'(A,1x,3(1x,E15.7))') 'JQF: phyto, par0, parz ', &
-            !                                    phyto, par0, parz 
-            !flush(6)
-
             if( parz > 1.0D+100 )then
                 L_bad = .true. 
                 return
             endif ! parz > 1.0D+100
 
-            !tmp=(Vp*alpha*parz)/(sqrt((Vp*Vp)+(alpha*alpha*parz*parz)))    ! original 
-            !tmp = (Vp*alpha*parz) / ( sqrt( Vp**2 + (alpha**2 * parz**2) ) )
 
             if( Vp**2 + (alpha * parz)**2 > 0.0d0 )then
 
@@ -157,10 +123,6 @@ use GP_variables_module
                 tmp = 0.0d0
 
             endif ! Vp**2 + (alpha * parz)**2 > 0.0d0
-
-            !write(6,'(A,1x,3(1x,E15.7))') 'JQF: parz, tmp ', &
-            !                                    parz, tmp 
-            !flush(6)
 
 
             if( isnan( tmp ) )then
@@ -176,17 +138,10 @@ use GP_variables_module
             endif
         enddo
 
-        !write(6,'(A,1x,3(1x,E15.7))') 'JQF: aJ, delz, aMLD ', &  
-        !                                    aJ, delz, aMLD 
-        !flush(6)
 
         aJ=aJ*delz/aMLD
 
     endif !  par0 .gt. 0.D+0
-
-    !write(6,'(A,1x,3(1x,E15.7))') 'JQF: aJ, aMLD ', &  
-    !                                    aJ, aMLD
-    !flush(6)
 
 end subroutine JQforce
 
@@ -233,7 +188,6 @@ use GP_variables_module
     nloop=30     ! make the number EVEN to keep it symmetrical
     th=0.D+0
 
-    !write(6,'(A,1x,I6, 1x,E15.7)') 'mdf: nloop, th ', nloop, th
 
     do  iloop=1,nloop+1
 
@@ -245,7 +199,6 @@ use GP_variables_module
         do  i=1,n-1
             if( tday .ge. daym(i) .and. tday .lt. daym(i+1) ) then
                 th=th+((cmld(i+1)-cmld(i))/(daym(i+1)-daym(i)))
-                !write(6,'(A,1x,I6, 2(1x,E15.7))') 'mdf: i, tday, th ', i, tday, th
             endif
         enddo ! i 
 
@@ -253,15 +206,11 @@ use GP_variables_module
 
     h=th/(nloop+1)
 
-    !write(6,'(A,1x,I6, 2(1x,E15.7))') 'mdf: nloop, th, h ', nloop, th, h
 
     do  i=1,n-1
         if( day .ge. daym(i) .and. day .le. daym(i+1) ) then
             ratio=(day-daym(i))/(daym(i+1)-daym(i))
             aMLD=cmld(i)+(ratio*(cmld(i+1)-cmld(i)))
-
-            !write(6,'(A,1x,I6, 3(1x,E15.7))') 'mdf: i, day,ratio, aMLD ', &
-            !                                        i, day,ratio, aMLD 
         endif
     enddo ! i
 
