@@ -1161,8 +1161,10 @@ do
 ! if print_equations_flag <= 0 - do not write equations
 
 !  DEFAULT =   print_equations_flag ==  0
-!                - do not write quations
+!                - do not write equations
 
+
+!   << CURRENTLY DISABLED >>
 
 
     elseif( Aline(1:len('print_equations')) == "print_equations" ) then

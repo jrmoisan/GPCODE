@@ -74,10 +74,10 @@ if( myid == 0 )then
 
     if( n_GP_Asexual_Reproductions .gt. 0 )then
 
-        write(GP_print_unit,'(A,1x,I6)') &
-              'gpn: call GP_Fit_Prop_Asexual_Repro &
-              &n_GP_Asexual_Reproductions =', n_GP_Asexual_Reproductions
-        flush(GP_print_unit)
+        !write(GP_print_unit,'(A,1x,I6)') &
+        !      'gpn: call GP_Fit_Prop_Asexual_Repro &
+        !      &n_GP_Asexual_Reproductions =', n_GP_Asexual_Reproductions
+        !flush(GP_print_unit)
 
         call GP_Fitness_Proportionate_Asexual_Reproduction
 
@@ -105,10 +105,10 @@ if( myid == 0 )then
 
         if( n_GP_Crossovers .gt. 0 )then
 
-            write(GP_print_unit,'(/A,1x,I6)') &
-                     'gpn: call GP_Tour_Style_Sexual_Repro n_GP_Crossovers =', &
-                                                           n_GP_Crossovers
-            flush( GP_print_unit )
+            !write(GP_print_unit,'(A,1x,I6)') &
+            !         'gpn: call GP_Tour_Style_Sexual_Repro n_GP_Crossovers =', &
+            !                                               n_GP_Crossovers
+            !flush( GP_print_unit )
 
             ierror_t = 0
             call GP_Tournament_Style_Sexual_Reproduction( ierror_t )
@@ -134,10 +134,10 @@ if( myid == 0 )then
 
         if( n_GP_Mutations .gt. 0 )then
 
-            write(GP_print_unit,'(/A,1x,I6)') &
-                     'gpn: call GP_Mutations   n_GP_Mutations  =', &
-                                               n_GP_Mutations 
-            flush(GP_print_unit)
+            !write(GP_print_unit,'(A,1x,I6)') &
+            !         'gpn: call GP_Mutations   n_GP_Mutations  =', &
+            !                                   n_GP_Mutations 
+            !flush(GP_print_unit)
 
             ierror_m = 0
             call GP_Mutations( ierror_m )
@@ -164,10 +164,10 @@ if( myid == 0 )then
 
         if( n_GP_rand_recruits .gt. 0 )then
 
-            write(GP_print_unit,'(/A,1x,I6)') &
-                     'gpn: call GP_random_recruit   n_GP_rand_recruits  =', &
-                                                    n_GP_rand_recruits 
-            flush(GP_print_unit)
+            !write(GP_print_unit,'(A,1x,I6)') &
+            !         'gpn: call GP_random_recruit   n_GP_rand_recruits  =', &
+            !                                        n_GP_rand_recruits 
+            !flush(GP_print_unit)
 
             ierror_rr = 0
             call GP_random_recruit( ierror_rr )

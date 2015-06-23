@@ -1,4 +1,4 @@
-Description of the unit 5 input control file                        20130828
+Description of the unit 5 input control file                        20150623
                                                                     J. McCarthy
 
 
@@ -45,18 +45,18 @@ Note:  default value = 0.2
 !--------------------------------------------------------------------
 
 
-GA_Rand_Replace_Probability = probability of replacing all the parameters
+GA_Rand_Recruit_Probability = probability of replacing all the parameters
                               in a non-elite individual with random
                               numbers
 
 
-col 1-27	GA_Rand_Replace_Probability ( ga_rand_replace_probability )
-col 29-80	value of the GA random replace probability
+col 1-27	GA_Rand_Recruit_Probability ( ga_rand_recruit_probability )
+col 29-80	value of the GA random recruit probability
 Example:
 
-GA_Rand_Replace_Probability 0.2
+GA_Rand_Recruit_Probability 0.2
 
-Note:  default value = 0.01
+Note:  default value = 0.00
 
 !--------------------------------------------------------------------
 
@@ -112,6 +112,23 @@ Example:
 GP_Elitist_Probability  0.001
 
 Note:  default value = 0.1
+
+
+!--------------------------------------------------------------------
+
+
+GP_Rand_Recruit_Probability = probability of replacing the tree and 
+                              all the parameters in a non-elite 
+                              individual with random numbers
+
+
+col 1-27	GP_Rand_Recruit_Probability ( gp_rand_recruit_probability )
+col 29-80	value of the GP random recruit probability
+Example:
+
+GP_Rand_Recruit_Probability 0.2
+
+Note:  default value = 0.00
 
 
 !--------------------------------------------------------------------
@@ -236,7 +253,8 @@ Note:	dt is converted internally to units of days**-1
 
 !--------------------------------------------------------------------
 
-! sse_low_wt    -  weight for data before sse_min_time
+! sse_low_wt  -  weight for data outside the
+!                [sse_min_time , sse_max_time] interval
 
 
 
@@ -254,7 +272,7 @@ Note:	default value = 1.0d0
 
 
 
-! sse_min_time  -  calculate sse only with data after this time
+! sse_min_time  -  start time of interval where data is weighted with 1.0
 
 
 
@@ -271,7 +289,7 @@ Note:	default value = 0.0d0
 !--------------------------------------------------------------------
 
 
-! sse_max_time  -  calculate sse only with data before this time
+! sse_max_time  -  stop  time of interval where data is weighted with 1.0
 
 
 
@@ -290,12 +308,16 @@ Note:	default value = 50000.0d0
 
 
 MODEL = name of the model used to generate the truth data
-        Currently, only the values "LV"  or  "NPZ"  are allowed
+        Allowed values: "LV" , "NPZ", "data", "datalog10", "fasham", 
+        "fasham_fixed_tree", "fasham_cdom", "fasham_cdom_GP"
 
 
 col 1-5		MODEL ( model )
 col 7-80	name of the model used to generate the truth data
-                Allowed values:  "LV"  and "NPZ"
+        
+
+Allowed values: "LV" , "NPZ", "data", "datalog10", "fasham", 
+        "fasham_fixed_tree", "fasham_cdom", "fasham_cdom_GP"
 
 Example:
 
@@ -615,6 +637,27 @@ Example:
 fort444_output  1
 
 
+
+--------------------------------------------------------------------------------
+
+
+fort555_output - determines if the fort555 file is generated.
+
+
+col 1-14	fort555_output
+col 16-80	fort555_flag
+
+
+	if fort555_flag >  0 - write printout to fort555_unit
+	if fort555_flag <= 0 - do not write printout to fort555_unit
+	
+	DEFAULT =   fort555_flag = 0
+
+Example:
+
+fort555_output  1
+
+
 --------------------------------------------------------------------------------
 
 
@@ -728,9 +771,10 @@ GP_all_summary 1
 
 --------------------------------------------------------------------------------
 
-
 print_equations - determines if equations are printed together with the tree
                   structures in print_trees
+
+<< CURRENTLY DISABLED >>
 
 
 col 1-8		print_equations
@@ -888,136 +932,68 @@ Example:
 restart 
 
 
-   If the restart card is present, the program will look for the file GP_restart_file, and
+   If the restart card is present, 
+the program will look for the file "GP_restart_file", and
 will skip the first generation code, and read the tree values for the second generation from 
 this file.
 
 
-!--------------------------------------------------------------------
-
-!--------------------------------------------------------------------
-
-
-! n_partitions = number of partitions to be used to divide processors
-!                into groups, each of which will process one GP individual
-
-
-    elseif( Aline(1:len('n_partitions')) == "N_PARTITIONS" .or.     &
-            Aline(1:len('n_partitions')) == "n_partitions" ) then
-
-        READ(Aline(len('n_partitions')+1:), * )  n_partitions
-
-        write(GP_print_unit,'(A,1x,I6)') &
-              'rcntl: n_partitions = ', n_partitions
-
-
-!--------------------------------------------------------------------
-
-
-! run_GP_para_lmdif_flag
-
-
-! if run_GP_para_lmdif_flag >  0 - call subroutine GP_para_lmdif
-! if run_GP_para_lmdif_flag <= 0 - do not call subroutine GP_para_lmdif
-
-!  DEFAULT =   run_GP_para_lmdif_flag ==  0
-!              - do not write printout to run_GP_para_lmdif_unit
-
-
-
-    elseif( Aline(1:len('run_GP_para_lmdif')) == "run_GP_para_lmdif" .or.  &
-            Aline(1:len('run_GP_para_lmdif')) == "RUN_GP_PARA_LMDIF" .or.  &
-            Aline(1:len('run_GP_para_lmdif')) == "run_gp_para_lmdif"      ) then
-
-
-        READ(Aline(len('run_GP_para_lmdif')+1:), * )  run_GP_para_lmdif_flag
-
-        if( run_GP_para_lmdif_flag > 0 )then
-            L_run_GP_para_lmdif = .TRUE.
-        else
-            L_run_GP_para_lmdif = .FALSE.
-        endif ! run_GP_para_lmdif_flag > 0
-
-        write(GP_print_unit,'(A,1x,I12)') 'rcntl: run_GP_para_lmdif_flag =', &
-                                                  run_GP_para_lmdif_flag
-        write(GP_print_unit,'(A,4x,L1 )') 'rcntl: L_run_GP_para_lmdif =', &
-                                                  L_run_GP_para_lmdif
-
-
-
-
-
-!--------------------------------------------------------------------
-
-
-!  if L_no_forcing is .TRUE. ,
-!  set the forcing function node value -5004 to zero
-
-
-    elseif( Aline(1:len('no_forcing')) == "no_forcing" .or.  &
-            Aline(1:len('no_forcing')) == "NO_FORCING" .or.  &
-            Aline(1:len('no_forcing')) == "No_Forcing"      ) then
-
-
-        ! this now applies only to the daily forcing -5004
-
-
-        READ(Aline(len('no_forcing')+1:), * )  no_forcing_flag
-
-        if( no_forcing_flag > 0 )then
-            L_no_forcing = .TRUE.
-        else
-            L_no_forcing = .FALSE.
-        endif ! no_forcing_flag > 0
-
-        write(GP_print_unit,'(A,1x,I12)') 'rcntl: no_forcing_flag =', &
-                                                  no_forcing_flag
-        write(GP_print_unit,'(A,4x,L1 )') 'rcntl: L_no_forcing =', &
-                                                  L_no_forcing
-
-
-!--------------------------------------------------------------------
-
-
-! prob_forcing      = probability that a variable node will be a
-!                     forcing function node
-
-
-    elseif( Aline(1:len('prob_forcing')) == "PROB_FORCING" .or.     &
-            Aline(1:len('prob_forcing')) == "prob_forcing" ) then
-
-        READ(Aline(len('prob_forcing')+1:), * )  prob_forcing
-
-        write(GP_print_unit,'(A,1x,E15.7)') &
-              'rcntl: prob_forcing = ', prob_forcing
-
-
-
-
 
 !--------------------------------------------------------------------
 
 
 
-
---------------------------------------------------------------------------------
-
-
-run_GP_para_lmdif_flag - determines if GP_para_lmdif should be called
+n_partitions = number of partitions to be used to divide processors
+               into groups, each of which will process one GP individual
 
 
-col 1-17	run_GP_para_lmdif
-col 19-80	run_GP_para_lmdif_flag
 
+col 1-12	n_partitions	
+col 14-		n_partitions value	
 
-	if run_GP_para_lmdif_flag >  0 - call GP_para_lmdif
-	if run_GP_para_lmdif_flag <= 0 - do not call GP_para_lmdif
 	
-	DEFAULT =   run_GP_para_lmdif_flag = 0
+	DEFAULT =   n_partitions = 2 
 
 Example:
 
-run_GP_para_lmdif   1
+n_partitions  2 
+
+!--------------------------------------------------------------------
+
+L_no_forcing
+
+if L_no_forcing is .TRUE. ,
+set the forcing function node value -5004 to zero
+
+
+
+col 1-12	L_no_forcing	
+col 14-		no_forcing_flag      
+
+if no_forcing_flag > 0 , L_no_forcing = .TRUE.
+	
+	DEFAULT =   L_no_forcing = .FALSE.
+
+Example:
+
+L_no_forcing  1
+
+!--------------------------------------------------------------------
+
+
+prob_forcing      = probability that a variable node will be a
+                    forcing function node
+
+
+col 1-12	prob_forcing	
+col 14-		prob_forcing value	
+
+	
+	DEFAULT =   prob_forcing = 0.4
+
+Example:
+
+prob_forcing = 0.4
 
 
 
@@ -1026,21 +1002,88 @@ run_GP_para_lmdif   1
 !--------------------------------------------------------------------
 
 
-no_forcing - determines if trees will contain forcing functions
+truth_model       = turn on comparisons of the current tree with the 
+                    truth model tree and print results
 
 
-col 1-10	no_forcing
-col 12-80	no_forcing_flag
+    elseif( Aline(1:len('truth_model')) == "TRUTH_MODEL" .or.     &
+            Aline(1:len('truth_model')) == "Truth_Model" .or.     &
+            Aline(1:len('truth_model')) == "truth_model"     ) then
+
+        READ(Aline(len('truth_model')+1:), * )  truth_model
+
+        if( myid == 0 )then
+            write(GP_print_unit,'(A,1x,I3)') &
+                  'rcntl: truth_model = ', truth_model
+        endif !myid==0
+
+        if( truth_model > 0 ) L_truth_model = .true.
 
 
-	if no_forcing_flag >  0 - do not use forcing functions
-	if no_forcing_flag <= 0 -        use forcing functions
+
+
+col 1-11	truth_model 	
+col 13-		truth_model  value	
+
 	
-	DEFAULT =   no_forcing_flag = 0
+	DEFAULT =   L_truth_model = .FALSE.
 
 Example:
 
-no_forcing  1
+truth_model  1
+
+
+
+
+!--------------------------------------------------------------------
+
+
+gp_para_lmdif   = 1) turn on call to GP_para_lmdif_process 
+                  2) set first GP generation to call GP_para_lmdif_process
+                  3) set modulus for GP generations  to call GP_para_lmdif_process
+
+
+    elseif( Aline(1:len('gp_para_lmdif')) == "GP_PARA_LMDIF" .or.     &
+            Aline(1:len('gp_para_lmdif')) == "GP_Para_Lmdif" .or.     &
+            Aline(1:len('gp_para_lmdif')) == "gp_para_lmdif"     ) then
+
+        READ(Aline(len('gp_para_lmdif')+1:), * , iostat = istat )  &
+             gp_para_lmdif_start_gen, gp_para_lmdif_modulus
+
+
+        L_gp_para_lmdif = .true.
+
+        if( gp_para_lmdif_modulus == 0 ) gp_para_lmdif_modulus = 5
+
+        if( myid == 0 )then
+            write(GP_print_unit,'(A,3x,L1)') &
+                  'rcntl: L_gp_para_lmdif = ', L_gp_para_lmdif
+            write(GP_print_unit,'(A,1x,I6)') &
+                  'rcntl: gp_para_lmdif_modulus ', &
+                          gp_para_lmdif_modulus
+        endif !myid==0
+
+
+
+
+col 1-13	gp_para_lmdif 
+col 15-24	gp_para_lmdif_start_gen
+col 25-34	gp_para_lmdif_modulus
+
+
+
+
+	
+	DEFAULT =   L_gp_para_lmdif = .FALSE.
+		    gp_para_lmdif_start_gen = 1
+		    gp_para_lmdif_modulus = 5
+
+
+Example:
+
+gp_para_lmdif 20 20 
+
+
 
 
 
