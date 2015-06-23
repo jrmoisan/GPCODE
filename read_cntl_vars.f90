@@ -228,6 +228,7 @@ gp_para_lmdif_start_gen  = 1
 gp_para_lmdif_modulus = 10
 L_gp_para_lmdif = .FALSE. 
  
+L_replace_larger_SSE_only = .FALSE.
 
 !---------------------------------------------------------------------
 
@@ -1452,6 +1453,27 @@ do
 
 
 
+!--------------------------------------------------------------------
+
+
+! replace_larger_SSE_only
+
+
+
+    elseif( Aline(1:len('replace_larger_SSE_only')) == "replace_larger_SSE_only" .or.     &
+            Aline(1:len('replace_larger_SSE_only')) == "replace_larger_SSE_only" .or.     &
+            Aline(1:len('replace_larger_SSE_only')) == "replace_larger_SSE_only"     ) then
+
+        
+        L_replace_larger_SSE_only = .true.
+
+        if( myid == 0 )then
+            write(GP_print_unit,'(A,4x,L1)') &
+                  'rcntl: L_replace_larger_SSE_only = ', L_replace_larger_SSE_only
+        endif !myid==0
+
+
+
 
 
 !--------------------------------------------------------------------
@@ -1657,6 +1679,9 @@ if( myid == 0) then
 
     write(GP_print_unit,'(A,4x,L1 )') 'rcntl: L_truth_model =', &
                                               L_truth_model
+
+    write(GP_print_unit,'(A,4x,L1 )') 'rcntl: L_replace_larger_SSE_only =', &
+                                              L_replace_larger_SSE_only 
 
     write(GP_print_unit,'(A,4x,L1 )') 'rcntl: L_gp_para_lmdif =', &
                                               L_gp_para_lmdif

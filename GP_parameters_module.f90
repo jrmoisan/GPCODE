@@ -319,4 +319,6 @@ integer(kind=i4b) :: gp_para_lmdif_start_gen
 integer(kind=i4b) :: gp_para_lmdif_modulus
 logical ::  L_gp_para_lmdif 
 
+logical ::  L_replace_larger_SSE_only
+
 end module GP_parameters_module
