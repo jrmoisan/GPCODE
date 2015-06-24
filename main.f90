@@ -56,8 +56,8 @@ integer(kind=i4b),allocatable :: tmprank0(:)
 integer(kind=i4b) :: comm_world
 
 
-character(15),parameter :: program_version   = '201502.003_v16'
-character(10),parameter :: modification_date = '20150623'
+character(15),parameter :: program_version   = '201502.004_v16'
+character(10),parameter :: modification_date = '20150624'
 character(50),parameter :: branch  =  'v16'
 
 integer(kind=i4b), parameter ::  zero = 0
@@ -94,7 +94,14 @@ if( myid == 0 )then
 
     write(6,'(/A)') '0: version 16 derived from version 15 '
     write(6,'(A)')  '0: new compiler options  -assume realloc_lhs -mkl -heap-arrays '
-    write(6,'(A/)') '0: GP_Fit* always replaces the individual regardless of the SSE'
+
+    if( L_replace_larger_SSE_only )then
+        write(6,'(A/)') &
+         '0: GP_Fit* only  replaces the individual if the SSE decreases after replacement'
+    else
+        write(6,'(A/)') &
+         '0: GP_Fit* always replaces the individual regardless of the SSE'
+    endif !  L_replace_larger_SSE_only 
 
     !------------------------------------------------------
     write(GP_print_unit, '(/3(A,1x,A,1x)//)') &
