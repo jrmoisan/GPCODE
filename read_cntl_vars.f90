@@ -1460,9 +1460,9 @@ do
 
 
 
-    elseif( Aline(1:len('replace_larger_SSE_only')) == "replace_larger_SSE_only" .or.     &
+    elseif( Aline(1:len('replace_larger_SSE_only')) == "REPLACE_LARGER_SSE_ONLY" .or.     &
             Aline(1:len('replace_larger_SSE_only')) == "replace_larger_SSE_only" .or.     &
-            Aline(1:len('replace_larger_SSE_only')) == "replace_larger_SSE_only"     ) then
+            Aline(1:len('replace_larger_SSE_only')) == "replace_larger_sse_only"     ) then
 
         
         L_replace_larger_SSE_only = .true.
