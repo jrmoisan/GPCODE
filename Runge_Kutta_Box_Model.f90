@@ -48,6 +48,12 @@ L_GP_print = .true.
 
 tree_node_count = 0
 
+if( trim(model) == 'fasham_CDOM' .or. &
+    trim(model) == 'fasham_CDOM_GP') then
+    dt = 1.0d0
+endif ! trim(model) == 'fasham_CDOM' ...
+
+
 if( dt <= 0.0d0 )then
     call MPI_FINALIZE(ierr)
     stop 'bad delta_time'
