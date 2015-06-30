@@ -40,23 +40,33 @@ integer(kind=i4b) :: i_CODE_equation
 
 !---------------------------------------------------------------------------------------
 
+write(6.'(/A,1x,A)')'set1: model ', trim(model)
+
 
 if( trim(model) == "fasham_CDOM") then
 
+    write(6.'(A)')'set1: allocate aCDOM'            
+
     allocate(aCDOM,source=newFasham_CDOM())
+
     call aCDOM%init()
     call aCDOM%setTruth()
     call aCDOM%setModel()
+
     return
 
 endif
 
 if( trim(model) == "fasham_CDOM_GP") then
 
+    write(6.'(A)')'set1: allocate aCDOM'            
+
     allocate(aCDOM,source=newFasham_CDOM_GP())
+
     call aCDOM%init()
     call aCDOM%setTruth()
     !call cdom%setModel()
+
     return
 
 endif

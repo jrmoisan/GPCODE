@@ -104,9 +104,12 @@ do  i_Time_Step = 1, n_Time_Steps
       
         endif ! trim(model) == 'fasham'
 
-        if( trim(model) == 'fasham_CDOM' .or. trim(model) == 'fasham_CDOM_GP') then
+        if( trim(model) == 'fasham_CDOM'     .or. &
+            trim(model) == 'fasham_CDOM_GP'        ) then
 
-            call aCDOM%getForcing(btmp, Runge_Kutta_Time_Step(iter), i_Time_Step-1, L_bad_result )
+            call aCDOM%getForcing( btmp, &
+                                   Runge_Kutta_Time_Step(iter), &
+                                   i_Time_Step-1, L_bad_result )
 
             if( L_bad_result ) then
                 write(6,'(/A)') 'rkbm: bad result from DoForcing '
@@ -252,6 +255,14 @@ do  i_Time_Step = 1, n_Time_Steps
    
     Numerical_CODE_Solution(i_Time_Step,1:n_Variables)=max(b_tmp(1:n_Variables),0.0D+0)
    
+    if( myid == 0 )then
+        write(6,'(A,2(1x,I6),12(1x,E15.7))') &
+                'rkbm:P myid, i_time_step, RK_Soln ', &
+                        myid, i_time_step, &
+                        Numerical_CODE_Solution(i_time_step,1:n_CODE_equations)
+    endif ! myid == 0 
+
+
 
 enddo ! End Time step loop
 

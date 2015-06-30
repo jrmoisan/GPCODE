@@ -217,15 +217,16 @@ do  i_GP_Mutation = 1,n_GP_Mutations
                 Node_Variable=1+int(cff*float(n_CODE_Equations))
                 Node_Variable = min( Node_Variable, n_CODE_Equations )
 
-                if( model == 'fasham' .or. model == 'fasham_CDOM_GP') then
-
-                    !  set some variables to the forcing functions -5001 -> -5004
-
-                    call set_forcing_node( node_variable )
-
-                endif !  model
 
             endif ! model == 'fasham'
+
+            if( model == 'fasham_CDOM_GP') then
+
+                !  set some variables to the forcing functions -5001 -> -5004
+
+                call set_forcing_node( node_variable )
+
+            endif !  model == 'fasham_CDOM_GP'
 
             !----------------------------------------------------------------------
 

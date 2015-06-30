@@ -43,6 +43,15 @@ contains
       n_inputs = n_input_vars
       GP_minSSE_Individual_SSE = 1.0d99
 
+      if( myid == 0 )then
+          write(6,'(A,1x,I10)')'nfCD: n_code_equations            ', n_code_equations
+          write(6,'(A,1x,I10)')'nfCD: n_variables                 ', n_variables
+          write(6,'(A,1x,I10)')'nfCD: n_trees                     ', n_trees
+          write(6,'(A,1x,I10)')'nfCD: n_nodes                     ', n_nodes
+          write(6,'(A,1x,I10)')'nfCD: n_maximum_number_parameters ', n_maximum_number_parameters
+          write(6,'(A,1x,I10)')'nfCD: n_inputs                    ', n_inputs
+      endif ! myid == 0
+
       call print_values1()
 
    end function
@@ -68,6 +77,10 @@ contains
       enddo
       n_count = i_count - 3
       n_time_steps = n_count
+      if( myid == 0 )then
+          write(6,'(A,1x,I10)')'initCD: n_count      ', n_count               
+          write(6,'(A,1x,I10)')'initCD: n_time_steps ', n_time_steps        
+      endif ! myid == 0
 
       allocate(this%cdoms(0:n_time_steps))
       allocate(this%pars(0:n_time_steps))
@@ -76,10 +89,16 @@ contains
       allocate(this%dmxddts(0:n_time_steps))
 
       close(data_unitnum)   
+
+
       open( unit = data_unitnum, file = 'CDOM.data', action="read")
+
+      ! skip header 
       do i = 1,3
          read( data_unitnum, '(A)', iostat = istat ) Aline
       enddo
+
+
       do i = 1, n_count
          read( data_unitnum, '(A)', iostat = istat ) Aline
          do n = 1,72
@@ -93,11 +112,20 @@ contains
 
          write(Aline,*)' '
       enddo
+
       this%cdoms(0) = this%cdoms(1)
       this%kds(0) = this%kds(1)
       this%pars(0) = this%pars(1)
       this%mxds(0) = this%mxds(1)
       this%dmxddts(0) = this%dmxddts(1)
+
+      if( myid == 0 )then
+          write(6,'(/A)')'this%cdoms(i),this%kds(i),this%pars(i),this%mxds(i),this%dmxddts(i)'
+          do  i = 0, n_count
+              write(6,'(I6,5(1x,E15.7))') &
+                i, this%cdoms(i),this%kds(i),this%pars(i),this%mxds(i),this%dmxddts(i)
+          enddo ! i
+      endif ! myid == 0
 
       close(data_unitnum)   
 
@@ -106,10 +134,20 @@ contains
       call allocate_arrays1()
    
       increment = 1.0d0 / real( n_levels, kind=8 )
+
       do  i = 1, n_levels-1
          Node_Probability(i) =  1.0d0 - increment * real(i,kind=8)
       enddo
       Node_Probability(n_levels) = 0.0d0
+
+      if( myid == 0 )then
+          write(6,'(/A,1x,I6)')   'initCD: n_levels ', n_levels           
+          write(6,'(A/(10(1x,E12.5)))') 'initCD: Node_Probability', &               
+                                                 Node_Probability
+          write(6,'(A)') ' '
+      endif ! myid == 0 
+
+
       bioflo_map = 1
  
    end subroutine init
@@ -237,10 +275,10 @@ contains
       !     the last step uses the previous step info
       if (k == n_time_steps) k = n_time_steps-1
 
-      aDMXDDT =this%dmxddts(k)+iter*(this%dmxddts(k+1)-this%dmxddts(k))
-      aMXD = this%mxds(k)+iter*(this%mxds(k+1)-this%mxds(k))
-      aPAR = this%pars(k)+iter*(this%pars(k+1)-this%pars(k))
-      aKd  = this%kds(k)+iter*(this%kds(k+1)-this%kds(k))
+      aDMXDDT = this%dmxddts(k) + iter * (this%dmxddts(k + 1) - this%dmxddts(k))
+      aMXD    = this%mxds(k)    + iter * (this%mxds(k + 1)    - this%mxds(k))
+      aPAR    = this%pars(k)    + iter * (this%pars(k + 1)    - this%pars(k))
+      aKd     = this%kds(k)     + iter * (this%kds(k + 1)     - this%kds(k))
 
       Numerical_CODE_Forcing_Functions(abs(5000-5001))= aDMXDDT
       Numerical_CODE_Forcing_Functions(abs(5000-5002))= aMXD
