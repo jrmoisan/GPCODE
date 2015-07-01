@@ -34,7 +34,7 @@ contains
       type(fasham_CDOM) :: fasham
 
       n_CODE_equations =   1
-      n_variables = 1
+      !n_variables = 1
 
       n_trees=  ((n_CODE_equations+1)**2)-(n_CODE_equations+1)
       n_nodes = pow2_table( n_levels )  ! n_nodes = int(2**n_levels)-1
@@ -120,7 +120,7 @@ contains
       this%dmxddts(0) = this%dmxddts(1)
 
       if( myid == 0 )then
-          write(6,'(/A)')'this%cdoms(i),this%kds(i),this%pars(i),this%mxds(i),this%dmxddts(i)'
+          write(6,'(/A)')'     i   cdoms(i)        kds(i)          pars(i)         mxds(i)         dmxddts(i)'
           do  i = 0, n_count
               write(6,'(I6,5(1x,E15.7))') &
                 i, this%cdoms(i),this%kds(i),this%pars(i),this%mxds(i),this%dmxddts(i)

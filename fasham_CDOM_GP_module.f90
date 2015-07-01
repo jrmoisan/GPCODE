@@ -37,7 +37,7 @@ contains
       integer(kind=i4b) :: i
 
       n_CODE_equations =   1
-      n_variables = 1
+      !n_variables = 1
 
       n_trees=  ((n_CODE_equations+1)**2)-(n_CODE_equations+1)
       n_nodes = pow2_table( n_levels )  ! n_nodes = int(2**n_levels)-1
@@ -124,7 +124,7 @@ contains
       this%dmxddts(0) = this%dmxddts(1)
 
       if( myid == 0 )then
-          write(6,'(/A)')'this%cdoms(i),this%kds(i),this%pars(i),this%mxds(i),this%dmxddts(i)'
+          write(6,'(/A)')'     i   cdoms(i)        kds(i)          pars(i)         mxds(i)         dmxddts(i)'
           do  i = 0, n_count
               write(6,'(I6,5(1x,E15.7))') &
                 i, this%cdoms(i),this%kds(i),this%pars(i),this%mxds(i),this%dmxddts(i)
@@ -158,9 +158,25 @@ contains
 
    subroutine setTruth(this)
       use GP_data_module
+use GP_Parameters_module
+use GP_variables_module
+use GA_Parameters_module
+use GA_Variables_module
+
 
       class(fasham_CDOM_GP),intent(inout):: this
-      integer :: i
+
+       integer(kind=i4b) :: i
+!integer(kind=i4b) :: message_len
+!
+!integer(kind=i4b) :: i_Tree
+!integer(kind=i4b) :: i_Node
+!
+!integer(kind=i4b) :: jj
+!
+!integer(kind=i4b) :: i_CODE_equation
+
+
 
       do i = 1, n_time_steps
          Numerical_CODE_Solution( i, 1) = this%cdoms(i)
@@ -172,16 +188,196 @@ contains
       Data_Array=Numerical_CODE_Solution
       Numerical_CODE_Solution(1:n_time_steps, 1:n_code_equations) = 0.0d0
 
+
+      write(6,'(A)')   'setCDGP: call set_answer_arrays'
+      call set_answer_arrays()
+
+      write(6,'(A)')   'setCDGP: call comp_data_variance'
       call comp_data_variance()
 
+      write(6,'(A)')   'setCDGP: call sse0_calc'
       call sse0_calc( )
 
+      write(6,'(A)')   'setCDGP: call set_modified_indiv'
       call set_modified_indiv( )
+
 
       ! set L_minSSE to TRUE if there are no elite individuals,
       ! or prob_no_elite > 0 which means elite individuals might be modified
 
-       L_minSSE = n_GP_Elitists ==  0 .or.   prob_no_elite > 0.0D0
+       L_minSSE = .FALSE. ! n_GP_Elitists ==  0 .or.   prob_no_elite > 0.0D0
+
+
+!------------------------------------------------------------------------------------------
+!
+!if( myid == 0 )then    ! 20131209
+!
+!    if( n_input_vars == 0 )then
+!
+!        write(GP_print_unit,'(/A/)') &
+!              'set1: time_step   Numerical_Code_Solution(time_step,1:n_CODE_equations)'
+!        do  i = 0, n_time_steps
+!            write(GP_print_unit,'(I6,2x,10(1x,E14.7))') &
+!                  i, (Numerical_Code_Solution(i,jj), jj = 1,n_CODE_equations )
+!        enddo ! i
+!
+!    else
+!
+!        write(6, '(/A,2(1x,I6))') 'set1: n_input_data_points ', n_input_data_points
+!
+!        write(GP_print_unit,'(/A/)') &
+!              'set1: i, Numerical_CODE_Solution(i,1:n_CODE_equations)'
+!        do  i = 0, n_input_data_points
+!            write(GP_print_unit,'(I6,2x,10(1x,E14.7))') &
+!                  i, (Numerical_CODE_Solution(i,jj), jj = 1,n_CODE_equations )
+!        enddo ! i
+!
+!
+!    endif ! n_input_vars == 0
+!
+!
+!endif ! myid == 0
+!
+!
+!!--------------------------------------------------------------------------------
+!
+!!  broadcast the Numerical_CODE_Solution array 
+!
+!
+!! set message length if data processing option is on
+!
+!if( n_input_vars == 0 )then
+!    message_len = ( n_time_steps + 1 ) * n_CODE_equations
+!else
+!    message_len = ( n_input_data_points + 1 ) * n_CODE_equations
+!endif ! n_input_vars == 0
+!
+!
+!call MPI_BCAST( Numerical_CODE_Solution, message_len,    &
+!                MPI_DOUBLE_PRECISION, 0, MPI_COMM_WORLD, ierr )
+!
+!
+!Data_Array=Numerical_CODE_Solution        ! Matrix Operation
+!
+!!--------------------------------------------------------------------------------
+!
+!!  broadcast the Numerical_CODE_Solution array 
+!
+!
+!! set message length if data processing option is on
+!
+!if( n_input_vars == 0 )then
+!    message_len = ( n_time_steps + 1 ) * n_CODE_equations
+!else
+!    message_len = ( n_input_data_points + 1 ) * n_CODE_equations
+!endif ! n_input_vars == 0
+!
+!
+!call MPI_BCAST( Numerical_CODE_Solution, message_len,    &
+!                MPI_DOUBLE_PRECISION, 0, MPI_COMM_WORLD, ierr )
+!
+!
+!Data_Array=Numerical_CODE_Solution        ! Matrix Operation
+!
+!
+!
+!!--------------------------------------------------------------------------------
+!
+!! compute the data_variance  -- to be used in computing SSE
+!
+!! compute the data variance with cpu 0 only, then broadcast results
+!
+!! sets:
+!! Data_Variance
+!! Data_Variance_inv
+!
+!
+!if( myid == 0 )then    ! 20131209
+!    call comp_data_variance( )
+!endif ! myid == 0
+!
+!
+!message_len =  n_CODE_equations
+!
+!call MPI_BCAST( Data_Variance_inv, message_len,    &
+!                MPI_DOUBLE_PRECISION, 0, MPI_COMM_WORLD, ierr )
+!
+!!--------------------------------------------------------------------------------
+!
+!
+!!--------------------------------------------------------------------------------
+!
+!! put the desired model parameters in the array:  answer
+!
+!answer = 0.0d0 ! set all to zero
+!
+!n_parameters = 0
+!
+!do  i_CODE_equation=1,n_CODE_equations
+!    n_parameters=n_parameters+1
+!    answer(n_parameters)=Numerical_CODE_Initial_Conditions(i_CODE_equation)
+!enddo ! i_CODE_equation
+!
+!!--------------------------------------------------------------------------------
+!
+!
+!! calculate how many parameters total to fit for the specific individual CODE
+!
+!do  i_tree=1,n_trees
+!    do  i_node=1,n_nodes
+!
+!        if( GP_individual_node_type(i_node,i_tree) .eq. 0) then
+!            n_parameters=n_parameters+1
+!            answer(n_parameters)=GP_Individual_Node_Parameters(i_node,i_tree)
+!        endif ! GP_individual_node_type(i_node,i_tree) .eq. 0
+!
+!    enddo ! i_node
+!enddo ! i_tree
+!
+!
+!
+!!-------------------------------------------------------------------------------------------
+!
+!
+!!--------------------------------------------------------------------------------
+!
+!
+!! calculate the generation intervals for printing the list of children
+!! and broadcast them
+!
+!
+!GA_child_print_interval = n_GA_generations /  number_GA_child_prints
+!
+!if( GA_child_print_interval == 0 ) then
+!    GA_child_print_interval = max( 1, n_GA_generations / 2 )
+!endif
+!
+!
+!GP_child_print_interval = n_GP_generations /  number_GP_child_prints
+!
+!if( GP_child_print_interval == 0 ) then
+!    GP_child_print_interval = max( 1, n_GP_generations / 2 )
+!endif
+!
+!
+!message_len = 1
+!call MPI_BCAST( GA_child_print_interval, message_len,    &
+!                MPI_INTEGER,  0, MPI_COMM_WORLD, ierr )
+!
+!message_len = 1
+!call MPI_BCAST( GP_child_print_interval, message_len,    &
+!                MPI_INTEGER,  0, MPI_COMM_WORLD, ierr )
+!
+!
+!
+!--------------------------------------------------------------------------------
+
+!      call sse0_calc( )
+
+!      call set_modified_indiv( )
+
+
+!--------------------------------------------------------------------------------
 
 
        call print_values2()

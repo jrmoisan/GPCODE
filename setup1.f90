@@ -40,12 +40,16 @@ integer(kind=i4b) :: i_CODE_equation
 
 !---------------------------------------------------------------------------------------
 
-write(6.'(/A,1x,A)')'set1: model ', trim(model)
+if( myid == 0 )then
+    write(6,'(/A,1x,A)') 'set1: model ', trim(model)
+endif ! myid == 0 
 
 
 if( trim(model) == "fasham_CDOM") then
 
-    write(6.'(A)')'set1: allocate aCDOM'            
+    if( myid == 0 )then
+        write(6,'(A)')'set1: allocate aCDOM'            
+    endif ! myid == 0 
 
     allocate(aCDOM,source=newFasham_CDOM())
 
@@ -59,7 +63,9 @@ endif
 
 if( trim(model) == "fasham_CDOM_GP") then
 
-    write(6.'(A)')'set1: allocate aCDOM'            
+    if( myid == 0 )then
+        write(6,'(A)')'set1: allocate aCDOM'            
+    endif ! myid == 0 
 
     allocate(aCDOM,source=newFasham_CDOM_GP())
 
@@ -80,7 +86,9 @@ endif
 ! n_trees
 ! n_nodes
 
-call init_values( 0 )
+!if( index( model, 'CDOM') == 0 )then
+    call init_values( 0 )
+!endif ! index( model, 'CDOM') == 0 
 
 n_Variables = n_CODE_equations
 
@@ -115,7 +123,9 @@ endif ! myid == 0
 
 ! allocate variable dimension arrays
 
-call allocate_arrays1( )
+!if( index( model, 'CDOM') == 0 )then
+    call allocate_arrays1( )
+!endif ! index( model, 'CDOM') == 0 
 
 
 !xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
@@ -147,7 +157,9 @@ GP_minSSE_Individual_SSE = 1.0d99
 !      tree_evaluation
 !      Node_Probability
 
-call init_values( 1 )
+!if( index( model, 'CDOM') == 0 )then
+    call init_values( 1 )
+!endif ! index( model, 'CDOM') == 0 
 
 !------------------------------------------------------------------
 

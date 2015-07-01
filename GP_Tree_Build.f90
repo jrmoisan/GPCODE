@@ -24,6 +24,7 @@ integer(kind=i4b) :: n_Nodes_at_Level
 integer(kind=i4b) :: i_Level_Node
 integer(kind=i4b) :: Node_Function
 integer(kind=i4b) :: Node_Variable
+integer(kind=i4b) :: node_variable_save
 integer(kind=i4b) :: test_function_index
 integer(kind=i4b) :: n_parms
 integer(kind=i4b) :: n_parms_per_tree
@@ -32,6 +33,10 @@ integer(kind=i4b) :: n_parms_per_tree
 real(kind=r4b),parameter :: prob_choose_forcing_type = 0.25
 
 !-----------------------------------------------------------------------------
+
+if( myid == 0 )then
+    write(GP_print_unit,'(A,1x,I6)') 'gtb: n_trees ', n_trees
+endif ! myid == 0
 
 
 GP_Child_Population_Node_Type=-9999 ! set all to null [-9999]
@@ -196,6 +201,7 @@ do  i_GP_Individual=1,n_GP_Individuals
 
                         endif !  n_inputs <= n_code_equations
 
+                        write(6,'(A,1x,I6)')'gtb: node_variable ', node_variable
 
                         GP_Child_Population_Node_Type(i_Node,i_Tree,i_GP_Individual) = &
                                                                           -Node_Variable
@@ -206,21 +212,36 @@ do  i_GP_Individual=1,n_GP_Individuals
 
                             !  set some variables to the forcing functions -5001 -> -5004
 
+                            node_variable_save = node_variable
+
                             call set_forcing_node( node_variable )
 
+                            if( node_variable == 0 ) node_variable = node_variable_save 
+
+                            GP_Child_Population_Node_Type(i_Node,i_Tree,i_GP_Individual) = &
+                                                                          -Node_Variable
                         endif ! model == 'fasham'
 
                         if(model == 'fasham_CDOM_GP' )then
 
                             !  set some variables to the forcing functions -5001 -> -5004
 
+                            node_variable_save = node_variable
+
                             call set_forcing_node( node_variable )
+
+                            if( node_variable == 0 ) node_variable = node_variable_save 
+
+                            write(6,'(A,1x,I6)')'gtb: CDOM_GP node_variable ', node_variable
+
+                            GP_Child_Population_Node_Type(i_Node,i_Tree,i_GP_Individual) = &
+                                                                          -Node_Variable
 
                         endif ! model == 'fasham_CDOM_GP
 
 
-                        GP_Child_Population_Node_Type(i_Node,i_Tree,i_GP_Individual) = &
-                                                                          -Node_Variable
+
+                        write(6,'(A,1x,I6)')'gtb:2  node_variable ', node_variable
 
                     else  !   cff > GP_Set_Terminal_to_Parameter_Probability
 
