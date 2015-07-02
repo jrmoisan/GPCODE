@@ -1858,11 +1858,15 @@ endif ! myid == 0
 
 
 !=============================================================================================
-!
-Truth_Initial_Conditions =  Numerical_CODE_Initial_Conditions
-Truth_Node_Type          = GP_Individual_Node_Type
-Truth_Node_Parameters    = GP_Individual_Node_Parameters
-!
+
+if( L_truth_model ) then                                                                                         
+
+    Truth_Initial_Conditions =  Numerical_CODE_Initial_Conditions
+    Truth_Node_Type          = GP_Individual_Node_Type
+    Truth_Node_Parameters    = GP_Individual_Node_Parameters
+
+endif ! L_truth_model 
+
 !=============================================================================================
 
 

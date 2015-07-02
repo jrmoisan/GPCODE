@@ -100,9 +100,11 @@ allocate( GP_diversity_index( n_GP_individuals ) )
 
 !---------------------------------------------------------------
 
-allocate( Truth_Initial_Conditions( 1:n_code_equations )  )
-allocate( Truth_Node_Type( n_nodes, n_trees )  )
-allocate( Truth_Node_Parameters( n_nodes, n_trees )  )
+if( L_truth_model )then
+    allocate( Truth_Initial_Conditions( 1:n_code_equations )  )
+    allocate( Truth_Node_Type( n_nodes, n_trees )  )
+    allocate( Truth_Node_Parameters( n_nodes, n_trees )  )
+endif !  L_truth_model 
 
 !---------------------------------------------------------------
 
