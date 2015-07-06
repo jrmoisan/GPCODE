@@ -216,12 +216,40 @@ contains
       GP_Individual_Node_Type(22,2) = -5002     ! force MLD
       GP_Individual_Node_Type(23,2) = -5004     ! force KD
 
+
+      write(6,'(/A/)') 'setModelCD: Truth model node types'
+      do  i_tree=1,n_trees
+         do  i_node=1,n_nodes
+
+             if( GP_individual_node_type(i_node,i_tree) > -9999 ) then
+                 write(6,'(A,3(1x,I8))') &
+                  'setModelCD: i_tree, i_node, GP_Individual_Node_Type(i_node, i_tree)', &
+                               i_tree, i_node, GP_Individual_Node_Type(i_node, i_tree)
+             endif ! GP_individual_node_type(i_node,i_tree) .eq. 0
+
+         enddo ! i_node
+      enddo ! i_tree
+
+
+      write(6,'(/A/)') 'setModelCD: Truth model node parameters'
+      do  i_tree=1,n_trees
+         do  i_node=1,n_nodes
+
+             write(6,'(A,2(1x,I8),1x,E15.7)') &
+               'setModelCD: i_tree, i_node, GP_Individual_Node_parameters(i_node, i_tree)', &
+                            i_tree, i_node, GP_Individual_Node_parameters(i_node, i_tree)
+
+         enddo ! i_node
+      enddo ! i_tree
+
+      
+
       answer = 0.0d0 ! set all to zero
       n_parameters = 0
 
       do  i_CODE_equation=1,n_CODE_equations
-         n_parameters=n_parameters+1
-         answer(n_parameters)=Numerical_CODE_Initial_Conditions(i_CODE_equation)
+          n_parameters=n_parameters+1
+          answer(n_parameters)=Numerical_CODE_Initial_Conditions(i_CODE_equation)
       enddo ! i_CODE_equation
 
 ! calculate how many parameters total to fit for the specific individual CODE
@@ -229,10 +257,10 @@ contains
       do  i_tree=1,n_trees
          do  i_node=1,n_nodes
 
-            if( GP_individual_node_type(i_node,i_tree) .eq. 0) then
-               n_parameters=n_parameters+1
-               answer(n_parameters)=GP_Individual_Node_Parameters(i_node,i_tree)
-            endif ! GP_individual_node_type(i_node,i_tree) .eq. 0
+             if( GP_individual_node_type(i_node,i_tree) .eq. 0) then
+                 n_parameters=n_parameters+1
+                 answer(n_parameters)=GP_Individual_Node_Parameters(i_node,i_tree)
+             endif ! GP_individual_node_type(i_node,i_tree) .eq. 0
 
          enddo ! i_node
       enddo ! i_tree
