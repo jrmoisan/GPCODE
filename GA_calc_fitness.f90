@@ -307,11 +307,10 @@ if( i_GA_generation == 1                                 .or. &
 
 
     if( L_ga_print )then
-        write(GA_print_unit,'(/A)')&
-         'gacf:i_GA_ind   ind_SSE            ind_ranked_fitness    &
-         &integ_rank_fitness  ind_quality'
+        write(GA_print_unit,'(A)')&
+        'gacf:i_GA_ind  ind_SSE         ind_ranked_fit  integ_rank_fit  ind_quality'
         do  i_GA_individual=1,n_GA_individuals
-            write(GA_print_unit,'(6x,I6,3(1x,E20.12),1x,I6)') &
+            write(GA_print_unit,'(6x,I6,3(1x,E15.7),1x,I6)') &
                   i_GA_individual, individual_SSE(i_GA_individual), &
                         individual_ranked_fitness(i_GA_individual), &
                         integrated_ranked_fitness(i_GA_individual), &
