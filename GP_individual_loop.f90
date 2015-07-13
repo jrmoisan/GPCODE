@@ -202,6 +202,17 @@ do  i_part = 1,  n_partitions
                     GP_Child_Individual_SSE_nolog10(i_GP_individual) = big_real  ! jjm 20150109
 
 
+                    if( new_rank == 0 )then
+                        write(GP_print_unit,'(A,1x,i5)')&
+                              'gil: skipping this i_GP_Individual --&
+                              &  the number of parameters is ', n_GP_parameters
+                        write(GP_print_unit,'(A,4(1x,I5))')&
+                         'gil: myid, new_rank, i_GP_gen, i_GP_indiv', &
+                               myid, new_rank, i_GP_generation, i_GP_individual
+                        flush(GP_print_unit)
+                    endif !  new_rank == 0
+
+
 
                 else
 
@@ -260,28 +271,37 @@ do  i_part = 1,  n_partitions
         if( new_rank == 0 )then
 
             ii = ind1
+
             ! send the number of parameters for the GP individual
+
             n_indiv = ind2 - ind1 + 1
             call MPI_SEND( GP_Individual_N_GP_Param(ind1), n_indiv, MPI_INTEGER,        &
                            0,  tag_parm+ii, MPI_COMM_WORLD, ierr )
+
             ! send the fitness buffer for the GP individuals already completed
+
             call MPI_SEND(GP_Population_Ranked_Fitness(ind1), n_indiv, MPI_DOUBLE_PRECISION, &
                            0,  tag_ind_fit+ii, MPI_COMM_WORLD, ierr )
 
             ! send the SSE buffer for the GP individuals already completed
+
             call MPI_SEND( GP_Child_Population_SSE(ind1), n_indiv, MPI_DOUBLE_PRECISION, &
                            0, tag_ind_sse+ii, MPI_COMM_WORLD, ierr )
            
             ! send initial condition
+
             message_len =n_indiv* n_code_equations
             call MPI_SEND( GP_Population_Initial_Conditions(1, ii), message_len,    &
                                MPI_double_precision,  0, tag_init_cond+ii, &
                                MPI_COMM_WORLD, ierr )
+
             ! send parameters
+
             message_len = n_indiv*n_Nodes * n_Trees
             call MPI_SEND( GP_Population_Node_Parameters(1,1,ii), message_len,                &
                                MPI_double_precision,  0, tag_node_parm+ii, &
                                MPI_COMM_WORLD, ierr )
+
          endif ! new_rank == 0
 
       endif ! i_gp_1 <= myid  .and. ...

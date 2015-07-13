@@ -24,8 +24,16 @@ if(i_GP_generation > 1) return
 
 !----------------------------------------------------------------------------
 
+if( myid == 0 ) then
+    write(GP_print_unit,'(/A,5x,l1/)') &
+          'gpf: L_restart ', L_restart
+endif
+
 
 if( L_restart) then
+
+    ! do this section to restart the run
+
 
     if( myid == 0 ) then
         write(GP_print_unit,'(/A/)') &
@@ -55,6 +63,10 @@ else
         ! set
         ! GP_Adult_Population_Node_Type(:,:,:)
         ! GP_Population_Node_parameters(:,:,:)
+        if( myid == 0 ) then
+            write(GP_print_unit,'(/A/)') &
+                  'gpf: call fasham_model_debug    '
+        endif
 
         call fasham_model_debug()
 
@@ -66,7 +78,7 @@ else
             !'gpf: call GP_Tree_Build        Generation =',i_GP_Generation
             !write(6,'(//A,1x,I10/)') 'gpf:  n_input_vars = ', n_input_vars
 
-            flush(GP_print_unit)
+            !flush(GP_print_unit)
 
             ! set
             ! GP_Adult_Population_Node_Type array with random trees
@@ -90,6 +102,12 @@ else
                         MPI_INTEGER,  0, MPI_COMM_WORLD, ierr )
 
         if( ierror_tb > 0 )then
+
+            if( myid == 0 ) then
+                write(GP_print_unit,'(/A,1x,I6)') &
+                      'gpf: ierror_tb ', ierror_tb                                    
+            endif
+
             call MPI_FINALIZE( ierr )
             stop ' GP_produce_first,ierror_tb'
         endif ! ierror_tb
@@ -113,7 +131,7 @@ ierror_tb = 0
 ! determines if the new GP child
 ! has to be sent to GA_lmdif for parameter optimization
 
-Run_GP_Calculate_Fitness=.true.
+Run_GP_Calculate_Fitness=.true.   ! jjm 20150607
 
 if( trim(model) == 'fasham_CDOM' )then
 
@@ -132,9 +150,12 @@ endif
 
 !---------------------------------------------------------------------------
 
-!write(GP_print_unit,'(/A,1x,I6)') &
-!      'gpf: return'
-!flush(GP_print_unit)
+if( myid == 0 ) then
+    write(GP_print_unit,'(/A,1x,I6)') &
+      'gpf: return'
+    flush(GP_print_unit)
+endif
+
 
 
 return
