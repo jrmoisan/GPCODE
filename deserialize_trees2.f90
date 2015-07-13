@@ -32,10 +32,6 @@ integer(kind=i4b):: inode
 integer(kind=i4b):: inodec
 integer(kind=i4b):: counter
 integer(kind=i4b):: parm_counter
-!integer(kind=i4b):: n_inode
-
-!integer(kind=i4b):: i_node
-!integer(kind=i4b):: i_tree
 
 real(kind=r8b) :: parameter_value
 
@@ -45,104 +41,23 @@ integer(kind=i4b), dimension(:), allocatable :: Node_IDs
 
 type(Tree_Node), pointer :: parent, root
 
-!logical,save :: first  = .TRUE.
-!integer(kind=i4b):: temp_myid
 
 !------------------------------------------------------------------------------------
 
-!if( first ) then        ! debug_only
-!    temp_myid = 0
-!    first = .false.
-!else
-!    temp_myid = 1
-!endif
-
-!--------------------------------------------------------------------------------------
 
 ! MathNodeType      = 1
 ! VariableNodeType  = 2
 ! ParameterNodeType = 3
 
 !--------------------------------------------------------------------------------------
-!! debug only  - put in discover problem tree
-!GP_individual_node_type(:, :) =  -9999
-!i_tree = 1
-!i_node = 1
-!GP_individual_node_type(i_node, i_tree) =  6
-!i_node = 2
-!GP_individual_node_type(i_node, i_tree) =  0
-!i_node = 3
-!GP_individual_node_type(i_node, i_tree) =  4
-!i_node = 6
-!GP_individual_node_type(i_node, i_tree) = -1
-!i_node = 7
-!GP_individual_node_type(i_node, i_tree) =  7
-!i_node = 14
-!GP_individual_node_type(i_node, i_tree) = -2
-!i_node = 15
-!GP_individual_node_type(i_node, i_tree) = -1
-!
-!
-!i_tree = 5
-!i_node = 1
-!GP_individual_node_type(i_node, i_tree) = -2
-!
-!
-!GP_individual_node_parameters(:, :) = 0.0D0
-!i_tree = 1
-!i_node = 2
-!GP_individual_node_parameters(i_node, i_tree) = 0.7191251516342163D+02
-!
-!Numerical_CODE_Solution( 0 , 1) = 0.6718252785503864D-02
-!Numerical_CODE_Solution( 0 , 2) = 0.8888030052185059D+02
-!
-!--------------------------------------------------------------------------------------
-!if( myid == temp_myid )then
-!    write(6,'(//A,2(1x,I6))') &
-!    'DsT2: at entry n_nodes, tree_count ', n_nodes, tree_count
-!    write(6,'(A,2(1x,I6))')   &
-!    'DsT2: num_Tracked_resources   ', num_Tracked_resources
-!    write(6,'(A,2(1x,I6))')   &
-!    'DsT2: n_code_equations        ', n_code_equations     
-!endif !  myid == temp_myid
 
 
+if( myid == 0 )then
+    write(6,'(A,1x,I6)')  'DsT2: at ENTRY   '
+    flush(6)
+endif !  myid == 0 
 
 do  i = 1, Tree_count
-
-!!    if( .not. ( &
-!!        i == 1   .or. &
-!!        i == 8   .or. &
-!!        i == 13  .or. &
-!!        i == 15  .or. &
-!!        i == 19  .or. &
-!!        i == 20  .or. &
-!!        i == 22  .or. &
-!!        i == 26  .or. &
-!!        i == 28  .or. &
-!!        i == 29  .or. &
-!!        i == 32  .or. &
-!!        i == 35  .or. &
-!!        i == 36  .or. &
-!!        i == 38  .or. &
-!!        i == 39  .or. &
-!!        i == 42  .or. &
-!!        i == 43  .or. &
-!!        i == 46  .or. &
-!!        i == 47  .or. &
-!!        i == 50  .or. &
-!!        i == 52  .or. &
-!!        i == 53  .or. &
-!!        i == 54     &
-!!                     ) ) cycle  ! debug only 
-
-    !if( myid == temp_myid )then
-
-        !write(6,'(/A,1x,I6,1x,A)')  'DsT2: Tree  i = ', i, &
-        !'#########################################################################'
-        !flush(6)
-
-    !endif !  myid == temp_myid
 
 
     do j = 1,  num_Tracked_resources
@@ -164,17 +79,10 @@ do  i = 1, Tree_count
 
         node_count = counter
 
-        !if( myid == temp_myid )then
-        !    write(6,'(//A,3(1x,I6))')  'DsT2: tree i, node_count, counter ', &
-        !                                           i, node_count, counter
-        !    flush(6)
-        !endif !  myid == temp_myid
-
 
         if( node_count <= 0 )  exit  ! j loop
 
         !----------------------------------------------------------------------------
-
 
         ! Dimension arrays that will hold nodes and node ids
 
@@ -477,7 +385,7 @@ do  i = 1, Tree_count
                 !'DsT2: i, k, Nodes(k)%n%Node_Type', i, k, Nodes(k)%n%Node_Type
                 !flush(6)
 
-            endif
+            endif !   Nodes(k)%n%Node_Type .eq. MathNodeType 
 
         enddo ! k
 
@@ -521,8 +429,13 @@ do  i = 1, Tree_count
 
 enddo ! i
 
-!write(6,'(A,1x,I6)')  'DsT2: aft tree  loop  at RETURN  '
-!flush(6)
+
+if( myid == 0 )then
+    write(6,'(A,1x,I6)')  'DsT2: aft tree  loop  at RETURN  '
+    flush(6)
+endif !  myid == 0 
+
+
 
 return
 

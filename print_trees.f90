@@ -155,6 +155,13 @@ do  i_GP_individual = n_indiv_start, n_indiv_stop
                     write( value_element_string2, element_format )          &
                                   Tree_Type( i_node, i_tree, i_GP_individual)
 
+                    !debug
+                    !write( 6, '(A,4(1x,I6))')          &
+                    !       'pt:  i_node, i_tree, i_GP_indiv, Tree_Type ', &
+                    !             i_node, i_tree, i_GP_individual, &
+                    !             Tree_Type( i_node, i_tree, i_GP_individual)
+                    !debug
+
                     node_string  = trim(node_string) // node_element_string2
                     value_string = trim(value_string) // value_element_string2
                     nodes_filled =  nodes_filled + 1

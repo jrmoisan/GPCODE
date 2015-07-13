@@ -36,7 +36,6 @@ real(kind=r8b) :: cff
 integer(kind=i4b) :: iter
 integer(kind=i4b) :: i_Time_Step, i_Track, i_Tree
 integer(kind=i4b) :: i_CODE_Equation, j_CODE_Equation, i_Variable
-!integer(kind=i4b) :: i_node
 
 integer(kind=i4b) :: tree_node_count
 
@@ -48,6 +47,12 @@ logical :: L_GP_print
 L_GP_print = .true.
 
 tree_node_count = 0
+
+if( trim(model) == 'fasham_CDOM' .or. &
+    trim(model) == 'fasham_CDOM_GP' ) then
+    dt = 1.0d0
+endif !  trim(model) == 'fasham_CDOM' ...           
+
 
 if( dt <= 0.0d0 )then
     call MPI_FINALIZE(ierr)
@@ -61,7 +66,10 @@ if( L_print_RK )then
     write(6,'(A,1x,E20.10/)') 'rkbm: dt', dt
 endif ! L_print_RK
 
+
+
 ! start the time stepping loop
+
 
 do  i_Time_Step = 1, n_Time_Steps
 
@@ -71,7 +79,7 @@ do  i_Time_Step = 1, n_Time_Steps
 
         write(6,'(/A,1x,I6/)') &
           'rkbm: bad b_tmp  i_time_step', i_time_step
-        !flush(6)
+        flush(6)
         L_bad_result = .TRUE.
         return
     endif !  any( isnan( b_tmp ) ) .or.  any( abs(b_tmp)  > big_real
@@ -79,6 +87,7 @@ do  i_Time_Step = 1, n_Time_Steps
     btmp = b_tmp
 
     ! carry out a Runge-Kutta time step
+
     do  iter=1,4
 
         ! Call forcing functions for the Fasham box model
@@ -95,9 +104,12 @@ do  i_Time_Step = 1, n_Time_Steps
       
         endif ! trim(model) == 'fasham'
 
-        if( trim(model) == 'fasham_CDOM' .or. trim(model) == 'fasham_CDOM_GP') then
+        if( trim(model) == 'fasham_CDOM'     .or. &
+            trim(model) == 'fasham_CDOM_GP'        ) then
 
-            call aCDOM%getForcing(btmp, Runge_Kutta_Time_Step(iter), i_Time_Step-1, L_bad_result )
+            call aCDOM%getForcing( btmp, &
+                                   Runge_Kutta_Time_Step(iter), &
+                                   i_Time_Step-1, L_bad_result )
 
             if( L_bad_result ) then
                 write(6,'(/A)') 'rkbm: bad result from DoForcing '
@@ -154,6 +166,7 @@ do  i_Time_Step = 1, n_Time_Steps
                     else
    
                         ! never flow to/from same component
+
                         bioflo(i_CODE_Equation,j_CODE_Equation)=0.0D+0
    
                     endif ! i_CODE_Equation .ne. j_CODE_Equation
@@ -242,9 +255,14 @@ do  i_Time_Step = 1, n_Time_Steps
    
     Numerical_CODE_Solution(i_Time_Step,1:n_Variables)=max(b_tmp(1:n_Variables),0.0D+0)
    
-    !write(6,'(A,1x,I4,10(1x,E15.7)/ )') &
-    !      'rkbm: i_time_step, Numerical_CODE_Solution(i_time_step,:)', &
-    !             i_time_step, Numerical_CODE_Solution(i_time_step,:)
+    !if( myid == 0 )then
+    !    write(6,'(A,2(1x,I6),12(1x,E15.7))') &
+    !            'rkbm:P myid, i_time_step, RK_Soln ', &
+    !                    myid, i_time_step, &
+    !                    Numerical_CODE_Solution(i_time_step,1:n_CODE_equations)
+    !endif ! myid == 0 
+
+
 
 enddo ! End Time step loop
 

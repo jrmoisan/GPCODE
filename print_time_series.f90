@@ -37,7 +37,6 @@ integer(kind=i4b) :: i_node
 integer(kind=i4b) :: ii
 integer(kind=i4b) :: i
 integer(kind=i4b) :: j
-!integer(kind=i4b) :: jj
 
 
 
@@ -68,8 +67,6 @@ real(kind=r8b),dimension(n_code_equations)  :: RK_max
 real(kind=r8b),dimension(n_code_equations)  :: data_max
 real(kind=r8b),dimension(n_code_equations)  :: resid_max
 real(kind=r8b),dimension(n_code_equations)  :: r_corr
-!real(kind=r8b),dimension(n_code_equations)  :: prob_r
-!real(kind=r8b),dimension(n_code_equations)  :: fisher_z
 
 real(kind=r8b) :: resid_SSE
 real(kind=r8b) :: y_min
@@ -85,7 +82,6 @@ logical :: L_myprint
 
    write(GP_print_unit,'(/A,2(1x,I6)/)') 'pts: i_GP_generation', i_GP_generation 
 
-   !!!L_myprint = .TRUE. ! .FALSE.             
    L_myprint = .FALSE.
    if( i_GP_generation == 0 )then
       L_myprint = .TRUE.

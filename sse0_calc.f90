@@ -32,16 +32,19 @@ integer(kind=i4b) :: i_time_step
 
 
 
-write(GP_print_unit,*) ' '
+if( myid == 0 ) then 
 
-do  i_CODE_equation=1,n_CODE_equations
-    write(GP_print_unit,'(A,1x,I6,2(1x,E15.7))') &
-          'ssec: i_eqn, data_variance_inv ', &
-                 i_CODE_equation, data_variance_inv(i_CODE_equation)
-enddo !  i_CODE_equation
+    write(GP_print_unit,*) ' '
+    
+    do  i_CODE_equation=1,n_CODE_equations
+        write(GP_print_unit,'(A,1x,I6,2(1x,E15.7))') &
+              'ssec: i_eqn, data_variance_inv ', &
+                     i_CODE_equation, data_variance_inv(i_CODE_equation)
+    enddo !  i_CODE_equation
+    
+    write(GP_print_unit,'(A)') 'ssec: using data_variance inv   '
 
-write(GP_print_unit,'(A)') 'ssec: using data_variance inv   '
-
+endif ! myid == 0 
 
 SSE0_nolog10 = 0.0D+0
 fvec = 0.0d0
@@ -92,13 +95,19 @@ enddo ! i_time_step
 if( index( model,'LOG10') > 0 .or. &
     index( model,'log10') > 0         )then
 
-    write(GP_print_unit,'(/A,1x,I6,2x,E15.7/)') 'ssec: myid, SSE0_nolog10 =  ',myid, SSE0_nolog10
+    if( myid == 0 ) then 
+        write(GP_print_unit,'(/A,1x,I6,2x,E15.7/)') &
+          'ssec: myid, SSE0_nolog10 =  ',myid, SSE0_nolog10
+    endif ! myid == 0
 
 else
 
     SSE0 = SSE0_nolog10
 
-    write(GP_print_unit,'(/A,1x,I6,2x,E15.7/)') 'ssec: myid, SSE0 =  ',myid, SSE0
+    if( myid == 0 ) then 
+        write(GP_print_unit,'(/A,1x,I6,2x,E15.7/)') &
+          'ssec: myid, SSE0 =  ',myid, SSE0
+    endif ! myid == 0
 
 endif !   index( model,'LOG10') > 0 .or. ...
 

@@ -32,13 +32,9 @@ integer(kind=i4b),intent(in) :: i_GP_Generation
 integer(kind=i4b) :: i_GP_individual
 integer(kind=i4b) :: i_Tree
 integer(kind=i4b) :: i_Node
-!integer(kind=i4b) :: i_code_equation
 
 integer(kind=i4b) :: ii
-!integer(kind=i4b) :: ii2
-!integer(kind=i4b) :: ii3
 integer(kind=i4b) :: jj
-!integer(kind=i4b) :: jj2
 
 integer(kind=i4b) :: message_len
 
@@ -51,23 +47,13 @@ integer(kind=i4b) :: ind1
 integer(kind=i4b) :: ind2
 integer(kind=i4b) :: n_indiv
 
-integer(kind=i4b),parameter :: tag_ind_sse = 200000
-integer(kind=i4b),parameter :: tag_ind_fit = 100000
-integer(kind=i4b),parameter :: tag_parm    = 500000
+integer(kind=i4b),parameter :: tag_ind_fit      = 100000
+integer(kind=i4b),parameter :: tag_ind_sse      = 200000
+integer(kind=i4b),parameter :: tag_ind_sse_nl10 = 300000
+integer(kind=i4b),parameter :: tag_parm         = 500000
 integer(kind=i4b),parameter :: tag_node_type    = 600000
 integer(kind=i4b),parameter :: tag_init_cond    = 700000
 integer(kind=i4b),parameter :: tag_node_parm    = 800000
-
-!integer(kind=i4b) :: tag_fit_r
-!integer(kind=i4b) :: tag_fit_s
-!integer(kind=i4b) :: tag_sse_r
-!integer(kind=i4b) :: tag_sse_s
-!integer(kind=i4b) :: tag_tmp
-
-!real(kind=r8b),allocatable ::   fit_buffer_send(:)
-!real(kind=r8b),allocatable ::   sse_buffer_send(:)
-!integer(kind=i4b),allocatable ::   buff_parm_send(:)
-!integer(kind=i4b) :: i_sender,i_GP_ind, tmpresult,i_tag,isource
 
 logical :: L_skip
 
@@ -86,6 +72,7 @@ part_loop:&
 do  i_part = 1,  n_partitions
 
     !---------------------------------------------------------------------------------
+
     ! ind1 and ind2 are limits on the i_GP_individuals processed in this partition
 
     ind1 =  (n_GP_individuals / n_partitions) * (i_part-1)  +  1
@@ -107,19 +94,25 @@ do  i_part = 1,  n_partitions
         jj = ind1
         n_indiv = ind2 - ind1 + 1
         call MPI_RECV( GP_Individual_N_GP_param(ind1), n_indiv, MPI_INTEGER, &
-                       MPI_ANY_SOURCE, tag_parm+jj,                       &
+                       MPI_ANY_SOURCE, tag_parm + jj,                       &
                        MPI_COMM_WORLD, MPI_STAT, ierr )
 
         ! receive the fitness information
 
         call MPI_RECV( GP_Population_Ranked_Fitness(ind1), n_indiv, MPI_DOUBLE_PRECISION, &
-                       MPI_ANY_SOURCE, tag_ind_fit+jj,                       &
+                       MPI_ANY_SOURCE, tag_ind_fit + jj,                       &
                        MPI_COMM_WORLD, MPI_STAT, ierr )
 
         ! receive the SSE information
         call MPI_RECV( GP_Child_Population_SSE(ind1), n_indiv, MPI_DOUBLE_PRECISION, &
-                       MPI_ANY_SOURCE, tag_ind_sse+jj,                       &
+                       MPI_ANY_SOURCE, tag_ind_sse + jj,                       &
                        MPI_COMM_WORLD, MPI_STAT, ierr )
+
+        ! receive the SSE information
+        call MPI_RECV( GP_Child_Individual_SSE_nolog10(ind1), n_indiv, MPI_DOUBLE_PRECISION, &
+                       MPI_ANY_SOURCE, tag_ind_sse_nl10 + jj,                       &
+                       MPI_COMM_WORLD, MPI_STAT, ierr )
+
 
         GP_Adult_Population_SSE(ind1:ind2) =  GP_Child_Population_SSE(ind1:ind2)
 
@@ -202,18 +195,6 @@ do  i_part = 1,  n_partitions
                     GP_Child_Individual_SSE_nolog10(i_GP_individual) = big_real  ! jjm 20150109
 
 
-                    if( new_rank == 0 )then
-                        write(GP_print_unit,'(A,1x,i5)')&
-                              'gil: skipping this i_GP_Individual --&
-                              &  the number of parameters is ', n_GP_parameters
-                        write(GP_print_unit,'(A,4(1x,I5))')&
-                         'gil: myid, new_rank, i_GP_gen, i_GP_indiv', &
-                               myid, new_rank, i_GP_generation, i_GP_individual
-                        flush(GP_print_unit)
-                    endif !  new_rank == 0
-
-
-
                 else
 
                     L_skip = .FALSE.
@@ -247,7 +228,11 @@ do  i_part = 1,  n_partitions
 
 
                 GP_Population_Ranked_Fitness(i_GP_individual) = individual_fitness
+
                 GP_Child_Population_SSE(i_GP_individual) = Individual_SSE_best_parent
+                GP_Child_Individual_SSE_nolog10(i_GP_individual) =  &
+                                            Individual_SSE_best_parent_nolog10
+
 
                 ! set the GA_lmdif-optimized initial condition array
                 GP_Population_Initial_Conditions(:, i_GP_Individual) = &
@@ -276,23 +261,29 @@ do  i_part = 1,  n_partitions
 
             n_indiv = ind2 - ind1 + 1
             call MPI_SEND( GP_Individual_N_GP_Param(ind1), n_indiv, MPI_INTEGER,        &
-                           0,  tag_parm+ii, MPI_COMM_WORLD, ierr )
+                           0,  tag_parm + ii, MPI_COMM_WORLD, ierr )
 
             ! send the fitness buffer for the GP individuals already completed
 
             call MPI_SEND(GP_Population_Ranked_Fitness(ind1), n_indiv, MPI_DOUBLE_PRECISION, &
-                           0,  tag_ind_fit+ii, MPI_COMM_WORLD, ierr )
+                           0,  tag_ind_fit + ii, MPI_COMM_WORLD, ierr )
 
             ! send the SSE buffer for the GP individuals already completed
 
             call MPI_SEND( GP_Child_Population_SSE(ind1), n_indiv, MPI_DOUBLE_PRECISION, &
-                           0, tag_ind_sse+ii, MPI_COMM_WORLD, ierr )
+                           0, tag_ind_sse + ii, MPI_COMM_WORLD, ierr )
+           
+
+            ! send the SSE buffer for the GP individuals already completed
+
+            call MPI_SEND( GP_Child_Individual_SSE_nolog10(ind1), n_indiv, MPI_DOUBLE_PRECISION, &
+                           0, tag_ind_sse_nl10 + ii, MPI_COMM_WORLD, ierr )
            
             ! send initial condition
 
             message_len =n_indiv* n_code_equations
             call MPI_SEND( GP_Population_Initial_Conditions(1, ii), message_len,    &
-                               MPI_double_precision,  0, tag_init_cond+ii, &
+                               MPI_double_precision,  0, tag_init_cond + ii, &
                                MPI_COMM_WORLD, ierr )
 
             ! send parameters
@@ -317,6 +308,9 @@ call MPI_BCAST( GP_Individual_N_GP_param, message_len,    &
                 MPI_INTEGER,  0, MPI_COMM_WORLD, ierr )
 
 call MPI_BCAST( GP_Child_Population_SSE, n_GP_individuals,    &
+                MPI_DOUBLE_PRECISION, 0, MPI_COMM_WORLD, ierr )
+
+call MPI_BCAST( GP_Child_Individual_SSE_nolog10, n_GP_individuals,    &
                 MPI_DOUBLE_PRECISION, 0, MPI_COMM_WORLD, ierr )
 
 

@@ -214,8 +214,6 @@ use kinds_mod
 
         f_Power = abs(a)**b
 
-        !f_Power = min( f_Power, 1.0D+99 )
-        !f_Power = max( f_Power, 1.0D-99 )
         f_Power = min( f_Power, 1.0D+19 )
         f_Power = max( f_Power, 1.0D-19 )
 

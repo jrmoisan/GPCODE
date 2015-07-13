@@ -46,6 +46,7 @@ integer(kind=i4b) :: ierror
 integer(kind=i4b) :: hash_index
 
 real(kind=r8b) :: dt_min
+logical ::  L_op_cntl 
 
 !----------------------------------------------------------------------
 
@@ -55,10 +56,14 @@ ierror = 0
 
 ! open the control input file
 
-open( unit = cntl_unitnum, file = 'GPGA_cntl_vars.in', &
-      form = 'formatted',&
-      status = 'old' )
+inquire( unit = cntl_unitnum, opened = L_op_cntl )
 
+if( .not. L_op_cntl )then
+    open( unit = cntl_unitnum, file = 'GPGA_cntl_vars.in', &
+          form = 'formatted',&
+          status = 'old' )
+
+endif ! .not. L_op_cntl 
 
 rewind(cntl_unitnum)
 
@@ -80,12 +85,14 @@ if( myid == 0 )then
         istat  = 0
         READ( cntl_unitnum, '(A)', IOSTAT = istat ) Aline
         if( istat > 0 ) then
-            write(GP_print_unit,*) &
+            write( GP_print_unit,'(/A/)' ) &
              'rcntl: ERROR *** Problem reading GPGACODE_cntl &
                                &in subroutine read_cntl_stuff'
+            flush( GP_print_unit )
+
             ierror = 1
             close(cntl_unitnum)
-             stop  'rcntl: ERROR *** Problem reading GPGACODE_cntl &
+            stop  'rcntl: ERROR *** Problem reading GPGACODE_cntl &
                                &in subroutine read_cntl_stuff'
         endif
         if( istat < 0 ) then
@@ -103,6 +110,7 @@ if( myid == 0 )then
 
 endif !myid==0
 
+flush( GP_print_unit )
 
 
 !---------------------------------------------------------------------
@@ -216,10 +224,11 @@ truth_model = 0
 L_truth_model = .FALSE.
 
 
-gp_para_lmdif_start_gen  = 0
-gp_para_lmdif_modulus = 0
+gp_para_lmdif_start_gen  = 1
+gp_para_lmdif_modulus = 10
 L_gp_para_lmdif = .FALSE. 
  
+L_replace_larger_SSE_only = .FALSE.
 
 !---------------------------------------------------------------------
 
@@ -241,6 +250,7 @@ do
     if( istat > 0 ) then
         write(GP_print_unit,'(/A/)') &
          'rcntl: ERROR *** Problem reading GPGACODE_cntl.'
+        flush( GP_print_unit )
         ierror = 1
         close(cntl_unitnum)
         stop 'rcntl: ERROR *** Problem reading GPGACODE_cntl.'
@@ -582,6 +592,12 @@ do
         if( trim(model) == 'fasham_fixed_tree' ) model = 'fasham_fixed_tree'
 
 
+        if( trim(model) == 'fasham_cdom'   ) model = 'fasham_CDOM' 
+        if( trim(model) == 'fasham_cdom_gp') model = 'fasham_CDOM_GP'
+
+
+
+
         ! set up max_forcing_index for use in GP_Check_Tree
 
         if( index( model, 'fasham') > 0 )then
@@ -662,11 +678,9 @@ do
 
         L_node_functions = .FALSE.
 
-        !write(GP_print_unit,'(A,1x,I6)') 'rcntl: input selected_function = ', selected_function
 
         i_function_index = i_function_index + 1
 
-        !write(GP_print_unit,'(A,1x,I6)') 'rcntl: i_function_index', i_function_index
 
         if( i_function_index <= n_functions_max ) then
 
@@ -1154,8 +1168,10 @@ do
 ! if print_equations_flag <= 0 - do not write equations
 
 !  DEFAULT =   print_equations_flag ==  0
-!                - do not write quations
+!                - do not write equations
 
+
+!   << CURRENTLY DISABLED >>
 
 
     elseif( Aline(1:len('print_equations')) == "print_equations" ) then
@@ -1302,10 +1318,6 @@ do
     elseif( Aline(1:len('restart')) == "RESTART" .or.     &
             Aline(1:len('restart')) == "restart" ) then
 
-        !write(GP_print_unit,'(A,1x,i6)') &
-        !      'rcntl: n_seed    = ', n_seed
-        !flush( GP_print_unit )
-
 
         READ(Aline(len('restart')+1:), * ) !temp_seed(1:n_seed)
 
@@ -1430,10 +1442,6 @@ do
         READ(Aline(len('gp_para_lmdif')+1:), * , iostat = istat )  &
              gp_para_lmdif_start_gen, gp_para_lmdif_modulus
 
-        !if( myid == 0 )then
-        !    write(GP_print_unit,'(A,1x,I6)') &
-        !          'rcntl: istat = ', istat                            
-        !endif !myid==0
 
         L_gp_para_lmdif = .true.
 
@@ -1448,6 +1456,27 @@ do
         endif !myid==0
 
 
+
+
+
+!--------------------------------------------------------------------
+
+
+! replace_larger_SSE_only
+
+
+
+    elseif( Aline(1:len('replace_larger_SSE_only')) == "REPLACE_LARGER_SSE_ONLY" .or.     &
+            Aline(1:len('replace_larger_SSE_only')) == "replace_larger_SSE_only" .or.     &
+            Aline(1:len('replace_larger_SSE_only')) == "replace_larger_sse_only"     ) then
+
+        
+        L_replace_larger_SSE_only = .true.
+
+        if( myid == 0 )then
+            write(GP_print_unit,'(A,4x,L1)') &
+                  'rcntl: L_replace_larger_SSE_only = ', L_replace_larger_SSE_only
+        endif !myid==0
 
 
 
@@ -1479,8 +1508,7 @@ do
             write(GP_print_unit,'(A,1x,A)') 'rcntl: Aline =', trim( Aline )
             write(GP_print_unit,'(A/)')     'rcntl: WARNING: UNRECOGNIZED OPTION '
         endif !myid==0
-        !ierror = 1
-        !return
+
         continue
 
     endif !   Aline(1:6) == ???
@@ -1490,7 +1518,10 @@ enddo cntlloop
 
 close(cntl_unitnum)
 
+
+
 ! check
+
 if( L_node_functions .and. n_node_functions <=0 )then
 
     if( myid == 0 )then
@@ -1501,7 +1532,7 @@ if( L_node_functions .and. n_node_functions <=0 )then
     endif !myid==0
 
     ierror = 1
-    !stop 'rcntl: bad input n_node_functions'
+
 
     if( myid == 0 )then
         write(GP_print_unit,*) &
@@ -1522,7 +1553,8 @@ if( L_gp_para_lmdif               .and. &
 endif ! gp_para_lmdif_start_gen  == 0 
 
 
-! write out what has been read in
+
+! write out interpreted input
 
 if( myid == 0) then
 
@@ -1657,6 +1689,9 @@ if( myid == 0) then
 
     write(GP_print_unit,'(A,4x,L1 )') 'rcntl: L_truth_model =', &
                                               L_truth_model
+
+    write(GP_print_unit,'(A,4x,L1 )') 'rcntl: L_replace_larger_SSE_only =', &
+                                              L_replace_larger_SSE_only 
 
     write(GP_print_unit,'(A,4x,L1 )') 'rcntl: L_gp_para_lmdif =', &
                                               L_gp_para_lmdif

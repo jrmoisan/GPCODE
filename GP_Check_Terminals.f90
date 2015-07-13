@@ -33,12 +33,9 @@ integer(kind=i4b),intent(in) :: nn_Nodes
 
 integer(kind=i4b), dimension(1:nn_Nodes,1:nn_Trees), intent(in) :: temp_Node_Type
 
-!integer(kind=i4b),dimension(2) :: dims
 
 !-----------------------------------------------------------------------------------
 
-!write(GP_print_unit,'(A,2(1x,I10)/)') &
-!      'gct: nn_Nodes, nn_Trees ', nn_Nodes, nn_Trees
 
 i_Error=0
 

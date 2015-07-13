@@ -29,17 +29,13 @@ logical :: op
 logical :: L_nextloop
 
 integer(kind=i4b) :: i
-!integer(kind=i4b) :: ii
 
-!integer(kind=i4b) :: i_diversity
 integer(kind=i4b) :: message_len
 
 integer(kind=i4b) :: i_GP_individual
 integer(kind=i4b) :: i_GP_Generation
 integer(kind=i4b) :: GP_minSSE_Individual
 integer(kind=i4b) :: GP_minSSE_generation
-!integer(kind=i4b) :: i_Tree
-!integer(kind=i4b) :: i_Node
 
 integer(kind=i4b) :: max_n_gp_params
 
@@ -51,24 +47,26 @@ integer(kind=i4b) :: ierror_t
 integer(kind=i4b) :: ierror_m
 integer(kind=i4b) :: ierror_tb
 
-!integer(kind=i4b) :: new_group
+
 integer(kind=i4b) :: new_comm
 integer(kind=i4b) :: my_size
-!integer(kind=i4b) :: j
+
 integer(kind=i4b),allocatable :: tmprank0(:)
 
 integer(kind=i4b) :: comm_world
 
-!real(kind=r8b) :: t1
-!real(kind=r8b) :: t2
 
-character(15),parameter :: program_version   = '201501.001_v16'
-character(10),parameter :: modification_date = '20150608'
-character(50),parameter :: branch  =  'master'
+character(15),parameter :: program_version   = '201502.004_v16'
+character(10),parameter :: modification_date = '20150625'
+character(50),parameter :: branch  =  'v16'
 
 integer(kind=i4b), parameter ::  zero = 0
 
 !---------------------------------------------------------------------------------------
+
+i_GP_best_parent = 1  ! jjm 20150607
+
+
 
 !  About version 16
 
@@ -90,14 +88,30 @@ call MPI_INIT(ierr)
 call MPI_COMM_RANK(MPI_COMM_WORLD, myid, ierr)
 call MPI_COMM_SIZE(MPI_COMM_WORLD, numprocs, ierr)
 
+
 if( myid == 0 )then
 
+
+    write(6,'(/A)') '0: version 16 derived from version 15 '
+    write(6,'(A)')  '0: new compiler options  -assume realloc_lhs -mkl -heap-arrays '
+
+    if( L_replace_larger_SSE_only )then
+        write(6,'(A/)') &
+         '0: GP_Fit* only  replaces the individual if the SSE decreases after replacement'
+    else
+        write(6,'(A/)') &
+         '0: GP_Fit* always replaces the individual regardless of the SSE'
+    endif !  L_replace_larger_SSE_only 
+
+    !------------------------------------------------------
     write(GP_print_unit, '(/3(A,1x,A,1x)//)') &
          '0: GPGACODE program version', trim(program_version), &
          '   branch:', trim( branch ) , &
          '   Last modified on:', trim( modification_date )
+    !------------------------------------------------------
 
 endif ! myid == 0
+
 
 !--------------------------------------------------------------
 ! current setup
@@ -123,13 +137,15 @@ Lprint_lmdif = .TRUE.
 call RANDOM_SEED(size = n_seed)
 
 
+
+!----------------------------------------------------
+
 call read_cntl_vars( ierror  )
-  
+
 
 n_inputs = n_input_vars
 
-!write(6,'(/A,1x,I10)') '0:  n_input_vars = ', n_input_vars
-!write(6,'(A,1x,I10/)') '0:  n_inputs     = ', n_inputs    
+!----------------------------------------------------
 
 call setup_math_functions()
 
@@ -138,8 +154,14 @@ call load_pow2_table()
 call setup_output_unit()
 
 
+!----------------------------------------------------
+
+
 ! for reading input files for the "DATA" model
 call read_input_data()
+
+
+!----------------------------------------------------
 
 ALLOCATE(seed(n_seed))
 ALLOCATE(current_seed(n_seed))
@@ -170,7 +192,7 @@ if( myid == 0 )then
 endif ! myid == 0
 
 
-!---------------------------------------------------------------------------
+!----------------------------------------------------
 
 
    call setup1( )
@@ -215,9 +237,9 @@ endif ! myid == 0
 ! with the embedded GA_lmdif parameter optimization scheme
 !xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
-   if( L_restart )then
-      Run_GP_Calculate_Fitness=.true.
-   endif ! L_restart
+
+Run_GP_Calculate_Fitness=.true.
+
 
 !----------------------------------------------------------------------
 ! now have 2 summary files:
@@ -230,18 +252,10 @@ endif ! myid == 0
 
 if( myid == 0 )then
 
-    !write(6,'(/A,5x,L1,2x,I5)')  &
-    !      '0: L_GP_all_summary, GP_all_summary_flag', &
-    !          L_GP_all_summary, GP_all_summary_flag
-
     if( L_GP_all_summary .and. GP_all_summary_flag > 1 )then
 
         inquire( GP_summary_output_unit_all, opened = op )
         if( op ) close( GP_summary_output_unit_all )
-
-        !write(6,'(/A,1x,I5)')&
-        !     '0: open GP_ALL_summary_file GP_summary_output_unit_all = ', &
-        !                                  GP_summary_output_unit_all
 
         open( GP_summary_output_unit_all, file='GP_ALL_summary_file', &
               form = 'formatted', access = 'sequential', &
@@ -299,7 +313,7 @@ endif ! myid == 0
           ' is underway.   n_Nodes * n_Trees = ', n_Nodes*n_Trees, &
           '==============================================================================='
 
-        flush(GP_print_unit)
+        !flush(GP_print_unit)
 
         !--------------------------------------------------------------------------------
 
@@ -362,30 +376,11 @@ endif ! myid == 0
 
     call GP_produce_next(i_GP_generation, i_GP_best_parent, L_nextloop)
 
-    if( myid == 0 ) then
 
-        write(GP_print_unit,'(/A,1x,I6)') &
-                      '0: AFT call GP_produce_next'
-        flush(GP_print_unit)
-
-        write(GP_print_unit,'(/A,1x,I6,5x,L1/)') &                                                                       
-              '0: i_GP_generation , any( Run_GP_Calculate_Fitness ) ', &                                                 
-                  i_GP_generation , any( Run_GP_Calculate_Fitness )                                                      
-        flush(GP_print_unit)                                                                                             
- 
-    endif ! myid == 0 
-
-
-    if( myid == 0 ) then
-        write(6,'(//A,1x,I10/)') '0:  n_input_vars = ', n_input_vars
-        write(6,'(//A,1x,I10/)') '0:  i_GP_best_parent = ', i_GP_best_parent
-        write(6,'(//A,5x,l1 /)') '0:  L_nextloop   = ', L_nextloop  
-    endif ! myid == 0 
-
-    if( L_nextloop)then
-        write(6,'(//A,1x,I6,5x,l1 /)') '0:  myid, L_nextloop   = ', myid, L_nextloop  
-        cycle
-    endif ! L_nextloop
+    !if( L_nextloop)then
+    !    write(6,'(/A,1x,I6,5x,l1 /)') '0:  myid, L_nextloop   = ', myid, L_nextloop
+    !    cycle
+    !endif ! L_nextloop
 
     !-----------------------------------------------------------------------------------------
 
@@ -466,33 +461,12 @@ endif ! myid == 0
 
     ! needed if GP_para_lmdif_process called
 
-    if( myid == 0 )then
-        write(GP_print_unit,'(/A,1x,I6/)') &
-              '0:2 bef mpi_bcast GP_Child_population_SSE       ierr = ', ierr
-        flush(GP_print_unit) 
-    endif ! myid == 0
-
     call MPI_BCAST( GP_Child_population_SSE, n_GP_individuals,          &    ! jjm 20150130
                     MPI_DOUBLE_PRECISION, 0, MPI_COMM_WORLD, ierr )          ! jjm 20150130
 
-    if( myid == 0 )then
-        write(GP_print_unit,'(/A,1x,I6/)') &
-              '0:2 aft mpi_bcast GP_Child_population_SSE       ierr = ', ierr
-        flush(GP_print_unit) 
-    endif ! myid == 0
-
-    !if( myid == 0 )then
-    !    write(GP_print_unit,'(/A,1x,I6/)') &
-    !          '0:3 bef mpi_bcast GP_Child_Individual_SSE_nolog10 ierr = ', ierr
-    !endif ! myid == 0
 
     call MPI_BCAST( GP_Child_Individual_SSE_nolog10, n_GP_individuals,  &    ! jjm 20150130
                     MPI_DOUBLE_PRECISION, 0, MPI_COMM_WORLD, ierr )          ! jjm 20150130
-
-    !if( myid == 0 )then
-    !    write(GP_print_unit,'(/A,1x,I6/)') &
-    !          '0:3 aft mpi_bcast GP_Child_Individual_SSE_nolog10 ierr = ', ierr
-    !endif ! myid == 0
 
 
 
@@ -536,67 +510,67 @@ endif ! myid == 0
 
     !-------------------------------------------------------------------------------------
 
-    if( myid == 0 )then
+    !if( myid == 0 )then
 
-        if( i_GP_generation == 1                                  .or. &
-            mod( i_GP_generation, GP_child_print_interval ) == 0  .or. &
-            i_GP_generation == n_GP_generations                          )then
+    !    if( i_GP_generation == 1                                  .or. &
+    !        mod( i_GP_generation, GP_child_print_interval ) == 0  .or. &
+    !        i_GP_generation == n_GP_generations                          )then
 
-            write(GP_print_unit,'(/A)') &
-            '================================================================================='
-            write(GP_print_unit,'(A,1x,I6)') &
-            '0: aft indiv loop and before GP_para_lmdif_process   &
-             &i_GP_generation =',&
-              i_GP_Generation
-            write(GP_print_unit,'(A/)') &
-            '================================================================================='
+    !        write(GP_print_unit,'(/A)') &
+    !        '================================================================================='
+    !        write(GP_print_unit,'(A,1x,I6)') &
+    !        '0: aft indiv loop and before GP_para_lmdif_process   &
+    !         &i_GP_generation =',&
+    !          i_GP_Generation
+    !        write(GP_print_unit,'(A/)') &
+    !        '================================================================================='
 
-            flush(GP_print_unit)
+    !        !flush(GP_print_unit)
 
-            write(GP_print_unit, '(A )') &
-                 '0:i_GP_Indiv  GP_Indiv_N_param  &
-                  &  GP_Pop_Indiv_SSE     GP_Pop_Indiv_SSE/SSE0    SSE0'
+    !        write(GP_print_unit, '(A )') &
+    !             '0:i_GP_Indiv  GP_Indiv_N_param  &
+    !              &  GP_Pop_Indiv_SSE     GP_Pop_Indiv_SSE/SSE0    SSE0'
 
-            flush(GP_print_unit)
+    !        !flush(GP_print_unit)
 
-            do  i_GP_individual = 1, n_GP_individuals
-                write(GP_print_unit, '(5x,I6,6x,I6,6x,3(1x, E20.10) )') &
-                      i_GP_Individual,  &
-                      GP_Individual_N_GP_param(i_GP_individual), &
-                      GP_Child_population_SSE(i_GP_Individual), &
-                      GP_Child_population_SSE(i_GP_Individual)/SSE0, SSE0
-            enddo
+    !        do  i_GP_individual = 1, n_GP_individuals
+    !            write(GP_print_unit, '(5x,I6,6x,I6,6x,3(1x, E20.10) )') &
+    !                  i_GP_Individual,  &
+    !                  GP_Individual_N_GP_param(i_GP_individual), &
+    !                  GP_Child_population_SSE(i_GP_Individual), &
+    !                  GP_Child_population_SSE(i_GP_Individual)/SSE0, SSE0
+    !        enddo
 
-            write(GP_print_unit,'(/A)') &
-            '================================================================================='
-            write(GP_print_unit,'(A,1x,I6)') &
-            '0: aft indiv loop and BEFORE GP_para_lmdif_process   &
-             &i_GP_generation =',&
-              i_GP_Generation
-            write(GP_print_unit,'(A/)') &
-            '================================================================================='
-            flush(GP_print_unit)
+    !        write(GP_print_unit,'(/A)') &
+    !        '================================================================================='
+    !        write(GP_print_unit,'(A,1x,I6)') &
+    !        '0: aft indiv loop and BEFORE GP_para_lmdif_process   &
+    !         &i_GP_generation =',&
+    !          i_GP_Generation
+    !        write(GP_print_unit,'(A/)') &
+    !        '================================================================================='
+    !        !flush(GP_print_unit)
 
-            if( index( model, 'log10') > 0 .or. index( model, 'LOG10') > 0 )then
+    !        if( index( model, 'log10') > 0 .or. index( model, 'LOG10') > 0 )then
 
-                write(GP_print_unit, '(/A )') &
-                     '0:i_GP_Indiv  GP_Indiv_N_param   &
-                      & GP_Child_Indiv_SSE_nolog10   GP_Child_Indiv_SSE_nolog10/SSE0_nolog10'
+    !            write(GP_print_unit, '(/A )') &
+    !                 '0:i_GP_Indiv  GP_Indiv_N_param   &
+    !                  & GP_Child_Indiv_SSE_nolog10   GP_Child_Indiv_SSE_nolog10/SSE0_nolog10'
 
-                do  i_GP_individual = 1, n_GP_individuals
-                    write(GP_print_unit, '(5x,I6,6x,I6,6x,2(1x, E20.10) )') &
-                    i_GP_Individual,  GP_Individual_N_GP_param(i_GP_individual), &
-                    GP_Child_Individual_SSE_nolog10(i_GP_Individual), &
-                    GP_Child_Individual_SSE_nolog10(i_GP_Individual)/SSE0_nolog10
-                enddo
+    !            do  i_GP_individual = 1, n_GP_individuals
+    !                write(GP_print_unit, '(5x,I6,6x,I6,6x,1x, E20.10,9x,E20.10 )') &
+    !                i_GP_Individual,  GP_Individual_N_GP_param(i_GP_individual), &
+    !                GP_Child_Individual_SSE_nolog10(i_GP_Individual), &
+    !                GP_Child_Individual_SSE_nolog10(i_GP_Individual)/SSE0_nolog10
+    !            enddo
 
-                flush(GP_print_unit)
+    !            !flush(GP_print_unit)
 
-            endif ! index( model, 'log10') > 0 .or. index( model, 'LOG10') > 0
+    !        endif ! index( model, 'log10') > 0 .or. index( model, 'LOG10') > 0
 
-        endif ! i_GP_generation == 1 .or. ...
+    !    endif ! i_GP_generation == 1 .or. ...
 
-    endif ! myid == 0
+    !endif ! myid == 0
 
     !---------------------------------------------------------------------------
 
@@ -629,38 +603,14 @@ endif ! myid == 0
 
     ! needed if GP_para_lmdif_process called
 
-    !if( myid == 0 )then
-    !    write(GP_print_unit,'(/A,1x,I6/)') &
-    !          '0:4 bef mpi_bcast GP_Child_Population_SSE  ierr = ', ierr
-    !endif ! myid == 0
-
 
     call MPI_BCAST( GP_Child_Population_SSE, n_GP_individuals,          &    ! jjm 20150130
                     MPI_DOUBLE_PRECISION, 0, MPI_COMM_WORLD, ierr )          ! jjm 20150130
 
-    !if( myid == 0 )then
-    !    write(GP_print_unit,'(/A,1x,I6/)') &
-    !          '0:4 aft mpi_bcast GP_Child_Population_SSE  ierr = ', ierr
-    !endif ! myid == 0
-
     !----------------------------------------------------------------------------------------
 
 
-    !if( myid == 0 )then
-    !    write(6,'(/A,1x,I6,5x,L1)') &
-    !     '0: before i_GP_generation, L_gp_para_lmdif ', &
-    !                i_GP_generation, L_gp_para_lmdif
-    !    write(6,'(A,3(1x,I6))') &
-    !     '0: i_GP_generation, gp_para_lmdif_start_gen, gp_para_lmdif_modulus ', &
-    !         i_GP_generation, gp_para_lmdif_start_gen, gp_para_lmdif_modulus
-    !    write(6,'(A,3(1x,I6)/)') &
-    !     '0: mod( i_GP_generation, gp_para_lmdif_modulus )  ', &
-    !         mod( i_GP_generation, gp_para_lmdif_modulus )  
-    !    flush(6)
-    !endif ! myid == 0 
-
-
-    if( L_gp_para_lmdif )then 
+    if( L_gp_para_lmdif )then
 
         if( i_GP_generation >=  gp_para_lmdif_start_gen        .and. &
             mod( i_GP_generation, gp_para_lmdif_modulus ) == 0         )then
@@ -669,23 +619,7 @@ endif ! myid == 0
 
         endif !  i_GP_generation >=  gp_para_lmdif_start_gen  .and. ...
 
-    endif !  L_gp_para_lmdif 
-
-
-
-    !if( myid == 0 )then
-    !    write(6,'(/A,1x,I6,5x,L1)') &
-    !     '0: after i_GP_generation, L_gp_para_lmdif ', &
-    !               i_GP_generation, L_gp_para_lmdif
-    !    write(6,'(A,3(1x,I6))') &
-    !     '0: i_GP_generation, gp_para_lmdif_start_gen, gp_para_lmdif_modulus ', &
-    !         i_GP_generation, gp_para_lmdif_start_gen, gp_para_lmdif_modulus
-    !    write(6,'(A,3(1x,I6)/)') &
-    !     '0: mod( i_GP_generation, gp_para_lmdif_modulus )  ', &
-    !         mod( i_GP_generation, gp_para_lmdif_modulus )  
-    !    flush(6)
-    !endif ! myid == 0 
-
+    endif !  L_gp_para_lmdif
 
 
     !----------------------------------------------------------------------------------------
@@ -705,7 +639,7 @@ endif ! myid == 0
               i_GP_Generation
             write(GP_print_unit,'(A/)') &
             '================================================================================='
-            flush(GP_print_unit)
+            !flush(GP_print_unit)
 
             write(GP_print_unit, '(/A )') &
                  '0:i_GP_Indiv  GP_Indiv_N_param   &
@@ -733,17 +667,17 @@ endif ! myid == 0
 
                 write(GP_print_unit, '(/A )') &
                      '0:i_GP_Indiv  GP_Indiv_N_param   &
-                      & GP_Child_Indiv_SSE   GP_Child_Indiv_SSE_nolog10/SSE0_nolog10'
+                      & GP_Child_Indiv_SSE_nolog10   GP_Child_Indiv_SSE_nolog10/SSE0_nolog10'
 
                 do  i_GP_individual = 1, n_GP_individuals
-                    write(GP_print_unit, '(5x,I6,6x,I6,6x,2(1x, E20.10) )') &
+                    write(GP_print_unit, '(5x,I6,6x,I6,6x,1x, E20.10,9x,E20.10 )') &
                     i_GP_Individual,  GP_Individual_N_GP_param(i_GP_individual), &
                     GP_Child_Individual_SSE_nolog10(i_GP_Individual), &
                     GP_Child_Individual_SSE_nolog10(i_GP_Individual)/SSE0_nolog10
                 enddo
 
             endif ! index( model, 'log10') > 0 .or. index( model, 'LOG10') > 0 )then
-            flush(GP_print_unit)
+            !flush(GP_print_unit)
 
         endif ! i_GP_generation == 1 .or. ...
 
@@ -757,21 +691,21 @@ endif ! myid == 0
 
    if( myid == 0 )then
 
-        if( i_GP_generation == 1                                  .or. &
-            mod( i_GP_generation, GP_child_print_interval ) == 0  .or. &
-            i_GP_generation == n_GP_generations                          )then
+        !if( i_GP_generation == 1                                  .or. &
+        !    mod( i_GP_generation, GP_child_print_interval ) == 0  .or. &
+        !    i_GP_generation == n_GP_generations                          )then
 
-            write(GP_print_unit,'(/A)')&
-            '0:#################################################################'
-            write(GP_print_unit,'(A,1x,I6)') &
-                  '0: call GP_calc_fitness i_GP_generation =', &
-                                           i_GP_Generation
-            write(GP_print_unit,'(A/)')&
-            '0:#################################################################'
+        !    write(GP_print_unit,'(A)')&
+        !    '0:#################################################################'
+        !    write(GP_print_unit,'(A,1x,I6)') &
+        !          '0: call GP_calc_fitness i_GP_generation =', &
+        !                                   i_GP_Generation
+        !    write(GP_print_unit,'(A)')&
+        !    '0:#################################################################'
 
-            flush(GP_print_unit)
+        !    flush(GP_print_unit)
 
-        endif ! i_GP_generation == 1 .or. ...
+        !endif ! i_GP_generation == 1 .or. ...
 
         !-----------------------------------------------------------------------
 
@@ -786,14 +720,14 @@ endif ! myid == 0
             mod( i_GP_generation, GP_child_print_interval ) == 0  .or. &
             i_GP_generation == n_GP_generations                          )then
 
-            write(GP_print_unit,'(/A)')&
+            write(GP_print_unit,'(A)')&
             '0:################################################################'
             write(GP_print_unit,'(A,3(1x,I6))') &
               '0: aft call GP_calc_fitness n_GP_indiv, i_GP_gen, i_GP_best_parent =', &
                               n_GP_individuals, i_GP_Generation, i_GP_best_parent
-            write(GP_print_unit,'(A/)')&
+            write(GP_print_unit,'(A)')&
             '0:################################################################'
-            flush(GP_print_unit)
+            !flush(GP_print_unit)
 
         endif ! i_GP_generation == 1 .or. ...
 
@@ -856,28 +790,11 @@ endif ! myid == 0
     !  GP_Population_Ranked_Fitness
     !  GP_Integrated_Population_Ranked_Fitness
 
-    if( myid == 0 )then
-        write(GP_print_unit,'(A)')&
-              '0: call mpi_barrier'
-        flush(GP_print_unit)
-    endif ! myid == 0
 
     call MPI_BARRIER( MPI_COMM_WORLD, ierr )
 
-    if( myid == 0 )then
-        write(GP_print_unit,'(A)')&
-              '0: call bcast3     '
-        flush(GP_print_unit)
-    endif ! myid == 0
 
     call bcast3( )
-
-    if( myid == 0 )then
-        write(GP_print_unit,'(A)')&
-              '0: AFT call bcast3     '
-        flush(GP_print_unit)
-    endif ! myid == 0
-
 
 
     if( myid == 0 )then
@@ -886,15 +803,9 @@ endif ! myid == 0
 
         max_n_gp_params = maxval( GP_Individual_N_GP_param )
 
-        !write(GP_print_unit,'(A)')&
-        !      '0: call print_time_series'
-        !flush(GP_print_unit)
 
         call print_time_series( i_GP_best_parent, nop, i_GP_generation )
 
-        !write(GP_print_unit,'(A)')&
-        !      '0: AFT call print_time_series'
-        !flush(GP_print_unit)
 
         !------------------------------------------------------------------------------------
 
@@ -926,7 +837,7 @@ if( myid == 0 )then
         write(GP_print_unit,'(/A,1x,I5/)') &
         '0: error i_GP_best_parent < 1 i_GP_best_parent = ', i_GP_best_parent
 
-        stop 'i_GP_best_parent < 1' 
+        stop 'i_GP_best_parent < 1'
 
     endif ! i_GP_best_parent < 1
 
@@ -938,30 +849,7 @@ if( myid == 0 )then
         i_GP_best_parent, GP_child_population_sse(i_GP_best_parent), &
                           GP_child_population_sse(i_GP_best_parent)/SSE0
 
-    flush(GP_print_unit)
-
-    ! GP_select_best_RK_lmdif_result runs lmdif on the best parent
-
-    ! uses:
-    !  output_array
-    !  GP_Adult_Population_Node_Type
-
-    ! sets:
-
-    !  individual_quality
-    !  Parent_Parameters
-    !  GP_individual_node_type
-    !  parent_parameters
-    !  GP_Child_Population_SSE
-    !  GP_individual_ranked_fitness
-    !  child_parameters
-    !  GP_Individual_Initial_Conditions
-    !  GP_Individual_Node_Parameters
-
-    write(GP_print_unit,'(A/)') &
-          '0: DO NOT call GP_select_best_RK_lmdif_result to run lmdif for best parent'
-
-    !!!call GP_select_best_RK_lmdif_result( i_GP_best_parent, nop )
+    !flush(GP_print_unit)
 
 
     !---------------------------------------------------------------------------
@@ -973,12 +861,6 @@ endif ! myid == 0
 
 !----------------------------------------------------------------------------------------
 
-! plot results
-
-!if( myid == 0 )then
-!    Lplot = .true.
-!    if( Lplot ) call plot_results(Runge_Kutta_Solution,n_time_steps, n_CODE_equations )
-!endif ! myid == 0
 
 
 if( myid == 0 )then
@@ -1002,7 +884,7 @@ if( myid == 0 )then
         ! and writes the tree to the summary file
 
 
-        write(GP_print_unit,'(//A)') &
+        write(GP_print_unit,'(/A)') &
           '0:------------------------------------------&
            &-----------------------------'
         write(GP_print_unit,'(A,2(1x,I6))') &
@@ -1012,7 +894,7 @@ if( myid == 0 )then
         call summary_GP_minSSE_indiv( GP_minSSE_generation, GP_minSSE_Individual )
 
 
-        write(GP_print_unit,'(//A,3(1x,I5))') '0: call print_time_series_minSSE'
+        write(GP_print_unit,'(/A,3(1x,I5))') '0: call print_time_series_minSSE'
         call print_time_series_minSSE( )
 
     endif !  L_minSSE
@@ -1030,9 +912,6 @@ endif ! myid == 0
    call close_output_unit()
 
 if( myid == 0 )then
-
-
-
 
     if( L_GP_all_summary )then
 

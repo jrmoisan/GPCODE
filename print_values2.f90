@@ -1,4 +1,4 @@
-subroutine print_values2( )  ! answer )
+subroutine print_values2( )
 
 ! program written by: Dr. John R. Moisan [NASA/GSFC] 31 January, 2013
 
@@ -31,7 +31,7 @@ integer(kind=i4b) :: i
 
 !----------------------------------------------------------------------------------------
 
-
+if( myid /= 0 ) return
 
 
 write(GP_print_unit,'(/A,1x,I6/)') 'pv2: Total Parameters for this run = ',n_parameters

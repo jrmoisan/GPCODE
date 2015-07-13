@@ -203,13 +203,10 @@ subroutine Dot_Graph_Function( File, Function_Index)
             write(File,'(A)',advance='no') 'pow'
         case (9)
             write(File,'(A)',advance='no') 'exp'
-            !orig write(File,'(A)',advance='no') 'min'
         case (10)
             write(File,'(A)',advance='no') 'min'
-            !orig write(File,'(A)',advance='no') 'max'
         case (11)
             write(File,'(A)',advance='no') 'max'
-            !orig write(File,'(A)',advance='no') 'exp'
         case (12)
             write(File,'(A)',advance='no') 'if'
         case (13)

@@ -1,6 +1,6 @@
 subroutine GPCODE_GA_lmdif_Parameter_Optimization( &
                   i_GP_Generation,i_GP_individual, &
-                             new_comm ) 
+                             new_comm )
 
 ! written by: Dr. John R. Moisan [NASA/GSFC] 5 December, 2012
 !xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
@@ -8,7 +8,7 @@ subroutine GPCODE_GA_lmdif_Parameter_Optimization( &
 ! a finding the optimum parameter set for a coupled set of equations
 !xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
-use kinds_mod 
+use kinds_mod
 use mpi
 use mpi_module
 use clock_module
@@ -24,7 +24,7 @@ implicit none
 
 integer(kind=i4b),intent(in) :: i_GP_Generation
 integer(kind=i4b),intent(in) :: i_GP_individual
-integer(kind=i4b),intent(in) :: new_comm 
+integer(kind=i4b),intent(in) :: new_comm
 
 integer(kind=i4b) :: child_number
 
@@ -84,18 +84,16 @@ integer(kind=i4b) :: i_ga_ind
 
 integer(kind=i4b) :: ierror_tou
 
-integer(kind=i4b) :: n_procs   
+integer(kind=i4b) :: n_procs
 
-!real(kind=r8b) :: t1
-!real(kind=r8b) :: t2
 
 !----------------------------------------------------------------------
 
 
    ierror_tou = 0
 
-   call mpi_comm_rank( new_comm, new_rank, ierr ) 
-   call MPI_COMM_SIZE( new_comm, n_procs, ierr)  
+   call mpi_comm_rank( new_comm, new_rank, ierr )
+   call MPI_COMM_SIZE( new_comm, n_procs, ierr)
 
    if( myid == 0 )return
 
@@ -234,7 +232,6 @@ integer(kind=i4b) :: n_procs
 
             if( n_GA_rand_recruits > 0) then
 
-
                 ! uses:
 
                 ! sets:
@@ -242,9 +239,7 @@ integer(kind=i4b) :: n_procs
                 !  Run_GA_lmdif
                 !  individual_quality
 
-
                 call GA_random_recruit( Child_Parameters, individual_quality )
-
 
             endif !   n_GA_rand_recruits .gt. 0
 
@@ -296,21 +291,16 @@ integer(kind=i4b) :: n_procs
 
         do  isource = 1, min( n_procs-1, n_GA_individuals )
 
-
             i_ga_ind = i_ga_ind + 1
-
 
             call MPI_SEND( i_dummy,  1, MPI_INTEGER,    &
                            isource, isource,  new_comm, ierr )
 
             numsent = numsent + 1
 
-
         enddo ! isource
 
-
         ! at this point i_ga_ind = numsent
-
 
         !-------------------------------------------------------------------------------------
 
@@ -382,6 +372,7 @@ integer(kind=i4b) :: n_procs
                 ! just sent a new task, so increment the number sent
 
                 numsent = numsent + 1
+
             else
 
                 ! DONE !
@@ -467,11 +458,9 @@ integer(kind=i4b) :: n_procs
                 !  individual_SSE
                 !  child_parameters
 
-
                 call setup_run_fcn( i_2_individual, &
                                     child_parameters,individual_quality, &
                                                new_comm )
-
 
                 do  jj = 1, n_GP_parameters
                     buffer(jj) =  child_parameters(jj, i_2_individual)
@@ -504,14 +493,14 @@ integer(kind=i4b) :: n_procs
                 if( L_GA_print )then
                     write(GA_print_unit,'(A,1x,I10)') &
                       'GP_GA_opt: too many iterations  nsafe =', nsafe
-                    !flush(GA_print_unit) 
-                endif ! L_GA_print 
+                    !flush(GA_print_unit)
+                endif ! L_GA_print
 
                 write(6,'(A,1x,I10)') &
                   'GP_GA_opt: too many iterations  nsafe =', nsafe
-                !flush(6) 
+                !flush(6)
 
-                L_too_many_iters = .TRUE.  
+                L_too_many_iters = .TRUE.
                 exit recv_loop
 
             endif ! nsafe
@@ -526,7 +515,7 @@ integer(kind=i4b) :: n_procs
     if( L_too_many_iters )then
         call MPI_FINALIZE(ierr)
         stop 'bad nsafe'
-    endif !  L_too_many_iters 
+    endif !  L_too_many_iters
 
     !-------------------------------------------------------------------
 
@@ -627,9 +616,11 @@ call MPI_BCAST( Individual_SSE_best_parent, message_len,    &
 
 ! broadcast Individual_SSE_best_parent_nolog10
 
+
 message_len = 1
 call MPI_BCAST( Individual_SSE_best_parent_nolog10, message_len,    &
                 MPI_DOUBLE_PRECISION, 0, new_comm, ierr )
+
 
 !------------------------------------------------------------------------
 

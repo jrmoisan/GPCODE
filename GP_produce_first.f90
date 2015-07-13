@@ -22,6 +22,13 @@ integer :: message_len,ierror_tb
  
 if(i_GP_generation > 1) return
 
+ierror_tb = 0
+
+! determines if the new GP child
+! has to be sent to GA_lmdif for parameter optimization
+
+Run_GP_Calculate_Fitness=.true.
+
 !----------------------------------------------------------------------------
 
 if( myid == 0 ) then
@@ -63,6 +70,7 @@ else
         ! set
         ! GP_Adult_Population_Node_Type(:,:,:)
         ! GP_Population_Node_parameters(:,:,:)
+
         if( myid == 0 ) then
             write(GP_print_unit,'(/A/)') &
                   'gpf: call fasham_model_debug    '
@@ -146,7 +154,7 @@ if( trim(model) == 'fasham_CDOM' )then
     GP_Child_Population_Node_Type=GP_Adult_Population_Node_Type
 
     return
-endif
+endif !   trim(model) == 'fasham_CDOM' 
 
 !---------------------------------------------------------------------------
 

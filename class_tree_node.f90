@@ -181,7 +181,7 @@ contains
 
     subroutine Tree_Node_Get_Pointers(this, pointers, pointer_count, index)
         use kinds_mod
-       !class(Tree_Node), intent(inout)        :: this   ! orig 
+       
         class(Tree_Node), intent(inout),target :: this   ! jjm
         integer(kind=i4b), intent(in) :: pointer_count
         class(Tree_Node_Pointer), dimension(pointer_count) :: pointers
@@ -199,7 +199,7 @@ contains
 
     subroutine Tree_Math_Node_Get_Pointers(this, pointers, pointer_count, index)
         use kinds_mod
-       !class(Tree_Node), intent(inout)        :: this  ! orig 
+     
         class(Tree_Node), intent(inout),target :: this  ! jjm
         integer(kind=i4b), intent(in) :: pointer_count
         class(Tree_Node_Pointer), dimension(pointer_count) :: pointers
@@ -214,6 +214,7 @@ contains
         !write(*,*)'Tree_Math_Node_Get_Pointers: index = ', index
         call this%left%GetNodePointers( pointers, pointer_count, index)
         call this%right%GetNodePointers(pointers, pointer_count, index)
+
     end subroutine Tree_Math_Node_Get_Pointers
 
 
@@ -262,7 +263,6 @@ contains
 
     subroutine Tree_Node_Swap(this, node)
         use kinds_mod
-        !orig class(Tree_Node), intent(inout) :: this, node
         class(Tree_Node), intent(inout),target :: this, node   ! jjm
         type(Tree_Node), pointer :: tmp
         integer(kind=i4b) :: ct_diff

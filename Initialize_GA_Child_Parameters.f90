@@ -16,17 +16,11 @@ implicit none
 
 
 real(kind=r8b) :: Child_Parameters(n_GP_parameters,n_GA_Individuals)
-!real(kind=r4b) :: cff
 real(kind=r8b) :: dff
 
 integer(kind=i4b) :: i_parameter
-!integer(kind=i4b) :: jj
 integer(kind=i4b) :: i_GA_individual
 
-!integer(kind=i4b) :: inode
-!integer(kind=i4b) :: itree
-!integer(kind=i4b) :: nparm
-!integer(kind=i4b) :: ii    
 
 !----------------------------------------------------------------------------
 
@@ -51,6 +45,12 @@ do  i_GA_Individual=1,n_GA_individuals
 
         Child_Parameters(i_Parameter,i_GA_Individual) = dff
 
+
+        if( L_ga_print )then
+            write(GA_print_unit,'(A,2(1x, I6),1x,E15.7/)') &
+             'Init: i_GA_Indiv, i_Param, Child_Par ', &
+                    i_GA_Individual, i_Parameter, Child_Parameters(i_Parameter,i_GA_Individual) 
+        endif ! L_ga_print
 
     enddo ! i_parameter
 
