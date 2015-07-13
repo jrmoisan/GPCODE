@@ -46,6 +46,8 @@ integer(kind=i4b) :: i
 
 
 
+write(6,'(/A/)') 'saa: call Initialize_Model  '
+
 if( trim(model)  == 'fasham' .or.  &
     trim(model)  == 'fasham_fixed_tree' )then
 

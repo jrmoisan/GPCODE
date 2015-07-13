@@ -57,7 +57,7 @@ integer(kind=i4b) :: comm_world
 
 
 character(15),parameter :: program_version   = '201502.004_v16'
-character(10),parameter :: modification_date = '20150625'
+character(10),parameter :: modification_date = '20150713'
 character(50),parameter :: branch  =  'v16'
 
 integer(kind=i4b), parameter ::  zero = 0
@@ -652,16 +652,7 @@ endif ! myid == 0
                                   GP_Child_population_SSE(i_GP_Individual)/SSE0
             enddo
 
-            write(GP_print_unit,'(/A)') &
-            '================================================================================='
-            write(GP_print_unit,'(A,1x,I6)') &
-            '0: aft indiv loop and AFTER  GP_para_lmdif_process   &
-             &i_GP_generation =',&
-              i_GP_Generation
-            write(GP_print_unit,'(A/)') &
-            '================================================================================='
 
-            flush(GP_print_unit)
 
             if( index( model, 'log10') > 0 .or. index( model, 'LOG10') > 0 )then
 

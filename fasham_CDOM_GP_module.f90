@@ -85,8 +85,8 @@ contains
       n_count = i_count - 3
       n_time_steps = n_count
       if( myid == 0 )then
-          write(6,'(/A,1x,I10)')'initCDGP: n_count      ', n_count               
-          write(6,'(A,1x,I10/)')'initCDGP: n_time_steps ', n_time_steps        
+          write(6,'(A,1x,I10)')'initCDGP: n_count      ', n_count               
+          write(6,'(A,1x,I10)')'initCDGP: n_time_steps ', n_time_steps        
       endif ! myid == 0
 
       allocate(this%cdoms(0:n_time_steps))
@@ -218,27 +218,27 @@ use GA_Variables_module
 
 
       if( myid == 0 )then
-          write(6,'(/A/)')   'setCDGP: call set_answer_arrays'
+          write(6,'(A)')   'setCDGP: call set_answer_arrays'
       endif ! myid == 0 
       call set_answer_arrays()
 
       if( myid == 0 )then
-          write(6,'(/A/)')   'setCDGP: call comp_data_variance'
+          write(6,'(A)')   'setCDGP: call comp_data_variance'
       endif ! myid == 0 
       call comp_data_variance()
 
       if( myid == 0 )then
-          write(6,'(/A/)')   'setCDGP: call sse0_calc'
+          write(6,'(A)')   'setCDGP: call sse0_calc'
       endif ! myid == 0 
       call sse0_calc( )
 
       if( myid == 0 )then
-          write(6,'(/A/)')   'setCDGP: call set_modified_indiv'
+          write(6,'(A)')   'setCDGP: call set_modified_indiv'
       endif ! myid == 0 
       call set_modified_indiv( )
 
       if( myid == 0 )then
-          write(6,'(/A/)')   'setCDGP: call print_values1 '
+          write(6,'(A)')   'setCDGP: call print_values1 '
       endif ! myid == 0 
       call print_values1()
 
@@ -247,9 +247,11 @@ use GA_Variables_module
 
        L_minSSE = .FALSE. ! n_GP_Elitists ==  0 .or.   prob_no_elite > 0.0D0
 
+!------------------------------------------------------------------------------------------
+
 
       if( myid == 0 )then
-          write(6,'(/A/)')   'setCDGP: call print_values2 '
+          write(6,'(A)')   'setCDGP: call print_values2 '
       endif ! myid == 0 
 
       call print_values2()
