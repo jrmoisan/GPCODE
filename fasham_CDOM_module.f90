@@ -50,6 +50,8 @@ contains
           write(6,'(A,1x,I10)')'nfCD: n_nodes                     ', n_nodes
           write(6,'(A,1x,I10)')'nfCD: n_maximum_number_parameters ', n_maximum_number_parameters
           write(6,'(A,1x,I10)')'nfCD: n_inputs                    ', n_inputs
+
+          write(6,'(A,1x,I10)')'nfCD: call print_values1 '
       endif ! myid == 0
 
       call print_values1()
@@ -113,18 +115,22 @@ contains
          write(Aline,*)' '
       enddo
 
-      this%cdoms(0) = this%cdoms(1)
-      this%kds(0) = this%kds(1)
-      this%pars(0) = this%pars(1)
-      this%mxds(0) = this%mxds(1)
+      this%cdoms(0)   = this%cdoms(1)
+      this%kds(0)     = this%kds(1)
+      this%pars(0)    = this%pars(1)
+      this%mxds(0)    = this%mxds(1)
       this%dmxddts(0) = this%dmxddts(1)
 
       if( myid == 0 )then
+
+          write(6,'(/A)')'initCD: '
+
           write(6,'(/A)')'     i   cdoms(i)        kds(i)          pars(i)         mxds(i)         dmxddts(i)'
           do  i = 0, n_count
               write(6,'(I6,5(1x,E15.7))') &
                 i, this%cdoms(i),this%kds(i),this%pars(i),this%mxds(i),this%dmxddts(i)
           enddo ! i
+
       endif ! myid == 0
 
       close(data_unitnum)   
@@ -132,7 +138,7 @@ contains
       !   allocate and initialize all the globals
 
       if( myid == 0 )then
-          write(6,'(/A,1x,I6/)')   'initCD: call allocate_arrays1()'
+          write(6,'(/A,1x,I6/)')   'initCD: call allocate_arrays1'
       endif ! myid == 0 
 
       call allocate_arrays1()
@@ -166,12 +172,43 @@ contains
          Numerical_CODE_Solution( i, 1) = this%cdoms(i)
       enddo ! i  
 
+      if( myid == 0 )then
+          do i = 1, n_time_steps
+          write(6,'(A,1x,I10,1x,E15.7)') &
+                'setCD: i, this%cdoms(i) ', &
+                        i, this%cdoms(i)                  
+          enddo ! i  
+      endif ! myid == 0 
+
+
       Numerical_CODE_Initial_Conditions(1) = this%cdoms(1)
       Numerical_CODE_Solution(0,1) = this%cdoms(1)
 
+      if( myid == 0 )then
+          do i = 0, n_time_steps
+          write(6,'(A,1x,I10,1x,E15.7)') &
+                'setCD: i, Num_code_soln(i,1 ) ', &
+                        i, Numerical_CODE_Solution( i, 1) 
+          enddo ! i  
+      endif ! myid == 0 
+
+
+
       Data_Array=Numerical_CODE_Solution
+
+      if( myid == 0 )then
+          do i = 0, n_time_steps
+          write(6,'(A,1x,I10,1x,E15.7)') &
+                'setCD: i, data_array(i,1 ) ', &
+                        i, data_array( i, 1) 
+          enddo ! i  
+      endif ! myid == 0 
+
       Numerical_CODE_Solution(1:n_time_steps, 1:n_code_equations) = 0.0d0
 
+      if( myid == 0 )then
+          write(6,'(A)')   'setCD: call comp_data_variance'
+      endif ! myid == 0 
       call comp_data_variance()
 
    end subroutine setTruth
@@ -271,7 +308,15 @@ contains
 
       if( myid == 0 )then
           write(6,'(/A,1x,I6)')   'setmodelCD: n_parameters ', n_parameters           
+
+          do i = 1, n_parameters 
+          write(6,'(A,1x,I10,1x,E15.7)') &
+                'setmodelCD: i, answer(i) ', &
+                             i, answer(i) 
+          enddo ! i  
       endif ! myid == 0 
+
+
 
       if( myid == 0 )then
           write(6,'(/A/)')   'setmodelCD: call this%generateGraph()'

@@ -168,6 +168,7 @@ if( n_code_equations > 1 )then
                  'cdv: i_CODE_eq, Data_Variance, Data_Variance_inv ', &
                        i_CODE_equation, Data_Variance(    i_CODE_equation), &
                                         Data_Variance_inv(i_CODE_equation)
+
         endif ! myid == 0
     
 

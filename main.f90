@@ -149,6 +149,8 @@ n_inputs = n_input_vars
 
 !----------------------------------------------------
 
+call setup_math_functions()
+
 call load_pow2_table()
 
 call setup_output_unit()
@@ -159,8 +161,6 @@ call setup_output_unit()
 
 ! for reading input files for the "DATA" model
 call read_input_data()
-
-call setup_math_functions()
 
 !----------------------------------------------------
 
@@ -352,19 +352,20 @@ endif ! myid == 0
 
     call GP_produce_first(i_GP_generation)
 
-    if( myid == 0 ) then
-        write(GP_print_unit,'(/A,1x,I6)') &
-                      '0: AFT call GP_produce_first'
+    !if( myid == 0 ) then
+    !    write(GP_print_unit,'(/A,1x,I6)') &
+    !                  '0: AFT call GP_produce_first'
 
-        write(GP_print_unit,'(/A,1x,I6,5x,L1/)') &
-              '0: i_GP_generation , any( Run_GP_Calculate_Fitness ) ', &
-                  i_GP_generation , any( Run_GP_Calculate_Fitness )
-        flush(GP_print_unit)
+    !    write(GP_print_unit,'(/A,1x,I6,5x,L1/)') &
+    !          '0: i_GP_generation , any( Run_GP_Calculate_Fitness ) ', &
+    !              i_GP_generation , any( Run_GP_Calculate_Fitness )
+    !    flush(GP_print_unit)
 
-        write(GP_print_unit,'(/A,1x,I6)') &
-                      '0: call GP_produce_next'
-        flush(GP_print_unit)
-    endif ! myid == 0
+    !    write(GP_print_unit,'(/A,1x,I6)') &
+    !                  '0: call GP_produce_next'
+    !    flush(GP_print_unit)
+    !endif ! myid == 0
+
 
     call GP_produce_next(i_GP_generation, i_GP_best_parent, L_nextloop)
 
@@ -417,23 +418,23 @@ endif ! myid == 0
 
     if( .not.  any( Run_GP_Calculate_Fitness ) ) exit generation_loop
 
-    if( myid == 0 ) then
-        write(GP_print_unit,'(/A,1x,I6/)') &
-              '0: call GP_individual_loop'
-        flush(GP_print_unit)
-        write(6,'(//A,1x,I10/)') '0:  n_input_vars = ', n_input_vars
-        flush(6)
-    endif ! myid == 0
+    !if( myid == 0 ) then
+    !    write(GP_print_unit,'(/A,1x,I6/)') &
+    !          '0: call GP_individual_loop'
+    !    flush(GP_print_unit)
+    !    write(6,'(//A,1x,I10/)') '0:  n_input_vars = ', n_input_vars
+    !    flush(6)
+    !endif ! myid == 0
 
 
 
     call GP_individual_loop( new_comm, i_GP_generation )
 
-    if( myid == 0 ) then
-        write(GP_print_unit,'(/A,1x,I6/)') &
-              '0: AFT call GP_individual_loop'
-        flush(GP_print_unit)
-    endif ! myid == 0
+    !if( myid == 0 ) then
+    !    write(GP_print_unit,'(/A,1x,I6/)') &
+    !          '0: AFT call GP_individual_loop'
+    !    flush(GP_print_unit)
+    !endif ! myid == 0
 
     !xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
     ! GA_lmdif subroutine segment

@@ -193,6 +193,7 @@ use GA_Variables_module
       do i = 1, n_time_steps
          Numerical_CODE_Solution( i, 1) = this%cdoms(i)
       enddo ! i  
+
       if( myid == 0 )then
           do i = 1, n_time_steps
           write(6,'(A,1x,I10,1x,E15.7)') &
@@ -204,9 +205,6 @@ use GA_Variables_module
       Numerical_CODE_Initial_Conditions(1) = this%cdoms(1)
       Numerical_CODE_Solution(0,1) = this%cdoms(1)
 
-      Data_Array=Numerical_CODE_Solution
-      Numerical_CODE_Solution(1:n_time_steps, 1:n_code_equations) = 0.0d0
-
       if( myid == 0 )then
           do i = 0, n_time_steps
           write(6,'(A,1x,I10,1x,E15.7)') &
@@ -214,6 +212,18 @@ use GA_Variables_module
                           i, Numerical_CODE_Solution( i, 1) 
           enddo ! i  
       endif ! myid == 0 
+
+      Data_Array=Numerical_CODE_Solution
+
+      if( myid == 0 )then
+          do i = 0, n_time_steps
+          write(6,'(A,1x,I10,1x,E15.7)') &
+                'setCDGP: i, data_array(i,1 ) ', &
+                          i, data_array( i, 1) 
+          enddo ! i  
+      endif ! myid == 0 
+
+      Numerical_CODE_Solution(1:n_time_steps, 1:n_code_equations) = 0.0d0
 
 
 

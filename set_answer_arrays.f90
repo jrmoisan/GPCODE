@@ -119,10 +119,12 @@ endif ! L_unit50_output
 
 ! initialize the biological data fields
 
-if( index( model, 'CDOM') == 0 )then 
+!if( index( model, 'CDOM') == 0 )then 
+
     Numerical_CODE_Solution(0,1:n_CODE_equations) = &
                  Numerical_CODE_Initial_Conditions
-endif ! index( model, 'CDOM') == 0 
+
+!endif ! index( model, 'CDOM') == 0 
 
 
 if( myid == 0 )then

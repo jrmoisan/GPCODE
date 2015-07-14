@@ -121,7 +121,7 @@ integer(kind=i4b) :: n_procs
 
       if( new_rank == 0 )then
          if( L_ga_print )then
-            write(GA_print_unit,'(//A,1x,I6,1x,A)') &
+            write(GA_print_unit,'(/A,1x,I6,1x,A/)') &
                   'GA Generation ',i_GA_generation,' is underway'
          endif ! L_ga_print
       endif ! new_rank == 0
