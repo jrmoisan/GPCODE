@@ -131,6 +131,10 @@ contains
 
       !   allocate and initialize all the globals
 
+      if( myid == 0 )then
+          write(6,'(/A,1x,I6/)')   'initCD: call allocate_arrays1()'
+      endif ! myid == 0 
+
       call allocate_arrays1()
    
       increment = 1.0d0 / real( n_levels, kind=8 )
@@ -265,18 +269,38 @@ contains
          enddo ! i_node
       enddo ! i_tree
 
+      if( myid == 0 )then
+          write(6,'(/A,1x,I6)')   'setmodelCD: n_parameters ', n_parameters           
+      endif ! myid == 0 
+
+      if( myid == 0 )then
+          write(6,'(/A/)')   'setmodelCD: call this%generateGraph()'
+      endif ! myid == 0 
+
       call this%generateGraph()
+
+      if( myid == 0 )then
+          write(6,'(/A/)')   'setmodelCD: call print_values2()'             
+      endif ! myid == 0 
 
       call print_values2()
 
+      if( myid == 0 )then
+          write(6,'(/A/)')   'setmodelCD: call sse0_calc( )'
+      endif ! myid == 0 
+
       call sse0_calc( )
+
+      if( myid == 0 )then
+          write(6,'(/A/)')   'setmodelCD: call set_modified_indiv( )'
+      endif ! myid == 0 
 
       call set_modified_indiv( )
 
 ! set L_minSSE to TRUE if there are no elite individuals,
 ! or prob_no_elite > 0 which means elite individuals might be modified
 
-       L_minSSE = n_GP_Elitists ==  0 .or.   prob_no_elite > 0.0D0
+       L_minSSE = .FALSE. !n_GP_Elitists ==  0 .or.   prob_no_elite > 0.0D0
  
    end subroutine setModel
 

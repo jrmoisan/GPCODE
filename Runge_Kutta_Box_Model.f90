@@ -50,9 +50,9 @@ tree_node_count = 0
 
 
 if( trim(model) == 'fasham_CDOM' .or. &
-    trim(model) == 'fasham_CDOM_GP') then
+    trim(model) == 'fasham_CDOM_GP' ) then
     dt = 1.0d0
-endif ! trim(model) == 'fasham_CDOM' ...
+endif !  trim(model) == 'fasham_CDOM' ...           
 
 
 

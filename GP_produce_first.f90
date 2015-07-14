@@ -31,11 +31,21 @@ Run_GP_Calculate_Fitness=.true.
 
 !----------------------------------------------------------------------------
 
+if( myid == 0 ) then
+    write(GP_print_unit,'(/A,5x,l1/)') &
+          'gpf: L_restart ', L_restart
+endif
+
 
 if( L_restart) then
 
     ! do this section to restart the run
 
+
+    if( myid == 0 ) then
+        write(GP_print_unit,'(/A/)') &
+              'gpf: RESTART  call read_all_summary_file '
+    endif
 
     call read_all_summary_file( i_GP_generation )
 
@@ -67,6 +77,11 @@ else
 
         if( myid ==0) then
 
+            !write(GP_print_unit,'(/A,1x,I6)') &
+            !'gpf: call GP_Tree_Build        Generation =',i_GP_Generation
+            !write(6,'(//A,1x,I10/)') 'gpf:  n_input_vars = ', n_input_vars
+
+            !flush(GP_print_unit)
 
             ! set
             ! GP_Adult_Population_Node_Type array with random trees
@@ -129,7 +144,16 @@ if( trim(model) == 'fasham_CDOM' )then
     GP_Child_Population_Node_Type=GP_Adult_Population_Node_Type
 
     return
+endif !   trim(model) == 'fasham_CDOM' 
+
+!---------------------------------------------------------------------------
+
+if( myid == 0 ) then
+    write(GP_print_unit,'(/A,1x,I6)') &
+      'gpf: return'
+    flush(GP_print_unit)
 endif
+
 
 
 return

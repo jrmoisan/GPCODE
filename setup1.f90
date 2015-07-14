@@ -44,6 +44,9 @@ if( myid == 0 )then
     write(6,'(/A,1x,A)') 'set1: model ', trim(model)
 endif ! myid == 0 
 
+if( myid == 0 )then
+    write(6,'(/A,1x,A)') 'set1: model ', trim(model)
+endif ! myid == 0 
 
 if( trim(model) == "fasham_CDOM") then
 
@@ -53,9 +56,24 @@ if( trim(model) == "fasham_CDOM") then
 
     allocate(aCDOM,source=newFasham_CDOM())
 
+    if( myid == 0 )then
+        write(6,'(A)')'set1: call aCDOM%init          '            
+    endif ! myid == 0 
     call aCDOM%init()
+
+    if( myid == 0 )then
+        write(6,'(A)')'set1: call aCDOM%setTruth      '            
+    endif ! myid == 0 
     call aCDOM%setTruth()
+
+    if( myid == 0 )then
+        write(6,'(A)')'set1: call aCDOM%setModel      '            
+    endif ! myid == 0 
     call aCDOM%setModel()
+
+    if( myid == 0 )then
+        write(6,'(A)')'set1: RETURN aft allocate aCDOM'            
+    endif ! myid == 0 
 
     return
 
@@ -64,18 +82,32 @@ endif
 if( trim(model) == "fasham_CDOM_GP") then
 
     if( myid == 0 )then
-        write(6,'(A)')'set1: allocate aCDOM'            
+        write(6,'(A)')'set1: CDOM_GP  allocate aCDOM'            
     endif ! myid == 0 
 
     allocate(aCDOM,source=newFasham_CDOM_GP())
 
+    if( myid == 0 )then
+        write(6,'(A)')'set1:  CDOM_GP call aCDOM%init          '            
+    endif ! myid == 0 
+
     call aCDOM%init()
+
+    if( myid == 0 )then
+        write(6,'(A)')'set1: CDOM_GP call aCDOM%setTruth      '            
+    endif ! myid == 0 
+
     call aCDOM%setTruth()
+
     !call cdom%setModel()
+
+    if( myid == 0 )then
+        write(6,'(A)')'set1: CDOM_GP RETURN aft allocate aCDOM'            
+    endif ! myid == 0 
 
     return
 
-endif
+endif ! trim(model) == "fasham_CDOM_GP"
 
 ! set the scalar values for the model
 
@@ -124,7 +156,12 @@ endif ! myid == 0
 ! allocate variable dimension arrays
 
 !if( index( model, 'CDOM') == 0 )then
+
+if( myid == 0 )then
+    write(6,'(/A,1x,I6)') 'set1: call allocate_arrays1'
     call allocate_arrays1( )
+endif ! myid == 0
+
 !endif ! index( model, 'CDOM') == 0 
 
 
@@ -158,7 +195,12 @@ GP_minSSE_Individual_SSE = 1.0d99
 !      Node_Probability
 
 !if( index( model, 'CDOM') == 0 )then
+
+if( myid == 0 )then
+    write(6,'(/A,1x,I6)') 'set1: call init_values( 1 )'
     call init_values( 1 )
+endif ! myid == 0
+
 !endif ! index( model, 'CDOM') == 0 
 
 !------------------------------------------------------------------
@@ -192,6 +234,7 @@ call create_tree_node_string()
 
 if( myid == 0 )then
 
+    write(6,'(/A,1x,I6)') 'set1: call set_answer_arrays '
     call set_answer_arrays( )
 
 endif ! myid == 0
@@ -320,6 +363,7 @@ endif!  index( model,'LOG10') > 0 ...
 
 
 if( myid == 0 )then    ! 20131209
+    write(6, '(A,2(1x,I6))') 'set1: call comp_data_variance( ) '
     call comp_data_variance( )
 endif ! myid == 0
 
@@ -396,6 +440,7 @@ call MPI_BCAST( GP_child_print_interval, message_len,    &
 
 if( myid == 0 )then
 
+    write(6, '(/A,2(1x,I6))') 'set1: call print_values2( )'
     call print_values2( )
 
     !-----------------------------------------------------------------------------
@@ -413,6 +458,10 @@ if( myid == 0 )then
 
     else
 
+        if( myid == 0 )then 
+            write(6, '(/A,2(1x,I6))') 'set1: call sse0_calc()    '
+        endif ! myid == 0
+
         call sse0_calc( )
 
         SSE0 = SSE0_nolog10
@@ -420,7 +469,7 @@ if( myid == 0 )then
     endif!  index( model,'LOG10') > 0 ...
 
 
-    call sse0_calc( )
+    !call sse0_calc( )
 
 
     !---------------------------------------------------------------------------
@@ -467,6 +516,10 @@ endif!  index( model,'LOG10') > 0 ...
 ! calculate n_GP_Asexual_Reproductions, n_GP_Crossovers,  etc.
 ! from the number of GP individuals and the probabilities such as:
 ! GP_Asexual_Reproduction_Probability, GP_Crossover_Probability, etc.
+
+if( myid == 0 )then 
+    write(6, '(/A,2(1x,I6))') 'set1: call set_modified_indiv '
+endif ! myid == 0
 
 call set_modified_indiv( )
 

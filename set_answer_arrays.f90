@@ -53,7 +53,15 @@ if( trim(model)  == 'fasham' .or.  &
 
     call Initialize_Model( .false., .true., 6 )    ! for built-in Fasham function model
 
-else
+!else
+elseif( index(model, 'CDOM' ) == 0 )then
+
+
+    if( myid == 0 )then
+        write(6,'(/A/)') 'saa: call Initialize_Model  '
+    endif ! myid == 0
+
+
     call Initialize_Model( .true., .true., 6 )    ! for the regular tree, node array model
 
 endif ! model == 'fasham'
@@ -111,8 +119,10 @@ endif ! L_unit50_output
 
 ! initialize the biological data fields
 
-Numerical_CODE_Solution(0,1:n_CODE_equations) = &
-             Numerical_CODE_Initial_Conditions
+if( index( model, 'CDOM') == 0 )then 
+    Numerical_CODE_Solution(0,1:n_CODE_equations) = &
+                 Numerical_CODE_Initial_Conditions
+endif ! index( model, 'CDOM') == 0 
 
 
 if( myid == 0 )then
@@ -192,7 +202,11 @@ if( myid == 0 )then
 
     if( n_input_vars == 0 )then
 
-        call Runge_Kutta_Box_Model( .FALSE. )
+        if( index( model, 'CDOM') == 0 )then 
+
+            call Runge_Kutta_Box_Model( .FALSE. )
+
+        endif ! index( model, 'CDOM') == 0 
 
     else
 

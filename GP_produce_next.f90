@@ -37,6 +37,13 @@ L_nextloop = .false.
 
 if( i_GP_generation < 2 ) return
 
+if( myid == 0 )then
+    write(GP_print_unit,'(/A)') 'gpn: GP_produce_next at entry'
+    write(GP_print_unit,'(A,5x,L1)') 'gpn: L_nextloop ', L_nextloop
+    write(GP_print_unit,'(A,2(1x,I6))') 'gpn: i_GP_generation, i_GP_best_parent ', &
+                                              i_GP_generation, i_GP_best_parent 
+    flush(GP_print_unit)
+endif ! myid == 0 
 
 ierror_t  = 0
 ierror_m  = 0
@@ -48,6 +55,26 @@ if( myid == 0 )then
     ! fill child sse for individuals not  modified in this generation
 
     GP_Child_Population_SSE  = GP_Adult_Population_SSE   ! needed ??  jjm 20140522
+
+    if( i_GP_generation == 1                                  .or. &
+        mod( i_GP_generation, GP_child_print_interval ) == 0  .or. &
+        i_GP_generation == n_GP_generations                          )then
+
+        write(GP_print_unit,'(//A)') 'gpn:3 before modifications'
+        write(GP_print_unit,'(A)')&
+           'gpn:3 i_GP_gen i_GP_indiv    GP_Child_Pop_SSE  &
+            &   GP_Child_Pop_SSE/SSE0'
+        flush(GP_print_unit)
+
+        do  i_GP_individual = 1, n_GP_individuals
+            write(GP_print_unit,'(2(1x,I10), 2(1x, E15.7))') &
+                  i_GP_generation, i_GP_individual, &
+                  GP_Child_Population_SSE(i_GP_Individual), &
+                  GP_Child_Population_SSE(i_GP_Individual)/SSE0
+        enddo ! i_GP_individual
+        flush(GP_print_unit)
+
+    endif ! i_GP_generation == 1 .or. ...
 
 
     !----------------------------------------------------------------------------------
@@ -196,6 +223,9 @@ GP_Adult_Population_Node_Type = GP_Child_Population_Node_Type   ! keep jjm 20150
 GP_Adult_Population_SSE       = GP_Child_Population_SSE         ! keep jjm 20150522
 
 
+!write(6,'(/A,1x,I5/)') 'gpn: broadcast ierror_t, ierror_m, ierror_rr    myid = ', myid
+
+
 message_len =  1
 call MPI_BCAST( ierror_t, message_len,    &
                 MPI_INTEGER,  0, MPI_COMM_WORLD, ierr )
@@ -257,9 +287,19 @@ endif ! trim(model) == 'fasham_fixed_tree'
 ! GP_Integrated_Population_Ranked_Fitness
 ! GP_Population_Ranked_Fitness
 ! Run_GP_Calculate_Fitness
+if( myid == 0 )then
+    write(GP_print_unit,'(/A)') 'gpn: call bcast2             '
+    flush(GP_print_unit)
+endif ! myid == 0 
 
 
 call bcast2()
+
+if( myid == 0 )then
+    write(GP_print_unit,'(/A)') 'gpn: AFT call bcast2             '
+    write(GP_print_unit,'(A)') 'gpn: AT return '                         
+    flush(GP_print_unit)
+endif ! myid == 0 
 
 
 return

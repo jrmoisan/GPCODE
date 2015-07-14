@@ -55,9 +55,12 @@ contains
           write(6,'(A,1x,I10)')'nfCDGP: n_inputs                    ', n_inputs
       endif ! myid == 0
 
-      call print_values1()
+      !call print_values1()
 
    end function
+
+!------------------------------------------------------------------------------------
+
 
    subroutine init(this)
       class(fasham_CDOM_GP),intent(inout) :: this
@@ -117,13 +120,14 @@ contains
          write(Aline,*)' '
       enddo
 
-      this%cdoms(0) = this%cdoms(1)
-      this%kds(0) = this%kds(1)
-      this%pars(0) = this%pars(1)
-      this%mxds(0) = this%mxds(1)
+      this%cdoms(0)   = this%cdoms(1)
+      this%kds(0)     = this%kds(1)
+      this%pars(0)    = this%pars(1)
+      this%mxds(0)    = this%mxds(1)
       this%dmxddts(0) = this%dmxddts(1)
 
       if( myid == 0 )then
+          write(6,'(/A)')'initCDGP: '
           write(6,'(/A)')'     i   cdoms(i)        kds(i)          pars(i)         mxds(i)         dmxddts(i)'
           do  i = 0, n_count
               write(6,'(I6,5(1x,E15.7))') &
@@ -135,7 +139,11 @@ contains
 
 !   allocate and initialize all the globals
 
+      if( myid == 0 )then
+          write(6,'(/A/)')   'initCDGP: call allocate_arrays1 '
+      endif ! myid == 0 
       call allocate_arrays1()
+
    
       increment = 1.0d0 / real( n_levels, kind=r8b )
 
@@ -156,7 +164,10 @@ contains
  
    end subroutine init
 
+!------------------------------------------------------------------------------------
+
    subroutine setTruth(this)
+
       use GP_data_module
 use GP_Parameters_module
 use GP_variables_module
@@ -166,7 +177,8 @@ use GA_Variables_module
 
       class(fasham_CDOM_GP),intent(inout):: this
 
-       integer(kind=i4b) :: i
+      integer(kind=i4b) :: i
+
 !integer(kind=i4b) :: message_len
 !
 !integer(kind=i4b) :: i_Tree
@@ -181,6 +193,13 @@ use GA_Variables_module
       do i = 1, n_time_steps
          Numerical_CODE_Solution( i, 1) = this%cdoms(i)
       enddo ! i  
+      if( myid == 0 )then
+          do i = 1, n_time_steps
+          write(6,'(A,1x,I10,1x,E15.7)') &
+                'setCDGP: i, this%cdoms(i) ', &
+                          i, this%cdoms(i)                  
+          enddo ! i  
+      endif ! myid == 0 
 
       Numerical_CODE_Initial_Conditions(1) = this%cdoms(1)
       Numerical_CODE_Solution(0,1) = this%cdoms(1)
@@ -188,42 +207,85 @@ use GA_Variables_module
       Data_Array=Numerical_CODE_Solution
       Numerical_CODE_Solution(1:n_time_steps, 1:n_code_equations) = 0.0d0
 
+      if( myid == 0 )then
+          do i = 0, n_time_steps
+          write(6,'(A,1x,I10,1x,E15.7)') &
+                'setCDGP: i, Num_code_soln(i,1 ) ', &
+                          i, Numerical_CODE_Solution( i, 1) 
+          enddo ! i  
+      endif ! myid == 0 
 
-      write(6,'(A)')   'setCDGP: call set_answer_arrays'
+
+
+      if( myid == 0 )then
+          write(6,'(A)')   'setCDGP: call set_answer_arrays'
+      endif ! myid == 0 
       call set_answer_arrays()
 
-      write(6,'(A)')   'setCDGP: call comp_data_variance'
+      if( myid == 0 )then
+          write(6,'(A)')   'setCDGP: call comp_data_variance'
+      endif ! myid == 0 
       call comp_data_variance()
 
-      write(6,'(A)')   'setCDGP: call sse0_calc'
+      if( myid == 0 )then
+          write(6,'(A)')   'setCDGP: call sse0_calc'
+      endif ! myid == 0 
       call sse0_calc( )
 
-      write(6,'(A)')   'setCDGP: call set_modified_indiv'
+      if( myid == 0 )then
+          write(6,'(A)')   'setCDGP: call set_modified_indiv'
+      endif ! myid == 0 
       call set_modified_indiv( )
 
+      if( myid == 0 )then
+          write(6,'(A)')   'setCDGP: call print_values1 '
+      endif ! myid == 0 
+      call print_values1()
 
       ! set L_minSSE to TRUE if there are no elite individuals,
       ! or prob_no_elite > 0 which means elite individuals might be modified
 
        L_minSSE = .FALSE. ! n_GP_Elitists ==  0 .or.   prob_no_elite > 0.0D0
 
-
 !------------------------------------------------------------------------------------------
 
 
-       call print_values2()
+      if( myid == 0 )then
+          write(6,'(A)')   'setCDGP: call print_values2 '
+      endif ! myid == 0 
+
+      call print_values2()
+
+      Numerical_CODE_Solution(1:n_time_steps, 1:n_code_equations) = 0.0d0
+
 
    end subroutine setTruth
 
+!--------------------------------------------------------------------------------
+
+
    subroutine setModel(this)
+
       class(fasham_CDOM_GP),intent(inout) :: this
       integer :: ierror
 
+      if( myid == 0 )then
+          write(6,'(/A/)')   'setModelCDGP: call GP_Tree_Build'
+      endif ! myid == 0 
+
       call GP_Tree_Build(ierror)
+
+      if( myid == 0 )then
+          write(6,'(/A/)')   'setModelCDGP: AFT call GP_Tree_Build'
+      endif ! myid == 0 
 
    end subroutine setModel
 
+
+!--------------------------------------------------------------------------------
+
    subroutine getForcing(this,preForce,time_step_fraction, i_Time_Step,L_bad )
+
       class(fasham_CDOM_GP),intent(in):: this
       real(kind=r8b) :: preForce(:)
       real(kind=r8b) :: time_step_fraction

@@ -73,6 +73,7 @@ contains
     subroutine Tree_Node_Delete(this)
         class(Tree_Node), intent(inout) :: this
         
+        !write(*,*) 'Tree_Node_Delete'
     end subroutine Tree_Node_Delete
 
 

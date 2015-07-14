@@ -65,6 +65,17 @@ do  i_GP_Individual=1,n_GP_Individuals
                     GP_Adult_Population_Node_Type(i_Node_Left, i_Tree,i_GP_Individual) .eq. 0 .and. &
                     GP_Adult_Population_Node_Type(i_Node_Right,i_Tree,i_GP_Individual) .eq. 0 ) then
 
+                    !write(6,'(/A,2(1x,I6))') 'gpctn: i_GP_Individual, i_tree ', i_GP_Individual, i_tree
+                    !write(6,'(A,2(1x,I6))') &
+                    ! 'gpctn: reset i_Function, GP_Adult_Population_Node_Type(i_Function, )    ',&
+                    !       i_Function, GP_Adult_Population_Node_Type(i_Function, i_Tree,i_GP_Individual)
+                    !write(6,'(A,2(1x,I6))') &
+                    ! 'gpctn: reset i_Node_Left, GP_Adult_Population_Node_Type(i_Node_Left, )  ',&
+                    !       i_Node_Left, GP_Adult_Population_Node_Type(i_Node_Left, i_Tree,i_GP_Individual)
+                    !write(6,'(A,2(1x,I6))') &
+                    ! 'gpctn: reset i_Node_Right, GP_Adult_Population_Node_Type(i_Node_Right, )',&
+                    !       i_Node_Right, GP_Adult_Population_Node_Type(i_Node_Right, i_Tree,i_GP_Individual)
+
                     GP_Adult_Population_Node_Type(i_Function,  i_Tree,i_GP_Individual) = 0
                     GP_Adult_Population_Node_Type(i_Node_Left, i_Tree,i_GP_Individual) = -9999
                     GP_Adult_Population_Node_Type(i_Node_Right,i_Tree,i_GP_Individual) = -9999

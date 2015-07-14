@@ -376,7 +376,7 @@ enddo ! i_GA_individual
 !------------------------------------------------------------------------------
 
 if( L_ga_print )then
-    write(GA_print_unit,'(/A,1x,I3,2(1x,I6),2(1x,E15.7))') &
+    write(GA_print_unit,'(A,1x,I3,2(1x,I6),2(1x,E15.7))') &
           'gacf: new_rank, Generation, i_GA_Best_Parent, indiv_ranked_fitness, indiv_SSE', &
                  new_rank, i_GA_Generation, i_GA_Best_Parent,   &
                  individual_ranked_fitness( i_GA_Best_Parent ), &

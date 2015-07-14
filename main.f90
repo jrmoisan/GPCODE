@@ -57,7 +57,9 @@ integer(kind=i4b) :: comm_world
 
 
 character(15),parameter :: program_version   = '201502.004_v16'
-character(10),parameter :: modification_date = '20150710'
+
+character(10),parameter :: modification_date = '20150714'
+
 character(50),parameter :: branch  =  'v16'
 
 integer(kind=i4b), parameter ::  zero = 0
@@ -101,7 +103,7 @@ if( myid == 0 )then
     else
         write(6,'(A/)') &
          '0: GP_Fit* always replaces the individual regardless of the SSE'
-    endif !  L_replace_larger_SSE_only 
+    endif !  L_replace_larger_SSE_only
 
     !------------------------------------------------------
     write(GP_print_unit, '(/3(A,1x,A,1x)//)') &
@@ -137,21 +139,30 @@ Lprint_lmdif = .TRUE.
 call RANDOM_SEED(size = n_seed)
 
 
+
+!----------------------------------------------------
+
 call read_cntl_vars( ierror  )
 
 
 n_inputs = n_input_vars
 
-
-call setup_math_functions()
+!----------------------------------------------------
 
 call load_pow2_table()
 
 call setup_output_unit()
 
 
+!----------------------------------------------------
+
+
 ! for reading input files for the "DATA" model
 call read_input_data()
+
+call setup_math_functions()
+
+!----------------------------------------------------
 
 ALLOCATE(seed(n_seed))
 ALLOCATE(current_seed(n_seed))
@@ -163,6 +174,7 @@ else
 endif ! user_input_random_seed > 0
 
 seed = clock + 37 * (/ (i_seed - 1, i_seed = 1, n_seed) /)
+
 
 CALL RANDOM_SEED(PUT = seed)
 
@@ -182,7 +194,7 @@ if( myid == 0 )then
 endif ! myid == 0
 
 
-!---------------------------------------------------------------------------
+!----------------------------------------------------
 
 
    call setup1( )
@@ -340,6 +352,19 @@ endif ! myid == 0
 
     call GP_produce_first(i_GP_generation)
 
+    if( myid == 0 ) then
+        write(GP_print_unit,'(/A,1x,I6)') &
+                      '0: AFT call GP_produce_first'
+
+        write(GP_print_unit,'(/A,1x,I6,5x,L1/)') &
+              '0: i_GP_generation , any( Run_GP_Calculate_Fitness ) ', &
+                  i_GP_generation , any( Run_GP_Calculate_Fitness )
+        flush(GP_print_unit)
+
+        write(GP_print_unit,'(/A,1x,I6)') &
+                      '0: call GP_produce_next'
+        flush(GP_print_unit)
+    endif ! myid == 0
 
     call GP_produce_next(i_GP_generation, i_GP_best_parent, L_nextloop)
 
@@ -360,6 +385,10 @@ endif ! myid == 0
 
             call GP_Clean_Tree_Nodes
 
+            write(GP_print_unit,'(/A,1x,I6/)') &
+                  '0: AFTER call GP_Clean_Tree_Nodes  Generation =', i_GP_Generation
+
+
         endif ! myid == 0
     endif ! trim(model) /= 'fasham_fixed_tree'
 
@@ -377,12 +406,34 @@ endif ! myid == 0
 
     ! if there are no more individuals to evaluate fitness for, exit
 
+    if( myid == 0 )then
+        write(GP_print_unit,'(/A,1x,I6,5x,L1/)') &
+              '0: i_GP_generation , any( Run_GP_Calculate_Fitness ) ', &
+                  i_GP_generation , any( Run_GP_Calculate_Fitness )
+        flush(GP_print_unit)
+    endif ! myid == 0
+
+
 
     if( .not.  any( Run_GP_Calculate_Fitness ) ) exit generation_loop
+
+    if( myid == 0 ) then
+        write(GP_print_unit,'(/A,1x,I6/)') &
+              '0: call GP_individual_loop'
+        flush(GP_print_unit)
+        write(6,'(//A,1x,I10/)') '0:  n_input_vars = ', n_input_vars
+        flush(6)
+    endif ! myid == 0
+
 
 
     call GP_individual_loop( new_comm, i_GP_generation )
 
+    if( myid == 0 ) then
+        write(GP_print_unit,'(/A,1x,I6/)') &
+              '0: AFT call GP_individual_loop'
+        flush(GP_print_unit)
+    endif ! myid == 0
 
     !xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
     ! GA_lmdif subroutine segment
@@ -412,6 +463,10 @@ endif ! myid == 0
 
             ! write this generation out to the GP_all_summary_file
 
+            !write(GP_print_unit,'(A,1x,I6)')  &
+            !  '0:2 call summary_GP_all GP_summary_output_unit_all  ', &
+            !                           GP_summary_output_unit_all
+
             call summary_GP_all( GP_summary_output_unit_all, i_GP_generation ) !, zero )
 
         endif ! GP_all_summary_flag > 1
@@ -419,6 +474,10 @@ endif ! myid == 0
         !----------------------------------------------------------------------------
 
         ! write this generation out to the GP_last_gen_summary_file
+
+        !write(GP_print_unit,'(A,1x,I6)')  &
+        !      '0:3 call summary_GP_all GP_summary_output_unit_lgen ', &
+        !                               GP_summary_output_unit_lgen
 
         call summary_GP_all( GP_summary_output_unit_lgen, i_GP_generation ) !, zero )
 

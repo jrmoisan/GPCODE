@@ -33,6 +33,7 @@ integer(kind=i4b) :: icnt
 integer(kind=i4b) :: Node_to_Mutate
 integer(kind=i4b) :: Node_Function
 integer(kind=i4b) :: Node_Variable
+integer(kind=i4b) :: node_variable_save
 integer(kind=i4b) :: i_GP_individual
 integer(kind=i4b) :: i_Error
 integer(kind=i4b) :: test_function_index
@@ -217,22 +218,45 @@ do  i_GP_Mutation = 1,n_GP_Mutations
                 Node_Variable=1+int(cff*float(n_CODE_Equations))
                 Node_Variable = min( Node_Variable, n_CODE_Equations )
 
+                !  set some variables to the forcing functions -5001 -> -5004
+
+                node_variable_save =  Node_Variable
+
+                call set_forcing_node( node_variable )
+
+                if( node_variable == 0 ) node_variable = node_variable_save
+
+                GP_Child_Population_Node_Type(Node_to_Mutate,i_Tree_Mutation,i_GP_Individual) = &
+                                     -Node_Variable
 
             endif ! model == 'fasham'
 
+            !----------------------------------------------------------------------
+
             if( model == 'fasham_CDOM_GP') then
+
+
+                call random_number(cff)
+
+                Node_Variable=1+int(cff*float(n_CODE_Equations))
+                Node_Variable = min( Node_Variable, n_CODE_Equations )
 
                 !  set some variables to the forcing functions -5001 -> -5004
 
+                node_variable_save =  Node_Variable
+
                 call set_forcing_node( node_variable )
+
+                if( node_variable == 0 ) node_variable = node_variable_save
+
+                GP_Child_Population_Node_Type(Node_to_Mutate,i_Tree_Mutation,i_GP_Individual) = &
+                                     -Node_Variable
 
             endif !  model == 'fasham_CDOM_GP'
 
             !----------------------------------------------------------------------
 
 
-            GP_Child_Population_Node_Type(Node_to_Mutate,i_Tree_Mutation,i_GP_Individual) = &
-                                 -Node_Variable
 
         else
 
