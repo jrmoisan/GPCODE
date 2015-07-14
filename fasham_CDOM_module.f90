@@ -221,6 +221,7 @@ contains
       integer :: i_CODE_Equation
       integer :: i_Tree
       integer :: i_Node
+      integer :: i
 
 !------------------------------------------------------------------------------------------------
 !   FORCING  -5001  : max(d MLD/ dt,0)
