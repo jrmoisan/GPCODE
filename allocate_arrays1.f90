@@ -217,9 +217,13 @@ GP_Node_Type_for_Plotting = -9999
 
 !---------------------------------------------------------------
 
-Truth_Initial_Conditions  = 0.0d0
-Truth_Node_Type           = -9999
-Truth_Node_Parameters     = 0.0d0
+if( L_truth_model )then
+
+    Truth_Initial_Conditions  = 0.0d0
+    Truth_Node_Type           = -9999
+    Truth_Node_Parameters     = 0.0d0
+
+endif !  L_truth_model 
 
 !---------------------------------------------------------------
 

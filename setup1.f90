@@ -159,8 +159,8 @@ endif ! myid == 0
 
 if( myid == 0 )then
     write(6,'(/A,1x,I6)') 'set1: call allocate_arrays1'
-    call allocate_arrays1( )
 endif ! myid == 0
+    call allocate_arrays1( )
 
 !endif ! index( model, 'CDOM') == 0 
 
@@ -198,8 +198,8 @@ GP_minSSE_Individual_SSE = 1.0d99
 
 if( myid == 0 )then
     write(6,'(/A,1x,I6)') 'set1: call init_values( 1 )'
-    call init_values( 1 )
 endif ! myid == 0
+    call init_values( 1 )
 
 !endif ! index( model, 'CDOM') == 0 
 
