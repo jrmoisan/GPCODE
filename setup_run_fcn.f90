@@ -43,7 +43,7 @@ integer(kind=i4b) ::   info
 integer(kind=i4b) :: i_time_step
 integer(kind=i4b) :: i_parameter
 
-integer(kind=i4b),intent(in) :: new_comm 
+integer(kind=i4b),intent(in) :: new_comm
 
 ! individual_quality contains information on the result of lmdif
 ! if lmdif encounters an error, set individual_quality to -1
@@ -59,8 +59,8 @@ external :: fcn
 
 !--------------------------------------------------------------------------------------------
 
-                                                                                                                                
-call mpi_comm_rank( new_comm, new_rank, ierr ) 
+
+call mpi_comm_rank( new_comm, new_rank, ierr )
 
 
 
@@ -69,6 +69,14 @@ x_LMDIF(1:n_GP_parameters) = 0.0D0
 do  i_parameter=1,n_parameters
 
     X_LMDIF(i_parameter) = child_parameters(i_parameter,i_GA_indiv)
+
+    !if( new_rank == 1 )then
+    !    if( L_ga_print )then
+    !        write(GA_print_unit,'(A,3(1x,I6),1x,E20.10)') &
+    !              'setrf:1 new_rank, i_GA_indiv, i_parameter,  X_LMDIF', &
+    !                       new_rank, i_GA_indiv, i_parameter,  X_LMDIF(i_parameter)
+    !    endif ! L_ga_print
+    !endif ! new_rank == 1
 
 enddo ! i_parameter
 

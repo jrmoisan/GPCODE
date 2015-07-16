@@ -109,6 +109,10 @@ do  i_Time_Step = 1, n_Time_Steps
         if( trim(model) == 'fasham_CDOM'     .or. &
             trim(model) == 'fasham_CDOM_GP'        ) then
 
+            !write(6,'(A,2(1x,I6))') &
+            !      'rkbm: call acdom%getforcing i_time_step, iter ', &
+            !                                   i_time_step, iter 
+
             call aCDOM%getForcing( btmp, &
                                    Runge_Kutta_Time_Step(iter), &
                                    i_Time_Step-1, L_bad_result )

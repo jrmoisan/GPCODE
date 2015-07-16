@@ -33,6 +33,7 @@ if( myid == 0 )then
     write(6,'(A,1x,I6)') 'allo: n_trees          = ', n_trees
     write(6,'(A,1x,I6)') 'allo: n_levels         = ', n_levels
     write(6,'(A,1x,I6/)')'allo: n_Tracked_Resources', n_Tracked_Resources
+    flush(6)
 endif ! myid == 0
 
 
@@ -54,6 +55,11 @@ allocate( GP_Child_Population_SSE(n_GP_Individuals) )
 maxno= max( n_GA_individuals, n_GP_individuals ) 
 allocate( GP_Child_Individual_SSE_nolog10(maxno) )
 
+!if( myid == 0 )then
+!    write(6,'(/A)')'allo: 1 '
+!    flush(6)
+!endif ! myid == 0
+
 
 allocate( individual_SSE( n_GA_individuals )  )
 allocate( individual_SSE_nolog10( n_GA_individuals )  )
@@ -71,6 +77,11 @@ allocate( integrated_ranked_fitness( n_GA_individuals )  )
 
 allocate( GP_Population_Fitness(0:n_GP_individuals) )
 allocate( GP_Integrated_Population_Ranked_Fitness( n_GP_Individuals ) )
+
+!if( myid == 0 )then
+!    write(6,'(/A)')'allo: 2 '
+!    flush(6)
+!endif ! myid == 0
 
 allocate( GP_Individual_Ranked_Fitness(n_GP_Individuals) )
 allocate( GP_Integrated_Ranked_Fitness(n_GP_Individuals) )
@@ -98,6 +109,11 @@ allocate( GP_Node_Type_Answer(n_Nodes,n_Trees) )
 allocate( GP_Node_Type_for_Plotting( n_Nodes,n_Trees, n_GP_Individuals ) )
 allocate( GP_diversity_index( n_GP_individuals ) )
 
+!if( myid == 0 )then
+!    write(6,'(/A)')'allo: 3 '
+!    flush(6)
+!endif ! myid == 0
+
 !---------------------------------------------------------------
 
 if( L_truth_model )then
@@ -107,6 +123,11 @@ if( L_truth_model )then
 endif !  L_truth_model 
 
 !---------------------------------------------------------------
+
+!if( myid == 0 )then
+!    write(6,'(/A)')'allo: 4 '
+!    flush(6)
+!endif ! myid == 0
 
 
 allocate( Node_Values(n_nodes,n_trees) )
@@ -121,6 +142,12 @@ allocate( Numerical_CODE_Initial_Conditions( 1:n_CODE_equations ) )
 
 allocate( Numerical_CODE_Forcing_Functions( n_CODE_forcing ) )
 
+!if( myid == 0 )then
+!    write(6,'(/A)')'allo: 4 '
+!    flush(6)
+!endif ! myid == 0
+
+
 if( n_input_vars > 0 )then
 
     allocate( Numerical_CODE_Solution( 0:n_input_data_points, n_CODE_equations ) )
@@ -131,6 +158,11 @@ else
     allocate( Numerical_CODE_Solution( 0:n_time_steps, n_CODE_equations ) )
 
 endif ! n_input_vars > 0
+
+!if( myid == 0 )then
+!    write(6,'(/A)')'allo: 5 '
+!    flush(6)
+!endif ! myid == 0
 
 
 allocate( RK_Solution( 0:n_time_steps, n_CODE_equations )  )
@@ -145,6 +177,11 @@ allocate( b_tmp( n_CODE_equations) )
 
 allocate( GP_Trees( n_Trees, n_Tracked_Resources) )
 
+!if( myid == 0 )then
+!    write(6,'(/A)')'allo: 6 '
+!    flush(6)
+!endif ! myid == 0
+
 ! Runge-Kutta specific work arrays
 
 allocate( kval(4,n_CODE_equations) )
@@ -156,6 +193,11 @@ if( n_input_vars > 0 )then
     allocate( RK_data_array( 1:n_input_vars ) )
 endif
 
+!if( myid == 0 )then
+!    write(6,'(/A)')'allo: 7 '
+!    flush(6)
+!endif ! myid == 0
+
 
 allocate( Node_Probability( n_levels ) )
 allocate( GP_Adult_Population_SSE( n_GP_Individuals  )  )
@@ -163,6 +205,12 @@ allocate( GP_Adult_Population_SSE( n_GP_Individuals  )  )
 allocate( answer( n_maximum_number_parameters ) )
 
 allocate( output_array( n_maximum_number_parameters ) )
+
+!if( myid == 0 )then
+!    write(6,'(/A)')'allo: 8 '
+!    flush(6)
+!endif ! myid == 0
+
 
 ga_individual_elites  = 0
 
@@ -217,10 +265,13 @@ GP_Node_Type_for_Plotting = -9999
 
 !---------------------------------------------------------------
 
-Truth_Initial_Conditions  = 0.0d0
-Truth_Node_Type           = -9999
-Truth_Node_Parameters     = 0.0d0
+if( L_truth_model )then
 
+    Truth_Initial_Conditions  = 0.0d0
+    Truth_Node_Type           = -9999
+    Truth_Node_Parameters     = 0.0d0
+
+endif ! L_truth_model 
 !---------------------------------------------------------------
 
 

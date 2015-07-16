@@ -381,6 +381,10 @@ if( L_ga_print )then
                  new_rank, i_GA_Generation, i_GA_Best_Parent,   &
                  individual_ranked_fitness( i_GA_Best_Parent ), &
                             individual_SSE( i_GA_Best_Parent )
+    write(GA_print_unit,'(A,1x,I3,2(1x,I6),3(1x,E15.7))') &
+          'gacf: new_rank, Generation, i_GA_Best_Parent,  Child_Parameters(:,i_GA_Best_Parent)  ', &
+                 new_rank, i_GA_Generation, i_GA_Best_Parent,  &
+                 Child_Parameters(1:n_GP_parameters,i_GA_Best_Parent)    
 endif ! L_ga_print
 
 

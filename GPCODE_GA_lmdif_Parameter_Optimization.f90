@@ -245,6 +245,20 @@ integer(kind=i4b) :: n_procs
 
         endif ! i_GA_generation .eq. 1
 
+        ! debug 
+        if( L_ga_print )then
+            !write(GA_print_unit,'(/A,1x,I6)') &
+            write(6,'(A,2(1x,I3))') &
+            'GP_GA_opt:1 new_rank, child parameters aft modification generation= ', &
+                                                new_rank, i_GA_generation
+            do  i_ga_ind = 1, n_GA_individuals
+                write(6,'(I3,1x,I6,9(1x,E15.7)/(9(1x,E15.7)))') &
+                      new_rank, i_ga_ind, &
+                      ( child_parameters(jj,i_ga_ind), jj = 1,n_parameters )
+            enddo ! i_ga_ind
+        endif ! L_ga_print
+        ! debug 
+
     endif ! new_rank == 0
 
     call MPI_BCAST( ierror_tou,  1,    &

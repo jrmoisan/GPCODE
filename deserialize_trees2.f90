@@ -52,10 +52,10 @@ type(Tree_Node), pointer :: parent, root
 !--------------------------------------------------------------------------------------
 
 
-if( myid == 0 )then
-    write(6,'(A,1x,I6)')  'DsT2: at ENTRY   '
-    flush(6)
-endif !  myid == 0 
+!if( myid == 0 )then
+!    write(6,'(A,1x,I6)')  'DsT2: at ENTRY   '
+!    flush(6)
+!endif !  myid == 0 
 
 do  i = 1, Tree_count
 
@@ -430,10 +430,10 @@ do  i = 1, Tree_count
 enddo ! i
 
 
-if( myid == 0 )then
-    write(6,'(A,1x,I6)')  'DsT2: aft tree  loop  at RETURN  '
-    flush(6)
-endif !  myid == 0 
+!if( myid == 0 )then
+!    write(6,'(A,1x,I6)')  'DsT2: aft tree  loop  at RETURN  '
+!    flush(6)
+!endif !  myid == 0 
 
 
 

@@ -149,11 +149,12 @@ if( trim(model) == 'fasham_CDOM' )then
     ! GP_Adult_Population_Node_Type(:,:,:)
     ! GP_Population_Node_parameters(:,:,:)
 
-    GP_Adult_Population_Node_Type(:,:,1)=GP_Individual_Node_Type(:,:)
-    GP_Population_Node_Parameters(:,:,1)=GP_Individual_Node_Parameters(:,:)
-    GP_Child_Population_Node_Type=GP_Adult_Population_Node_Type
+    GP_Adult_Population_Node_Type(:,:,1)= GP_Individual_Node_Type(:,:)
+    GP_Population_Node_Parameters(:,:,1)= GP_Individual_Node_Parameters(:,:)
+    GP_Child_Population_Node_Type       = GP_Adult_Population_Node_Type
 
     return
+
 endif !   trim(model) == 'fasham_CDOM' 
 
 !---------------------------------------------------------------------------

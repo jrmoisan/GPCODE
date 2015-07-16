@@ -125,7 +125,8 @@ contains
 
           write(6,'(/A)')'initCD: '
 
-          write(6,'(/A)')'     i   cdoms(i)        kds(i)          pars(i)         mxds(i)         dmxddts(i)'
+          write(6,'(/A)')&
+          '     i   cdoms(i)        kds(i)          pars(i)         mxds(i)         dmxddts(i)'
           do  i = 0, n_count
               write(6,'(I6,5(1x,E15.7))') &
                 i, this%cdoms(i),this%kds(i),this%pars(i),this%mxds(i),this%dmxddts(i)
@@ -136,9 +137,10 @@ contains
 
       !   allocate and initialize all the globals
 
-      if( myid == 0 )then
-          write(6,'(/A,1x,I6/)')   'initCD: call allocate_arrays1'
-      endif ! myid == 0 
+      !if( myid == 0 )then
+      !    write(6,'(/A,1x,I6/)')   'initCD: call allocate_arrays1'
+      !endif ! myid == 0 
+
       call allocate_arrays1()
    
       increment = 1.0d0 / real( n_levels, kind=8 )
@@ -170,25 +172,25 @@ contains
          Numerical_CODE_Solution( i, 1) = this%cdoms(i)
       enddo ! i  
 
-      if( myid == 0 )then
-          do i = 1, n_time_steps
-          write(6,'(A,1x,I10,1x,E15.7)') &
-                'setCD: i, this%cdoms(i) ', &
-                        i, this%cdoms(i)                  
-          enddo ! i  
-      endif ! myid == 0 
+      !if( myid == 0 )then
+      !    do i = 1, n_time_steps
+      !    write(6,'(A,1x,I10,1x,E15.7)') &
+      !          'setCD: i, this%cdoms(i) ', &
+      !                  i, this%cdoms(i)                  
+      !    enddo ! i  
+      !endif ! myid == 0 
 
 
       Numerical_CODE_Initial_Conditions(1) = this%cdoms(1)
       Numerical_CODE_Solution(0,1) = this%cdoms(1)
 
-      if( myid == 0 )then
-          do i = 0, n_time_steps
-          write(6,'(A,1x,I10,1x,E15.7)') &
-                'setCD: i, Num_code_soln(i,1 ) ', &
-                        i, Numerical_CODE_Solution( i, 1) 
-          enddo ! i  
-      endif ! myid == 0 
+      !if( myid == 0 )then
+      !    do i = 0, n_time_steps
+      !    write(6,'(A,1x,I10,1x,E15.7)') &
+      !          'setCD: i, Num_code_soln(i,1 ) ', &
+      !                  i, Numerical_CODE_Solution( i, 1) 
+      !    enddo ! i  
+      !endif ! myid == 0 
 
 
 
@@ -207,6 +209,7 @@ contains
       if( myid == 0 )then
           write(6,'(A)')   'setCD: call comp_data_variance'
       endif ! myid == 0 
+
       call comp_data_variance()
 
    end subroutine setTruth
@@ -257,31 +260,37 @@ contains
       GP_Individual_Node_Type(23,2) = -5004     ! force KD
 
 
-      write(6,'(/A/)') 'setModelCD: Truth model node types'
-      do  i_tree=1,n_trees
-         do  i_node=1,n_nodes
+      if( myid == 0 )then
+          write(6,'(/A/)') 'setModelCD: Truth model node types'
+          do  i_tree=1,n_trees
+             do  i_node=1,n_nodes
+    
+                 if( GP_individual_node_type(i_node,i_tree) > -9999 ) then
+                     write(6,'(A,3(1x,I5))') &
+                      'setModelCD: i_tree, i_node, GP_Individual_Node_Type(i_node, i_tree)', &
+                                   i_tree, i_node, GP_Individual_Node_Type(i_node, i_tree)
+                 endif ! GP_individual_node_type(i_node,i_tree) .eq. 0
+    
+             enddo ! i_node
+          enddo ! i_tree
+    
+    
+          write(6,'(/A/)') 'setModelCD: Truth model node parameters'
+          do  i_tree=1,n_trees
+             do  i_node=1,n_nodes
+    
+                 if( abs(GP_Individual_Node_parameters(i_node, i_tree)) > 0.0d0 )then
+                     write(6,'(A,2(1x,I5),1x,E15.7)') &
+                       'setModelCD: i_tree, i_node, &
+                        &GP_Individual_Node_parameters(i_node, i_tree)', &
+                                    i_tree, i_node, &
+                         GP_Individual_Node_parameters(i_node, i_tree)
+                 endif ! abs(GP_Individual_Node_parameters... > 0.0d0
+    
+             enddo ! i_node
+          enddo ! i_tree
 
-             if( GP_individual_node_type(i_node,i_tree) > -9999 ) then
-                 write(6,'(A,3(1x,I8))') &
-                  'setModelCD: i_tree, i_node, GP_Individual_Node_Type(i_node, i_tree)', &
-                               i_tree, i_node, GP_Individual_Node_Type(i_node, i_tree)
-             endif ! GP_individual_node_type(i_node,i_tree) .eq. 0
-
-         enddo ! i_node
-      enddo ! i_tree
-
-
-      write(6,'(/A/)') 'setModelCD: Truth model node parameters'
-      do  i_tree=1,n_trees
-         do  i_node=1,n_nodes
-
-             write(6,'(A,2(1x,I8),1x,E15.7)') &
-               'setModelCD: i_tree, i_node, GP_Individual_Node_parameters(i_node, i_tree)', &
-                            i_tree, i_node, GP_Individual_Node_parameters(i_node, i_tree)
-
-         enddo ! i_node
-      enddo ! i_tree
-
+      endif ! myid == 0 
       
 
       answer = 0.0d0 ! set all to zero
@@ -310,8 +319,7 @@ contains
 
           do i = 1, n_parameters 
           write(6,'(A,1x,I10,1x,E15.7)') &
-                'setmodelCD: i, answer(i) ', &
-                             i, answer(i) 
+                'setmodelCD: i, answer(i) ', i, answer(i) 
           enddo ! i  
       endif ! myid == 0 
 
@@ -346,14 +354,14 @@ contains
  
    end subroutine setModel
 
-   subroutine getForcing(this,preForce,time_step_fraction, i_Time_Step,L_bad )
+   subroutine getForcing( this, preForce, time_step_fraction, i_Time_Step, L_bad )
       class(fasham_CDOM),intent(in) :: this
       real (kind=8) :: preForce(:)
       real (kind=8) :: time_step_fraction
       integer :: i_Time_Step
       logical :: L_bad
       integer :: k
-      real(kind=8) :: iter
+      real(kind=8) :: x_iter
       real (kind=8) :: aDMXDDT,aPAR,aKd,aMXD
 
 ! TODO: read in frocing from the data arrays
@@ -364,20 +372,32 @@ contains
 
       L_bad = .false.
       k = i_time_step
-      iter = time_step_fraction
+      x_iter = time_step_fraction
+
+      !write(6,'(A,2(1x,I6), 1x,E15.7)')'gFor: i_time_step, k, x_iter ', i_time_step, k, x_iter
 
       !     the last step uses the previous step info
       if (k == n_time_steps) k = n_time_steps-1
 
-      aDMXDDT = this%dmxddts(k) + iter * (this%dmxddts(k + 1) - this%dmxddts(k))
-      aMXD    = this%mxds(k)    + iter * (this%mxds(k + 1)    - this%mxds(k))
-      aPAR    = this%pars(k)    + iter * (this%pars(k + 1)    - this%pars(k))
-      aKd     = this%kds(k)     + iter * (this%kds(k + 1)     - this%kds(k))
+      aDMXDDT = this%dmxddts(k) + x_iter * (this%dmxddts(k + 1) - this%dmxddts(k))
+      aMXD    = this%mxds(k)    + x_iter * (this%mxds(k + 1)    - this%mxds(k))
+      aPAR    = this%pars(k)    + x_iter * (this%pars(k + 1)    - this%pars(k))
+      aKd     = this%kds(k)     + x_iter * (this%kds(k + 1)     - this%kds(k))
 
-      Numerical_CODE_Forcing_Functions(abs(5000-5001))= aDMXDDT
-      Numerical_CODE_Forcing_Functions(abs(5000-5002))= aMXD
-      Numerical_CODE_Forcing_Functions(abs(5000-5003))= aPAR
-      Numerical_CODE_Forcing_Functions(abs(5000-5004))= aKd
+      !write(6,'(A,1(1x,I6),3(1x,E15.7))')'gFor:  k, x_iter, this%dmxddts(k), aDMXDDT',  &
+      !                                           k, x_iter, this%dmxddts(k), aDMXDDT
+      !write(6,'(A,1(1x,I6),3(1x,E15.7))')'gFor:  k, x_iter, this%mxds(k), aMXD      ', &
+      !                                           k, x_iter, this%mxds(k), aMXD
+      !write(6,'(A,1(1x,I6),3(1x,E15.7))')'gFor:  k, x_iter, this%pars(k), aPAR      ',  &
+      !                                           k, x_iter, this%pars(k), aPAR
+      !write(6,'(A,1(1x,I6),3(1x,E15.7))')'gFor:  k, x_iter, this%kds(k), aKd        ',  &
+      !                                           k, x_iter, this%kds(k), aKd          
+
+
+      Numerical_CODE_Forcing_Functions(abs(5000-5001)) = aDMXDDT
+      Numerical_CODE_Forcing_Functions(abs(5000-5002)) = aMXD
+      Numerical_CODE_Forcing_Functions(abs(5000-5003)) = aPAR
+      Numerical_CODE_Forcing_Functions(abs(5000-5004)) = aKd
 
    end subroutine getForcing
 
