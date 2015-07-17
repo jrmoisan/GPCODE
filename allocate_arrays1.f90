@@ -33,6 +33,7 @@ if( myid == 0 )then
     write(6,'(A,1x,I6)') 'allo: n_trees          = ', n_trees
     write(6,'(A,1x,I6)') 'allo: n_levels         = ', n_levels
     write(6,'(A,1x,I6/)')'allo: n_Tracked_Resources', n_Tracked_Resources
+    flush(6)
 endif ! myid == 0
 
 

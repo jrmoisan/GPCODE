@@ -51,6 +51,11 @@ if( L_restart) then
 
     call MPI_BARRIER( MPI_COMM_WORLD, ierr )
 
+    if( myid == 0 ) then
+        write(GP_print_unit,'(/A/)') &
+              'gpf: RESTART  AFTER  call read_all_summary_file '
+    endif
+
     GP_Child_Population_Node_Type = GP_Adult_Population_Node_Type
     GP_Child_Population_SSE       = GP_Adult_Population_SSE   ! needed ??
 
@@ -91,6 +96,11 @@ else
 
             call GP_Tree_Build( ierror_tb )
 
+            !write(GP_print_unit,'(/A,1x,I6)') &
+            ! 'gpf: AFT call GP_Tree_Build        Generation =',i_GP_Generation
+            !write(6,'(//A,1x,I10/)') 'gpf:  n_input_vars = ', n_input_vars
+
+            !flush(GP_print_unit)
 
         endif ! myid == 0
 

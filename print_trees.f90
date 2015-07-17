@@ -111,7 +111,7 @@ do  i_GP_individual = n_indiv_start, n_indiv_stop
     endif ! n_nodes < node_boundary 
 
 
-    write(GP_print_unit,'(A,1x,I6)') 'pt: n_trees ', n_trees                                      
+    !write(GP_print_unit,'(A,1x,I6)') 'pt: n_trees ', n_trees                                      
 
     do  i_Tree=1,n_Trees
 
@@ -197,6 +197,17 @@ do  i_GP_individual = n_indiv_start, n_indiv_stop
 
 
     enddo ! i_tree
+
+
+    !---------------------------------------------------------------
+
+    ! print equations corresponding to the tree
+
+    !if( L_print_equations )then
+    !    call create_equations( i_gen, i_GP_individual, tree_type )
+    !endif ! L_print_equations
+
+    !---------------------------------------------------------------
 
 
 enddo  ! i_GP_individual

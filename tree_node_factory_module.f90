@@ -59,6 +59,8 @@ use kinds_mod
         if( .not. associated(Left) .or. &
             .not. associated(Right)       ) then
 
+            !write(*,'(//A//)') &
+            !           'GetMathNode:  MathNode with NULL child(ren)'
             call MPI_FINALIZE(ierr)
             stop 1 ! Stop program
 
@@ -68,6 +70,8 @@ use kinds_mod
 
         allocate(node)
 
+        !write(*,'(A)')       'GMN: entry GetMathNode '
+        !write(*,'(A,1x,I6)') 'GMN: OperationIndex ', OperationIndex
 
         ! Constructor: Node Type, Node Count, Parent,
         !              LeftChild, RightChild,
@@ -86,6 +90,7 @@ use kinds_mod
         Left%parent => node
         Right%parent => node
 
+        !write(*,'(A)') 'GMN: leave GetMathNode '
 
     end function
 
@@ -101,6 +106,10 @@ use kinds_mod
 
         !--------------------------------------------------------------------------
 
+        !write(*,'(A)')           'GVN: entry GetVariableNode'
+        !write(*,'(A,1x,E24.16)') 'GVN: VariableValue  ', VariableValue
+        !write(*,'(A,1x,I6   )')  'GVN: Variable_Index ', Variable_Index
+
         allocate(node)
 
         ! Constructor: Node Type, Node Count, Parent, LeftChild, RightChild,
@@ -115,6 +124,7 @@ use kinds_mod
                           Tree_Node_Get_Pointers,  &
                           Tree_Node_Swap)
 
+        !write(*,'(A)') 'GVN: leave GetVariableNode'
 
     end function
 
@@ -131,6 +141,8 @@ use kinds_mod
 
         allocate(node)
 
+        !write(*,'(A)')           'GPN:  enter GetParameterNode '
+        !write(*,'(A,1x,E24.16)') 'GPN:  ParameterValue ', ParameterValue
 
         ! Constructor: Node Type, Node Count, Parent,
         !              LeftChild, RightChild, Operation,
@@ -145,6 +157,7 @@ use kinds_mod
                           Tree_Node_Get_Pointers, &
                           Tree_Node_Swap)
 
+        !write(*,'(A)') 'GPN:  leave GetParameterNode '
 
     end function
 

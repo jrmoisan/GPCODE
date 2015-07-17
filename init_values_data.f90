@@ -83,6 +83,7 @@ if(  icall  == 0  )then
         write(GP_print_unit,'(A,1x,I6)') 'ivDA: n_nodes           ', n_nodes
         write(GP_print_unit,'(A,1x,I6/)')'ivDA: n_maximum_number_parameters  ', &
                                                 n_maximum_number_parameters
+        flush(GP_print_unit)
     endif ! myid == 0
 
     return

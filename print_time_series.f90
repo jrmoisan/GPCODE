@@ -316,6 +316,10 @@ if( myid == 0 )then
                          resid_mean(j), resid_rms(j), resid_stddev(j), &
                          dt, 0.0d0, 1.0d9, 1.0d0 )
 
+
+        !call pearsn( Numerical_CODE_Solution(1,1), temp_data_array, &
+        !             n_time_steps, r_corr, prob_r, fisher_z )
+
         call corr( Numerical_CODE_Solution(1,j), Data_Array(1,j), &
                    n_time_steps, 0, r_corr(j) , &
                    dt,    0.0d0, 1.0d9, 1.0d0 )

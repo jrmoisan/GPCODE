@@ -58,7 +58,7 @@ integer(kind=i4b) :: comm_world
 
 character(15),parameter :: program_version   = '201502.004_v16'
 
-character(10),parameter :: modification_date = '20150714'
+character(10),parameter :: modification_date = '20150716'
 
 character(50),parameter :: branch  =  'v16'
 
@@ -96,14 +96,6 @@ if( myid == 0 )then
 
     write(6,'(/A)') '0: version 16 derived from version 15 '
     write(6,'(A)')  '0: new compiler options  -assume realloc_lhs -mkl -heap-arrays '
-
-    if( L_replace_larger_SSE_only )then
-        write(6,'(A/)') &
-         '0: GP_Fit* only  replaces the individual if the SSE decreases after replacement'
-    else
-        write(6,'(A/)') &
-         '0: GP_Fit* always replaces the individual regardless of the SSE'
-    endif !  L_replace_larger_SSE_only
 
     !------------------------------------------------------
     write(GP_print_unit, '(/3(A,1x,A,1x)//)') &
@@ -147,6 +139,16 @@ call read_cntl_vars( ierror  )
 
 n_inputs = n_input_vars
 
+if( myid == 0 )then
+    if( L_replace_larger_SSE_only )then
+        write(6,'(A/)') &
+         '0: GP_Fit* only  replaces the individual if the SSE decreases after replacement'
+    else
+        write(6,'(A/)') &
+         '0: GP_Fit* always replaces the individual regardless of the SSE'
+    endif !  L_replace_larger_SSE_only 
+endif ! myid == 0
+
 !----------------------------------------------------
 
 call setup_math_functions()
@@ -160,6 +162,11 @@ call setup_output_unit()
 
 
 ! for reading input files for the "DATA" model
+if( myid == 0 )then
+    write(6,'(A)') '0: call read_input_data'
+    flush(6)
+endif ! myid == 0
+
 call read_input_data()
 
 !----------------------------------------------------
@@ -198,6 +205,9 @@ endif ! myid == 0
 
 
    call setup1( )
+
+!call MPI_FINALIZE(ierr)
+!stop ! debug only
 
 !----------------------------------------------------
 
@@ -271,6 +281,7 @@ endif ! myid == 0
 
 if( myid == 0 )then
     write(6,'(/A,1x,I5)')     '0: start generation loop  myid = ', myid
+    flush(6)
 endif ! myid == 0
 
    generation_loop:&
@@ -288,11 +299,18 @@ endif ! myid == 0
         !    write GP_last_gen_summary_file containing the
         !    last completed generation
 
+        !write(6,'(/A,5x,L1,2(2x,I5))')  &
+        !      '0: L_GP_all_summary, GP_all_summary_flag, i_gp_generation', &
+        !          L_GP_all_summary, GP_all_summary_flag, i_gp_generation
+
         if( L_GP_all_summary )then
 
             inquire( GP_summary_output_unit_lgen, opened = op )
             if( op ) close( GP_summary_output_unit_lgen )
 
+            !write(6,'(/A,1x,I5)')&
+            !     '0: open GP_last_gen_summary_file GP_summary_output_unit_lgen = ', &
+            !                                       GP_summary_output_unit_lgen
 
             open( GP_summary_output_unit_lgen, file='GP_last_gen_summary_file', &
                   form = 'formatted', access = 'sequential', &
@@ -323,6 +341,7 @@ endif ! myid == 0
             write(6,'(I12,1x,I12)')  i, current_seed(i)
         enddo ! i
         write(6,'(A)') ' '
+        flush(6)
 
         !--------------------------------------------------------------------------------
 
@@ -349,13 +368,24 @@ endif ! myid == 0
     ! randomly create the initial tree arrays for each individual and
     ! send them all to GA_lmdif for parameter optimization on generation 1
 
+    if( i_GP_generation == 1 )then 
+        if( myid == 0 ) then
+            write(GP_print_unit,'(/A,1x,I6/)') &
+                          '0: call GP_produce_first'
+            flush(GP_print_unit)
+        endif ! myid == 0
+    endif ! i_GP_generation == 1 
 
     call GP_produce_first(i_GP_generation)
 
-    !if( myid == 0 ) then
-    !    write(GP_print_unit,'(/A,1x,I6)') &
-    !                  '0: AFT call GP_produce_first'
+    if( i_GP_generation == 1 )then 
+        if( myid == 0 ) then
+            write(GP_print_unit,'(/A,1x,I6)') &
+                          '0: AFT call GP_produce_first'
+        endif ! myid == 0
+    endif ! i_GP_generation == 1 
 
+    !if( myid == 0 ) then
     !    write(GP_print_unit,'(/A,1x,I6,5x,L1/)') &
     !          '0: i_GP_generation , any( Run_GP_Calculate_Fitness ) ', &
     !              i_GP_generation , any( Run_GP_Calculate_Fitness )
@@ -381,14 +411,23 @@ endif ! myid == 0
     ! to replace function nodes that have both terminals set as parameters
     ! and to set the replaced node to a parameter itself
 
-    if( trim(model) /= 'fasham_fixed_tree' )then
+    if( myid == 0 )then
+        write(GP_print_unit,'(/A,1x,A/)') '0:  model = ', trim(model)
+    endif ! myid == 0
+
+    if( trim(model) /= 'fasham_fixed_tree' .and. &
+        trim(model) /= 'fasham_CDOM'              )then
         if( myid == 0 )then
+
+            write(GP_print_unit,'(/A,1x,I6/)') &
+                  '0: call GP_Clean_Tree_Nodes  Generation =', i_GP_Generation
 
             call GP_Clean_Tree_Nodes
 
             write(GP_print_unit,'(/A,1x,I6/)') &
                   '0: AFTER call GP_Clean_Tree_Nodes  Generation =', i_GP_Generation
 
+            flush(GP_print_unit)
 
         endif ! myid == 0
     endif ! trim(model) /= 'fasham_fixed_tree'
@@ -396,9 +435,19 @@ endif ! myid == 0
     ! broadcast GP_Adult_Population_Node_Type changed by GP_Clean_Tree_Nodes
 
 
+    !if( myid == 0 )then
+    !    write(GP_print_unit,'(/A,1x,I6/)') &
+    !          '0:1 bef mpi_bcast GP_Adult_Population_Node_Type ierr = ', ierr
+    !endif ! myid == 0
+
     message_len = n_GP_Individuals * n_Nodes * n_Trees
     call MPI_BCAST( GP_Adult_Population_Node_Type, message_len,    &
                  MPI_INTEGER,  0, MPI_COMM_WORLD, ierr )
+
+    !if( myid == 0 )then
+    !    write(GP_print_unit,'(/A,1x,I6/)') &
+    !          '0:1 aft mpi_bcast GP_Adult_Population_Node_Type ierr = ', ierr
+    !endif ! myid == 0
 
     GP_Child_Population_Node_Type =  GP_Adult_Population_Node_Type
 
@@ -457,6 +506,11 @@ endif ! myid == 0
 
 
     if( L_GP_all_summary .and. myid == 0 )then
+
+        !write(6,'(/A,5x,L1,2x,I5)')  &
+        !      '0: L_GP_all_summary, GP_all_summary_flag', &
+        !          L_GP_all_summary, GP_all_summary_flag
+        !flush(6)
 
         !----------------------------------------------------------------------------
 

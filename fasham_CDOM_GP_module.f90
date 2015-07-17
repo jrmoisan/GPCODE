@@ -317,7 +317,7 @@ use GA_Variables_module
 
 !     the last step uses the previous step info
 
-      if (k == n_time_steps) k = n_time_steps-1
+      if( k == n_time_steps ) k = n_time_steps-1
 
       aDMXDDT = this%dmxddts(k) + iter * (this%dmxddts(k + 1) - this%dmxddts(k))
       aMXD    = this%mxds(k)    + iter * (this%mxds(k + 1)    - this%mxds(k))
