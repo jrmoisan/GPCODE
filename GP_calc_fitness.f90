@@ -120,7 +120,7 @@ if( L_GPSSE_log )then
         do  i_GP_Individual=1,n_GP_Individuals
 
 
-            write(GPSSE_log_unit,'(I6, 1x,I6,2(1x,E15.7))') &
+            write(GPSSE_log_unit,'(I0, 1x,I0,2(1x,E12.5))') &
                   i_GP_generation, &
                   i_GP_Individual, GP_Child_Individual_SSE_nolog10(i_GP_Individual), &
                   GP_Child_Individual_SSE_nolog10(i_GP_Individual)/ SSE0_nolog10
@@ -132,7 +132,7 @@ if( L_GPSSE_log )then
 
         do  i_GP_Individual=1,n_GP_Individuals
 
-            write(GPSSE_log_unit,'(I6, 1x,I6,2(1x,E15.7))') &
+            write(GPSSE_log_unit,'(I0, 1x,I0,2(1x,E12.5))') &
                   i_GP_generation, &
                   i_GP_Individual, GP_Child_Population_SSE(i_GP_Individual), &
                   GP_Child_Population_SSE(i_GP_Individual)/ SSE0
@@ -298,11 +298,11 @@ if( L_GPSSE_log )then
 
 
         write(6,'(/A,1x, I6, 1x,E15.7)') &
-              'gpcf: i_GP_gen, sse0_nolog10 ', &
+              'gpcf: i_GP_gen, sse0_nolog10', &
               i_GP_generation,  SSE0_nolog10
 
-        write(6,'(A,1x, I6, 1x,I6,2(1x,E15.7)/)') &
-              'gpcf: i_GP_gen, i_GP_best_parent, sse_nolog10, sse_nolog10/sse0_nolog10 ', &
+        write(6,'(A,1x, I6, 1x,I6,2(1x,E12.5)/)') &
+              'gpcf: i_GP_gen, i_GP_best_parent, sse_nolog10, sse_nolog10/sse0_nolog10', &
               i_GP_generation, &
               i_GP_Best_Parent, &
               GP_Child_Individual_SSE_nolog10(i_GP_best_parent), &
@@ -310,7 +310,7 @@ if( L_GPSSE_log )then
 
 
 
-        write(GPSSE_best_log_unit,'(I6, 1x,I6,2(1x,E15.7))') &
+        write(GPSSE_best_log_unit,'(I0, 1x,I0,2(1x,E12.5))') &
               i_GP_generation, &
               i_GP_Best_Parent, &
               GP_Child_Individual_SSE_nolog10(i_GP_best_parent), &
@@ -320,7 +320,7 @@ if( L_GPSSE_log )then
 
     else
 
-        write(GPSSE_best_log_unit,'(I6,1x,I6,2(1x,E15.7))') &
+        write(GPSSE_best_log_unit,'(I0,1x,I0,2(1x,E12.5))') &
               i_GP_Generation, i_GP_Best_Parent, &
               GP_Child_Population_SSE(i_GP_Best_Parent), &
               GP_Child_Population_SSE(i_GP_Best_Parent)/ SSE0
