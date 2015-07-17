@@ -51,10 +51,6 @@ i_GP_Individual_Mutation = 0
 
 i_GP_Individual = n_GP_Elitists + n_GP_Asexual_Reproductions + n_GP_Crossovers
 
-!write(GP_print_unit,'(A,4(1x,I6))' ) &
-!  'gpmut: n_GP_Elites, n_GP_Asexual_Repro, n_GP_Cross, n_GP_Mut', &
-!          n_GP_Elitists, n_GP_Asexual_Reproductions, n_GP_Crossovers, n_GP_Mutations
-
 
 ! if the cff < prob_no_elite (which is a small number) then the mutations are allowed
 ! on any individual,

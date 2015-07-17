@@ -40,40 +40,23 @@ integer(kind=i4b) :: i_CODE_equation
 
 !---------------------------------------------------------------------------------------
 
-if( myid == 0 )then
-    write(6,'(/A,1x,A)') 'set1: model ', trim(model)
-endif ! myid == 0 
 
 if( myid == 0 )then
     write(6,'(/A,1x,A)') 'set1: model ', trim(model)
 endif ! myid == 0 
+
 
 if( trim(model) == "fasham_CDOM") then
 
-    if( myid == 0 )then
-        write(6,'(A)')'set1: allocate aCDOM'            
-    endif ! myid == 0 
 
     allocate(aCDOM,source=newFasham_CDOM())
 
-    if( myid == 0 )then
-        write(6,'(A)')'set1: call aCDOM%init          '            
-    endif ! myid == 0 
     call aCDOM%init()
 
-    if( myid == 0 )then
-        write(6,'(A)')'set1: call aCDOM%setTruth      '            
-    endif ! myid == 0 
     call aCDOM%setTruth()
 
-    if( myid == 0 )then
-        write(6,'(A)')'set1: call aCDOM%setModel      '            
-    endif ! myid == 0 
     call aCDOM%setModel()
 
-    if( myid == 0 )then
-        write(6,'(A)')'set1: RETURN aft allocate aCDOM'            
-    endif ! myid == 0 
 
     return
 
@@ -81,29 +64,17 @@ endif
 
 if( trim(model) == "fasham_CDOM_GP") then
 
-    if( myid == 0 )then
-        write(6,'(A)')'set1: CDOM_GP  allocate aCDOM'            
-    endif ! myid == 0 
 
     allocate(aCDOM,source=newFasham_CDOM_GP())
 
-    if( myid == 0 )then
-        write(6,'(A)')'set1:  CDOM_GP call aCDOM%init          '            
-    endif ! myid == 0 
 
     call aCDOM%init()
 
-    if( myid == 0 )then
-        write(6,'(A)')'set1: CDOM_GP call aCDOM%setTruth      '            
-    endif ! myid == 0 
 
     call aCDOM%setTruth()
 
     !call cdom%setModel()
 
-    if( myid == 0 )then
-        write(6,'(A)')'set1: CDOM_GP RETURN aft allocate aCDOM'            
-    endif ! myid == 0 
 
     return
 
@@ -118,9 +89,9 @@ endif ! trim(model) == "fasham_CDOM_GP"
 ! n_trees
 ! n_nodes
 
-!if( index( model, 'CDOM') == 0 )then
-    call init_values( 0 )
-!endif ! index( model, 'CDOM') == 0 
+
+call init_values( 0 )
+
 
 n_Variables = n_CODE_equations
 
@@ -148,24 +119,17 @@ if( myid == 0 )then
     write(6,'(A,2(1x,I6))')  'set1: n_input_vars     ', n_input_vars
     write(6,'(A,2(1x,I6)/)') 'set1: n_inputs         ', n_inputs
 
-    call print_values1()
-
-    flush(6)
 endif ! myid == 0
+
+call print_values1()
 
 !------------------------------------------------------------------
 
 ! allocate variable dimension arrays
 
-!if( index( model, 'CDOM') == 0 )then
 
-if( myid == 0 )then
-    write(6,'(/A,1x,I6)') 'set1: call allocate_arrays1'
-    flush(6)
-endif ! myid == 0
-    call allocate_arrays1( )
+call allocate_arrays1( )
 
-!endif ! index( model, 'CDOM') == 0 
 
 
 !xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
@@ -186,7 +150,7 @@ GP_Child_Population_Node_Type=-9999              ! Matrix Operation
 
 GP_minSSE_Individual_SSE = 1.0d99
 
-!return ! debug only
+
 !------------------------------------------------------------------
 
 ! fill the model arrays
@@ -198,15 +162,9 @@ GP_minSSE_Individual_SSE = 1.0d99
 !      tree_evaluation
 !      Node_Probability
 
-!if( index( model, 'CDOM') == 0 )then
 
-if( myid == 0 )then
-    write(6,'(/A,1x,I6)') 'set1: call init_values( 1 )'
-    flush(6)
-endif ! myid == 0
-    call init_values( 1 )
+call init_values( 1 )
 
-!endif ! index( model, 'CDOM') == 0 
 
 !------------------------------------------------------------------
 
@@ -236,12 +194,6 @@ call create_tree_node_string()
 
 ! GP_Node_Type_for_Plotting (if L_unit50_output true)
 
-
-if( myid == 0 )then
-
-    write(6,'(/A,1x,I6)') 'set1: call set_answer_arrays '
-    flush(6)
-endif ! myid == 0
 
 call set_answer_arrays( )
 
@@ -278,7 +230,6 @@ if( myid == 0 )then    ! 20131209
     endif ! n_input_vars == 0
 
 
-    flush(6)
 endif ! myid == 0
 
 
@@ -371,12 +322,7 @@ endif!  index( model,'LOG10') > 0 ...
 ! Data_Variance_inv
 
 
-if( myid == 0 )then    ! 20131209
-    write(6, '(A,2(1x,I6))') 'set1: call comp_data_variance( ) '
-    call comp_data_variance( )
-    flush(6)
-endif ! myid == 0
-
+call comp_data_variance( )
 
 message_len =  n_CODE_equations
 
@@ -450,8 +396,6 @@ call MPI_BCAST( GP_child_print_interval, message_len,    &
 
 if( myid == 0 )then
 
-    write(6, '(/A,2(1x,I6))') 'set1: call print_values2( )'
-    flush(6)
     call print_values2( )
 
     !-----------------------------------------------------------------------------
@@ -469,19 +413,12 @@ if( myid == 0 )then
 
     else
 
-        if( myid == 0 )then 
-            write(6, '(/A,2(1x,I6))') 'set1: call sse0_calc()    '
-            flush(6)
-        endif ! myid == 0
-
         call sse0_calc( )
 
         SSE0 = SSE0_nolog10
 
     endif!  index( model,'LOG10') > 0 ...
 
-
-    !call sse0_calc( )
 
 
     !---------------------------------------------------------------------------
@@ -529,10 +466,6 @@ endif!  index( model,'LOG10') > 0 ...
 ! from the number of GP individuals and the probabilities such as:
 ! GP_Asexual_Reproduction_Probability, GP_Crossover_Probability, etc.
 
-if( myid == 0 )then 
-    write(6, '(/A,2(1x,I6))') 'set1: call set_modified_indiv '
-    flush(6)
-endif ! myid == 0
 
 call set_modified_indiv( )
 

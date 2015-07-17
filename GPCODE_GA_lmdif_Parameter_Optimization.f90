@@ -139,20 +139,6 @@ integer(kind=i4b) :: n_procs
 
             call Initialize_GA_Child_Parameters( Child_Parameters )
 
-            ! debug 
-            if( L_ga_print )then
-                !write(GA_print_unit,'(/A,1x,I6)') &
-                write(6,'(A,1x,I3,1x,I10)') &
-                'GP_GA_opt:0 aft Init new_rank, child parameters generation= ', &
-                                                    new_rank, i_GA_generation
-                do  i_ga_ind = 1, n_GA_individuals
-                    write(6,'(I3,1x,I6,9(1x,E15.7)/(9(1x,E15.7)))') &
-                          new_rank, i_ga_ind, &
-                          ( child_parameters(jj,i_ga_ind), jj = 1,n_parameters )
-                enddo ! i_ga_ind
-            endif ! L_ga_print
-            ! debug 
-
             Run_GA_lmdif=.true.
 
         else  ! i_GA_generation > 1
@@ -196,19 +182,6 @@ integer(kind=i4b) :: n_procs
                             Parent_Parameters,Child_Parameters, &
                                                 individual_quality )
 
-            ! debug 
-            if( L_ga_print )then
-                !write(GA_print_unit,'(/A,1x,I6)') &
-                write(6,'(A,1x,I3,1x,I10)') &
-                'GP_GA_opt:1 aft GA_Fit new_rank, child parameters generation= ', &
-                                                    new_rank, i_GA_generation
-                do  i_ga_ind = 1, n_GA_individuals
-                    write(6,'(I3,1x,I6,9(1x,E15.7)/(9(1x,E15.7)))') &
-                          new_rank, i_ga_ind, &
-                          ( child_parameters(jj,i_ga_ind), jj = 1,n_parameters )
-                enddo ! i_ga_ind
-            endif ! L_ga_print
-            ! debug 
 
             !-------------------------------------------------------------------------------
 
@@ -232,19 +205,6 @@ integer(kind=i4b) :: n_procs
                             individual_quality, ierror_tou )
 
             endif !   n_GA_Crossovers .gt. 0
-            ! debug 
-            if( L_ga_print )then
-                !write(GA_print_unit,'(/A,1x,I6)') &
-                write(6,'(A,1x,I3,1x,I10)') &
-                'GP_GA_opt:2 aft GA_Tou new_rank, child parameters generation= ', &
-                                                    new_rank, i_GA_generation
-                do  i_ga_ind = 1, n_GA_individuals
-                    write(6,'(I3,1x,I6,9(1x,E15.7)/(9(1x,E15.7)))') &
-                          new_rank, i_ga_ind, &
-                          ( child_parameters(jj,i_ga_ind), jj = 1,n_parameters )
-                enddo ! i_ga_ind
-            endif ! L_ga_print
-            ! debug 
 
 
             !   do "GA Parameter Mutation" Operations
@@ -264,19 +224,6 @@ integer(kind=i4b) :: n_procs
 
             endif !   n_GA_Mutations .gt. 0
 
-            ! debug 
-            if( L_ga_print )then
-                !write(GA_print_unit,'(/A,1x,I6)') &
-                write(6,'(A,1x,I3,1x,I10)') &
-                'GP_GA_opt:3 aft GA_Mut new_rank, child parameters generation= ', &
-                                                    new_rank, i_GA_generation
-                do  i_ga_ind = 1, n_GA_individuals
-                    write(6,'(I3,1x,I6,9(1x,E15.7)/(9(1x,E15.7)))') &
-                          new_rank, i_ga_ind, &
-                          ( child_parameters(jj,i_ga_ind), jj = 1,n_parameters )
-                enddo ! i_ga_ind
-            endif ! L_ga_print
-            ! debug 
 
             !-------------------------------------------------------------------------------
 
@@ -298,20 +245,6 @@ integer(kind=i4b) :: n_procs
 
             endif !   n_GA_rand_recruits .gt. 0
 
-
-            ! debug 
-            if( L_ga_print )then
-                !write(GA_print_unit,'(/A,1x,I6)') &
-                    write(6,'(A,1x,I3,1x,I10)') &
-                'GP_GA_opt:4 new_rank, child parameters aft modification generation= ', &
-                                                    new_rank, i_GA_generation
-                do  i_ga_ind = 1, n_GA_individuals
-                    write(6,'(I3,1x,I6,9(1x,E15.7)/(9(1x,E15.7)))') &
-                          new_rank, i_ga_ind, &
-                          ( child_parameters(jj,i_ga_ind), jj = 1,n_parameters )
-                enddo ! i_ga_ind
-            endif ! L_ga_print
-            ! debug 
 
         endif ! i_GA_generation .eq. 1
 
@@ -568,7 +501,7 @@ integer(kind=i4b) :: n_procs
 
                 write(6,'(A,1x,I10)') &
                   'GP_GA_opt: too many iterations  nsafe =', nsafe
-                !flush(6)
+                flush(6)
 
                 L_too_many_iters = .TRUE.
                 exit recv_loop

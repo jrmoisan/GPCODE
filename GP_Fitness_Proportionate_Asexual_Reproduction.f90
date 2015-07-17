@@ -24,9 +24,6 @@ real(kind=r8b) :: sse_ind
 
 !-----------------------------------------------------------------------------
 
-!write(GP_print_unit,'(A,1x,I6)') &
-!   & 'gpfpar: call GP_Fit_Prop_Asexual_Repro &
-!   &  n_GP_Asexual_Reproductions =', n_GP_Asexual_Reproductions
 
 i_GP_Individual = n_GP_Elitists
 
@@ -68,7 +65,6 @@ do  i_GP_Asexual_Reproduction=1,n_GP_Asexual_Reproductions
     ! unless L_replace_larger_SSE_only is TRUE 
 
     if( L_replace_larger_SSE_only )then
-        !if( sse_ind < GP_Child_Population_SSE(j_GP_Individual) ) cycle
         if( sse_ind < GP_Adult_Population_SSE(j_GP_Individual) ) cycle
     endif ! L_replace_larger_SSE_only
     !----------------------------------------------------------------------------

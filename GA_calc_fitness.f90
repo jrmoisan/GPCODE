@@ -177,7 +177,7 @@ min_sse = 1.0D20
 index_min_sse = 0
 sum_individual_SSE = 0.0D0
 
-!write(6,'(A)') ' '
+
 do  i_GA_individual=1,n_GA_individuals
 
     if( individual_quality( i_GA_individual ) > 0 ) then

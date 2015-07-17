@@ -70,90 +70,90 @@ n_replaced = 0
 icff = 0
 
 i_loop:&
-do i_GA_Individual=1,n_GA_individuals
+do  i_GA_Individual=1,n_GA_individuals
 
-  Run_GA_lmdif(i_GA_Individual)=.false.
-
-  call Random_Number(cff) ! uniform random number generator
-
-  dff = real(cff,kind=r8b)   
-
-  !--------------------------------------------------------------------------
-
-  ! if the index i_GA_individual is in the array ga_individual_elites,
-  ! do not replace this individual - it is an elite individual
-
-
-  if( any( ga_individual_elites == i_GA_individual ) )then
-
-      cycle i_loop
-
-  endif   ! any( ga_individual_elites == i_GA_individual )
-
-  !--------------------------------------------------------------------------
-
-
-  ! find an individual to replace the current i_GA_individual
-
-
-  j_loop:&
-  do  j_GA_Individual=1,n_GA_individuals ! normalize to the maximum values
-                                         ! so that the range is [0. , 1.]
-
-      !----------------------------------------------------------------------------------
-
-      ! don't replace with this individual since it is bad
-
-      if( individual_quality( j_GA_Individual ) < 0 )then
-          cycle j_loop
-      endif
-
-      !----------------------------------------------------------------------------------
-
-      ! set icff to -1 so that, if no j_GA_individual satisfies the test on cff,
-      ! then this i_GA_individual will be skipped, and run_ga_lmdif will be false for it.
-
-      icff = -1
-
-      !----------------------------------------------------------------------------------
-
-
-      if( dff .le. Integrated_Ranked_Fitness(j_GA_Individual) ) then
-
-          icff=j_GA_Individual
-          exit j_loop
-
-      endif  ! dff .le. ...
-
-
-  enddo j_loop ! j_GA_Individual
-
-
-
-  if( icff > 0 )then
-      j_GA_Individual=icff ! index to move over both 1) the parent parameters and
-                           !                         2) the individual fitness levels
-  else
-      cycle i_loop   ! skip replacing this individual
-  endif
-
-  !-----------------------------------------------------------------------------------------
-
-  ! do the replacements here
-
-  Individual_Ranked_Fitness(i_GA_Individual) = Individual_Ranked_Fitness(j_GA_Individual)
-  individual_quality( i_GA_individual )      = individual_quality( j_GA_individual )
-  Run_GA_lmdif(i_GA_Individual) = .true.  ! jjm 20140605 correct?
-
-  n_replaced = n_replaced + 1
-
-
-  do i_Parameter=1,n_Parameters
-
-    Child_Parameters(i_Parameter,i_GA_Individual) = &
-                Parent_Parameters(i_Parameter,j_GA_Individual)
-
-  enddo ! i_Parameter
+    Run_GA_lmdif(i_GA_Individual)=.false.
+  
+    call Random_Number(cff) ! uniform random number generator
+  
+    dff = real(cff,kind=r8b)   
+  
+    !--------------------------------------------------------------------------
+  
+    ! if the index i_GA_individual is in the array ga_individual_elites,
+    ! do not replace this individual - it is an elite individual
+  
+  
+    if( any( ga_individual_elites == i_GA_individual ) )then
+  
+        cycle i_loop
+  
+    endif   ! any( ga_individual_elites == i_GA_individual )
+  
+    !--------------------------------------------------------------------------
+  
+  
+    ! find an individual to replace the current i_GA_individual
+  
+  
+    j_loop:&
+    do  j_GA_Individual=1,n_GA_individuals ! normalize to the maximum values
+                                           ! so that the range is [0. , 1.]
+  
+        !----------------------------------------------------------------------------------
+  
+        ! don't replace with this individual since it is bad
+  
+        if( individual_quality( j_GA_Individual ) < 0 )then
+            cycle j_loop
+        endif
+  
+        !----------------------------------------------------------------------------------
+  
+        ! set icff to -1 so that, if no j_GA_individual satisfies the test on cff,
+        ! then this i_GA_individual will be skipped, and run_ga_lmdif will be false for it.
+  
+        icff = -1
+  
+        !----------------------------------------------------------------------------------
+  
+  
+        if( dff .le. Integrated_Ranked_Fitness(j_GA_Individual) ) then
+  
+            icff=j_GA_Individual
+            exit j_loop
+  
+        endif  ! dff .le. ...
+  
+  
+    enddo j_loop ! j_GA_Individual
+  
+  
+  
+    if( icff > 0 )then
+        j_GA_Individual=icff ! index to move over both 1) the parent parameters and
+                             !                         2) the individual fitness levels
+    else
+        cycle i_loop   ! skip replacing this individual
+    endif
+  
+    !-----------------------------------------------------------------------------------------
+  
+    ! do the replacements here
+  
+    Individual_Ranked_Fitness(i_GA_Individual) = Individual_Ranked_Fitness(j_GA_Individual)
+    individual_quality( i_GA_individual )      = individual_quality( j_GA_individual )
+    Run_GA_lmdif(i_GA_Individual) = .true.  ! jjm 20140605 correct?
+  
+    n_replaced = n_replaced + 1
+  
+  
+    do i_Parameter=1,n_Parameters
+  
+      Child_Parameters(i_Parameter,i_GA_Individual) = &
+                  Parent_Parameters(i_Parameter,j_GA_Individual)
+  
+    enddo ! i_Parameter
 
 
 

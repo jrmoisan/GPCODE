@@ -50,7 +50,6 @@ contains
 
         myid = this%node_id
 
-        !write(6,*) 'dot_visit_math_node: this%funit ', this%funit
 
 
         write(this%funit,'(I0.0,A,I0.0,A)',advance='no') &
@@ -77,7 +76,6 @@ contains
         class(Dot_Graph_Visitor), intent(inout) :: this
         class(Tree_Node), intent(in) :: node
 
-        !write(6,*) 'dot_visit_parameter_node: this%funit ', this%funit
 
         write(this%funit,'(I0.0,A,I0.0,A)',advance='no') &
                             this%node_id, '[label="[', this%node_id, '] '
@@ -96,13 +94,10 @@ contains
         class(Dot_Graph_Visitor), intent(inout) :: this
         class(Tree_Node), intent(in) :: node
 
-        !write(6,*) 'dot_visit_variable_node: this%funit ', this%funit
 
         write(this%funit,'(I0.0,A,I0.0,A)',advance='no') &
                          this%node_id, '[label="[', this%node_id, '] '
 
-        !write(this%funit,'(A,E12.5)',advance='no') '(V) ', node%val()
-        !write(this%funit,'(A,I5)',advance='no') '(V) ', abs(node%variable_index)
 
         if( n_inputs == 0 )then                                                                                                    
             write(this%funit,'(A,I5)',advance='no') '(V) ', &                                                                      

@@ -39,10 +39,6 @@ integer(kind=i4b) :: i_safe_max
 !----------------------------------------------------------------------------------
 
 
-!write(GP_print_unit,'(/A,1x,I6)') &
-!    'gptssr: call GP_Tour_Style_Sexual_Repro n_GP_Crossovers =', &
-!     n_GP_Crossovers
-
 
 i_GP_Individual = n_GP_Elitists + n_GP_Asexual_Reproductions
 i_GP_Crossover = 0
