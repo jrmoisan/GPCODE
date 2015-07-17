@@ -58,7 +58,7 @@ integer(kind=i4b) :: comm_world
 
 character(15),parameter :: program_version   = '201502.004_v16'
 
-character(10),parameter :: modification_date = '20150716'
+character(10),parameter :: modification_date = '20150717'
 
 character(50),parameter :: branch  =  'v16'
 
