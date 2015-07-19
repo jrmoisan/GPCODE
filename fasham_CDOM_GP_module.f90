@@ -37,6 +37,7 @@ contains
       integer(kind=i4b) :: i
 
       n_CODE_equations =   1
+      !n_variables = 1
 
       n_trees=  ((n_CODE_equations+1)**2)-(n_CODE_equations+1)
       n_nodes = pow2_table( n_levels )  ! n_nodes = int(2**n_levels)-1
@@ -53,6 +54,8 @@ contains
           write(6,'(A,1x,I10)')'nfCDGP: n_maximum_number_parameters ', n_maximum_number_parameters
           write(6,'(A,1x,I10)')'nfCDGP: n_inputs                    ', n_inputs
       endif ! myid == 0
+
+      !call print_values1()
 
    end function
 
@@ -180,6 +183,19 @@ use GA_Variables_module
 
       integer(kind=i4b) :: i
 
+<<<<<<< HEAD
+=======
+!integer(kind=i4b) :: message_len
+!
+!integer(kind=i4b) :: i_Tree
+!integer(kind=i4b) :: i_Node
+!
+!integer(kind=i4b) :: jj
+!
+!integer(kind=i4b) :: i_CODE_equation
+
+
+>>>>>>> v16
 
       do i = 1, n_time_steps
          Numerical_CODE_Solution( i, 1) = this%cdoms(i)

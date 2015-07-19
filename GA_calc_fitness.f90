@@ -41,6 +41,7 @@ integer(kind=i4b) ::    i_GA_Best_Parent
 integer(kind=i4b) ::    n_counted
 integer(kind=i4b) ::    index_min_sse
 integer(kind=i4b) ::    icount
+integer(kind=i4b) ::    i
 
 real(kind=r8b), parameter :: max_err = 1.0d8  !100.0d0
 real(kind=r8b), parameter :: max_err2 = max_err**2

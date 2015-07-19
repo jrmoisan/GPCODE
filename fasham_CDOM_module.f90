@@ -34,6 +34,7 @@ contains
       type(fasham_CDOM) :: fasham
 
       n_CODE_equations =   1
+      !n_variables = 1
 
       n_trees=  ((n_CODE_equations+1)**2)-(n_CODE_equations+1)
       n_nodes = pow2_table( n_levels )  ! n_nodes = int(2**n_levels)-1
