@@ -57,9 +57,7 @@ integer(kind=i4b) :: comm_world
 
 
 character(15),parameter :: program_version   = '201502.004_v16'
-
-character(10),parameter :: modification_date = '20150716'
-
+character(10),parameter :: modification_date = '20150719'
 character(50),parameter :: branch  =  'v16'
 
 integer(kind=i4b), parameter ::  zero = 0
@@ -139,15 +137,6 @@ call read_cntl_vars( ierror  )
 
 n_inputs = n_input_vars
 
-if( myid == 0 )then
-    if( L_replace_larger_SSE_only )then
-        write(6,'(A/)') &
-         '0: GP_Fit* only  replaces the individual if the SSE decreases after replacement'
-    else
-        write(6,'(A/)') &
-         '0: GP_Fit* always replaces the individual regardless of the SSE'
-    endif !  L_replace_larger_SSE_only 
-endif ! myid == 0
 
 !----------------------------------------------------
 
@@ -168,6 +157,7 @@ if( myid == 0 )then
 endif ! myid == 0
 
 call read_input_data()
+
 
 !----------------------------------------------------
 

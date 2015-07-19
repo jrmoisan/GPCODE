@@ -297,8 +297,8 @@ if( L_GPSSE_log )then
         index( model, 'log10') > 0        )then
 
 
-        write(6,'(/A,1x, I6, 1x,E15.7)') &
-              'gpcf: i_GP_gen, sse0_nolog10', &
+        write(6,'(/A,1x, I6, 1x,E12.5)') &
+              'gpcf: i_GP_gen, sse0_nolog10 ', &
               i_GP_generation,  SSE0_nolog10
 
         write(6,'(A,1x, I6, 1x,I6,2(1x,E12.5)/)') &

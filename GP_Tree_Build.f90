@@ -225,7 +225,28 @@ do  i_GP_Individual=1,n_GP_Individuals
                         GP_Child_Population_Node_Type(i_Node,i_Tree,i_GP_Individual) = &
                                                                           -Node_Variable
 
-                        !----------------------------------------------------------------------
+!                        !----------------------------------------------------------------------
+!
+!                        if( model == 'fasham' )then
+!
+!                            !  set some variables to the forcing functions -5001 -> -5004
+!
+!                            call set_forcing_node( node_variable )
+!
+!                        endif ! model == 'fasham'
+!
+!                        if(model == 'fasham_CDOM_GP' )then
+!
+!                            !  set some variables to the forcing functions -5001 -> -5004
+!
+!                            call set_forcing_node( node_variable )
+!
+!                        endif ! model == 'fasham_CDOM_GP
+!
+!
+!                        GP_Child_Population_Node_Type(i_Node,i_Tree,i_GP_Individual) = &
+!                                                                          -Node_Variable
+                     !----------------------------------------------------------------------
 
                         if( model == 'fasham' )then
 
