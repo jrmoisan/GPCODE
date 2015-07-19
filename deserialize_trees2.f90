@@ -243,6 +243,7 @@ do  i = 1, Tree_count
 
             elseif( Nodes(k)%n%Node_Type .eq. ParameterNodeType ) then
 
+                continue
 
             endif !   Nodes(k)%n%Node_Type .eq. MathNodeType 
 

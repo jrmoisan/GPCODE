@@ -117,6 +117,17 @@ contains
       this%mxds(0) = this%mxds(1)
       this%dmxddts(0) = this%dmxddts(1)
 
+      ! print input data
+
+      if( myid == 0 )then
+          write(6,'(/A)')'initCDGP: '
+          write(6,'(/A)')'     i   cdoms(i)        kds(i)          pars(i)         mxds(i)         dmxddts(i)'
+          do  i = 0, n_count
+              write(6,'(I6,5(1x,E15.7))') &
+                i, this%cdoms(i),this%kds(i),this%pars(i),this%mxds(i),this%dmxddts(i)
+          enddo ! i
+      endif ! myid == 0
+
       close(data_unitnum)   
 !
 !   allocate and initialize all the globals
@@ -148,16 +159,6 @@ use GA_Variables_module
 
       integer(kind=i4b) :: i
 
-!integer(kind=i4b) :: message_len
-!
-!integer(kind=i4b) :: i_Tree
-!integer(kind=i4b) :: i_Node
-!
-!integer(kind=i4b) :: jj
-!
-!integer(kind=i4b) :: i_CODE_equation
-
-
 
       do i = 1, n_time_steps
          Numerical_CODE_Solution( i, 1) = this%cdoms(i)
@@ -169,17 +170,30 @@ use GA_Variables_module
       Data_Array=Numerical_CODE_Solution
       Numerical_CODE_Solution(1:n_time_steps, 1:n_code_equations) = 0.0d0
 
+
+
+      call set_answer_arrays()
+
       call comp_data_variance()
 
       call sse0_calc( )
 
       call set_modified_indiv( )
 
-! set L_minSSE to TRUE if there are no elite individuals,
-! or prob_no_elite > 0 which means elite individuals might be modified
+      call print_values1()
 
-       L_minSSE = n_GP_Elitists ==  0 .or.   prob_no_elite > 0.0D0
-       call print_values2()
+      ! set L_minSSE to TRUE if there are no elite individuals,
+      ! or prob_no_elite > 0 which means elite individuals might be modified
+
+       L_minSSE = .FALSE. ! n_GP_Elitists ==  0 .or.   prob_no_elite > 0.0D0
+
+!------------------------------------------------------------------------------------------
+
+
+      call print_values2()
+
+      Numerical_CODE_Solution(1:n_time_steps, 1:n_code_equations) = 0.0d0
+
 
    end subroutine setTruth
 
@@ -218,7 +232,8 @@ use GA_Variables_module
       iter = time_step_fraction
 
 !     the last step uses the previous step info
-      if (k == n_time_steps) k = n_time_steps-1
+
+      if( k == n_time_steps ) k = n_time_steps-1
 
       aDMXDDT =this%dmxddts(k)+iter*(this%dmxddts(k+1)-this%dmxddts(k))
       aMXD = this%mxds(k)+iter*(this%mxds(k+1)-this%mxds(k))

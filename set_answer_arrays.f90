@@ -53,7 +53,9 @@ if( trim(model)  == 'fasham' .or.  &
 
     call Initialize_Model( .false., .true., 6 )    ! for built-in Fasham function model
 
-else
+elseif( index(model, 'CDOM' ) == 0 )then
+
+
     call Initialize_Model( .true., .true., 6 )    ! for the regular tree, node array model
 
 endif ! model == 'fasham'

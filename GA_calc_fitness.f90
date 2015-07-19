@@ -178,7 +178,7 @@ min_sse = 1.0D20
 index_min_sse = 0
 sum_individual_SSE = 0.0D0
 
-!write(6,'(A)') ' '
+
 do  i_GA_individual=1,n_GA_individuals
 
     if( individual_quality( i_GA_individual ) > 0 ) then
@@ -308,11 +308,10 @@ if( i_GA_generation == 1                                 .or. &
 
 
     if( L_ga_print )then
-        write(GA_print_unit,'(/A)')&
-         'gacf:i_GA_ind   ind_SSE            ind_ranked_fitness    &
-         &integ_rank_fitness  ind_quality'
+        write(GA_print_unit,'(A)')&
+        'gacf:i_GA_ind  ind_SSE         ind_ranked_fit  integ_rank_fit  ind_quality'
         do  i_GA_individual=1,n_GA_individuals
-            write(GA_print_unit,'(6x,I6,3(1x,E20.12),1x,I6)') &
+            write(GA_print_unit,'(6x,I6,3(1x,E15.7),1x,I6)') &
                   i_GA_individual, individual_SSE(i_GA_individual), &
                         individual_ranked_fitness(i_GA_individual), &
                         integrated_ranked_fitness(i_GA_individual), &
@@ -383,6 +382,10 @@ if( L_ga_print )then
                  new_rank, i_GA_Generation, i_GA_Best_Parent,   &
                  individual_ranked_fitness( i_GA_Best_Parent ), &
                             individual_SSE( i_GA_Best_Parent )
+    write(GA_print_unit,'(A,1x,I3,2(1x,I6),3(1x,E15.7))') &
+          'gacf: new_rank, Generation, i_GA_Best_Parent,  Child_Parameters(:,i_GA_Best_Parent)  ', &
+                 new_rank, i_GA_Generation, i_GA_Best_Parent,  &
+                 Child_Parameters(1:n_GP_parameters,i_GA_Best_Parent)    
 endif ! L_ga_print
 
 

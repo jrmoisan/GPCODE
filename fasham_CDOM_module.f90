@@ -101,6 +101,21 @@ contains
       this%mxds(0) = this%mxds(1)
       this%dmxddts(0) = this%dmxddts(1)
 
+      ! print input data
+
+      if( myid == 0 )then
+
+          write(6,'(/A)')'initCD: '
+
+          write(6,'(/A)')&
+          '     i   cdoms(i)        kds(i)          pars(i)         mxds(i)         dmxddts(i)'
+          do  i = 0, n_count
+              write(6,'(I6,5(1x,E15.7))') &
+                i, this%cdoms(i),this%kds(i),this%pars(i),this%mxds(i),this%dmxddts(i)
+          enddo ! i
+
+      endif ! myid == 0
+
       close(data_unitnum)   
 
       !   allocate and initialize all the globals
@@ -223,7 +238,7 @@ contains
       integer :: i_Time_Step
       logical :: L_bad
       integer :: k
-      real(kind=8) :: iter
+      real(kind=8) :: x_iter
       real (kind=8) :: aDMXDDT,aPAR,aKd,aMXD
 
 ! TODO: read in frocing from the data arrays
@@ -234,15 +249,17 @@ contains
 
       L_bad = .false.
       k = i_time_step
-      iter = time_step_fraction
+      x_iter = time_step_fraction
+
 
       !     the last step uses the previous step info
-      if (k == n_time_steps) k = n_time_steps-1
+      if( k == n_time_steps ) k = n_time_steps-1
 
-      aDMXDDT =this%dmxddts(k)+iter*(this%dmxddts(k+1)-this%dmxddts(k))
-      aMXD = this%mxds(k)+iter*(this%mxds(k+1)-this%mxds(k))
-      aPAR = this%pars(k)+iter*(this%pars(k+1)-this%pars(k))
-      aKd  = this%kds(k)+iter*(this%kds(k+1)-this%kds(k))
+      aDMXDDT = this%dmxddts(k) + x_iter * (this%dmxddts(k + 1) - this%dmxddts(k))
+      aMXD    = this%mxds(k)    + x_iter * (this%mxds(k + 1)    - this%mxds(k))
+      aPAR    = this%pars(k)    + x_iter * (this%pars(k + 1)    - this%pars(k))
+      aKd     = this%kds(k)     + x_iter * (this%kds(k + 1)     - this%kds(k))
+
 
       Numerical_CODE_Forcing_Functions(abs(5000-5001))= aDMXDDT
       Numerical_CODE_Forcing_Functions(abs(5000-5002))= aMXD

@@ -160,7 +160,6 @@ enddo ! i_tree
         write(GP_print_unit,'(A,1x,E12.5)') 'ivFA: akw    ', akw
         write(GP_print_unit,'(A,1x,E12.5)') 'ivFA: am     ', am
 
-        !flush(GP_print_unit)
 
     endif ! myid == 0
 !-----------------------------------------------------------------------------------------

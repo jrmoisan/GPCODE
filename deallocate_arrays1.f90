@@ -118,10 +118,12 @@ deallocate( Numerical_CODE_Forcing_Functions  )
 deallocate( Numerical_CODE_Solution  )
 
 !---------------------------------------------------------------                                        
-                                                                                                        
-deallocate( Truth_Initial_Conditions )
-deallocate( Truth_Node_Type          )
-deallocate( Truth_Node_Parameters    )
+    
+if( L_truth_model )then                                                                                                        
+    deallocate( Truth_Initial_Conditions )
+    deallocate( Truth_Node_Type          )
+    deallocate( Truth_Node_Parameters    )
+endif !  L_truth_model                                                                                                         
                                                                                                         
 !---------------------------------------------------------------                                        
 

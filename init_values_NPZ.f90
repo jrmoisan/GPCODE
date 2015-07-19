@@ -215,14 +215,6 @@ Numerical_CODE_Initial_Conditions( izoo )   = 0.1D0   ! [Zooplankton]    [mmol N
 
 !---------------------------------------------------------------
 
-Truth_Initial_Conditions  = 0.0d0
-
-Truth_Initial_Conditions( iNO3 )   = 1.6D0   ! [NO3]            [mmol N m-3]
-Truth_Initial_Conditions( iphyto ) = 0.3D0   ! [Phytoplankton]  [mmol N m-3]
-Truth_Initial_Conditions( izoo )   = 0.1D0   ! [Zooplankton]    [mmol N m-3]
-
-!---------------------------------------------------------------
-
 
 ! numbers
 
@@ -277,6 +269,12 @@ GP_Individual_Node_Type(23,11)=-2            ! Phytoplankton
 
 if( L_truth_model ) then                                                                                         
 
+
+    Truth_Initial_Conditions  = 0.0d0
+
+    Truth_Initial_Conditions( iNO3 )   = 1.6D0   ! [NO3]            [mmol N m-3]
+    Truth_Initial_Conditions( iphyto ) = 0.3D0   ! [Phytoplankton]  [mmol N m-3]
+    Truth_Initial_Conditions( izoo )   = 0.1D0   ! [Zooplankton]    [mmol N m-3]
 
     Truth_Node_Type           = -9999
     
