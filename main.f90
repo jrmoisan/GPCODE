@@ -95,14 +95,6 @@ if( myid == 0 )then
     write(6,'(/A)') '0: version 16 derived from version 15 '
     write(6,'(A)')  '0: new compiler options  -assume realloc_lhs -mkl -heap-arrays '
 
-    if( L_replace_larger_SSE_only )then
-        write(6,'(A/)') &
-         '0: GP_Fit* only  replaces the individual if the SSE decreases after replacement'
-    else
-        write(6,'(A/)') &
-         '0: GP_Fit* always replaces the individual regardless of the SSE'
-    endif !  L_replace_larger_SSE_only 
-
     !------------------------------------------------------
     write(GP_print_unit, '(/3(A,1x,A,1x)//)') &
          '0: GPGACODE program version', trim(program_version), &
@@ -144,6 +136,18 @@ call read_cntl_vars( ierror  )
 
 
 n_inputs = n_input_vars
+
+if( myid == 0 )then
+
+    if( L_replace_larger_SSE_only )then
+        write(6,'(A/)') &
+         '0: GP_Fit* only  replaces the individual if the SSE decreases after replacement'
+    else
+        write(6,'(A/)') &
+         '0: GP_Fit* always replaces the individual regardless of the SSE'
+    endif !  L_replace_larger_SSE_only 
+
+endif ! myid == 0
 
 !----------------------------------------------------
 
