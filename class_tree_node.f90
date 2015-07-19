@@ -263,12 +263,12 @@ contains
 
     subroutine Tree_Node_Swap(this, node)
         use kinds_mod
-        class(Tree_Node), intent(inout),target :: this, node   ! jjm
+        class(Tree_Node), intent(inout),target :: this, node
         type(Tree_Node), pointer :: tmp
         integer(kind=i4b) :: ct_diff
 
-        type(Tree_Node), pointer       :: a   !jjm
-        type(Tree_Node), pointer       :: b   !jjm
+        type(Tree_Node), pointer       :: a
+        type(Tree_Node), pointer       :: b
 
         !write(*,*) 'Tree_Node_Swap: '
 

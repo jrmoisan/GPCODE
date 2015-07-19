@@ -126,6 +126,8 @@ contains
       this%mxds(0)    = this%mxds(1)
       this%dmxddts(0) = this%dmxddts(1)
 
+      ! print input data
+
       if( myid == 0 )then
           write(6,'(/A)')'initCDGP: '
           write(6,'(/A)')'     i   cdoms(i)        kds(i)          pars(i)         mxds(i)         dmxddts(i)'
@@ -178,16 +180,6 @@ use GA_Variables_module
       class(fasham_CDOM_GP),intent(inout):: this
 
       integer(kind=i4b) :: i
-
-!integer(kind=i4b) :: message_len
-!
-!integer(kind=i4b) :: i_Tree
-!integer(kind=i4b) :: i_Node
-!
-!integer(kind=i4b) :: jj
-!
-!integer(kind=i4b) :: i_CODE_equation
-
 
 
       do i = 1, n_time_steps

@@ -121,6 +121,8 @@ contains
       this%mxds(0)    = this%mxds(1)
       this%dmxddts(0) = this%dmxddts(1)
 
+      ! print input data
+
       if( myid == 0 )then
 
           write(6,'(/A)')'initCD: '

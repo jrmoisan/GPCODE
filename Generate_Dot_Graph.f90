@@ -32,7 +32,6 @@ contains
         write(6,'(//A//)') &
              'Generate_Dot_Graph: Error: generic type Tree_Node encountered in tree traversal.'
 
-        !!stop 1 ! Stop program
         return 
 
     end subroutine Dot_Visit_Tree_Node

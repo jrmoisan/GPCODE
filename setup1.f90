@@ -128,7 +128,6 @@ if( myid == 0 )then
     write(6,'(A,1x,I3,1x,I12, 1x, I6)') &
        'set1: myid, n_seed, n_code_equations ', &
               myid, n_seed, n_code_equations
-    flush(6)
 endif ! myid == 0
 
 !---------------------------------------------------------------------
@@ -150,14 +149,12 @@ if( myid == 0 )then
 
     call print_values1()
 
-    flush(6)
 endif ! myid == 0
 
 !------------------------------------------------------------------
 
 ! allocate variable dimension arrays
 
-!if( index( model, 'CDOM') == 0 )then
 
 if( myid == 0 )then
     write(6,'(/A,1x,I6)') 'set1: call allocate_arrays1'
@@ -165,7 +162,6 @@ if( myid == 0 )then
 endif ! myid == 0
     call allocate_arrays1( )
 
-!endif ! index( model, 'CDOM') == 0 
 
 
 !xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
@@ -186,7 +182,7 @@ GP_Child_Population_Node_Type=-9999              ! Matrix Operation
 
 GP_minSSE_Individual_SSE = 1.0d99
 
-!return ! debug only
+
 !------------------------------------------------------------------
 
 ! fill the model arrays
@@ -198,7 +194,6 @@ GP_minSSE_Individual_SSE = 1.0d99
 !      tree_evaluation
 !      Node_Probability
 
-!if( index( model, 'CDOM') == 0 )then
 
 if( myid == 0 )then
     write(6,'(/A,1x,I6)') 'set1: call init_values( 1 )'
@@ -206,7 +201,6 @@ if( myid == 0 )then
 endif ! myid == 0
     call init_values( 1 )
 
-!endif ! index( model, 'CDOM') == 0 
 
 !------------------------------------------------------------------
 
@@ -239,12 +233,9 @@ call create_tree_node_string()
 
 if( myid == 0 )then
 
-    write(6,'(/A,1x,I6)') 'set1: call set_answer_arrays '
-    flush(6)
+    call set_answer_arrays( )
+
 endif ! myid == 0
-
-call set_answer_arrays( )
-
 
 
 !------------------------------------------------------------------------
@@ -278,7 +269,6 @@ if( myid == 0 )then    ! 20131209
     endif ! n_input_vars == 0
 
 
-    flush(6)
 endif ! myid == 0
 
 
@@ -333,7 +323,6 @@ if( myid == 0 )then
     write(6, '(/A,2(1x,I6))') 'set1: n_input_data_points ', n_input_data_points
     write(6, '(A,2(1x,I6))')  'set1: n_input_vars ', n_input_vars
     write(6, '(A,2(1x,I6)/)') 'set1: n_time_steps ', n_time_steps
-    flush(6)
 endif ! myid == 0
 
 
@@ -374,7 +363,6 @@ endif!  index( model,'LOG10') > 0 ...
 if( myid == 0 )then    ! 20131209
     write(6, '(A,2(1x,I6))') 'set1: call comp_data_variance( ) '
     call comp_data_variance( )
-    flush(6)
 endif ! myid == 0
 
 
@@ -481,8 +469,6 @@ if( myid == 0 )then
     endif!  index( model,'LOG10') > 0 ...
 
 
-    !call sse0_calc( )
-
 
     !---------------------------------------------------------------------------
 
@@ -546,7 +532,6 @@ L_minSSE = n_GP_Elitists ==  0 .or.   prob_no_elite > 0.0D0
 if( myid == 0 )then
     write(6, '(/A,1x,I6,1x,E15.7,5x,L1/)') 'set1: n_GP_Elitists, prob_no_elite, L_minSSE ', &
                                                   n_GP_Elitists, prob_no_elite, L_minSSE 
-    flush(6)
 endif ! myid == 0
 
 if( myid == 0 .and. L_minSSE )then

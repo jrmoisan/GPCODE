@@ -64,7 +64,7 @@ integer(kind=i4b), parameter ::  zero = 0
 
 !---------------------------------------------------------------------------------------
 
-i_GP_best_parent = 1  ! jjm 20150607
+i_GP_best_parent = 1
 
 
 
@@ -199,7 +199,6 @@ if( myid == 0 )then
     enddo ! i
 
     write(6,'(A)') ' '
-    !flush(6)
 
 endif ! myid == 0
 
@@ -208,9 +207,6 @@ endif ! myid == 0
 
 
    call setup1( )
-
-!call MPI_FINALIZE(ierr)
-!stop ! debug only
 
 !----------------------------------------------------
 
@@ -284,7 +280,6 @@ endif ! myid == 0
 
 if( myid == 0 )then
     write(6,'(/A,1x,I5)')     '0: start generation loop  myid = ', myid
-    flush(6)
 endif ! myid == 0
 
    generation_loop:&
@@ -329,7 +324,6 @@ endif ! myid == 0
           ' is underway.   n_Nodes * n_Trees = ', n_Nodes*n_Trees, &
           '==============================================================================='
 
-        !flush(GP_print_unit)
 
         !--------------------------------------------------------------------------------
 
@@ -344,7 +338,6 @@ endif ! myid == 0
             write(6,'(I12,1x,I12)')  i, current_seed(i)
         enddo ! i
         write(6,'(A)') ' '
-        flush(6)
 
         !--------------------------------------------------------------------------------
 
@@ -463,7 +456,6 @@ endif ! myid == 0
         write(GP_print_unit,'(/A,1x,I6,5x,L1/)') &
               '0: i_GP_generation , any( Run_GP_Calculate_Fitness ) ', &
                   i_GP_generation , any( Run_GP_Calculate_Fitness )
-        flush(GP_print_unit)
     endif ! myid == 0
 
 
@@ -496,12 +488,12 @@ endif ! myid == 0
 
     ! needed if GP_para_lmdif_process called
 
-    call MPI_BCAST( GP_Child_population_SSE, n_GP_individuals,          &    ! jjm 20150130
-                    MPI_DOUBLE_PRECISION, 0, MPI_COMM_WORLD, ierr )          ! jjm 20150130
+    call MPI_BCAST( GP_Child_population_SSE, n_GP_individuals,          &
+                    MPI_DOUBLE_PRECISION, 0, MPI_COMM_WORLD, ierr )
 
 
-    call MPI_BCAST( GP_Child_Individual_SSE_nolog10, n_GP_individuals,  &    ! jjm 20150130
-                    MPI_DOUBLE_PRECISION, 0, MPI_COMM_WORLD, ierr )          ! jjm 20150130
+    call MPI_BCAST( GP_Child_Individual_SSE_nolog10, n_GP_individuals,  &
+                    MPI_DOUBLE_PRECISION, 0, MPI_COMM_WORLD, ierr )
 
 
 
@@ -545,69 +537,6 @@ endif ! myid == 0
 
     !-------------------------------------------------------------------------------------
 
-    !if( myid == 0 )then
-
-    !    if( i_GP_generation == 1                                  .or. &
-    !        mod( i_GP_generation, GP_child_print_interval ) == 0  .or. &
-    !        i_GP_generation == n_GP_generations                          )then
-
-    !        write(GP_print_unit,'(/A)') &
-    !        '================================================================================='
-    !        write(GP_print_unit,'(A,1x,I6)') &
-    !        '0: aft indiv loop and before GP_para_lmdif_process   &
-    !         &i_GP_generation =',&
-    !          i_GP_Generation
-    !        write(GP_print_unit,'(A/)') &
-    !        '================================================================================='
-
-    !        !flush(GP_print_unit)
-
-    !        write(GP_print_unit, '(A )') &
-    !             '0:i_GP_Indiv  GP_Indiv_N_param  &
-    !              &  GP_Pop_Indiv_SSE     GP_Pop_Indiv_SSE/SSE0    SSE0'
-
-    !        !flush(GP_print_unit)
-
-    !        do  i_GP_individual = 1, n_GP_individuals
-    !            write(GP_print_unit, '(5x,I6,6x,I6,6x,3(1x, E20.10) )') &
-    !                  i_GP_Individual,  &
-    !                  GP_Individual_N_GP_param(i_GP_individual), &
-    !                  GP_Child_population_SSE(i_GP_Individual), &
-    !                  GP_Child_population_SSE(i_GP_Individual)/SSE0, SSE0
-    !        enddo
-
-    !        write(GP_print_unit,'(/A)') &
-    !        '================================================================================='
-    !        write(GP_print_unit,'(A,1x,I6)') &
-    !        '0: aft indiv loop and BEFORE GP_para_lmdif_process   &
-    !         &i_GP_generation =',&
-    !          i_GP_Generation
-    !        write(GP_print_unit,'(A/)') &
-    !        '================================================================================='
-    !        !flush(GP_print_unit)
-
-    !        if( index( model, 'log10') > 0 .or. index( model, 'LOG10') > 0 )then
-
-    !            write(GP_print_unit, '(/A )') &
-    !                 '0:i_GP_Indiv  GP_Indiv_N_param   &
-    !                  & GP_Child_Indiv_SSE_nolog10   GP_Child_Indiv_SSE_nolog10/SSE0_nolog10'
-
-    !            do  i_GP_individual = 1, n_GP_individuals
-    !                write(GP_print_unit, '(5x,I6,6x,I6,6x,1x, E20.10,9x,E20.10 )') &
-    !                i_GP_Individual,  GP_Individual_N_GP_param(i_GP_individual), &
-    !                GP_Child_Individual_SSE_nolog10(i_GP_Individual), &
-    !                GP_Child_Individual_SSE_nolog10(i_GP_Individual)/SSE0_nolog10
-    !            enddo
-
-    !            !flush(GP_print_unit)
-
-    !        endif ! index( model, 'log10') > 0 .or. index( model, 'LOG10') > 0
-
-    !    endif ! i_GP_generation == 1 .or. ...
-
-    !endif ! myid == 0
-
-    !---------------------------------------------------------------------------
 
 
     !  call GP_para_lmdif_process routine to run lmdif
@@ -639,8 +568,8 @@ endif ! myid == 0
     ! needed if GP_para_lmdif_process called
 
 
-    call MPI_BCAST( GP_Child_Population_SSE, n_GP_individuals,          &    ! jjm 20150130
-                    MPI_DOUBLE_PRECISION, 0, MPI_COMM_WORLD, ierr )          ! jjm 20150130
+    call MPI_BCAST( GP_Child_Population_SSE, n_GP_individuals,          &
+                    MPI_DOUBLE_PRECISION, 0, MPI_COMM_WORLD, ierr )
 
     !----------------------------------------------------------------------------------------
 
@@ -674,7 +603,7 @@ endif ! myid == 0
               i_GP_Generation
             write(GP_print_unit,'(A/)') &
             '================================================================================='
-            !flush(GP_print_unit)
+
 
             write(GP_print_unit, '(/A )') &
                  '0:i_GP_Indiv  GP_Indiv_N_param   &
@@ -703,7 +632,6 @@ endif ! myid == 0
                 enddo
 
             endif ! index( model, 'log10') > 0 .or. index( model, 'LOG10') > 0 )then
-            !flush(GP_print_unit)
 
         endif ! i_GP_generation == 1 .or. ...
 
@@ -717,21 +645,6 @@ endif ! myid == 0
 
    if( myid == 0 )then
 
-        !if( i_GP_generation == 1                                  .or. &
-        !    mod( i_GP_generation, GP_child_print_interval ) == 0  .or. &
-        !    i_GP_generation == n_GP_generations                          )then
-
-        !    write(GP_print_unit,'(A)')&
-        !    '0:#################################################################'
-        !    write(GP_print_unit,'(A,1x,I6)') &
-        !          '0: call GP_calc_fitness i_GP_generation =', &
-        !                                   i_GP_Generation
-        !    write(GP_print_unit,'(A)')&
-        !    '0:#################################################################'
-
-        !    flush(GP_print_unit)
-
-        !endif ! i_GP_generation == 1 .or. ...
 
         !-----------------------------------------------------------------------
 
@@ -753,7 +666,6 @@ endif ! myid == 0
                               n_GP_individuals, i_GP_Generation, i_GP_best_parent
             write(GP_print_unit,'(A)')&
             '0:################################################################'
-            !flush(GP_print_unit)
 
         endif ! i_GP_generation == 1 .or. ...
 
@@ -875,7 +787,6 @@ if( myid == 0 )then
         i_GP_best_parent, GP_child_population_sse(i_GP_best_parent), &
                           GP_child_population_sse(i_GP_best_parent)/SSE0
 
-    !flush(GP_print_unit)
 
 
     !---------------------------------------------------------------------------

@@ -258,12 +258,6 @@ do  i_GP_Mutation = 1,n_GP_Mutations
 
 
 
-            endif !  model == 'fasham_CDOM_GP'
-
-            !----------------------------------------------------------------------
-
-
-
         else
 
 
