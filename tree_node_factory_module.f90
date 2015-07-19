@@ -86,7 +86,6 @@ use kinds_mod
         Left%parent => node
         Right%parent => node
 
-        !write(*,'(A)') 'GMN: leave GetMathNode '
 
     end function
 

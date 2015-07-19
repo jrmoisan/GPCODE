@@ -182,7 +182,6 @@ use kinds_mod
         real(kind=r8b), intent(in) :: a,b
 
         if( isnan(a) .or. isnan(b) ) then
-            !write(*,*)'f8:  a, b ', a, b
             f_Power = 0.0D0
             return
         endif 

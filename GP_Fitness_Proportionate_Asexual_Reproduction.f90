@@ -24,6 +24,9 @@ real(kind=r8b) :: sse_ind
 
 !-----------------------------------------------------------------------------
 
+!write(GP_print_unit,'(A,1x,I6)') &
+!   & 'gpfpar: call GP_Fit_Prop_Asexual_Repro &
+!   &  n_GP_Asexual_Reproductions =', n_GP_Asexual_Reproductions
 
 i_GP_Individual = n_GP_Elitists
 

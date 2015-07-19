@@ -235,7 +235,6 @@ do  i = 1, Tree_count
 
                     endif !   abs( Nodes(k)%n%variable_index ) <= n_code_equations
 
-                    !flush(6)
 
                 endif ! Nodes(k)%n%variable_index < -5000
 

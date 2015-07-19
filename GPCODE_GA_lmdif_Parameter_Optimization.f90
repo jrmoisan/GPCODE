@@ -501,7 +501,7 @@ integer(kind=i4b) :: n_procs
 
                 write(6,'(A,1x,I10)') &
                   'GP_GA_opt: too many iterations  nsafe =', nsafe
-                flush(6)
+                !flush(6)
 
                 L_too_many_iters = .TRUE.
                 exit recv_loop

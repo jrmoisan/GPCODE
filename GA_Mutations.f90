@@ -55,7 +55,7 @@ do  i_GA_Mutation=1,n_GA_Mutations
   
     i_Parameter_Mutation=1+int( dff * real(n_parameters-1,kind=r8b) )
     i_Parameter_Mutation = min( i_Parameter_Mutation , n_parameters )
-    i_Parameter_Mutation = max( i_Parameter_Mutation , 2  ) ! debug only
+    !i_Parameter_Mutation = max( i_Parameter_Mutation , 2  ) ! debug only
   
     !--------------------------------------------------------------------
   

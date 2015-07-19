@@ -207,6 +207,8 @@ write(GP_minSSE_summary_output_unit, '(A,2(1x,I6))') &
        '>>',GP_minSSE_generation, GP_minSSE_indiv
 
 
+!! write for each indiv.  first write in 0*.f90
+!!write(GP_minSSE_summary_output_unit, '(4(1x,I10))') n_code_equations, n_trees, n_nodes, n_levels
 
 
 !---------------------------------------------------------------------------------

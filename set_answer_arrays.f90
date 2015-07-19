@@ -196,11 +196,7 @@ if( myid == 0 )then
 
     if( n_input_vars == 0 )then
 
-        if( index( model, 'CDOM') == 0 )then 
-
-            call Runge_Kutta_Box_Model( .FALSE. )
-
-        endif ! index( model, 'CDOM') == 0 
+        call Runge_Kutta_Box_Model( .FALSE. )
 
     else
 

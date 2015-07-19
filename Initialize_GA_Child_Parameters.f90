@@ -45,7 +45,7 @@ do  i_GA_Individual=1,n_GA_individuals
 
         Child_Parameters(i_Parameter,i_GA_Individual) = dff
 
-        if( i_parameter == 1 ) Child_Parameters(i_Parameter,i_GA_Individual) = 0.29520d0 !debug only 
+        !if( i_parameter == 1 ) Child_Parameters(i_Parameter,i_GA_Individual) = 0.29520d0 !debug only 
 
         if( L_ga_print )then
             write(GA_print_unit,'(A,2(1x, I6),1x,E15.7)') &

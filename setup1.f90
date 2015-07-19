@@ -99,7 +99,6 @@ if( myid == 0 )then
     write(6,'(A,1x,I3,1x,I12, 1x, I6)') &
        'set1: myid, n_seed, n_code_equations ', &
               myid, n_seed, n_code_equations
-    flush(6)
 endif ! myid == 0
 
 !---------------------------------------------------------------------
@@ -195,8 +194,11 @@ call create_tree_node_string()
 ! GP_Node_Type_for_Plotting (if L_unit50_output true)
 
 
-call set_answer_arrays( )
+if( myid == 0 )then
 
+    call set_answer_arrays( )
+
+endif ! myid == 0
 
 
 !------------------------------------------------------------------------
@@ -284,7 +286,6 @@ if( myid == 0 )then
     write(6, '(/A,2(1x,I6))') 'set1: n_input_data_points ', n_input_data_points
     write(6, '(A,2(1x,I6))')  'set1: n_input_vars ', n_input_vars
     write(6, '(A,2(1x,I6)/)') 'set1: n_time_steps ', n_time_steps
-    flush(6)
 endif ! myid == 0
 
 
@@ -322,7 +323,10 @@ endif!  index( model,'LOG10') > 0 ...
 ! Data_Variance_inv
 
 
-call comp_data_variance( )
+if( myid == 0 )then    ! 20131209
+    call comp_data_variance( )
+endif ! myid == 0
+
 
 message_len =  n_CODE_equations
 
@@ -479,7 +483,6 @@ L_minSSE = n_GP_Elitists ==  0 .or.   prob_no_elite > 0.0D0
 if( myid == 0 )then
     write(6, '(/A,1x,I6,1x,E15.7,5x,L1/)') 'set1: n_GP_Elitists, prob_no_elite, L_minSSE ', &
                                                   n_GP_Elitists, prob_no_elite, L_minSSE 
-    flush(6)
 endif ! myid == 0
 
 if( myid == 0 .and. L_minSSE )then
