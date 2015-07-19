@@ -167,23 +167,27 @@ if( n_code_equations > 1 )then
 
     !---------------------------------------------------------------------
 
-    write(GP_print_unit,'(A)') ' '
+    if( myid == 0 )then
 
-    if( data_variance_inv(1) > 0.0d0 )then
+        write(GP_print_unit,'(A)') ' '
+    
+        if( data_variance_inv(1) > 0.0d0 )then
+    
+            do  i_CODE_equation=1,n_CODE_equations
+    
+                ratio_data_variance_inv(i_code_equation) = &
+                      data_variance_inv(i_code_equation)/ data_variance_inv(1)
+            
+                write(GP_print_unit,'(A,1x,I4,1(1x,G15.7))') &
+                     'cdv: i_CODE_eq, ratio_Data_Variance_inv ', &
+                           i_CODE_equation,  &
+                                      ratio_Data_Variance_inv(i_CODE_equation)
+    
+            enddo !  i_CODE_equation
+    
+        endif !  data_variance_inv(1) > 0.0d0
 
-        do  i_CODE_equation=1,n_CODE_equations
-
-            ratio_data_variance_inv(i_code_equation) = &
-                  data_variance_inv(i_code_equation)/ data_variance_inv(1)
-        
-            write(GP_print_unit,'(A,1x,I4,1(1x,G15.7))') &
-                 'cdv: i_CODE_eq, ratio_Data_Variance_inv ', &
-                       i_CODE_equation,  &
-                                  ratio_Data_Variance_inv(i_CODE_equation)
-
-        enddo !  i_CODE_equation
-
-    endif !  data_variance_inv(1) > 0.0d0
+    endif ! myid == 0
 
     !---------------------------------------------------------------------
 

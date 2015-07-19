@@ -592,6 +592,12 @@ do
         if( trim(model) == 'fasham_fixed_tree' ) model = 'fasham_fixed_tree'
 
 
+        if( trim(model) == 'fasham_cdom'   ) model = 'fasham_CDOM' 
+        if( trim(model) == 'fasham_cdom_gp') model = 'fasham_CDOM_GP'
+
+
+
+
         ! set up max_forcing_index for use in GP_Check_Tree
 
         if( index( model, 'fasham') > 0 )then

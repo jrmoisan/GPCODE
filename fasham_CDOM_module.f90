@@ -34,7 +34,7 @@ contains
       type(fasham_CDOM) :: fasham
 
       n_CODE_equations =   1
-      n_variables = 1
+      !n_variables = 1
 
       n_trees=  ((n_CODE_equations+1)**2)-(n_CODE_equations+1)
       n_nodes = pow2_table( n_levels )  ! n_nodes = int(2**n_levels)-1
@@ -77,6 +77,8 @@ contains
 
       close(data_unitnum)   
       open( unit = data_unitnum, file = 'CDOM.data', action="read")
+
+      ! skip header 
       do i = 1,3
          read( data_unitnum, '(A)', iostat = istat ) Aline
       enddo
@@ -210,7 +212,7 @@ contains
 ! set L_minSSE to TRUE if there are no elite individuals,
 ! or prob_no_elite > 0 which means elite individuals might be modified
 
-       L_minSSE = n_GP_Elitists ==  0 .or.   prob_no_elite > 0.0D0
+       L_minSSE = .FALSE. !n_GP_Elitists ==  0 .or.   prob_no_elite > 0.0D0
  
    end subroutine setModel
 

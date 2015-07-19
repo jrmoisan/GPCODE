@@ -41,6 +41,7 @@ integer(kind=i4b) ::    i_GA_Best_Parent
 integer(kind=i4b) ::    n_counted
 integer(kind=i4b) ::    index_min_sse
 integer(kind=i4b) ::    icount
+integer(kind=i4b) ::    i
 
 real(kind=r8b), parameter :: max_err = 1.0d8  !100.0d0
 real(kind=r8b), parameter :: max_err2 = max_err**2
@@ -377,7 +378,7 @@ enddo ! i_GA_individual
 !------------------------------------------------------------------------------
 
 if( L_ga_print )then
-    write(GA_print_unit,'(/A,1x,I3,2(1x,I6),2(1x,E15.7))') &
+    write(GA_print_unit,'(A,1x,I3,2(1x,I6),2(1x,E15.7))') &
           'gacf: new_rank, Generation, i_GA_Best_Parent, indiv_ranked_fitness, indiv_SSE', &
                  new_rank, i_GA_Generation, i_GA_Best_Parent,   &
                  individual_ranked_fitness( i_GA_Best_Parent ), &

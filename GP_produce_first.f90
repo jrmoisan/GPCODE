@@ -129,7 +129,7 @@ if( trim(model) == 'fasham_CDOM' )then
     GP_Child_Population_Node_Type=GP_Adult_Population_Node_Type
 
     return
-endif
+endif !   trim(model) == 'fasham_CDOM' 
 
 
 return

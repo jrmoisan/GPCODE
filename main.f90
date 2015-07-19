@@ -57,7 +57,7 @@ integer(kind=i4b) :: comm_world
 
 
 character(15),parameter :: program_version   = '201502.004_v16'
-character(10),parameter :: modification_date = '20150702'
+character(10),parameter :: modification_date = '20150719'
 character(50),parameter :: branch  =  'v16'
 
 integer(kind=i4b), parameter ::  zero = 0
@@ -137,11 +137,15 @@ Lprint_lmdif = .TRUE.
 call RANDOM_SEED(size = n_seed)
 
 
+
+!----------------------------------------------------
+
 call read_cntl_vars( ierror  )
 
 
 n_inputs = n_input_vars
 
+!----------------------------------------------------
 
 call setup_math_functions()
 
@@ -150,8 +154,14 @@ call load_pow2_table()
 call setup_output_unit()
 
 
+!----------------------------------------------------
+
+
 ! for reading input files for the "DATA" model
 call read_input_data()
+
+
+!----------------------------------------------------
 
 ALLOCATE(seed(n_seed))
 ALLOCATE(current_seed(n_seed))
@@ -182,7 +192,7 @@ if( myid == 0 )then
 endif ! myid == 0
 
 
-!---------------------------------------------------------------------------
+!----------------------------------------------------
 
 
    call setup1( )
@@ -570,16 +580,7 @@ endif ! myid == 0
                                   GP_Child_population_SSE(i_GP_Individual)/SSE0
             enddo
 
-            write(GP_print_unit,'(/A)') &
-            '================================================================================='
-            write(GP_print_unit,'(A,1x,I6)') &
-            '0: aft indiv loop and AFTER  GP_para_lmdif_process   &
-             &i_GP_generation =',&
-              i_GP_Generation
-            write(GP_print_unit,'(A/)') &
-            '================================================================================='
 
-            !flush(GP_print_unit)
 
             if( index( model, 'log10') > 0 .or. index( model, 'LOG10') > 0 )then
 

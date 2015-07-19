@@ -106,9 +106,12 @@ do  i_Time_Step = 1, n_Time_Steps
 
         endif ! trim(model) == 'fasham'
 
-        if( trim(model) == 'fasham_CDOM' .or. trim(model) == 'fasham_CDOM_GP') then
+        if( trim(model) == 'fasham_CDOM'     .or. &
+            trim(model) == 'fasham_CDOM_GP'        ) then
 
-            call aCDOM%getForcing(btmp, Runge_Kutta_Time_Step(iter), i_Time_Step-1, L_bad_result )
+            call aCDOM%getForcing( btmp, &
+                                   Runge_Kutta_Time_Step(iter), &
+                                   i_Time_Step-1, L_bad_result )
 
             if( L_bad_result ) then
                 write(6,'(/A)') 'rkbm: bad result from DoForcing '

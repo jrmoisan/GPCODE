@@ -37,7 +37,7 @@ contains
       integer(kind=i4b) :: i
 
       n_CODE_equations =   1
-      n_variables = 1
+      !n_variables = 1
 
       n_trees=  ((n_CODE_equations+1)**2)-(n_CODE_equations+1)
       n_nodes = pow2_table( n_levels )  ! n_nodes = int(2**n_levels)-1
@@ -46,9 +46,21 @@ contains
       n_inputs = n_input_vars
       GP_minSSE_Individual_SSE = 1.0d99
 
-      call print_values1()
+      if( myid == 0 )then
+          write(6,'(A,1x,I10)')'nfCDGP: n_code_equations            ', n_code_equations
+          write(6,'(A,1x,I10)')'nfCDGP: n_variables                 ', n_variables
+          write(6,'(A,1x,I10)')'nfCDGP: n_trees                     ', n_trees
+          write(6,'(A,1x,I10)')'nfCDGP: n_nodes                     ', n_nodes
+          write(6,'(A,1x,I10)')'nfCDGP: n_maximum_number_parameters ', n_maximum_number_parameters
+          write(6,'(A,1x,I10)')'nfCDGP: n_inputs                    ', n_inputs
+      endif ! myid == 0
+
+      !call print_values1()
 
    end function
+
+!------------------------------------------------------------------------------------
+
 
    subroutine init(this)
       class(fasham_CDOM_GP),intent(inout) :: this
@@ -81,6 +93,8 @@ contains
 
       close(data_unitnum)   
       open( unit = data_unitnum, file = 'CDOM.data', action="read")
+
+      ! skip header 
       do i = 1,3
          read( data_unitnum, '(A)', iostat = istat ) Aline
       enddo
@@ -108,21 +122,42 @@ contains
 !   allocate and initialize all the globals
 ! 
       call allocate_arrays1()
+
    
-      increment = 1.0d0 / real( n_levels, kind=8 )
+      increment = 1.0d0 / real( n_levels, kind=r8b )
+
       do  i = 1, n_levels-1
-         Node_Probability(i) =  1.0d0 - increment * real(i,kind=8)
+         Node_Probability(i) =  1.0d0 - increment * real(i,kind=r8b)
       enddo
       Node_Probability(n_levels) = 0.0d0
       bioflo_map = 1
  
    end subroutine init
 
+!------------------------------------------------------------------------------------
+
    subroutine setTruth(this)
       use GP_data_module
+use GP_Parameters_module
+use GP_variables_module
+use GA_Parameters_module
+use GA_Variables_module
+
 
       class(fasham_CDOM_GP),intent(inout):: this
-      integer :: i
+
+      integer(kind=i4b) :: i
+
+!integer(kind=i4b) :: message_len
+!
+!integer(kind=i4b) :: i_Tree
+!integer(kind=i4b) :: i_Node
+!
+!integer(kind=i4b) :: jj
+!
+!integer(kind=i4b) :: i_CODE_equation
+
+
 
       do i = 1, n_time_steps
          Numerical_CODE_Solution( i, 1) = this%cdoms(i)
@@ -148,6 +183,9 @@ contains
 
    end subroutine setTruth
 
+!--------------------------------------------------------------------------------
+
+
    subroutine setModel(this)
       class(fasham_CDOM_GP),intent(inout) :: this
       integer :: ierror
@@ -156,15 +194,18 @@ contains
 
    end subroutine setModel
 
+
+!--------------------------------------------------------------------------------
+
    subroutine getForcing(this,preForce,time_step_fraction, i_Time_Step,L_bad )
       class(fasham_CDOM_GP),intent(in):: this
-      real (kind=8) :: preForce(:)
-      real (kind=8) :: time_step_fraction
+      real(kind=r8b) :: preForce(:)
+      real(kind=r8b) :: time_step_fraction
       integer :: i_Time_Step
       logical :: L_bad
       integer :: k
-      real(kind=8) :: iter
-      real (kind=8) :: aDMXDDT,aPAR,aKd,aMXD
+      real(kind=r8b) :: iter
+      real(kind=r8b) :: aDMXDDT,aPAR,aKd,aMXD
 
 ! TODO: read in frocing from the data arrays
 !   FORCING  -5001  : max(d MLD/ dt,0)
