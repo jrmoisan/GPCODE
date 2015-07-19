@@ -183,19 +183,6 @@ use GA_Variables_module
 
       integer(kind=i4b) :: i
 
-<<<<<<< HEAD
-=======
-!integer(kind=i4b) :: message_len
-!
-!integer(kind=i4b) :: i_Tree
-!integer(kind=i4b) :: i_Node
-!
-!integer(kind=i4b) :: jj
-!
-!integer(kind=i4b) :: i_CODE_equation
-
-
->>>>>>> v16
 
       do i = 1, n_time_steps
          Numerical_CODE_Solution( i, 1) = this%cdoms(i)
