@@ -177,6 +177,7 @@ do  i_GA_Crossover=1,n_GA_Crossovers
             call GA_check_for_elite( k_GA_Individual_Female(2) )
             if( k_GA_Individual_Female(2) /= k_GA_Individual_Female(1)      ) exit
             ksafe = ksafe + 1
+
             if( ksafe > 2 * n_GA_individuals ) then
                 write(6,'(A)') &
                       'gato: too many iterations to get k_GA_Individual_Female(2)'

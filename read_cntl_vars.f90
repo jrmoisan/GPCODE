@@ -1489,10 +1489,6 @@ do
 ! ignore blank lines
     elseif( trim( Aline ) == '' ) then
 
-        !if( myid == 0 )then
-        !    write(GP_print_unit,'(A)') &
-        !          'rcntl: blank line --- ignored '
-        !endif !myid==0
 
         continue
 

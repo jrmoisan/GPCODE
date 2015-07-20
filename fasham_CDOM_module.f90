@@ -115,11 +115,13 @@ contains
          write(Aline,*)' '
       enddo
 
-      this%cdoms(0) = this%cdoms(1)
-      this%kds(0) = this%kds(1)
-      this%pars(0) = this%pars(1)
-      this%mxds(0) = this%mxds(1)
+      this%cdoms(0)   = this%cdoms(1)
+      this%kds(0)     = this%kds(1)
+      this%pars(0)    = this%pars(1)
+      this%mxds(0)    = this%mxds(1)
       this%dmxddts(0) = this%dmxddts(1)
+
+      ! print input data
 
       if( myid == 0 )then
 
@@ -131,15 +133,12 @@ contains
               write(6,'(I6,5(1x,E15.7))') &
                 i, this%cdoms(i),this%kds(i),this%pars(i),this%mxds(i),this%dmxddts(i)
           enddo ! i
+
       endif ! myid == 0
 
       close(data_unitnum)   
 
       !   allocate and initialize all the globals
-
-      !if( myid == 0 )then
-      !    write(6,'(/A,1x,I6/)')   'initCD: call allocate_arrays1'
-      !endif ! myid == 0 
 
       call allocate_arrays1()
    
@@ -172,26 +171,9 @@ contains
          Numerical_CODE_Solution( i, 1) = this%cdoms(i)
       enddo ! i  
 
-      !if( myid == 0 )then
-      !    do i = 1, n_time_steps
-      !    write(6,'(A,1x,I10,1x,E15.7)') &
-      !          'setCD: i, this%cdoms(i) ', &
-      !                  i, this%cdoms(i)                  
-      !    enddo ! i  
-      !endif ! myid == 0 
-
 
       Numerical_CODE_Initial_Conditions(1) = this%cdoms(1)
       Numerical_CODE_Solution(0,1) = this%cdoms(1)
-
-      !if( myid == 0 )then
-      !    do i = 0, n_time_steps
-      !    write(6,'(A,1x,I10,1x,E15.7)') &
-      !          'setCD: i, Num_code_soln(i,1 ) ', &
-      !                  i, Numerical_CODE_Solution( i, 1) 
-      !    enddo ! i  
-      !endif ! myid == 0 
-
 
 
       Data_Array=Numerical_CODE_Solution
@@ -323,27 +305,17 @@ contains
           enddo ! i  
       endif ! myid == 0 
 
-      if( myid == 0 )then
-          write(6,'(/A/)')   'setmodelCD: call this%generateGraph()'
-      endif ! myid == 0 
+
+
 
       call this%generateGraph()
 
-      if( myid == 0 )then
-          write(6,'(/A/)')   'setmodelCD: call print_values2()'             
-      endif ! myid == 0 
 
       call print_values2()
 
-      if( myid == 0 )then
-          write(6,'(/A/)')   'setmodelCD: call sse0_calc( )'
-      endif ! myid == 0 
 
       call sse0_calc( )
 
-      if( myid == 0 )then
-          write(6,'(/A/)')   'setmodelCD: call set_modified_indiv( )'
-      endif ! myid == 0 
 
       call set_modified_indiv( )
 
@@ -374,7 +346,6 @@ contains
       k = i_time_step
       x_iter = time_step_fraction
 
-      !write(6,'(A,2(1x,I6), 1x,E15.7)')'gFor: i_time_step, k, x_iter ', i_time_step, k, x_iter
 
       !     the last step uses the previous step info
       if( k == n_time_steps ) k = n_time_steps-1
@@ -384,20 +355,12 @@ contains
       aPAR    = this%pars(k)    + x_iter * (this%pars(k + 1)    - this%pars(k))
       aKd     = this%kds(k)     + x_iter * (this%kds(k + 1)     - this%kds(k))
 
-      !write(6,'(A,1(1x,I6),3(1x,E15.7))')'gFor:  k, x_iter, this%dmxddts(k), aDMXDDT',  &
-      !                                           k, x_iter, this%dmxddts(k), aDMXDDT
-      !write(6,'(A,1(1x,I6),3(1x,E15.7))')'gFor:  k, x_iter, this%mxds(k), aMXD      ', &
-      !                                           k, x_iter, this%mxds(k), aMXD
-      !write(6,'(A,1(1x,I6),3(1x,E15.7))')'gFor:  k, x_iter, this%pars(k), aPAR      ',  &
-      !                                           k, x_iter, this%pars(k), aPAR
-      !write(6,'(A,1(1x,I6),3(1x,E15.7))')'gFor:  k, x_iter, this%kds(k), aKd        ',  &
-      !                                           k, x_iter, this%kds(k), aKd          
 
+      Numerical_CODE_Forcing_Functions(abs(5000-5001))= aDMXDDT
+      Numerical_CODE_Forcing_Functions(abs(5000-5002))= aMXD
+      Numerical_CODE_Forcing_Functions(abs(5000-5003))= aPAR
+      Numerical_CODE_Forcing_Functions(abs(5000-5004))= aKd
 
-      Numerical_CODE_Forcing_Functions(abs(5000-5001)) = aDMXDDT
-      Numerical_CODE_Forcing_Functions(abs(5000-5002)) = aMXD
-      Numerical_CODE_Forcing_Functions(abs(5000-5003)) = aPAR
-      Numerical_CODE_Forcing_Functions(abs(5000-5004)) = aKd
 
    end subroutine getForcing
 

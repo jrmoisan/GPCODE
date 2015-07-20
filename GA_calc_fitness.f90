@@ -41,6 +41,7 @@ integer(kind=i4b) ::    i_GA_Best_Parent
 integer(kind=i4b) ::    n_counted
 integer(kind=i4b) ::    index_min_sse
 integer(kind=i4b) ::    icount
+integer(kind=i4b) ::    i
 
 real(kind=r8b), parameter :: max_err = 1.0d8  !100.0d0
 real(kind=r8b), parameter :: max_err2 = max_err**2
@@ -177,7 +178,7 @@ min_sse = 1.0D20
 index_min_sse = 0
 sum_individual_SSE = 0.0D0
 
-!write(6,'(A)') ' '
+
 do  i_GA_individual=1,n_GA_individuals
 
     if( individual_quality( i_GA_individual ) > 0 ) then

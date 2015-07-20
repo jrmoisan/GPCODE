@@ -82,8 +82,10 @@ contains
          if( istat /= 0 ) exit
          i_count = i_count + 1
       enddo
+
       n_count = i_count - 3
       n_time_steps = n_count
+
       if( myid == 0 )then
           write(6,'(A,1x,I10)')'initCDGP: n_count      ', n_count               
           write(6,'(A,1x,I10)')'initCDGP: n_time_steps ', n_time_steps        
@@ -125,6 +127,8 @@ contains
       this%pars(0)    = this%pars(1)
       this%mxds(0)    = this%mxds(1)
       this%dmxddts(0) = this%dmxddts(1)
+
+      ! print input data
 
       if( myid == 0 )then
           write(6,'(/A)')'initCDGP: '
@@ -179,40 +183,18 @@ use GA_Variables_module
 
       integer(kind=i4b) :: i
 
-!integer(kind=i4b) :: message_len
-!
-!integer(kind=i4b) :: i_Tree
-!integer(kind=i4b) :: i_Node
-!
-!integer(kind=i4b) :: jj
-!
-!integer(kind=i4b) :: i_CODE_equation
-
-
 
       do i = 1, n_time_steps
          Numerical_CODE_Solution( i, 1) = this%cdoms(i)
       enddo ! i  
-      if( myid == 0 )then
-          do i = 1, n_time_steps
-          write(6,'(A,1x,I10,1x,E15.7)') &
-                'setCDGP: i, this%cdoms(i) ', &
-                          i, this%cdoms(i)                  
-          enddo ! i  
-      endif ! myid == 0 
+
 
       Numerical_CODE_Initial_Conditions(1) = this%cdoms(1)
       Numerical_CODE_Solution(0,1) = this%cdoms(1)
 
-      if( myid == 0 )then
-          do i = 0, n_time_steps
-          write(6,'(A,1x,I10,1x,E15.7)') &
-                'setCDGP: i, Num_code_soln(i,1 ) ', &
-                          i, Numerical_CODE_Solution( i, 1) 
-          enddo ! i  
-      endif ! myid == 0 
 
       Data_Array=Numerical_CODE_Solution
+
 
       if( myid == 0 )then
           do i = 0, n_time_steps
@@ -226,29 +208,14 @@ use GA_Variables_module
 
 
 
-      if( myid == 0 )then
-          write(6,'(A)')   'setCDGP: call set_answer_arrays'
-      endif ! myid == 0 
       call set_answer_arrays()
 
-      if( myid == 0 )then
-          write(6,'(A)')   'setCDGP: call comp_data_variance'
-      endif ! myid == 0 
       call comp_data_variance()
 
-      if( myid == 0 )then
-          write(6,'(A)')   'setCDGP: call sse0_calc'
-      endif ! myid == 0 
       call sse0_calc( )
 
-      if( myid == 0 )then
-          write(6,'(A)')   'setCDGP: call set_modified_indiv'
-      endif ! myid == 0 
       call set_modified_indiv( )
 
-      if( myid == 0 )then
-          write(6,'(A)')   'setCDGP: call print_values1 '
-      endif ! myid == 0 
       call print_values1()
 
       ! set L_minSSE to TRUE if there are no elite individuals,
@@ -259,13 +226,10 @@ use GA_Variables_module
 !------------------------------------------------------------------------------------------
 
 
-      if( myid == 0 )then
-          write(6,'(A)')   'setCDGP: call print_values2 '
-      endif ! myid == 0 
-
       call print_values2()
 
       Numerical_CODE_Solution(1:n_time_steps, 1:n_code_equations) = 0.0d0
+
 
    end subroutine setTruth
 
@@ -277,15 +241,9 @@ use GA_Variables_module
       class(fasham_CDOM_GP),intent(inout) :: this
       integer :: ierror
 
-      if( myid == 0 )then
-          write(6,'(/A/)')   'setModelCDGP: call GP_Tree_Build'
-      endif ! myid == 0 
 
       call GP_Tree_Build(ierror)
 
-      if( myid == 0 )then
-          write(6,'(/A/)')   'setModelCDGP: AFT call GP_Tree_Build'
-      endif ! myid == 0 
 
    end subroutine setModel
 

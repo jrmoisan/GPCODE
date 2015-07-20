@@ -59,6 +59,7 @@ integer(kind=i4b) :: isub1
 integer(kind=i4b) :: isub2         
 integer(kind=i4b),parameter :: node_boundary = 32
 integer(kind=i4b),parameter :: nodes_on_line = 20  ! 15
+
 !----------------------------------------------------------------------------------------
 
 write( element_fmt2, '(I1)') element_length
@@ -111,8 +112,6 @@ do  i_GP_individual = n_indiv_start, n_indiv_stop
     endif ! n_nodes < node_boundary 
 
 
-    !write(GP_print_unit,'(A,1x,I6)') 'pt: n_trees ', n_trees                                      
-
     do  i_Tree=1,n_Trees
 
 
@@ -156,13 +155,6 @@ do  i_GP_individual = n_indiv_start, n_indiv_stop
                     write( value_element_string2, element_format )          &
                                   Tree_Type( i_node, i_tree, i_GP_individual)
 
-                    !debug
-                    !write( 6, '(A,4(1x,I6))')          &
-                    !       'pt:  i_node, i_tree, i_GP_indiv, Tree_Type ', &
-                    !             i_node, i_tree, i_GP_individual, &
-                    !             Tree_Type( i_node, i_tree, i_GP_individual)
-                    !debug
-
                     node_string  = trim(node_string) // node_element_string2
                     value_string = trim(value_string) // value_element_string2
                     nodes_filled =  nodes_filled + 1
@@ -197,17 +189,6 @@ do  i_GP_individual = n_indiv_start, n_indiv_stop
 
 
     enddo ! i_tree
-
-
-    !---------------------------------------------------------------
-
-    ! print equations corresponding to the tree
-
-    !if( L_print_equations )then
-    !    call create_equations( i_gen, i_GP_individual, tree_type )
-    !endif ! L_print_equations
-
-    !---------------------------------------------------------------
 
 
 enddo  ! i_GP_individual

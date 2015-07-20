@@ -68,7 +68,6 @@ do  i_GP_Asexual_Reproduction=1,n_GP_Asexual_Reproductions
     ! unless L_replace_larger_SSE_only is TRUE 
 
     if( L_replace_larger_SSE_only )then
-        !if( sse_ind < GP_Child_Population_SSE(j_GP_Individual) ) cycle
         if( sse_ind < GP_Adult_Population_SSE(j_GP_Individual) ) cycle
     endif ! L_replace_larger_SSE_only
     !----------------------------------------------------------------------------

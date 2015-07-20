@@ -28,7 +28,6 @@ real(kind=r8b), allocatable, dimension(:) ::  temp_array
 
 if( myid == 0 )then
     write(6,'(//A,1x,I10/)') 'rid:  n_input_vars = ', n_input_vars
-    flush(6)
 endif ! myid == 0 
 
 
