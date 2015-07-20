@@ -377,7 +377,7 @@ contains
       !write(6,'(A,2(1x,I6), 1x,E15.7)')'gFor: i_time_step, k, x_iter ', i_time_step, k, x_iter
 
       !     the last step uses the previous step info
-      if (k == n_time_steps) k = n_time_steps-1
+      if( k == n_time_steps ) k = n_time_steps-1
 
       aDMXDDT = this%dmxddts(k) + x_iter * (this%dmxddts(k + 1) - this%dmxddts(k))
       aMXD    = this%mxds(k)    + x_iter * (this%mxds(k + 1)    - this%mxds(k))
