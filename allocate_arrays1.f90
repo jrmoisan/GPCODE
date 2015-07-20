@@ -27,6 +27,14 @@ integer :: maxno
 
 ! allocate variable dimension arrays
 
+if( myid == 0 )then
+    write(6,'(/A,1x,I6)')'allo: n_code_equations = ', n_code_equations
+    write(6,'(A,1x,I6)') 'allo: n_nodes          = ', n_nodes
+    write(6,'(A,1x,I6)') 'allo: n_trees          = ', n_trees
+    write(6,'(A,1x,I6)') 'allo: n_levels         = ', n_levels
+    write(6,'(A,1x,I6/)')'allo: n_Tracked_Resources', n_Tracked_Resources
+endif ! myid == 0
+
 
 allocate( ga_individual_elites( n_GA_individuals )  )
 

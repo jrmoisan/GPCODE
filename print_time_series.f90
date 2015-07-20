@@ -113,6 +113,18 @@ endif ! myid == 0
 
 !------------------------------------------------------------------------------
 
+! Write trees to disk
+
+!if( myid == 0 )then
+!    if( L_myprint )write(GP_print_unit,'(/A/)') 'pts: call Serialize_Trees   '
+!    call Serialize_Trees( GP_Trees(:,:), &
+!                          n_Trees, n_Tracked_Resources, output_dir )
+!    if( L_myprint )write(GP_print_unit,'(/A/)') 'pts: aft call Serialize_Trees   '
+!endif ! myid == 0
+
+
+!------------------------------------------------------------------------------
+
 ! set the initial population node type using the info obtained
 ! from the setup file
 
