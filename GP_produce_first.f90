@@ -123,6 +123,13 @@ endif !   trim(model) == 'fasham_CDOM'
 
 !---------------------------------------------------------------------------
 
+!if( myid == 0 ) then
+!    write(GP_print_unit,'(/A,1x,I6)') &
+!      'gpf: return'
+!    flush(GP_print_unit)
+!endif
+
+
 
 return
 

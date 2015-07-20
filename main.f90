@@ -58,7 +58,7 @@ integer(kind=i4b) :: comm_world
 
 character(15),parameter :: program_version   = '201502.004_v16'
 character(10),parameter :: modification_date = '20150719'
-character(50),parameter :: branch  =  'master'
+character(50),parameter :: branch  =  'debug_cdom'
 
 integer(kind=i4b), parameter ::  zero = 0
 
@@ -137,15 +137,19 @@ call read_cntl_vars( ierror  )
 
 n_inputs = n_input_vars
 
+
 if( myid == 0 )then
+
     if( L_replace_larger_SSE_only )then
         write(6,'(A/)') &
          '0: GP_Fit* only  replaces the individual if the SSE decreases after replacement'
     else
         write(6,'(A/)') &
          '0: GP_Fit* always replaces the individual regardless of the SSE'
-    endif !  L_replace_larger_SSE_only
+    endif !  L_replace_larger_SSE_only 
+
 endif ! myid == 0
+
 
 !----------------------------------------------------
 
@@ -199,9 +203,6 @@ endif ! myid == 0
 
 
 call setup1( )
-
-!call MPI_FINALIZE(ierr)
-!stop ! debug only
 
 !----------------------------------------------------
 
@@ -273,6 +274,9 @@ endif ! myid == 0
 
 !----------------------------------------------------------------------
 
+if( myid == 0 )then
+    write(6,'(/A,1x,I5)')     '0: start generation loop  myid = ', myid
+endif ! myid == 0
 
    generation_loop:&
    do  i_GP_Generation= 1, n_GP_Generations
@@ -324,7 +328,6 @@ endif ! myid == 0
             write(6,'(I12,1x,I12)')  i, current_seed(i)
         enddo ! i
         write(6,'(A)') ' '
-        flush(6)
 
         !--------------------------------------------------------------------------------
 
