@@ -118,8 +118,6 @@ if( myid == 0 )then
     write(6,'(A,2(1x,I6))')  'set1: n_input_vars     ', n_input_vars
     write(6,'(A,2(1x,I6)/)') 'set1: n_inputs         ', n_inputs
 
-    call print_values1()
-
 endif ! myid == 0
 
 call print_values1()
