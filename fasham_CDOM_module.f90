@@ -188,10 +188,6 @@ contains
 
       Numerical_CODE_Solution(1:n_time_steps, 1:n_code_equations) = 0.0d0
 
-      if( myid == 0 )then
-          write(6,'(A)')   'setCD: call comp_data_variance'
-      endif ! myid == 0 
-
       call comp_data_variance()
 
    end subroutine setTruth
