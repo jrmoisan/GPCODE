@@ -52,7 +52,6 @@ do  i_GA_Individual=1,n_GA_individuals
              'Init: i_GA_Indiv, i_Param, Child_Par ', &
                     i_GA_Individual, i_Parameter, Child_Parameters(i_Parameter,i_GA_Individual) 
         endif ! L_ga_print
- 
 
     enddo ! i_parameter
 

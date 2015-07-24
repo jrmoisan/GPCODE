@@ -139,10 +139,10 @@ n_inputs = n_input_vars
 
 if( myid == 0 )then
     if( L_replace_larger_SSE_only )then
-        write(6,'(A/)') &
+        write(6,'(/A/)') &
          '0: GP_Fit* only  replaces the individual if the SSE decreases after replacement'
     else
-        write(6,'(A/)') &
+        write(6,'(/A/)') &
          '0: GP_Fit* always replaces the individual regardless of the SSE'
     endif !  L_replace_larger_SSE_only
 endif ! myid == 0
@@ -199,9 +199,6 @@ endif ! myid == 0
 
 
 call setup1( )
-
-!call MPI_FINALIZE(ierr)
-!stop ! debug only
 
 !----------------------------------------------------
 
@@ -324,7 +321,7 @@ endif ! myid == 0
             write(6,'(I12,1x,I12)')  i, current_seed(i)
         enddo ! i
         write(6,'(A)') ' '
-        flush(6)
+        !flush(6)
 
         !--------------------------------------------------------------------------------
 

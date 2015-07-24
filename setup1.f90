@@ -200,8 +200,6 @@ if( myid == 0 )then
 endif ! myid == 0
 
 
-
-
 !------------------------------------------------------------------------
 
 ! then broadcast the R-K result: Runge_Kutta_Solution
