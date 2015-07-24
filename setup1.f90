@@ -30,51 +30,55 @@ implicit none
 integer(kind=i4b) :: i
 integer(kind=i4b) :: message_len
 
-integer(kind=i4b) :: i_GP_individual
-integer(kind=i4b) :: i_GP_Generation
-integer(kind=i4b) :: GP_minSSE_Individual
-integer(kind=i4b) :: GP_minSSE_generation
 integer(kind=i4b) :: i_Tree
 integer(kind=i4b) :: i_Node
 
 integer(kind=i4b) :: jj
 
 integer(kind=i4b) :: i_CODE_equation
-integer(kind=i4b) :: max_n_gp_params
-
-integer(kind=i4b) :: n_GP_vars
-integer(kind=i4b) :: nop
-
-integer(kind=i4b) :: i_GP_best_parent
-integer(kind=i4b) :: ierror
-integer(kind=i4b) :: ierror_t
-integer(kind=i4b) :: ierror_m
-integer(kind=i4b) :: ierror_tb
-integer(kind=i4b) :: i_start_generation
-
-
-
-character(200) :: tree_descrip
 
 
 !---------------------------------------------------------------------------------------
 
 
-if (trim(model) == "fasham_CDOM") then
-   allocate(aCDOM,source=newFasham_CDOM())
-   call aCDOM%init()
-   call aCDOM%setTruth()
-   call aCDOM%setModel()
-   return
+if( myid == 0 )then
+    write(6,'(/A,1x,A)') 'set1: model ', trim(model)
+endif ! myid == 0 
+
+
+if( trim(model) == "fasham_CDOM") then
+
+
+    allocate(aCDOM,source=newFasham_CDOM())
+
+    call aCDOM%init()
+
+    call aCDOM%setTruth()
+
+    call aCDOM%setModel()
+
+
+    return
+
 endif
 
-if (trim(model) == "fasham_CDOM_GP") then
-   allocate(aCDOM,source=newFasham_CDOM_GP())
-   call aCDOM%init()
-   call aCDOM%setTruth()
-!  call cdom%setModel()
-   return
-endif
+if( trim(model) == "fasham_CDOM_GP") then
+
+
+    allocate(aCDOM,source=newFasham_CDOM_GP())
+
+
+    call aCDOM%init()
+
+
+    call aCDOM%setTruth()
+
+    !call cdom%setModel()
+
+
+    return
+
+endif ! trim(model) == "fasham_CDOM_GP"
 
 ! set the scalar values for the model
 
@@ -85,7 +89,9 @@ endif
 ! n_trees
 ! n_nodes
 
+
 call init_values( 0 )
+
 
 n_Variables = n_CODE_equations
 
@@ -112,15 +118,16 @@ if( myid == 0 )then
     write(6,'(A,2(1x,I6))')  'set1: n_input_vars     ', n_input_vars
     write(6,'(A,2(1x,I6)/)') 'set1: n_inputs         ', n_inputs
 
-    call print_values1()
-
 endif ! myid == 0
+
+call print_values1()
 
 !------------------------------------------------------------------
 
 ! allocate variable dimension arrays
 
 call allocate_arrays1( )
+
 
 
 !xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
@@ -136,10 +143,11 @@ GP_Individual_Node_Type=-9999                    ! Matrix Operation
 GP_Population_Node_Parameters=0.0D0              ! Matrix Operation
 
 
-GP_Adult_Population_Node_Type=-9999              ! Matrix Operation
-GP_Child_Population_Node_Type=-9999              ! Matrix Operation
+GP_Adult_Population_Node_Type = -9999              ! Matrix Operation
+GP_Child_Population_Node_Type = -9999              ! Matrix Operation
 
 GP_minSSE_Individual_SSE = 1.0d99
+
 
 !------------------------------------------------------------------
 
@@ -152,7 +160,9 @@ GP_minSSE_Individual_SSE = 1.0d99
 !      tree_evaluation
 !      Node_Probability
 
+
 call init_values( 1 )
+
 
 !------------------------------------------------------------------
 
@@ -238,12 +248,6 @@ else
 endif ! n_input_vars == 0
 
 
-if( myid == 0 )then 
-    write(6,'(/A,2(1x,I6))') 'set1: n_input_vars, message_len       ', &
-                                    n_input_vars, message_len
-endif ! myid == 0
-
-
 call MPI_BCAST( Numerical_CODE_Solution, message_len,    &
                 MPI_DOUBLE_PRECISION, 0, MPI_COMM_WORLD, ierr )
 
@@ -291,6 +295,7 @@ else
     message_len = ( n_input_data_points + 1 ) * n_CODE_equations
 endif ! n_input_vars == 0
 
+
 call MPI_BCAST( Numerical_CODE_Solution, message_len,    &
                 MPI_DOUBLE_PRECISION, 0, MPI_COMM_WORLD, ierr )
 
@@ -316,11 +321,14 @@ endif!  index( model,'LOG10') > 0 ...
 ! Data_Variance
 ! Data_Variance_inv
 
+
 if( myid == 0 )then    ! 20131209
     call comp_data_variance( )
 endif ! myid == 0
 
+
 message_len =  n_CODE_equations
+
 call MPI_BCAST( Data_Variance_inv, message_len,    &
                 MPI_DOUBLE_PRECISION, 0, MPI_COMM_WORLD, ierr )
 
@@ -364,14 +372,14 @@ enddo ! i_tree
 
 GA_child_print_interval = n_GA_generations /  number_GA_child_prints
 
-if( GA_child_print_interval == 0) then
+if( GA_child_print_interval == 0 ) then
     GA_child_print_interval = max( 1, n_GA_generations / 2 )
 endif
 
 
 GP_child_print_interval = n_GP_generations /  number_GP_child_prints
 
-if( GP_child_print_interval == 0) then
+if( GP_child_print_interval == 0 ) then
     GP_child_print_interval = max( 1, n_GP_generations / 2 )
 endif
 
@@ -414,8 +422,6 @@ if( myid == 0 )then
 
     endif!  index( model,'LOG10') > 0 ...
 
-
-    call sse0_calc( )
 
 
     !---------------------------------------------------------------------------
@@ -463,6 +469,7 @@ endif!  index( model,'LOG10') > 0 ...
 ! from the number of GP individuals and the probabilities such as:
 ! GP_Asexual_Reproduction_Probability, GP_Crossover_Probability, etc.
 
+
 call set_modified_indiv( )
 
 !---------------------------------------------------------------------------
@@ -471,10 +478,10 @@ call set_modified_indiv( )
 !  or prob_no_elite > 0 which means elite individuals might be modified
 
 L_minSSE = n_GP_Elitists ==  0 .or.   prob_no_elite > 0.0D0
+
 if( myid == 0 )then
     write(6, '(/A,1x,I6,1x,E15.7,5x,L1/)') 'set1: n_GP_Elitists, prob_no_elite, L_minSSE ', &
                                                   n_GP_Elitists, prob_no_elite, L_minSSE 
-    !flush(6)
 endif ! myid == 0
 
 if( myid == 0 .and. L_minSSE )then

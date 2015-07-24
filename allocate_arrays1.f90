@@ -27,15 +27,6 @@ integer :: maxno
 
 ! allocate variable dimension arrays
 
-if( myid == 0 )then
-    write(6,'(/A,1x,I6)')'allo: n_code_equations = ', n_code_equations
-    write(6,'(A,1x,I6)') 'allo: n_nodes          = ', n_nodes
-    write(6,'(A,1x,I6)') 'allo: n_trees          = ', n_trees
-    write(6,'(A,1x,I6)') 'allo: n_levels         = ', n_levels
-    write(6,'(A,1x,I6/)')'allo: n_Tracked_Resources', n_Tracked_Resources
-    !flush(6)
-endif ! myid == 0
-
 
 allocate( ga_individual_elites( n_GA_individuals )  )
 
@@ -101,9 +92,11 @@ allocate( GP_diversity_index( n_GP_individuals ) )
 
 !---------------------------------------------------------------
 
-allocate( Truth_Initial_Conditions( 1:n_code_equations )  )
-allocate( Truth_Node_Type( n_nodes, n_trees )  )
-allocate( Truth_Node_Parameters( n_nodes, n_trees )  )
+if( L_truth_model )then
+    allocate( Truth_Initial_Conditions( 1:n_code_equations )  )
+    allocate( Truth_Node_Type( n_nodes, n_trees )  )
+    allocate( Truth_Node_Parameters( n_nodes, n_trees )  )
+endif !  L_truth_model 
 
 !---------------------------------------------------------------
 
@@ -120,6 +113,8 @@ allocate( Numerical_CODE_Initial_Conditions( 1:n_CODE_equations ) )
 
 allocate( Numerical_CODE_Forcing_Functions( n_CODE_forcing ) )
 
+
+
 if( n_input_vars > 0 )then
 
     allocate( Numerical_CODE_Solution( 0:n_input_data_points, n_CODE_equations ) )
@@ -130,6 +125,7 @@ else
     allocate( Numerical_CODE_Solution( 0:n_time_steps, n_CODE_equations ) )
 
 endif ! n_input_vars > 0
+
 
 
 allocate( RK_Solution( 0:n_time_steps, n_CODE_equations )  )
@@ -144,6 +140,7 @@ allocate( b_tmp( n_CODE_equations) )
 
 allocate( GP_Trees( n_Trees, n_Tracked_Resources) )
 
+
 ! Runge-Kutta specific work arrays
 
 allocate( kval(4,n_CODE_equations) )
@@ -155,13 +152,6 @@ if( n_input_vars > 0 )then
     allocate( RK_data_array( 1:n_input_vars ) )
 endif
 
-!if( L_print_equations )then
-!    allocate( bioflo_string(0:n_CODE_equations,0:n_CODE_equations) )
-!    allocate( node_type_string( n_nodes, n_trees ) )
-!    allocate( node_parameters_string( n_nodes, n_trees ) )
-!    allocate( tree_evaluation_string( n_nodes, n_trees ) )
-!    allocate( tree_value_string( n_trees ) )
-!endif ! L_print_equations
 
 
 allocate( Node_Probability( n_levels ) )
@@ -170,6 +160,8 @@ allocate( GP_Adult_Population_SSE( n_GP_Individuals  )  )
 allocate( answer( n_maximum_number_parameters ) )
 
 allocate( output_array( n_maximum_number_parameters ) )
+
+
 
 ga_individual_elites  = 0
 
@@ -224,10 +216,13 @@ GP_Node_Type_for_Plotting = -9999
 
 !---------------------------------------------------------------
 
-Truth_Initial_Conditions  = 0.0d0
-Truth_Node_Type           = -9999
-Truth_Node_Parameters     = 0.0d0
+if( L_truth_model )then
 
+    Truth_Initial_Conditions  = 0.0d0
+    Truth_Node_Type           = -9999
+    Truth_Node_Parameters     = 0.0d0
+
+endif ! L_truth_model 
 !---------------------------------------------------------------
 
 
@@ -263,13 +258,6 @@ kval = 0.0d0
 btmp = 0.0d0
 fbio = 0.0d0
 
-!if( L_print_equations )then
-!    bioflo_string = ' '
-!    node_type_string = ' '
-!    node_parameters_string = ' '
-!    tree_evaluation_string = ' '
-!    tree_value_string = ' '
-!endif ! L_print_equations
 
 
 

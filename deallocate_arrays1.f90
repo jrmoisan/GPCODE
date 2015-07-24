@@ -118,10 +118,12 @@ deallocate( Numerical_CODE_Forcing_Functions  )
 deallocate( Numerical_CODE_Solution  )
 
 !---------------------------------------------------------------                                        
-                                                                                                        
-deallocate( Truth_Initial_Conditions )
-deallocate( Truth_Node_Type          )
-deallocate( Truth_Node_Parameters    )
+    
+if( L_truth_model )then                                                                                                        
+    deallocate( Truth_Initial_Conditions )
+    deallocate( Truth_Node_Type          )
+    deallocate( Truth_Node_Parameters    )
+endif !  L_truth_model                                                                                                         
                                                                                                         
 !---------------------------------------------------------------                                        
 
@@ -131,16 +133,6 @@ deallocate( Truth_Node_Parameters    )
 deallocate( kval )
 deallocate( btmp )
 deallocate( fbio )
-
-!if( L_print_equations )then                                                                                 
-!    deallocate( bioflo_string  )
-!    deallocate( node_type_string )
-!    deallocate( node_parameters_string )
-!    deallocate( tree_evaluation_string )
-!    deallocate( tree_value_string )
-!endif ! L_print_equations                
-
-
 
 
 deallocate( Node_Probability )

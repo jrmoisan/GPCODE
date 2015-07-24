@@ -52,13 +52,14 @@ integer(kind=i4b) :: i_Tree
 integer(kind=i4b) :: i_node
 integer(kind=i4b) :: i_gen
 integer(kind=i4b) :: i
-integer(kind=i4b) :: jj
+!integer(kind=i4b) :: jj
 
 integer(kind=i4b) :: nodes_filled
 integer(kind=i4b) :: isub1         
 integer(kind=i4b) :: isub2         
 integer(kind=i4b),parameter :: node_boundary = 32
 integer(kind=i4b),parameter :: nodes_on_line = 20  ! 15
+
 !----------------------------------------------------------------------------------------
 
 write( element_fmt2, '(I1)') element_length
@@ -109,7 +110,6 @@ do  i_GP_individual = n_indiv_start, n_indiv_stop
         write(GP_print_unit,'(A)') 'pt: i_tree                    nodes '
         write(GP_print_unit,'(10x,A)') trim( tree_node_string )
     endif ! n_nodes < node_boundary 
-
 
 
     do  i_Tree=1,n_Trees
@@ -189,17 +189,6 @@ do  i_GP_individual = n_indiv_start, n_indiv_stop
 
 
     enddo ! i_tree
-
-
-    !---------------------------------------------------------------
-
-    ! print equations corresponding to the tree
-
-    !if( L_print_equations )then
-    !    call create_equations( i_gen, i_GP_individual, tree_type )
-    !endif ! L_print_equations
-
-    !---------------------------------------------------------------
 
 
 enddo  ! i_GP_individual

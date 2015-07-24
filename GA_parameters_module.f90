@@ -51,7 +51,7 @@ real(kind=r8b) :: GA_save_elites_Probability
 real(kind=r8b) :: GA_Elitist_Probability
 real(kind=r8b) :: GA_Asexual_Reproduction_Probability
 
-real(kind=r8b) :: GA_rand_replace_Probability
+real(kind=r8b) :: GA_rand_recruit_Probability
 
 
 !---------------------------------------------------------------------

@@ -32,7 +32,6 @@ contains
         write(6,'(//A//)') &
              'Generate_Dot_Graph: Error: generic type Tree_Node encountered in tree traversal.'
 
-        !!stop 1 ! Stop program
         return 
 
     end subroutine Dot_Visit_Tree_Node
@@ -50,7 +49,6 @@ contains
 
         myid = this%node_id
 
-        !write(6,*) 'dot_visit_math_node: this%funit ', this%funit
 
 
         write(this%funit,'(I0.0,A,I0.0,A)',advance='no') &
@@ -77,7 +75,6 @@ contains
         class(Dot_Graph_Visitor), intent(inout) :: this
         class(Tree_Node), intent(in) :: node
 
-        !write(6,*) 'dot_visit_parameter_node: this%funit ', this%funit
 
         write(this%funit,'(I0.0,A,I0.0,A)',advance='no') &
                             this%node_id, '[label="[', this%node_id, '] '
@@ -96,12 +93,11 @@ contains
         class(Dot_Graph_Visitor), intent(inout) :: this
         class(Tree_Node), intent(in) :: node
 
-        !write(6,*) 'dot_visit_variable_node: this%funit ', this%funit
 
         write(this%funit,'(I0.0,A,I0.0,A)',advance='no') &
                          this%node_id, '[label="[', this%node_id, '] '
-        !write(this%funit,'(A,E12.5)',advance='no') '(V) ', node%val()
-        !write(this%funit,'(A,I5)',advance='no') '(V) ', abs(node%variable_index)
+
+
         if( n_inputs == 0 )then                                                                                                    
             write(this%funit,'(A,I5)',advance='no') '(V) ', &                                                                      
                                       abs(node%variable_index)                                                           
@@ -109,6 +105,7 @@ contains
             write(this%funit,'(A,I5)',advance='no') '(V) ', &                                                                      
                                       abs(node%variable_index) - n_code_equations                                        
         endif ! n_inputs == 0 
+
         write(this%funit,'(A)') '"];'
 
         call Dot_Graph_Hierarchy(this%funit, this%node_id)
@@ -136,6 +133,7 @@ subroutine Generate_Dot_Graph( Trees, Tree_count, output_dir1 )
 
     ! Local variables
     integer(kind=i4b) :: i, gFile
+    integer(kind=i4b) :: istat      
     character(len=80) :: Graph_File
     character(len=80) :: command    
 
@@ -153,7 +151,12 @@ subroutine Generate_Dot_Graph( Trees, Tree_count, output_dir1 )
         if( associated(Trees(i)%n) ) then
 
             write(Graph_File, '(A,I0)') trim(output_dir1)//'/Trees/', i
-            open(gFile, FILE=trim(Graph_File)//'.dot')
+            open(gFile, FILE=trim(Graph_File)//'.dot', iostat=istat)
+            if( istat /= 0 )then
+                write(6,'(A,1x,I0,2x,A)') 'gen: i, Graph_File ', i, Graph_File
+                write(6,'(A,1x,I0)')      'gen: open error on dot file   istat = ', istat
+                cycle
+            endif ! istat /= 0 
 
             write(gFile,*) 'digraph g {'
             write(gFile,*) 'splines=false;'
@@ -201,13 +204,10 @@ subroutine Dot_Graph_Function( File, Function_Index)
             write(File,'(A)',advance='no') 'pow'
         case (9)
             write(File,'(A)',advance='no') 'exp'
-            !orig write(File,'(A)',advance='no') 'min'
         case (10)
             write(File,'(A)',advance='no') 'min'
-            !orig write(File,'(A)',advance='no') 'max'
         case (11)
             write(File,'(A)',advance='no') 'max'
-            !orig write(File,'(A)',advance='no') 'exp'
         case (12)
             write(File,'(A)',advance='no') 'if'
         case (13)

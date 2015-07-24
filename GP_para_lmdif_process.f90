@@ -78,7 +78,9 @@ real(kind=r8b) ::  save_SSE
 !----------------------------------------------------------------------
 
 
+
 L_GP_print = .FALSE.
+!!L_GP_print = .TRUE. 
 
 if( i_GP_generation == 1 .or. &
     mod( i_GP_generation, GP_child_print_interval ) == 0 .or. &
@@ -101,9 +103,6 @@ enddo ! jj
 !-----------------------------------------------------------------------------
 
 ! load the population node parameters into the child parameters
-
-
-!-----------------------------------------------------------------------------
 
 do  i_GP_individual = 1, n_GP_individuals
     do  jj = 1, max_n_gp_params

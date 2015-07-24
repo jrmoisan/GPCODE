@@ -1,4 +1,4 @@
-subroutine set_answer_arrays(  )  ! buildTrees )
+subroutine set_answer_arrays(  )  
 !
 ! Weiyuan note : This program get the answer for the truth model.
 !  if the model truth is from node_type, use RK model to get the answer
@@ -39,7 +39,6 @@ integer(kind=i4b) :: i_node
 integer(kind=i4b) :: ii
 integer(kind=i4b) :: i
 
-logical :: buildTrees
 
 
 !------------------------------------------------------------------------------
@@ -47,15 +46,17 @@ logical :: buildTrees
 
 
 
-write(6,'(/A/)') 'saa: call Initialize_Model  '
 
 if( trim(model)  == 'fasham' .or.  &
     trim(model)  == 'fasham_fixed_tree' )then
 
     call Initialize_Model( .false., .true., 6 )    ! for built-in Fasham function model
 
-else
+elseif( index(model, 'CDOM' ) == 0 )then
+
+
     call Initialize_Model( .true., .true., 6 )    ! for the regular tree, node array model
+
 
 endif ! model == 'fasham'
 
@@ -112,8 +113,10 @@ endif ! L_unit50_output
 
 ! initialize the biological data fields
 
+
 Numerical_CODE_Solution(0,1:n_CODE_equations) = &
-             Numerical_CODE_Initial_Conditions
+                 Numerical_CODE_Initial_Conditions
+
 
 
 if( myid == 0 )then
@@ -126,7 +129,7 @@ if( myid == 0 )then
                     ii, Numerical_CODE_Initial_Conditions(ii)
     enddo ! ii
 
-    !write(6,'(A)') ' '
+    
 
     do  ii = 1, n_CODE_equations
         write(6,'(A,1x,I6,1x,E15.7)') &

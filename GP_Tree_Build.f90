@@ -2,7 +2,7 @@ subroutine GP_Tree_Build( i_Error )
 
 !xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
-use kinds_mod 
+use kinds_mod
 use mpi
 use mpi_module
 
@@ -24,14 +24,13 @@ integer(kind=i4b) :: n_Nodes_at_Level
 integer(kind=i4b) :: i_Level_Node
 integer(kind=i4b) :: Node_Function
 integer(kind=i4b) :: Node_Variable
+integer(kind=i4b) :: node_variable_save
 integer(kind=i4b) :: test_function_index
 integer(kind=i4b) :: n_parms
 integer(kind=i4b) :: n_parms_per_tree
 
 
 real(kind=r4b),parameter :: prob_choose_forcing_type = 0.25
-integer(kind=i4b) :: iforce
-integer(kind=i4b) :: n_trees_made
 
 !-----------------------------------------------------------------------------
 
@@ -139,6 +138,7 @@ do  i_GP_Individual=1,n_GP_Individuals  ! for each GP individual
 
     enddo !  i_Tree
 
+
 enddo !  i_GP_Individual
 
 
@@ -196,33 +196,47 @@ do  i_GP_Individual=1,n_GP_Individuals
 
                             Node_Variable = 2 + int( cff * float(n_inputs) )
 
-                        endif !  n_inputs <= n_code_equations 
+                        endif !  n_inputs <= n_code_equations
 
+                        !write(6,'(A,1x,I6)')'gtb: node_variable ', node_variable
 
                         GP_Child_Population_Node_Type(i_Node,i_Tree,i_GP_Individual) = &
                                                                           -Node_Variable
 
-                        !----------------------------------------------------------------------
+                     !----------------------------------------------------------------------
 
                         if( model == 'fasham' )then
 
                             !  set some variables to the forcing functions -5001 -> -5004
 
+                            node_variable_save = node_variable
+
                             call set_forcing_node( node_variable )
 
+                            if( node_variable == 0 ) node_variable = node_variable_save 
+
+                            GP_Child_Population_Node_Type(i_Node,i_Tree,i_GP_Individual) = &
+                                                                          -Node_Variable
                         endif ! model == 'fasham'
 
                         if(model == 'fasham_CDOM_GP' )then
 
                             !  set some variables to the forcing functions -5001 -> -5004
 
+                            node_variable_save = node_variable
+
                             call set_forcing_node( node_variable )
+
+                            if( node_variable == 0 ) node_variable = node_variable_save 
+
+
+                            GP_Child_Population_Node_Type(i_Node,i_Tree,i_GP_Individual) = &
+                                                                          -Node_Variable
 
                         endif ! model == 'fasham_CDOM_GP
 
 
-                        GP_Child_Population_Node_Type(i_Node,i_Tree,i_GP_Individual) = &
-                                                                          -Node_Variable
+
 
                     else  !   cff > GP_Set_Terminal_to_Parameter_Probability
 
@@ -253,24 +267,6 @@ do  i_GP_Individual=1,n_GP_Individuals
 
     enddo !  i_Tree
 
-
-    !------------------------------------------------------------------------
-
-    !write(GP_print_unit,'(/A,3(1x,I6))') &
-    !      'gtb:2 i_GP_individual, n_trees, n_nodes ',  i_GP_individual, n_trees, n_nodes
-
-    !write(GP_print_unit,'(A)') &
-    !      'gtb: i_tree, i_node, &
-    !              &GP_Child_Population_Node_Type( i_Node,i_Tree,i_GP_Individual)'
-    !do  i_Tree=1,n_Trees
-    !    do  i_Node=1,n_Nodes
-    !        if( GP_Child_Population_Node_Type( i_Node,i_Tree,i_GP_Individual) /= -9999 )then
-    !            write(GP_print_unit,'(3(1x,I8))') &
-    !                i_tree, i_node, GP_Child_Population_Node_Type( i_Node,i_Tree,i_GP_Individual)
-    !        endif ! GP_Child_Population_Node_Type(i_Node,i_Tree,i_GP_Individual) /= -9999
-    !    enddo ! i_node
-    !enddo ! i_tree
-    !write(GP_print_unit,'(/A)') ' '
 
 
     !---------------------------------------------------------------------------------

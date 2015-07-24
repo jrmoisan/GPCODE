@@ -112,6 +112,7 @@ program main
          CMD='bunzip2 -k -c '// trim(filename) // ' > tmp_file.nc'
          call system(CMD)
          cdom = cdomIO%readDATA('tmp_file.nc',BermudaLon,BermudaLat)
+
 ! get kd file and read
 
          kdfile_in = ch8//trim(kd_suffix)
@@ -146,7 +147,9 @@ program main
             imonth=12
             iday=julian_day-julday(12,1,iyear)+1
          END IF
+
 ! convert the iyear,imonth,iday values to character strings
+
          !WRITE(ch4(1:4),'(i4)') iyear
 
          IF (imonth .lt. 10) THEN

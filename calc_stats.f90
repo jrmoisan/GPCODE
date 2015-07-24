@@ -41,8 +41,11 @@ do  i = 1, n_array
         xi <= sse_max_time        )then
 
         arr = array(i) 
+
     else
+
         arr = array(i) * sse_low_wt
+
     endif 
 
     

@@ -34,7 +34,6 @@ integer(kind=i4b) :: i_node
 integer(kind=i4b) :: ii
 integer(kind=i4b) :: i
 integer(kind=i4b) :: j
-!integer(kind=i4b) :: jj
 
 
 real(kind=r8b) :: x_time_step
@@ -60,17 +59,10 @@ real(kind=r8b),dimension(n_code_equations)  :: RK_max
 real(kind=r8b),dimension(n_code_equations)  :: data_max
 real(kind=r8b),dimension(n_code_equations)  :: resid_max
 real(kind=r8b),dimension(n_code_equations)  :: r_corr
-real(kind=r8b),dimension(n_code_equations)  :: prob_r
-real(kind=r8b),dimension(n_code_equations)  :: fisher_z
 
 real(kind=r8b) :: resid_SSE
 real(kind=r8b) :: y_min    
 real(kind=r8b) :: y_max        
-
-
-!real(kind=r8b) :: r_corr
-!real(kind=r8b) :: prob_r
-!real(kind=r8b) :: fisher_z
 
 integer, parameter :: plotMS_unit = 187
 
@@ -96,9 +88,6 @@ Numerical_CODE_Initial_Conditions(1:n_CODE_equations) = &
 !--------------------------------------------------------------------------------
 
 
-if( myid == 0 )then
-    write(6,'(/A)') 'ptsMS: call Initialize_Model  '
-endif ! myid == 0
 
 call Initialize_Model( .true., .true., 6 )
 
@@ -110,26 +99,11 @@ call Initialize_Model( .true., .true., 6 )
 
 if( myid == 0 )then
 
-    write(6,'(/A)') 'ptsMS: call Generate_Dot_Graph'
 
     call Generate_Dot_Graph( GP_Trees(:,1), n_Trees, './ptsMS' )
 
-    write(6,'(/A/)') 'ptsMS: aft call Generate_Dot_Graph'
 
 endif ! myid == 0
-
-
-!------------------------------------------------------------------------------
-
-! Write trees to disk
-
-
-!if( myid == 0 )then
-!    write(6,'(/A/)') 'ptsMS: call Serialize_Trees   '
-!    call Serialize_Trees( GP_Trees(:,:), &
-!                          n_Trees, n_Tracked_Resources, output_dir )
-!    write(6,'(/A/)') 'ptsMS: aft call Serialize_Trees   '
-!endif ! myid == 0
 
 
 !------------------------------------------------------------------------------
@@ -310,10 +284,6 @@ if( myid == 0 )then
                          dt,    0.0d0, 1.0d9, 1.0d0 ) 
       
 
-
-        !call pearsn( Numerical_CODE_Solution(1,1), temp_data_array, &
-        !             n_time_steps, r_corr, prob_r, fisher_z )
-    
         call corr( Numerical_CODE_Solution(1,j), Data_Array(1,j), &
                    n_time_steps, 0, r_corr(j) , &
                    dt,    0.0d0, 1.0d9, 1.0d0 ) 

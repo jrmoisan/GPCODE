@@ -177,6 +177,7 @@ do  i_GA_Crossover=1,n_GA_Crossovers
             call GA_check_for_elite( k_GA_Individual_Female(2) )
             if( k_GA_Individual_Female(2) /= k_GA_Individual_Female(1)      ) exit
             ksafe = ksafe + 1
+
             if( ksafe > 2 * n_GA_individuals ) then
                 write(6,'(A)') &
                       'gato: too many iterations to get k_GA_Individual_Female(2)'
@@ -437,34 +438,6 @@ do  i_GA_Crossover=1,n_GA_Crossovers
                  Child_Two_Parameters(i_Parameter)
   
     enddo ! i_parameter
-  
-    !------------------------------------------------------------------------------------------
-  
-    !  print parameters for selected male and female parents before and after  crossover
-  
-    !if( L_ga_print )then
-    !    write(GA_print_unit,'(A,3(1x,I6))')&
-    !     'gato: selected i_GA_Crossover, &
-    !     &k_GA_Individual_Male(1), k_GA_Individual_Female(1) ', &
-    !     i_GA_Crossover, &
-    !     k_GA_Individual_Male(1), k_GA_Individual_Female(1)
-    !    write(GA_print_unit,'(A/I6,12(1x,E15.7))')&
-    !     'gato: before k_GA_Individual_Male(1), &
-    !      &Child_Parameters(1:n_parameters, k_GA_Individual_Male(1)) ', &
-    !      k_GA_Individual_Male(1),   temp_male_parameters(1:n_parameters)
-    !    write(GA_print_unit,'(A/I6,12(1x,E15.7))')&
-    !     'gato: after ', &
-    !      k_GA_Individual_Male(1), &
-    !      Child_Parameters(1:n_parameters, k_GA_Individual_Male(1) )
-    !    write(GA_print_unit,'(A/I6,12(1x,E15.7))')&
-    !     'gato: before k_GA_Individual_Female(1), &
-    !      &Child_Parameters(1:n_parameters, k_GA_Individual_Female(1))', &
-    !      k_GA_Individual_Female(1), temp_female_parameters(1:n_parameters)
-    !    write(GA_print_unit,'(A/I6,12(1x,E15.7))')&
-    !     'gato: after  ', &
-    !      k_GA_Individual_Female(1), &
-    !      &Child_Parameters(1:n_parameters, k_GA_Individual_Female(1) )
-    !endif ! L_ga_print
   
   
     Run_GA_lmdif( k_GA_Individual_Male(1) )   = .true.

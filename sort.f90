@@ -5,7 +5,6 @@ use kinds_mod
 use mpi                                                                                                   
 use mpi_module
 
-!USE nrtype; USE nrutil, ONLY : swap,nrerror
 
 use GA_parameters_module
 use GP_parameters_module
@@ -26,7 +25,7 @@ integer(kind=i4b), DIMENSION(NSTACK) :: istack
 
 !----------------------------------------------------------------
 
-!!n=size(arr,dim=1)
+
 
 jstack=0
 l=1
@@ -86,28 +85,5 @@ do
         endif
     endif
 enddo
-!contains
-!
-!INTERFACE swap                                                                                                                          
-!    MODULE PROCEDURE swap_r, masked_swap_rs
-!END INTERFACE                                                                                                                           
-!SUBROUTINE swap_r(a,b)                                                                                                                  
-!real(kind=r8b), INTENT(INOUT) :: a,b                                                                                                          
-!real(kind=r8b) :: dum                                                                                                                         
-!dum=a                                                                                                                                   
-!a=b                                                                                                                                     
-!b=dum                                                                                                                                   
-!END SUBROUTINE swap_r                                                                                                                  
-!
-!SUBROUTINE masked_swap_rs(a,b,mask)                                                                                                     
-!real(kind=r8b), INTENT(INOUT) :: a,b                                                                                                          
-!LOGICAL, INTENT(IN) :: mask                                                                                                        
-!real(kind=r8b) :: swp                                                                                                                         
-!if( mask ) then                                                                                                                          
-!    swp=a                                                                                                                               
-!    a=b                                                                                                                                 
-!    b=swp                                                                                                                               
-!endif                                                                                                                                  
-!END SUBROUTINE masked_swap_rs                                                                               
 
 END SUBROUTINE sort

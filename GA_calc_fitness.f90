@@ -41,7 +41,7 @@ integer(kind=i4b) ::    i_GA_Best_Parent
 integer(kind=i4b) ::    n_counted
 integer(kind=i4b) ::    index_min_sse
 integer(kind=i4b) ::    icount
-!integer(kind=i4b) ::    i
+integer(kind=i4b) ::    i
 
 real(kind=r8b), parameter :: max_err = 1.0d8  !100.0d0
 real(kind=r8b), parameter :: max_err2 = max_err**2
@@ -70,7 +70,6 @@ real(kind=r8b), external :: indiv_fitness
 logical :: L_stop_run
 logical :: op
 
-integer(kind=i4b) :: jj
 integer(kind=i4b) :: i_parameter
 integer(kind=i4b) :: i_GA_individual
 
@@ -179,7 +178,7 @@ min_sse = 1.0D20
 index_min_sse = 0
 sum_individual_SSE = 0.0D0
 
-!write(6,'(A)') ' '
+
 do  i_GA_individual=1,n_GA_individuals
 
     if( individual_quality( i_GA_individual ) > 0 ) then
@@ -309,11 +308,10 @@ if( i_GA_generation == 1                                 .or. &
 
 
     if( L_ga_print )then
-        write(GA_print_unit,'(/A)')&
-         'gacf:i_GA_ind   ind_SSE            ind_ranked_fitness    &
-         &integ_rank_fitness  ind_quality'
+        write(GA_print_unit,'(A)')&
+        'gacf:i_GA_ind  ind_SSE         ind_ranked_fit  integ_rank_fit  ind_quality'
         do  i_GA_individual=1,n_GA_individuals
-            write(GA_print_unit,'(6x,I6,3(1x,E20.12),1x,I6)') &
+            write(GA_print_unit,'(6x,I6,3(1x,E15.7),1x,I6)') &
                   i_GA_individual, individual_SSE(i_GA_individual), &
                         individual_ranked_fitness(i_GA_individual), &
                         integrated_ranked_fitness(i_GA_individual), &
@@ -379,25 +377,20 @@ enddo ! i_GA_individual
 !------------------------------------------------------------------------------
 
 if( L_ga_print )then
-    write(GA_print_unit,'(/A,1x,I3,2(1x,I6),2(1x,E15.7))') &
+    write(GA_print_unit,'(A,1x,I3,2(1x,I6),2(1x,E15.7))') &
           'gacf: new_rank, Generation, i_GA_Best_Parent, indiv_ranked_fitness, indiv_SSE', &
                  new_rank, i_GA_Generation, i_GA_Best_Parent,   &
                  individual_ranked_fitness( i_GA_Best_Parent ), &
                             individual_SSE( i_GA_Best_Parent )
+    write(GA_print_unit,'(A,1x,I3,2(1x,I6),3(1x,E15.7))') &
+          'gacf: new_rank, Generation, i_GA_Best_Parent,  Child_Parameters(:,i_GA_Best_Parent)  ', &
+                 new_rank, i_GA_Generation, i_GA_Best_Parent,  &
+                 Child_Parameters(1:n_GP_parameters,i_GA_Best_Parent)    
 endif ! L_ga_print
 
 
 !-----------------------------------------------------------------------
 
-! if fitness >= 100, then sse <= 0.01 * sse0
-! if this is true, stop the run
-
-!if( individual_ranked_fitness(i_GA_Best_Parent) >= 100.0d0 ) then
-!if( individual_ranked_fitness(i_GA_Best_Parent) >= 200.0d0 ) then
-!    L_stop_run = .TRUE.
-!endif ! individual_ranked_fitness(i_GA_Best_Parent) >= 100.0d0
-
-!-----------------------------------------------------------------------
 
 if( L_GA_log )then
 

@@ -53,7 +53,7 @@ real(kind=r8b) :: fvec(n_time_steps)
 real(kind=r8b) :: ftol,xtol,gtol
 
 
-real(kind=r8b), parameter :: epsfcn = 1.0d-9  ! -6  !-15   ! 1.0d-6    ! original
+real(kind=r8b), parameter :: epsfcn = 1.0d-9  
 real(kind=r8b), parameter :: factor=1.0D+0
 real(kind=r8b), parameter :: zero = 0.0d0
 
@@ -91,9 +91,10 @@ external :: fcn
 if( n_parms <= n_code_equations ) then
 
     individual_quality = -1
-    my_indiv_SSE =  big_real ! 1.0D+13
+    my_indiv_SSE =  big_real 
 
     return   ! 20131016 jjm
+
 endif ! n_parms <= 0
 
 
@@ -127,18 +128,19 @@ info = 0
 ! maximum iterations in lmdif for function evaluation
 
 
-maxfev= 1000 ! 2000  ! 4000 ! 2000 ! 50 ! 10 ! 10000
+maxfev= 1000 
 
-ftol=1.0D-10   ! 15  ! 15   ! 10
-xtol=1.0D-10   ! 15  ! 15   ! 10
+ftol=1.0D-10   
+xtol=1.0D-10   
 
 gtol=zero
 
 mode=1
-info=1  ! 0 ! 1
+info=1  
 
 
 ! nprint < 0  means no printout
+
 nprint= 1  ! set back to zero after diag
 
 
@@ -160,7 +162,7 @@ fvec = 0.0D0
 
 call lmdif( fcn, n_time_steps, n_parms, x_LMDIF, fvec, &
             ftol, xtol, gtol, maxfev, epsfcn, &
-            diag, mode, factor, nprint, info, nfev, fjac, ldfjac, ipvt, qtf )    ! 20131209
+            diag, mode, factor, nprint, info, nfev, fjac, ldfjac, ipvt, qtf ) 
 
 
 !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
@@ -175,7 +177,7 @@ call lmdif( fcn, n_time_steps, n_parms, x_LMDIF, fvec, &
 if( info <= 0 ) then
 
     individual_quality  = -1
-    my_indiv_SSE =  big_real ! 1.0D+13
+    my_indiv_SSE =  big_real
 
     GP_Child_Individual_SSE_nolog10(i_G_indiv) = big_real
 

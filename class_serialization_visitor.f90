@@ -47,6 +47,7 @@ use GP_variables_module
         integer(kind=i4b) :: myid
 
         myid = this%node_id
+
         write(this%file_handle, *) &
               node%node_type, myid, node%operation, 0, 0, &
                         'math: type, id, operation, 0, 0'

@@ -25,7 +25,7 @@ subroutine GP_calc_fitness( i_GP_generation, &
 !xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
 
-use kinds_mod 
+use kinds_mod
 
 use GP_Parameters_module
 use GA_Parameters_module
@@ -52,11 +52,6 @@ integer(kind=i4b) :: i_CODE_equation
 integer(kind=i4b) :: max_n_gp_parameters
 
 real(kind=r8b) ::  dff
-
-real(kind=r8b) ::  mean_fit
-real(kind=r8b) ::  rms_fit
-real(kind=r8b) ::  std_dev_fit
-real(kind=r8b) ::  sse_local      
 
 
 logical :: L_node_match
@@ -125,12 +120,10 @@ if( L_GPSSE_log )then
         do  i_GP_Individual=1,n_GP_Individuals
 
 
-            write(GPSSE_log_unit,'(I6, 1x,I6,2(1x,E15.7))') &
+            write(GPSSE_log_unit,'(I0, 1x,I0,2(1x,E12.5))') &
                   i_GP_generation, &
                   i_GP_Individual, GP_Child_Individual_SSE_nolog10(i_GP_Individual), &
                   GP_Child_Individual_SSE_nolog10(i_GP_Individual)/ SSE0_nolog10
-                  !i_GP_Individual, sse_local, &
-                  !sse_local / SSE0_nolog10
 
         enddo ! i_gp_individual
 
@@ -139,14 +132,14 @@ if( L_GPSSE_log )then
 
         do  i_GP_Individual=1,n_GP_Individuals
 
-            write(GPSSE_log_unit,'(I6, 1x,I6,2(1x,E15.7))') &
+            write(GPSSE_log_unit,'(I0, 1x,I0,2(1x,E12.5))') &
                   i_GP_generation, &
                   i_GP_Individual, GP_Child_Population_SSE(i_GP_Individual), &
                   GP_Child_Population_SSE(i_GP_Individual)/ SSE0
 
         enddo ! i_gp_individual
 
-    endif ! index( model, 'LOG10') > 0 ...         
+    endif ! index( model, 'LOG10') > 0 ...
 
 
 
@@ -264,8 +257,8 @@ if( i_GP_generation == 1                                 .or. &
     write(GP_print_unit,'(/A/)') &
           'gpcf:------------------------------------------&
           &-----------------------------'
-    
-    
+
+
     write(GP_print_unit,'(A,2(1x,I6))') &
           'gpcf: call summary_GP_indiv i_GP_generation, i_GP_Best_Parent ', &
                                        i_GP_generation, i_GP_Best_Parent
@@ -304,12 +297,12 @@ if( L_GPSSE_log )then
         index( model, 'log10') > 0        )then
 
 
-        write(6,'(/A,1x, I6, 1x,E15.7)') &
+        write(6,'(/A,1x, I6, 1x,E12.5)') &
               'gpcf: i_GP_gen, sse0_nolog10 ', &
               i_GP_generation,  SSE0_nolog10
 
-        write(6,'(A,1x, I6, 1x,I6,2(1x,E15.7)/)') &
-              'gpcf: i_GP_gen, i_GP_best_parent, sse_nolog10, sse_nolog10/sse0_nolog10 ', &
+        write(6,'(A,1x, I6, 1x,I6,2(1x,E12.5)/)') &
+              'gpcf: i_GP_gen, i_GP_best_parent, sse_nolog10, sse_nolog10/sse0_nolog10', &
               i_GP_generation, &
               i_GP_Best_Parent, &
               GP_Child_Individual_SSE_nolog10(i_GP_best_parent), &
@@ -317,17 +310,17 @@ if( L_GPSSE_log )then
 
 
 
-        write(GPSSE_best_log_unit,'(I6, 1x,I6,2(1x,E15.7))') &
+        write(GPSSE_best_log_unit,'(I0, 1x,I0,2(1x,E12.5))') &
               i_GP_generation, &
               i_GP_Best_Parent, &
               GP_Child_Individual_SSE_nolog10(i_GP_best_parent), &
               GP_Child_Individual_SSE_nolog10(i_GP_best_parent)/ SSE0_nolog10
-              
-             
+
+
 
     else
 
-        write(GPSSE_best_log_unit,'(I6,1x,I6,2(1x,E15.7))') &
+        write(GPSSE_best_log_unit,'(I0,1x,I0,2(1x,E12.5))') &
               i_GP_Generation, i_GP_Best_Parent, &
               GP_Child_Population_SSE(i_GP_Best_Parent), &
               GP_Child_Population_SSE(i_GP_Best_Parent)/ SSE0
@@ -342,21 +335,18 @@ if( L_GPSSE_log )then
 endif ! L_GPSSE_log
 
 
-                                                                                                          
-!-------------------------------------------------------------------------------                          
 
+!-------------------------------------------------------------------------------
 
-                                                                                                        
-if( L_fort555_output )then                                                                             
-                                                                                                        
-                                                                                                        
-    write(GA_555_unit) i_GP_Generation,  &                             
-               GP_Child_Population_SSE(1:n_GP_individuals)                                                       
-                                                                                                        
-endif !  L_fort555_output                                                                              
-                                                                                                        
-!-------------------------------------------------------------------------------                          
-  
+if( L_fort555_output )then
+
+    write(GA_555_unit) i_GP_Generation,  &
+               GP_Child_Population_SSE(1:n_GP_individuals)
+
+endif !  L_fort555_output
+
+!-------------------------------------------------------------------------------
+
 
 ! fill output array of parameters for best individual
 ! and write on GP_print_unit
@@ -457,20 +447,25 @@ endif ! i_GP_generation == 1 .or. ...
 !
 !  compare the current models to the "truth" model
 
-!  set logical to .TRUE. if all nodes match the nodes in the truth model
-!  record relative differences in the parameters but do not include in the
-!  logical calculation
+!  execute only if L_truth_model is .TRUE.
 
-if( i_GP_generation == 1                                 .or. &
-    mod( i_GP_generation, GP_child_print_interval ) == 0 .or. &
-    i_GP_generation == n_GP_generations                          ) then
+!  set logical Truth_Model_Match to .TRUE.
+!  if all nodes match the nodes in the truth model
+!  record relative differences in the parameters
+!  but do not include in the logical calculation
+
+if( L_truth_model                                        .and.  &
+    ( i_GP_generation == 1                                 .or. &
+    mod( i_GP_generation, GP_child_print_interval ) == 0   .or. &
+    i_GP_generation == n_GP_generations  )                        ) then
+
 
 
     write(GP_print_unit, '(/A,T89,A/)') &
       'gpcf: i     GP_Pop_Initial_Cond   Truth_initial_cond        diff', 'Truth'
-    
+
     do  i = 1, n_code_equations
-    
+
         write(GP_print_unit, '(1x,I6,3(6x,E15.7),T89,A)') &
               i, &
               GP_Population_Initial_Conditions( i,i_GP_Best_Parent ), &
@@ -479,78 +474,78 @@ if( i_GP_generation == 1                                 .or. &
                                               truth_initial_conditions(i)   ), &
               'Truth'
     enddo ! i
-    
-    
+
+
     node_match_count = 0
     undefined_node_count = 0
     Truth_Model_Match = .FALSE.
-    
+
     write(GP_print_unit,'(/A,T89,A/)') &
           'gpcf: i_tree  i_node   GP_pop_node_params   Truth_Node_Params        diff', 'Truth'
-    
-    
+
+
     tree_loop2:&
     do  i_tree=1,n_trees
-    
+
         node_loop2:&
         do  i_node=1,n_nodes
-    
+
             !------------------------------------------------------------------------
             if( GP_Adult_Population_Node_Type(i_Node,i_Tree,i_GP_Best_Parent) == -9999 )then
-    
+
                 undefined_node_count = undefined_node_count + 1
-    
+
                 if( Truth_Node_Type( i_Node,i_Tree ) == -9999   )then
-    
+
                     cycle node_loop2
-    
+
                 endif ! Truth_Node_Type... == -9999...
             endif ! GP_Adult_...Node_Type... == -9999...
             !------------------------------------------------------------------------
-    
+
             flag_string = ' '
             L_node_match = &
                ( GP_Adult_Population_Node_Type(i_Node,i_Tree,i_GP_Best_Parent) == &
                                                      Truth_Node_Type( i_Node,i_Tree ) )
-    
-    
+
+
             Truth_Model_Match = Truth_Model_Match .and.  L_node_match
-    
-    
+
+
             if( L_node_match ) then
                 node_match_count =  node_match_count + 1
                 flag_string = 'node type match'
             endif ! L_node_match
-    
+
             if( GP_Adult_Population_Node_Type(i_Node,i_Tree,i_GP_Best_Parent) == 0 .or. &
                 Truth_Node_Type(i_Node,i_Tree) == 0                                 )then
-    
+
                 write(GP_print_unit,'(3x,2(1x,I6),3(6x,E15.7),T89,A,5x,A)') &
                   i_tree, i_node, &
                   GP_population_node_parameters(i_node,i_tree,i_GP_Best_Parent), &
                   Truth_Node_Parameters(i_node,i_tree),  &
                   ( GP_population_node_parameters(i_node,i_tree,i_GP_Best_Parent) -  &
                                                   Truth_Node_Parameters(i_node,i_tree) ), &
-                  'Truth', trim(flag_string) 
-    
+                  'Truth', trim(flag_string)
+
             endif ! GP_Adult_Population_Node_Type(i_Node,i_Tree,i_GP_Best_Parent) == 0
-    
+
         enddo node_loop2 ! i_node
-    
+
     enddo tree_loop2 ! i_tree
-    
-    
+
+
     write(GP_print_unit,'(/A,1x, i6,5x,L1, 1x,I6, T89,A)') &
       'gpcf: i_gp_gen, Truth_Model_Match, node_match_count', &
              i_gp_generation, &
                        Truth_Model_Match, node_match_count, 'Truth'
-    
+
     write(GP_print_unit,'(A,1x, 2(1x,I6),T89,A/)') &
       'gpcf: total_nodes, undefined_nodes  ',     &
          n_nodes*n_trees, undefined_node_count, 'Truth'
 
 
-endif ! i_GP_generation == 1 ...  
+endif !  L_truth_model .and. ...
 
 
 GP_Adult_Population_SSE  =  GP_Child_Population_SSE

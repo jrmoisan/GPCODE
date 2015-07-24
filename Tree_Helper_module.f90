@@ -23,7 +23,6 @@ if( node%node_type .eq. 1 ) then
                           GetNodeCount(node%right)
     count = node%node_count
 
-    !write(*,*)'GNC: count = ', count
 endif
 
 count = node%node_count

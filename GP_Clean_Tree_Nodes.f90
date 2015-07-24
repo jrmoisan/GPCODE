@@ -10,7 +10,7 @@ subroutine GP_Clean_Tree_Nodes
 
 ! So the Run_GP_Calculate_Fitness array is not changed
 
-use kinds_mod 
+use kinds_mod
 use GP_Parameters_module
 use GA_Parameters_module
 use GP_Variables_module
@@ -34,17 +34,14 @@ do  i_GP_Individual=1,n_GP_Individuals
     do  i_Tree=1,n_Trees
 
 
-
         ! move up the tree structure from level "n_level-1" to level "1"
 
         do  i_Level = n_Levels-1, 1, -1
 
 
-
             ! calculated the function number at the right end of the upper level
 
             i_Function = pow2_table( i_level - 1 )    ! 2**(i_Level-1) - 1
-
 
 
             ! run through each function at the level
