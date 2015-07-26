@@ -1707,7 +1707,7 @@ if( myid == 0) then
         enddo !i
     endif ! .not. L_node_functions
 
-    write(GP_print_unit,'(//A,1x,I3)') &
+    write(GP_print_unit,'(//A,1x,I3//)') &
           'rcntl: normal return ierror = ', ierror
 
 endif ! myid==0
