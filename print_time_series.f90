@@ -448,11 +448,7 @@ if( myid == 0 )then
     write(plot_unit, '(A,1x,E15.7)')  '#pts: y_max', y_max
 
 
-    write(plot_unit, '(A,2(1x, I6),1x,E15.7, 1x,E24.16)') &
-         '#pts: i_GP_generation, n_time_steps, dt, resid_SSE', &
-                i_GP_generation, n_time_steps, dt, resid_SSE
 
-                                                                                                                               
     if( index( model,'LOG10') > 0 .or. &                                                                                       
         index( model,'log10') > 0         )then                                                                                
                                                                                                                                
