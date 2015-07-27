@@ -430,6 +430,24 @@ if( myid == 0 )then
         write(GP_print_unit, '(A,2(1x, I6),1x,E15.7, 1x,E24.16/)') &
          '#pts: i_GP_generation, n_time_steps, dt, resid_SSE', &
                 i_GP_generation, n_time_steps, dt, resid_SSE
+
+        if( index( model,'LOG10') > 0 .or. &                                                                                       
+            index( model,'log10') > 0         )then                                                                                
+                                                                                                                                   
+    
+            write(GP_print_unit, '(A,2(1x, I6),1x,E15.7, 2(1x,E15.7))') &
+                 '#pts: i_GP_gen, n_time_steps, dt, resid_SSE, SSE/SSE0_nolog10', &
+                        i_GP_generation, n_time_steps, dt, resid_SSE, resid_SSE/SSE0_nolog10
+                                                                                                                                   
+        else                                                                                                                       
+                                                                                                                                   
+            write(GP_print_unit, '(A,2(1x, I6),1x,E15.7, 2(1x,E15.7))') &
+                 '#pts: i_GP_gen, n_time_steps, dt, resid_SSE, SSE/SSE0', &
+                        i_GP_generation, n_time_steps, dt, resid_SSE, resid_SSE/SSE0
+    
+                                                                                                                                   
+        endif!  index( model,'LOG10') > 0 ...   
+
     endif ! L_myprint
 
 
