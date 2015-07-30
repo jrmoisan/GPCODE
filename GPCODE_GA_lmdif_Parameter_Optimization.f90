@@ -182,6 +182,7 @@ integer(kind=i4b) :: n_procs
                             Parent_Parameters,Child_Parameters, &
                                                 individual_quality )
 
+
             !-------------------------------------------------------------------------------
 
             !   do "GA Parameter Crossover" Operations Using Tournament-Style Selection
@@ -204,6 +205,7 @@ integer(kind=i4b) :: n_procs
                             individual_quality, ierror_tou )
 
             endif !   n_GA_Crossovers .gt. 0
+
 
             !   do "GA Parameter Mutation" Operations
             !   select a random individual and put a new random number into one of
@@ -242,6 +244,7 @@ integer(kind=i4b) :: n_procs
                 call GA_random_recruit( Child_Parameters, individual_quality )
 
             endif !   n_GA_rand_recruits .gt. 0
+
 
         endif ! i_GA_generation .eq. 1
 

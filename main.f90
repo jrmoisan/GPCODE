@@ -57,7 +57,7 @@ integer(kind=i4b) :: comm_world
 
 
 character(15),parameter :: program_version   = '201502.004_v16'
-character(10),parameter :: modification_date = '20150719'
+character(10),parameter :: modification_date = '20150730'
 character(50),parameter :: branch  =  'v16'
 
 integer(kind=i4b), parameter ::  zero = 0
@@ -138,15 +138,13 @@ call read_cntl_vars( ierror  )
 n_inputs = n_input_vars
 
 if( myid == 0 )then
-
     if( L_replace_larger_SSE_only )then
-        write(6,'(A/)') &
+        write(6,'(/A/)') &
          '0: GP_Fit* only  replaces the individual if the SSE decreases after replacement'
     else
-        write(6,'(A/)') &
+        write(6,'(/A/)') &
          '0: GP_Fit* always replaces the individual regardless of the SSE'
-    endif !  L_replace_larger_SSE_only 
-
+    endif !  L_replace_larger_SSE_only
 endif ! myid == 0
 
 !----------------------------------------------------
@@ -162,6 +160,7 @@ call setup_output_unit()
 
 
 ! for reading input files for the "DATA" model
+
 call read_input_data()
 
 
@@ -177,6 +176,7 @@ else
 endif ! user_input_random_seed > 0
 
 seed = clock + 37 * (/ (i_seed - 1, i_seed = 1, n_seed) /)
+
 
 CALL RANDOM_SEED(PUT = seed)
 
@@ -289,6 +289,7 @@ endif ! myid == 0
         !    write GP_last_gen_summary_file containing the
         !    last completed generation
 
+
         if( L_GP_all_summary )then
 
             inquire( GP_summary_output_unit_lgen, opened = op )
@@ -372,12 +373,16 @@ endif ! myid == 0
         endif ! myid == 0
     endif ! trim(model) /= 'fasham_fixed_tree'
 
+
+
     ! broadcast GP_Adult_Population_Node_Type changed by GP_Clean_Tree_Nodes
+
 
 
     message_len = n_GP_Individuals * n_Nodes * n_Trees
     call MPI_BCAST( GP_Adult_Population_Node_Type, message_len,    &
                  MPI_INTEGER,  0, MPI_COMM_WORLD, ierr )
+
 
     GP_Child_Population_Node_Type =  GP_Adult_Population_Node_Type
 
@@ -386,8 +391,16 @@ endif ! myid == 0
 
     ! if there are no more individuals to evaluate fitness for, exit
 
+    if( myid == 0 )then
+        write(GP_print_unit,'(/A,1x,I6,5x,L1/)') &
+              '0: i_GP_generation , any( Run_GP_Calculate_Fitness ) ', &
+                  i_GP_generation , any( Run_GP_Calculate_Fitness )
+    endif ! myid == 0
+
+
 
     if( .not.  any( Run_GP_Calculate_Fitness ) ) exit generation_loop
+
 
 
     call GP_individual_loop( new_comm, i_GP_generation )

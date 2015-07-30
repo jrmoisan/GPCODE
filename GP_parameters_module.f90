@@ -58,8 +58,7 @@ integer(kind=i4b), parameter :: n_Tracked_Resources = 1 ! number of different re
 
 
 !real(kind=r8b), parameter :: Delta_Time_in_Days = 1.0D+0/(24.0D+0*2.0D+0) ! 1/2 hour
-!integer(kind=i4b), parameter :: n_Time_Steps=5*365*24*2          ! 5 years in half-hour increments
-
+!integer(kind=i4b), parameter :: n_Time_Steps=5*365*24*2  ! 5 years in half-hour increments
 
 real(kind=r8b) :: Delta_Time_in_Days
 

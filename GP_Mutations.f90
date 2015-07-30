@@ -220,11 +220,11 @@ do  i_GP_Mutation = 1,n_GP_Mutations
 
                 !  set some variables to the forcing functions -5001 -> -5004
 
-                Node_Variable_save =  Node_Variable
+                node_variable_save =  Node_Variable
 
                 call set_forcing_node( node_variable )
 
-                if( node_variable == 0 ) node_variable = node_variable_save 
+                if( node_variable == 0 ) node_variable = node_variable_save
 
                 GP_Child_Population_Node_Type(Node_to_Mutate,i_Tree_Mutation,i_GP_Individual) = &
                                      -Node_Variable
@@ -243,14 +243,14 @@ do  i_GP_Mutation = 1,n_GP_Mutations
 
                 !  set some variables to the forcing functions -5001 -> -5004
 
-                Node_Variable_save =  Node_Variable
+                node_variable_save =  Node_Variable
 
                 call set_forcing_node( node_variable )
 
-                if( node_variable == 0 ) node_variable = node_variable_save 
+                if( node_variable == 0 ) node_variable = node_variable_save
 
-            GP_Child_Population_Node_Type(Node_to_Mutate,i_Tree_Mutation,i_GP_Individual) = &
-                                 -Node_Variable
+                GP_Child_Population_Node_Type(Node_to_Mutate,i_Tree_Mutation,i_GP_Individual) = &
+                                     -Node_Variable
 
             endif !  model == 'fasham_CDOM_GP'
 

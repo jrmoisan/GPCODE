@@ -43,6 +43,17 @@ contains
       n_inputs = n_input_vars
       GP_minSSE_Individual_SSE = 1.0d99
 
+      if( myid == 0 )then
+          write(6,'(A,1x,I10)')'nfCD: n_code_equations            ', n_code_equations
+          write(6,'(A,1x,I10)')'nfCD: n_variables                 ', n_variables
+          write(6,'(A,1x,I10)')'nfCD: n_trees                     ', n_trees
+          write(6,'(A,1x,I10)')'nfCD: n_nodes                     ', n_nodes
+          write(6,'(A,1x,I10)')'nfCD: n_maximum_number_parameters ', n_maximum_number_parameters
+          write(6,'(A,1x,I10)')'nfCD: n_inputs                    ', n_inputs
+
+          write(6,'(A,1x,I10)')'nfCD: call print_values1 '
+      endif ! myid == 0
+
       call print_values1()
 
    end function
@@ -68,6 +79,10 @@ contains
       enddo
       n_count = i_count - 3
       n_time_steps = n_count
+      if( myid == 0 )then
+          write(6,'(A,1x,I10)')'initCD: n_count      ', n_count               
+          write(6,'(A,1x,I10)')'initCD: n_time_steps ', n_time_steps        
+      endif ! myid == 0
 
       allocate(this%cdoms(0:n_time_steps))
       allocate(this%pars(0:n_time_steps))
@@ -127,6 +142,15 @@ contains
          Node_Probability(i) =  1.0d0 - increment * real(i,kind=8)
       enddo
       Node_Probability(n_levels) = 0.0d0
+
+      if( myid == 0 )then
+          write(6,'(/A,1x,I6)')   'initCD: n_levels ', n_levels           
+          write(6,'(A/(10(1x,E12.5)))') 'initCD: Node_Probability', &               
+                                                 Node_Probability
+          write(6,'(A)') ' '
+      endif ! myid == 0 
+
+
       bioflo_map = 1
  
    end subroutine init
@@ -145,6 +169,15 @@ contains
       Numerical_CODE_Solution(0,1) = this%cdoms(1)
 
       Data_Array=Numerical_CODE_Solution
+
+      if( myid == 0 )then
+          do i = 0, n_time_steps
+          write(6,'(A,1x,I10,1x,E15.7)') &
+                'setCD: i, data_array(i,1 ) ', &
+                        i, data_array( i, 1) 
+          enddo ! i  
+      endif ! myid == 0 
+
       Numerical_CODE_Solution(1:n_time_steps, 1:n_code_equations) = 0.0d0
 
       call comp_data_variance()
@@ -159,6 +192,7 @@ contains
       integer :: i_CODE_Equation
       integer :: i_Tree
       integer :: i_Node
+      integer :: i
 
 !------------------------------------------------------------------------------------------------
 !   FORCING  -5001  : max(d MLD/ dt,0)
@@ -195,6 +229,40 @@ contains
       GP_Individual_Node_Type(22,2) = -5002     ! force MLD
       GP_Individual_Node_Type(23,2) = -5004     ! force KD
 
+
+      if( myid == 0 )then
+          write(6,'(/A/)') 'setModelCD: Truth model node types'
+          do  i_tree=1,n_trees
+             do  i_node=1,n_nodes
+    
+                 if( GP_individual_node_type(i_node,i_tree) > -9999 ) then
+                     write(6,'(A,3(1x,I5))') &
+                      'setModelCD: i_tree, i_node, GP_Individual_Node_Type(i_node, i_tree)', &
+                                   i_tree, i_node, GP_Individual_Node_Type(i_node, i_tree)
+                 endif ! GP_individual_node_type(i_node,i_tree) .eq. 0
+    
+             enddo ! i_node
+          enddo ! i_tree
+    
+    
+          write(6,'(/A/)') 'setModelCD: Truth model node parameters'
+          do  i_tree=1,n_trees
+             do  i_node=1,n_nodes
+    
+                 if( abs(GP_Individual_Node_parameters(i_node, i_tree)) > 0.0d0 )then
+                     write(6,'(A,2(1x,I5),1x,E15.7)') &
+                       'setModelCD: i_tree, i_node, &
+                        &GP_Individual_Node_parameters(i_node, i_tree)', &
+                                    i_tree, i_node, &
+                         GP_Individual_Node_parameters(i_node, i_tree)
+                 endif ! abs(GP_Individual_Node_parameters... > 0.0d0
+    
+             enddo ! i_node
+          enddo ! i_tree
+
+      endif ! myid == 0 
+      
+
       answer = 0.0d0 ! set all to zero
       n_parameters = 0
 
@@ -215,6 +283,18 @@ contains
 
          enddo ! i_node
       enddo ! i_tree
+
+      if( myid == 0 )then
+          write(6,'(/A,1x,I6)')   'setmodelCD: n_parameters ', n_parameters           
+
+          do i = 1, n_parameters 
+          write(6,'(A,1x,I10,1x,E15.7)') &
+                'setmodelCD: i, answer(i) ', i, answer(i) 
+          enddo ! i  
+      endif ! myid == 0 
+
+
+
 
       call this%generateGraph()
 

@@ -41,22 +41,41 @@ integer(kind=i4b) :: i_CODE_equation
 !---------------------------------------------------------------------------------------
 
 
+if( myid == 0 )then
+    write(6,'(/A,1x,A)') 'set1: model ', trim(model)
+endif ! myid == 0 
+
+
 if( trim(model) == "fasham_CDOM") then
 
+
     allocate(aCDOM,source=newFasham_CDOM())
+
     call aCDOM%init()
+
     call aCDOM%setTruth()
+
     call aCDOM%setModel()
+
+
     return
 
 endif
 
 if( trim(model) == "fasham_CDOM_GP") then
 
+
     allocate(aCDOM,source=newFasham_CDOM_GP())
+
+
     call aCDOM%init()
+
+
     call aCDOM%setTruth()
+
     !call cdom%setModel()
+
+
     return
 
 endif ! trim(model) == "fasham_CDOM_GP"
@@ -70,7 +89,9 @@ endif ! trim(model) == "fasham_CDOM_GP"
 ! n_trees
 ! n_nodes
 
+
 call init_values( 0 )
+
 
 n_Variables = n_CODE_equations
 
@@ -105,7 +126,9 @@ call print_values1()
 
 ! allocate variable dimension arrays
 
+
 call allocate_arrays1( )
+
 
 
 !xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
@@ -126,6 +149,7 @@ GP_Child_Population_Node_Type=-9999              ! Matrix Operation
 
 GP_minSSE_Individual_SSE = 1.0d99
 
+
 !------------------------------------------------------------------
 
 ! fill the model arrays
@@ -137,7 +161,9 @@ GP_minSSE_Individual_SSE = 1.0d99
 !      tree_evaluation
 !      Node_Probability
 
+
 call init_values( 1 )
+
 
 !------------------------------------------------------------------
 
@@ -443,6 +469,7 @@ endif!  index( model,'LOG10') > 0 ...
 ! calculate n_GP_Asexual_Reproductions, n_GP_Crossovers,  etc.
 ! from the number of GP individuals and the probabilities such as:
 ! GP_Asexual_Reproduction_Probability, GP_Crossover_Probability, etc.
+
 
 call set_modified_indiv( )
 

@@ -50,7 +50,7 @@ tree_node_count = 0
 
 
 if( trim(model) == 'fasham_CDOM' .or. &
-    trim(model) == 'fasham_CDOM_GP') then
+    trim(model) == 'fasham_CDOM_GP' ) then
     dt = 1.0d0
 endif ! trim(model) == 'fasham_CDOM' ...
 
@@ -256,6 +256,7 @@ do  i_Time_Step = 1, n_Time_Steps
     !---------------------------------------------------------------------------
 
     Numerical_CODE_Solution(i_Time_Step,1:n_Variables)=max(b_tmp(1:n_Variables),0.0D+0)
+
 
 
 enddo ! End Time step loop

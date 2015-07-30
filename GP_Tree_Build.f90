@@ -138,6 +138,7 @@ do  i_GP_Individual=1,n_GP_Individuals  ! for each GP individual
 
     enddo !  i_Tree
 
+
 enddo !  i_GP_Individual
 
 
@@ -197,6 +198,7 @@ do  i_GP_Individual=1,n_GP_Individuals
 
                         endif !  n_inputs <= n_code_equations
 
+                        !write(6,'(A,1x,I6)')'gtb: node_variable ', node_variable
 
                         GP_Child_Population_Node_Type(i_Node,i_Tree,i_GP_Individual) = &
                                                                           -Node_Variable
@@ -266,6 +268,7 @@ do  i_GP_Individual=1,n_GP_Individuals
         enddo level_loop2 !  i_Level
 
     enddo !  i_Tree
+
 
 
     !---------------------------------------------------------------------------------

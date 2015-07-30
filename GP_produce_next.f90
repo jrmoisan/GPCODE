@@ -37,7 +37,6 @@ L_nextloop = .false.
 
 if( i_GP_generation < 2 ) return
 
-
 ierror_t  = 0
 ierror_m  = 0
 ierror_rr = 0
@@ -48,6 +47,26 @@ if( myid == 0 )then
     ! fill child sse for individuals not  modified in this generation
 
     GP_Child_Population_SSE  = GP_Adult_Population_SSE   ! needed ??  jjm 20140522
+
+    if( i_GP_generation == 1                                  .or. &
+        mod( i_GP_generation, GP_child_print_interval ) == 0  .or. &
+        i_GP_generation == n_GP_generations                          )then
+
+        write(GP_print_unit,'(//A)') 'gpn:3 before modifications'
+        write(GP_print_unit,'(A)')&
+           'gpn:3 i_GP_gen i_GP_indiv    GP_Child_Pop_SSE  &
+            &   GP_Child_Pop_SSE/SSE0'
+        flush(GP_print_unit)
+
+        do  i_GP_individual = 1, n_GP_individuals
+            write(GP_print_unit,'(2(1x,I10), 2(1x, E15.7))') &
+                  i_GP_generation, i_GP_individual, &
+                  GP_Child_Population_SSE(i_GP_Individual), &
+                  GP_Child_Population_SSE(i_GP_Individual)/SSE0
+        enddo ! i_GP_individual
+        flush(GP_print_unit)
+
+    endif ! i_GP_generation == 1 .or. ...
 
 
     !----------------------------------------------------------------------------------
@@ -236,6 +255,7 @@ endif ! ierror....
 ! generation were
 
 if( trim(model) == 'fasham_fixed_tree' )then
+
     if( myid == 0 )then
 
         write(6,'(/A,2(1x,I6))') &

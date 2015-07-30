@@ -239,6 +239,7 @@ use kinds_mod
         else
             f_ExponentialDecay = 0.0D0
         endif 
+
     end function
 
 

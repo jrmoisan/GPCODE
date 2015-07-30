@@ -67,7 +67,6 @@ else
 
         if( myid ==0) then
 
-
             ! set
             ! GP_Adult_Population_Node_Type array with random trees
             ! GP_Child_Population_Node_Type = Adult
@@ -75,7 +74,6 @@ else
             ierror_tb = 0
 
             call GP_Tree_Build( ierror_tb )
-
 
         endif ! myid == 0
 
@@ -93,6 +91,7 @@ else
 
             call MPI_FINALIZE( ierr )
             stop ' GP_produce_first,ierror_tb'
+
         endif ! ierror_tb
 
         message_len = n_GP_Individuals * n_Nodes * n_Trees

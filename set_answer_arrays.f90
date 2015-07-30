@@ -58,6 +58,7 @@ elseif( index(model, 'CDOM' ) == 0 )then
 
     call Initialize_Model( .true., .true., 6 )    ! for the regular tree, node array model
 
+
 endif ! model == 'fasham'
 
 
@@ -113,8 +114,10 @@ endif ! L_unit50_output
 
 ! initialize the biological data fields
 
+
 Numerical_CODE_Solution(0,1:n_CODE_equations) = &
-             Numerical_CODE_Initial_Conditions
+                 Numerical_CODE_Initial_Conditions
+
 
 
 if( myid == 0 )then

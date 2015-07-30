@@ -78,26 +78,26 @@ logical :: L_myprint
 
 !------------------------------------------------------------------------------
 
-   if( myid /= 0 ) return
+if( myid /= 0 ) return
 
-   write(GP_print_unit,'(/A,2(1x,I6)/)') 'pts: i_GP_generation', i_GP_generation 
+write(GP_print_unit,'(/A,2(1x,I6)/)') 'pts: i_GP_generation', i_GP_generation 
 
-   L_myprint = .FALSE.
-   if( i_GP_generation == 0 )then
-      L_myprint = .TRUE.
-   endif ! i_GP_generation == 0
+L_myprint = .FALSE.
+if( i_GP_generation == 0 )then
+   L_myprint = .TRUE.
+endif ! i_GP_generation == 0
 
-   GP_individual_Initial_Conditions = GP_Population_Initial_Conditions(:, i_GP_best_parent)
-   GP_Individual_Node_Parameters    = GP_population_node_parameters(:,:,i_GP_best_parent)
-   GP_Individual_Node_Type          = GP_Adult_Population_Node_Type(:,:,i_GP_best_parent)
+GP_individual_Initial_Conditions = GP_Population_Initial_Conditions(:, i_GP_best_parent)
+GP_Individual_Node_Parameters    = GP_population_node_parameters(:,:,i_GP_best_parent)
+GP_Individual_Node_Type          = GP_Adult_Population_Node_Type(:,:,i_GP_best_parent)
 
-   Numerical_CODE_Solution(0,1:n_CODE_equations)         = GP_individual_Initial_Conditions
-   Numerical_CODE_Initial_Conditions(1:n_CODE_equations) = GP_individual_Initial_Conditions
-   Numerical_CODE_Solution(1:n_time_steps,1:n_CODE_equations) = 0.0d0
+Numerical_CODE_Solution(0,1:n_CODE_equations)         = GP_individual_Initial_Conditions
+Numerical_CODE_Initial_Conditions(1:n_CODE_equations) = GP_individual_Initial_Conditions
+Numerical_CODE_Solution(1:n_time_steps,1:n_CODE_equations) = 0.0d0
 
-   if( L_myprint )write(GP_print_unit,'(/A)') 'pts: call Initialize_Model  '
+if( L_myprint )write(GP_print_unit,'(/A)') 'pts: call Initialize_Model  '
 
-   call Initialize_Model( .true., .true., 6 )
+call Initialize_Model( .true., .true., 6 )
 
 !------------------------------------------------------------------------------
 
@@ -209,7 +209,7 @@ if( myid == 0 )then
 
     if( n_inputs == 0 )then
 
-        call Runge_Kutta_Box_Model( .false. )   ! don't print
+        call Runge_Kutta_Box_Model( .false. )        ! don't print
 
     else
 
@@ -315,6 +315,7 @@ if( myid == 0 )then
         call calc_stats( n_time_steps, resid(1,j) ,              &
                          resid_mean(j), resid_rms(j), resid_stddev(j), &
                          dt, 0.0d0, 1.0d9, 1.0d0 )
+
 
         call corr( Numerical_CODE_Solution(1,j), Data_Array(1,j), &
                    n_time_steps, 0, r_corr(j) , &
@@ -459,7 +460,7 @@ if( myid == 0 )then
     write(plot_unit, '(A,1x,E15.7)')  '#pts: y_max', y_max
 
 
-                                                                                                                               
+
     if( index( model,'LOG10') > 0 .or. &                                                                                       
         index( model,'log10') > 0         )then                                                                                
                                                                                                                                

@@ -85,6 +85,11 @@ contains
       n_count = i_count - 3
       n_time_steps = n_count
 
+      if( myid == 0 )then
+          write(6,'(A,1x,I10)')'initCDGP: n_count      ', n_count               
+          write(6,'(A,1x,I10)')'initCDGP: n_time_steps ', n_time_steps        
+      endif ! myid == 0
+
       allocate(this%cdoms(0:n_time_steps))
       allocate(this%pars(0:n_time_steps))
       allocate(this%kds(0:n_time_steps))
@@ -129,9 +134,12 @@ contains
       endif ! myid == 0
 
       close(data_unitnum)   
-!
+
 !   allocate and initialize all the globals
-! 
+
+      if( myid == 0 )then
+          write(6,'(/A/)')   'initCDGP: call allocate_arrays1 '
+      endif ! myid == 0 
       call allocate_arrays1()
 
    
@@ -141,6 +149,15 @@ contains
          Node_Probability(i) =  1.0d0 - increment * real(i,kind=r8b)
       enddo
       Node_Probability(n_levels) = 0.0d0
+
+      if( myid == 0 )then
+          write(6,'(/A,1x,I6)')   'initCDGP: n_levels ', n_levels           
+          write(6,'(A/(10(1x,E12.5)))') 'initCDGP: Node_Probability', &               
+                                                   Node_Probability
+          write(6,'(A)') ' '
+      endif ! myid == 0 
+
+
       bioflo_map = 1
  
    end subroutine init
@@ -168,6 +185,15 @@ use GA_Variables_module
       Numerical_CODE_Solution(0,1) = this%cdoms(1)
 
       Data_Array=Numerical_CODE_Solution
+
+      if( myid == 0 )then
+          do i = 0, n_time_steps
+          write(6,'(A,1x,I10,1x,E15.7)') &
+                'setCDGP: i, data_array(i,1 ) ', &
+                          i, data_array( i, 1) 
+          enddo ! i  
+      endif ! myid == 0 
+
       Numerical_CODE_Solution(1:n_time_steps, 1:n_code_equations) = 0.0d0
 
 

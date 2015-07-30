@@ -50,6 +50,7 @@ contains
         myid = this%node_id
 
 
+
         write(this%funit,'(I0.0,A,I0.0,A)',advance='no') &
                                this%node_id, '[label="[', this%node_id, '] '
         call Dot_Graph_Function(this%funit, node%operation)
@@ -73,7 +74,6 @@ contains
         use kinds_mod 
         class(Dot_Graph_Visitor), intent(inout) :: this
         class(Tree_Node), intent(in) :: node
-
 
 
         write(this%funit,'(I0.0,A,I0.0,A)',advance='no') &

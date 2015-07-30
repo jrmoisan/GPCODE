@@ -26,6 +26,9 @@ real(kind=r8b), allocatable, dimension(:) ::  temp_array
 
 !-------------------------------------------------------------------------------
 
+if( myid == 0 )then
+    write(6,'(//A,1x,I10/)') 'rid:  n_input_vars = ', n_input_vars
+endif ! myid == 0 
 
 
 if( n_input_vars <= 0 ) return
@@ -51,6 +54,10 @@ enddo
 n_time_steps = ncount - 1
 
 
+if( myid == 0 )then
+    write(6,'(//A,2(1x,I10)/)') 'rid:  ncount, n_time_steps = ',  ncount, n_time_steps
+    flush(6)
+endif ! myid == 0 
 
 ! read data names and values
 
@@ -105,6 +112,14 @@ deallocate( temp_array )
 close(data_unitnum)
 
 n_input_data_points = n_time_steps  ! jjm
+
+
+if( myid == 0 )then
+    write(6,'(//A,2(1x,I10)/)') &
+          'rid:  n_input_data_points, n_time_steps = ',  &
+                 n_input_data_points, n_time_steps
+    flush(6)
+endif ! myid == 0 
 
 return 
 

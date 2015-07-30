@@ -101,6 +101,7 @@ use kinds_mod
 
         !--------------------------------------------------------------------------
 
+
         allocate(node)
 
         ! Constructor: Node Type, Node Count, Parent, LeftChild, RightChild,

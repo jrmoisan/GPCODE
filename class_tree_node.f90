@@ -81,7 +81,6 @@ contains
         call this%left%delete()
         call this%right%delete()
         deallocate(this%left, this%right)
-       
     end subroutine Tree_Math_Node_Delete
 
 
@@ -99,7 +98,6 @@ contains
 
         v = math_funcs( this%operation )%f( this%left%val(), this%right%val() )
 
-
     end function Tree_Math_Node_Val
 
 
@@ -109,7 +107,6 @@ contains
         real(kind=r8b) :: v
 
         v = this%param
-
 
     end function Tree_Parameter_Node_Val
 
@@ -124,7 +121,6 @@ contains
 
         v_index = this%variable_index
  
-
     end function Tree_Variable_Node_Val
 
 
