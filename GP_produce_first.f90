@@ -56,6 +56,11 @@ else
         ! GP_Adult_Population_Node_Type(:,:,:)
         ! GP_Population_Node_parameters(:,:,:)
 
+        if( myid == 0 ) then
+            write(GP_print_unit,'(/A/)') &
+                  'gpf: call fasham_model_debug    '
+        endif
+
         call fasham_model_debug()
 
     else
@@ -78,6 +83,11 @@ else
                         MPI_INTEGER,  0, MPI_COMM_WORLD, ierr )
 
         if( ierror_tb > 0 )then
+
+            if( myid == 0 ) then
+                write(GP_print_unit,'(/A,1x,I6)') &
+                      'gpf: ierror_tb ', ierror_tb                                    
+            endif
 
             call MPI_FINALIZE( ierr )
             stop ' GP_produce_first,ierror_tb'
@@ -122,6 +132,12 @@ if( trim(model) == 'fasham_CDOM' )then
 endif !   trim(model) == 'fasham_CDOM' 
 
 !---------------------------------------------------------------------------
+
+!if( myid == 0 ) then
+!    write(GP_print_unit,'(/A,1x,I6)') &
+!      'gpf: return'
+!    flush(GP_print_unit)
+!endif
 
 
 return

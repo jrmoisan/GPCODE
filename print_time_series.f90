@@ -113,6 +113,18 @@ endif ! myid == 0
 
 !------------------------------------------------------------------------------
 
+! Write trees to disk
+
+!if( myid == 0 )then
+!    if( L_myprint )write(GP_print_unit,'(/A/)') 'pts: call Serialize_Trees   '
+!    call Serialize_Trees( GP_Trees(:,:), &
+!                          n_Trees, n_Tracked_Resources, output_dir )
+!    if( L_myprint )write(GP_print_unit,'(/A/)') 'pts: aft call Serialize_Trees   '
+!endif ! myid == 0
+
+
+!------------------------------------------------------------------------------
+
 ! set the initial population node type using the info obtained
 ! from the setup file
 
@@ -415,9 +427,23 @@ if( myid == 0 )then
         write(GP_print_unit, '(/A,1x,E15.7)') 'pts: y_min', y_min
         write(GP_print_unit, '(A,1x,E15.7/)') 'pts: y_max', y_max
 
-        write(GP_print_unit, '(A,2(1x, I6),1x,E15.7, 1x,E24.16/)') &
-         '#pts: i_GP_generation, n_time_steps, dt, resid_SSE', &
-                i_GP_generation, n_time_steps, dt, resid_SSE
+        if( index( model,'LOG10') > 0 .or. &
+            index( model,'log10') > 0         )then
+
+
+            write(GP_print_unit, '(A,2(1x, I6),1x,E15.7, 2(1x,E15.7))') &
+                 '#pts: i_GP_gen, n_time_steps, dt, resid_SSE, SSE/SSE0_nolog10', &
+                        i_GP_generation, n_time_steps, dt, resid_SSE, resid_SSE/SSE0_nolog10
+
+        else
+
+            write(GP_print_unit, '(A,2(1x, I6),1x,E15.7, 2(1x,E15.7))') &
+                 '#pts: i_GP_gen, n_time_steps, dt, resid_SSE, SSE/SSE0', &
+                        i_GP_generation, n_time_steps, dt, resid_SSE, resid_SSE/SSE0
+
+
+        endif!  index( model,'LOG10') > 0 ...
+
     endif ! L_myprint
 
 
@@ -446,8 +472,6 @@ if( myid == 0 )then
 
     write(plot_unit, '(A,1x,E15.7)')  '#pts: y_min', y_min
     write(plot_unit, '(A,1x,E15.7)')  '#pts: y_max', y_max
-
-
 
     if( index( model,'LOG10') > 0 .or. &
         index( model,'log10') > 0         )then
