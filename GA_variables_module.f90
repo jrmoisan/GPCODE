@@ -1,4 +1,26 @@
+!> @brief
+!>  This subroutine declares GA variables and parameters and sets values for  
+!!  some of the parameters
+!>
+!> @details
+!>  This subroutine declares GA variables and parameters and sets values for  
+!!  some of the parameters
+!>
+!> @author Dr. John R. Moisan [NASA/GSFC]
+!> @date January, 2013 Dr. John R. Moisan
+
 module GA_variables_module
+ 
+!---------------------------------------------------------------------------  
+!
+! DESCRIPTION: 
+! Brief description of routine. 
+!
+! REVISION HISTORY:
+! TODO_dd_mmm_yyyy - TODO_describe_appropriate_changes - TODO_name
+!
+!---------------------------------------------------------------------------  
+
 use kinds_mod 
 use GA_parameters_module
 implicit none

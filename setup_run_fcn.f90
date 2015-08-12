@@ -1,6 +1,33 @@
+!> @brief
+!>  This subroutine loads arrays needed for running the Runge-Kutta integration process,
+!!  and processes the output of that process.
+!>
+!> @details
+!>  This subroutine loads arrays needed for running the Runge-Kutta integration process,
+!!  and processes the output of that process.
+!>
+!> @author Dr. John R. Moisan [NASA/GSFC]
+!> @date January, 2013 Dr. John R. Moisan
+!>
+!> @param[in] i_GA_indiv
+!> @param[inout] child_parameters
+!> @param[in] individual_quality
+!> @param[in] new_comm
+
 subroutine setup_run_fcn( i_GA_indiv,  &
                           child_parameters, individual_quality, &
                                      new_comm  )
+
+ 
+!---------------------------------------------------------------------------  
+!
+! DESCRIPTION: 
+! Brief description of routine. 
+!
+! REVISION HISTORY:
+! TODO_dd_mmm_yyyy - TODO_describe_appropriate_changes - TODO_name
+!
+!---------------------------------------------------------------------------  
 
 ! written by: Dr. John R. Moisan [NASA/GSFC] 5 December, 2012
 !xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx

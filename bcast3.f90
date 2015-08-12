@@ -1,4 +1,27 @@
+!> @brief
+!>  This subroutine does MPI broadcasts to send arrays defined by processor 0
+!!  to the rest of the processors
+!>
+!> @details
+!>  This subroutine does MPI broadcasts to send arrays defined by processor 0
+!!  to the rest of the processors
+!>
+!> @author Dr. John R. Moisan [NASA/GSFC]
+!> @date January, 2013 Dr. John R. Moisan
+
 subroutine bcast3( )
+
+ 
+!---------------------------------------------------------------------------  
+!
+! DESCRIPTION: 
+! Brief description of routine. 
+!
+! REVISION HISTORY:
+! TODO_dd_mmm_yyyy - TODO_describe_appropriate_changes - TODO_name
+!
+
+!---------------------------------------------------------------------------  
 
 ! program written by: Dr. John R. Moisan [NASA/GSFC] 31 January, 2013
 

@@ -1,4 +1,56 @@
+!> @brief
+!>  QRFAC computes a QR factorization using Householder transformations.
+!>
+!> @details
+!>   This subroutine uses Householder transformations with column
+!!   pivoting (optional) to compute a QR factorization of the
+!!   M by N matrix A.  That is, QRFAC determines an orthogonal
+!!   matrix Q, a permutation matrix P, and an upper trapezoidal
+!!   matrix R with diagonal elements of nonincreasing magnitude,
+!!   such that A*P = Q*R.  The Householder transformation for
+!!   column K, K = 1,2,...,min(M,N), is of the form
+!!
+!!     I - ( 1 / U(K) ) * U * U'
+!!
+!!   where U has zeros in the first K-1 positions.  The form of
+!!   this transformation and the method of pivoting first
+!!   appeared in the corresponding LINPACK subroutine.
+!>
+!> @author Jorge More, Burton Garbow, Kenneth Hillstrom, John Burkardt.
+!> @date April 6, 2010 John Burkardt
+!>
+!> @param[in] M  the number of rows of A.
+!> @param[in] N  the number of columns of A.
+!> @param[inout] A(LDA,N)  the M by N array.
+!!    On input, A contains the matrix for which the QR factorization is to
+!!    be computed.  
+!!    On output, the strict upper trapezoidal part of A contains
+!!    the strict upper trapezoidal part of R, and the lower trapezoidal
+!!    part of A contains a factored form of Q (the non-trivial elements of
+!!    the U vectors described above).
+!> @param[in] LDA  the leading dimension of A, which must be no less than M.
+!> @param[in] PIVOT  is TRUE if column pivoting is to be carried out.
+!> @param[in] LIPVT  the dimension of IPVT, which should be N if pivoting is used.
+!> @param[out] IPVT(LIPVT)  defines the permutation matrix P such
+!!    that A*P = Q*R.  Column J of P is column IPVT(J) of the identity matrix.
+!!    If PIVOT is false, IPVT is not referenced.
+!> @param[out] RDIAG(N)  contains the diagonal elements of R.
+!> @param[out] ACNORM(N)  the norms of the corresponding
+!!    columns of the input matrix A.  If this information is not needed,
+!!    then ACNORM can coincide with RDIAG.
+
 subroutine qrfac ( m, n, a, lda, pivot, ipvt, lipvt, rdiag, acnorm )
+
+ 
+!---------------------------------------------------------------------------  
+!
+! REVISION HISTORY:
+! TODO_dd_mmm_yyyy - TODO_describe_appropriate_changes - TODO_name
+!
+!
+! DESCRIPTION: 
+! Brief description of routine. 
+!---------------------------------------------------------------------------  
 
 !*****************************************************************************80
 !

@@ -1,4 +1,28 @@
+!> @brief
+!>  This subroutine randomly sets the values of the tree parameters 
+!!  to start the GA process.
+!>
+!> @details
+!>  This subroutine randomly sets the values of the tree parameters 
+!!  to start the GA process.
+!>
+!> @author Dr. John R. Moisan [NASA/GSFC]
+!> @date January, 2013 Dr. John R. Moisan
+!>
+!> @param[out] Child_Parameters
+
 subroutine Initialize_GA_Child_Parameters(Child_Parameters)
+
+ 
+!---------------------------------------------------------------------------  
+!
+! DESCRIPTION: 
+! Brief description of routine. 
+!
+! REVISION HISTORY:
+! TODO_dd_mmm_yyyy - TODO_describe_appropriate_changes - TODO_name
+!
+!---------------------------------------------------------------------------  
 
 use kinds_mod 
 use mpi

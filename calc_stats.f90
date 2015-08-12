@@ -1,5 +1,35 @@
+!> @brief
+!>  This subroutine calculates the mean, rms and standard deviation of an array.
+!>
+!> @details
+!>  This subroutine calculates the mean, rms and standard deviation of an array.
+!>
+!> @author Dr. John R. Moisan [NASA/GSFC]
+!> @date January, 2013 Dr. John R. Moisan
+!>
+!> @param[in] n_array
+!> @param[in] array
+!> @param[in] dt
+!> @param[in] sse_min_time
+!> @param[in] sse_max_time
+!> @param[in] sse_low_wt
+!> @param[out] mean
+!> @param[out] rms
+!> @param[out] std_dev
+
 subroutine calc_stats( n_array, array, mean, rms, std_dev, &
                        dt, sse_min_time, sse_max_time, sse_low_wt  )
+
+ 
+!---------------------------------------------------------------------------  
+!
+! DESCRIPTION: 
+! Brief description of routine. 
+!
+! REVISION HISTORY:
+! TODO_dd_mmm_yyyy - TODO_describe_appropriate_changes - TODO_name
+!
+!---------------------------------------------------------------------------  
 
 use kinds_mod 
 implicit none

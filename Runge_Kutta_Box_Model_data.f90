@@ -1,9 +1,29 @@
+!> @brief
+!>  This subroutine computes the function value in the data processing model  
+!!  using equations defined by the tree and the input values to the function.
+!>
+!> @details
+!>  This subroutine computes the function value in the data processing model  
+!!  using equations defined by the tree and the input values to the function.
+!>
+!> @author Dr. John R. Moisan [NASA/GSFC]
+!> @date January, 2013 Dr. John R. Moisan
+!>
+!> @param[out] L_print_RK
+
 subroutine Runge_Kutta_Box_Model_data( L_print_RK ) 
 
-!xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
-! carry out a prescribed Runge-Kutta numerical integration
-! using the GP architecture to solve a coupled system of equations
-!xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+ 
+!---------------------------------------------------------------------------  
+!
+! DESCRIPTION: 
+! Brief description of routine. 
+!
+! REVISION HISTORY:
+! TODO_dd_mmm_yyyy - TODO_describe_appropriate_changes - TODO_name
+!
+!---------------------------------------------------------------------------  
+
 
 
 use kinds_mod 

@@ -1,3 +1,26 @@
+!> @brief
+!!  These subroutines generate DOT language output from a tree array,
+!!  and use the dot executable to create PDF files of tree diagrams.
+!>
+!> @details
+!!  These subroutines generate DOT language output from a tree array,
+!!  and use the dot executable to create PDF files of tree diagrams.
+!>
+!> @author Erik Wisuri
+!> @date June 14, 2013 Erik Wisuri 
+
+module class_Dot_Graph_Visitor
+
+ 
+!---------------------------------------------------------------------------  
+!
+! DESCRIPTION: 
+!  Brief description of routine. 
+!
+! REVISION HISTORY:
+! TODO_dd_mmm_yyyy - TODO_describe_appropriate_changes - TODO_name
+!
+!---------------------------------------------------------------------------  
 
 ! Generate_Dot_Graph
 
@@ -5,7 +28,7 @@
 ! These subroutines generate DOT output from a tree array,
 ! and use the dot executable to create PDF files.
 
-module class_Dot_Graph_Visitor
+
     use kinds_mod 
     use class_Tree_Node
     use GP_parameters_module

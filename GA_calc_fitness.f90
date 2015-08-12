@@ -1,7 +1,38 @@
+!> @brief
+!>  This subroutine finds the fittest GA individual, i.e. the GA individual with
+!!  the smallest SSE value
+!>
+!> @details
+!>  This subroutine finds the fittest GA individual, i.e. the GA individual with
+!!  the smallest SSE value
+!>
+!> @author Dr. John R. Moisan [NASA/GSFC]
+!> @date January, 2013 Dr. John R. Moisan
+!>
+!> @param[in] i_GP_Generation
+!> @param[in] i_GP_individual
+!> @param[in] new_comm 
+!> @param[in] parent_parameters
+!> @param[in] individual_quality
+!> @param[out] child_parameters
+!> @param[out] i_GA_Best_Parent
+!> @param[out] L_stop_run
+
 subroutine GA_calc_fitness( child_parameters, individual_quality, &
                          i_GA_Best_Parent, parent_parameters,  &
                          L_stop_run,  i_GP_Generation, i_GP_individual, &
                          new_comm  )
+
+ 
+!---------------------------------------------------------------------------  
+!
+!
+! DESCRIPTION: 
+!  Brief description of routine. 
+
+! REVISION HISTORY:
+! TODO_dd_mmm_yyyy - TODO_describe_appropriate_changes - TODO_name
+!---------------------------------------------------------------------------  
 
 
 ! written by: Dr. John R. Moisan [NASA/GSFC] 5 December, 2012

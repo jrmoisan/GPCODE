@@ -1,4 +1,26 @@
+!> @brief
+!>  This subroutine defines the mathematical functions invoked by the tree nodes
+!!  with values (function indices) > 0.
+!>
+!> @details
+!>  This subroutine defines the mathematical functions invoked by the tree nodes
+!!  with values (function indices) > 0.
+!>
+!> @author Dave Coulter [NASA Summer Intern under Dr. John R. Moisan [NASA/GSFC] ]
+!> @date August 2, 2013 Dave Coulter 
+
 module Math_Node_Functions
+
+ 
+!---------------------------------------------------------------------------  
+!
+! DESCRIPTION: 
+! Brief description of routine. 
+!
+! REVISION HISTORY:
+! TODO_dd_mmm_yyyy - TODO_describe_appropriate_changes - TODO_name
+!
+!---------------------------------------------------------------------------  
 
 
 ! File:   Math_Node_Functions.f03

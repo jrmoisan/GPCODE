@@ -1,4 +1,28 @@
+!> @brief
+!>  This subroutine does the processing for GP generations after the first.   
+!>
+!> @details
+!>  This subroutine does the processing for GP generations after the first.   
+!>
+!> @author Dr. John R. Moisan [NASA/GSFC]
+!> @date January, 2013 Dr. John R. Moisan
+!>
+!> @param[in] i_GP_generation 
+!> @param[in] i_GP_best_parent
+!> @param[out] L_nextloop
+
 subroutine GP_produce_next(i_GP_generation, i_GP_best_parent, L_nextloop)
+
+ 
+!---------------------------------------------------------------------------  
+!
+! DESCRIPTION: 
+! Brief description of routine. 
+!
+! REVISION HISTORY:
+! TODO_dd_mmm_yyyy - TODO_describe_appropriate_changes - TODO_name
+!
+!---------------------------------------------------------------------------  
 
 use kinds_mod
 use mpi

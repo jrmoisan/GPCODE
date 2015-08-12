@@ -1,4 +1,29 @@
+!> @brief
+!>  generate indices for the tournament selection
+!>
+!> @details
+!>  generate indices for the tournament selection
+!!  keep generating numbers until one is found
+!!  which is not the index of an elite individual -- which must not be replaced
+!!  ksafe is used to prevent infinite loops
+!>
+!> @author Dr. John R. Moisan [NASA/GSFC]
+!> @date January, 2013 Dr. John R. Moisan
+!>
+!> @param[out] index0
+
 subroutine GA_check_for_elite( index0  )
+
+ 
+!---------------------------------------------------------------------------  
+!
+! DESCRIPTION: 
+! Brief description of routine. 
+
+
+! REVISION HISTORY:
+! TODO_dd_mmm_yyyy - TODO_describe_appropriate_changes - TODO_name
+!---------------------------------------------------------------------------  
 
 use kinds_mod 
 use mpi                                                                                                   

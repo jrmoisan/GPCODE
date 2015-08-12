@@ -1,4 +1,26 @@
+!> @brief
+!>  This subroutine declares GP variables and GP parameters and sets values for
+!!  some GP parameters
+!>
+!> @details
+!>  This subroutine declares GP variables and GP parameters and sets values for
+!!  some GP parameters
+!>
+!> @author Dr. John R. Moisan [NASA/GSFC]
+!> @date January, 2013 Dr. John R. Moisan
+
 module GP_data_module
+ 
+!---------------------------------------------------------------------------  
+!
+! DESCRIPTION: 
+! Brief description of routine. 
+!
+! REVISION HISTORY:
+! TODO_dd_mmm_yyyy - TODO_describe_appropriate_changes - TODO_name
+!
+!---------------------------------------------------------------------------  
+
 use kinds_mod 
 use GP_parameters_module
 

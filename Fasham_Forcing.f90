@@ -1,10 +1,35 @@
+!> @brief
+!>  Computes some forcing functions for the Fasham model.
+
+!> @details
+!>  Computes some forcing functions for the Fasham model.
+
+!> @author  Dave ??
+!> @date June 26, 2013     Dave  ??            
+
+!> @param[in] species
+!> @param[in] day
+!> @param[in] aMLD
+!> @param[out] L_bad
+!> @param[out] aJ
+
+subroutine JQforce(species, day, aMLD, aJ, L_bad)
+!---------------------------------------------------------------------------  
 !
 ! File:   Fasham_Forcing.f90
 ! Author: Dave
 !
 ! Created on June 26, 2013, 1:37 PM
 !
-subroutine JQforce(species, day, aMLD, aJ, L_bad)
+!
+! DESCRIPTION: 
+! Brief description of routine. 
+!
+! REVISION HISTORY:
+! TODO_dd_mmm_yyyy - TODO_describe_appropriate_changes - TODO_name
+!
+!---------------------------------------------------------------------------  
+
 use kinds_mod
 
 use fasham_variables_module
@@ -154,6 +179,32 @@ end subroutine JQforce
 
 
 subroutine mldforce(day, h, aMLD, L_bad )
+
+ 
+!---------------------------------------------------------------------------  
+!> @author  Dave ??
+!> @date June 26, 2013     Dave  ??            
+!
+! DESCRIPTION: 
+! Brief description of routine. 
+
+!> @brief
+!>  Computes the aMLD and h(t) terms of forcing functions for the Fasham model.
+
+!> @details
+!>  Computes the aMLD and h(t) terms of forcing functions for the Fasham model.
+
+!
+! REVISION HISTORY:
+! TODO_dd_mmm_yyyy - TODO_describe_appropriate_changes - TODO_name
+!
+!> @param[in] day
+!>
+!> @param[out] h 
+!> @param[out] aMLD
+!> @param[out] L_bad
+
+!---------------------------------------------------------------------------  
 
 !xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 ! subroutine to determine the aMLD and h(t) terms

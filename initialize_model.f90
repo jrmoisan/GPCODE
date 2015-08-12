@@ -1,4 +1,30 @@
+!> @brief
+!>  This subroutine calls routine build_trees to make tree objects, and contains
+!!  some Fasham model forcing subroutines.
+!>
+!> @details
+!>  This subroutine calls routine build_trees to make tree objects, and contains
+!!  some Fasham model forcing subroutines.
+!>
+!> @author Dr. John R. Moisan [NASA/GSFC]
+!> @date January, 2013 Dr. John R. Moisan
+!>
+!> @param[in]  L_myprint
+!> @param[in]  myprint_unit
+!> @param[out] buildTrees 
+
 subroutine Initialize_Model( buildTrees, L_myprint, myprint_unit )
+
+ 
+!---------------------------------------------------------------------------  
+!
+! DESCRIPTION: 
+! Brief description of routine. 
+!
+! REVISION HISTORY:
+! TODO_dd_mmm_yyyy - TODO_describe_appropriate_changes - TODO_name
+!
+!---------------------------------------------------------------------------  
 
 use kinds_mod 
 

@@ -1,4 +1,29 @@
+!> @brief
+!>  This subroutine controls the GA process for GP individuals and executes the 
+!!  GA process in parallel over all the GP individuals.
+!>
+!> @details
+!>  This subroutine controls the GA process for GP individuals and executes the 
+!!  GA process in parallel over all the GP individuals.
+!>
+!> @author Dr. John R. Moisan [NASA/GSFC]
+!> @date January, 2013 Dr. John R. Moisan
+!>
+!> @param[in] new_comm 
+!> @param[in] i_GP_generation
+
 subroutine GP_individual_loop(new_comm, i_GP_generation)
+
+ 
+!---------------------------------------------------------------------------  
+!
+! DESCRIPTION: 
+! Brief description of routine. 
+!
+! REVISION HISTORY:
+! TODO_dd_mmm_yyyy - TODO_describe_appropriate_changes - TODO_name
+!
+!---------------------------------------------------------------------------  
 
 ! program written by: Dr. John R. Moisan [NASA/GSFC] 31 January, 2013
 

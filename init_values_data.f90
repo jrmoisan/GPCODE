@@ -1,4 +1,26 @@
+!> @brief
+!>  This subroutine defines the data model 
+!>
+!> @details
+!>  This subroutine defines the data model 
+!>
+!> @author Dr. John R. Moisan [NASA/GSFC]
+!> @date November 14, 2012 Dr. John R. Moisan
+!>
+!> @param[in] icall
+
 subroutine init_values_DATA( icall  )
+
+ 
+!---------------------------------------------------------------------------  
+!
+! DESCRIPTION: 
+! Brief description of routine. 
+!
+! REVISION HISTORY:
+! TODO_dd_mmm_yyyy - TODO_describe_appropriate_changes - TODO_name
+!
+!---------------------------------------------------------------------------  
 
 
 !     written by John R. Moisan [14 November 2012]

@@ -1,4 +1,25 @@
+!> @brief
+!>  This module contains swap functions used by the "sort" routine.
+!>
+!> @details
+!>  This module contains swap functions used by the "sort" routine.
+!>
+!> @author Dr. John R. Moisan [NASA/GSFC]
+!> @date January, 2013 Dr. John R. Moisan
+
 module swap_module
+
+ 
+!---------------------------------------------------------------------------  
+!
+! DESCRIPTION: 
+! Brief description of routine. 
+!
+! REVISION HISTORY:
+! TODO_dd_mmm_yyyy - TODO_describe_appropriate_changes - TODO_name
+!
+
+!---------------------------------------------------------------------------  
 
 use kinds_mod
 

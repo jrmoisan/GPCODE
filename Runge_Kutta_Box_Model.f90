@@ -1,4 +1,28 @@
+!> @brief
+!>  This subroutine integrates the equations defined by the GP tree and the
+!!  parameters set in the GA process.
+!>
+!> @details
+!>  This subroutine integrates the equations defined by the GP tree and the
+!!  parameters set in the GA process.
+!>
+!> @author Dr. John R. Moisan [NASA/GSFC]
+!> @date January, 2013 Dr. John R. Moisan
+!>
+!> @param[out] L_print_RK 
+
 subroutine Runge_Kutta_Box_Model( L_print_RK )
+
+ 
+!---------------------------------------------------------------------------  
+!
+! DESCRIPTION: 
+! Brief description of routine. 
+!
+! REVISION HISTORY:
+! TODO_dd_mmm_yyyy - TODO_describe_appropriate_changes - TODO_name
+!
+!---------------------------------------------------------------------------  
 
 !xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 ! carry out a prescribed Runge-Kutta numerical integration

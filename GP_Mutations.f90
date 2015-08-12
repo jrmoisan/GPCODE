@@ -1,4 +1,28 @@
+!> @brief
+!>  This subroutine randomly modifies GP tree nodes with randomly chosen
+!!  values
+!>
+!> @details
+!>  This subroutine randomly modifies GP tree nodes with randomly chosen
+!!  values
+!>
+!> @author Dr. John R. Moisan [NASA/GSFC]
+!> @date January, 2013 Dr. John R. Moisan
+!>
+!> @param[out] i_error
+
 subroutine GP_Mutations( i_error )
+
+ 
+!---------------------------------------------------------------------------  
+!
+! DESCRIPTION: 
+! Brief description of routine. 
+
+!
+! REVISION HISTORY:
+! TODO_dd_mmm_yyyy - TODO_describe_appropriate_changes - TODO_name
+!---------------------------------------------------------------------------  
 
 !xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 

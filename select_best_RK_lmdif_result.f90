@@ -1,8 +1,38 @@
+!> @brief
+!>  This subroutine stores the parameters of the i_GA_best_parent, i.e. the most fit
+!!  GA individual.
+!>
+!> @details
+!>  This subroutine stores the parameters of the i_GA_best_parent, i.e. the most fit
+!!  GA individual.
+!>
+!> @author Dr. John R. Moisan [NASA/GSFC]
+!> @date January, 2013 Dr. John R. Moisan
+!>
+!> @param[in] i_GP_Generation
+!> @param[in] i_GP_individual
+!> @param[in] new_comm
+!> @param[in] i_GA_best_parent
+!> @param[in] parent_parameters
+!> @param[out] child_parameters
+!> @param[out] L_stop_run
+
 subroutine select_best_RK_lmdif_result( &
                 i_GP_Generation,i_GP_individual, &
                 i_GA_best_parent, parent_parameters, &
                 child_parameters, &
                 L_stop_run,            new_comm )
+
+ 
+!---------------------------------------------------------------------------  
+!
+! DESCRIPTION: 
+! Brief description of routine. 
+!
+! REVISION HISTORY:
+! TODO_dd_mmm_yyyy - TODO_describe_appropriate_changes - TODO_name
+!
+!---------------------------------------------------------------------------  
 
 ! written by: Dr. John R. Moisan [NASA/GSFC] 5 December, 2012
 !xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx

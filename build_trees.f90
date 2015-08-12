@@ -1,4 +1,29 @@
+!> @brief
+!>  This subroutine creates the tree objects from the GP arrays containing
+!!  node types and node parameter values.
+!>
+!> @details
+!>  This subroutine creates the tree objects from the GP arrays containing
+!!  node types and node parameter values.
+!>
+!> @author Dr. John R. Moisan [NASA/GSFC]
+!> @date January, 2013 Dr. John R. Moisan
+!>
+!> @param[in]  buildtrees
+!> @param[out] treeSlice 
+
 subroutine Build_Trees( treeSlice, buildtrees ) 
+
+ 
+!---------------------------------------------------------------------------  
+!
+! DESCRIPTION: 
+! Brief description of routine. 
+!
+! REVISION HISTORY:
+! TODO_dd_mmm_yyyy - TODO_describe_appropriate_changes - TODO_name
+!
+!---------------------------------------------------------------------------  
 
 use kinds_mod 
 use mpi

@@ -1,5 +1,28 @@
+!> @brief
+!>  This subroutine sets the truth values of the Fasham model into the tree arrays
+!>  for use with the fasham_fixed_tree model
+!>
+!> @details
+!>  This subroutine sets the truth values of the Fasham model into the tree arrays
+!>  for use with the fasham_fixed_tree model
+!>
+!> @author Dr. John R. Moisan [NASA/GSFC]
+!> @date January, 2013 Dr. John R. Moisan
+
 subroutine fasham_model_debug()
                     
+ 
+!---------------------------------------------------------------------------  
+!
+! DESCRIPTION: 
+! Brief description of routine. 
+!
+! REVISION HISTORY:
+! TODO_dd_mmm_yyyy - TODO_describe_appropriate_changes - TODO_name
+!
+
+!---------------------------------------------------------------------------  
+
 use kinds_mod
 use mpi   
 use mpi_module                      

@@ -1,4 +1,27 @@
+!> @brief
+!>  This subroutine calls the lmdif subroutine in parallel for all GP individuals
+!>
+!> @details
+!>  This subroutine calls the lmdif subroutine in parallel for all GP individuals
+!>
+!> @author Dr. John R. Moisan [NASA/GSFC]
+!> @date January, 2013 Dr. John R. Moisan
+!>
+!> @param[in] i_GP_Generation
+!> @param[in] max_n_gp_params 
+
 subroutine GP_para_lmdif_process( i_GP_Generation, max_n_gp_params  )
+
+ 
+!---------------------------------------------------------------------------  
+!
+! DESCRIPTION: 
+!  Brief description of routine. 
+!
+! REVISION HISTORY:
+! TODO_dd_mmm_yyyy - TODO_describe_appropriate_changes - TODO_name
+!
+!---------------------------------------------------------------------------  
 
 ! written by: Dr. John R. Moisan [NASA/GSFC] 5 December, 2012
 !xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx

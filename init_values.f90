@@ -1,4 +1,27 @@
+!> @brief
+!>  This subroutine controls calls to routines to initialize various models.
+!>
+!> @details
+!>  This subroutine controls calls to routines to initialize various models.
+!>
+!> @author Dr. John R. Moisan [NASA/GSFC]
+!> @date January, 2013 Dr. John R. Moisan
+!>
+!> @param[in] icall        
+
 subroutine init_values( icall  )
+
+ 
+!---------------------------------------------------------------------------  
+!
+! DESCRIPTION: 
+! Brief description of routine. 
+
+!
+! REVISION HISTORY:
+! TODO_dd_mmm_yyyy - TODO_describe_appropriate_changes - TODO_name
+!
+!---------------------------------------------------------------------------  
 
 use kinds_mod 
 

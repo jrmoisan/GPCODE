@@ -1,4 +1,30 @@
+!> @brief
+!>  This subroutine constructs the GP trees for all GP individuals.
+!>
+!> @details
+!>  This subroutine constructs the GP trees for all GP individuals.
+!!  Nodes are set to values for operators and values, and nodes 
+!!  holding parameters are marked with zeroes, and the values
+!!  of the parameters are set in the GA process.
+!>
+!> @author Dr. John R. Moisan [NASA/GSFC]
+!> @date January, 2013 Dr. John R. Moisan
+!>
+!> @param[out] i_Error 
+
 subroutine GP_Tree_Build( i_Error )
+
+ 
+!---------------------------------------------------------------------------  
+!
+! DESCRIPTION: 
+! Brief description of routine. 
+
+!
+! REVISION HISTORY:
+! TODO_dd_mmm_yyyy - TODO_describe_appropriate_changes - TODO_name
+!
+!---------------------------------------------------------------------------  
 
 !xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 

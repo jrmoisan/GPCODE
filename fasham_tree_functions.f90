@@ -1,3 +1,13 @@
+!> @brief
+!>  This module has routine which calculate the truth model tree for the Fasham model.
+!>
+!> @details
+!>  This module has routine which calculate the truth model tree for the Fasham model.
+!>
+!> @author Dave ??
+!> @date August 5, 2013 Dave ??
+
+!---------------------------------------------------------------------------  
 
 !---------------------------------------
 ! File:   Bacteria_Trees.f03
@@ -5,6 +15,12 @@
 
 ! Created on August 5, 2013, 1:44 PM
 !---------------------------------------
+!
+! DESCRIPTION: 
+!  Brief description of routine. 
+!
+! REVISION HISTORY:
+! TODO_dd_mmm_yyyy - TODO_describe_appropriate_changes - TODO_name
 
 !-------------------------------------------------------------------------------------------
 

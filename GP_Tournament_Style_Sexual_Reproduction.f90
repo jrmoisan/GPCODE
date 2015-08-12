@@ -1,4 +1,29 @@
+!> @brief
+!> This subroutine randomly chooses two 'parents' using the Tournament-Style Selection
+!! and crosses the parameter strings to create two new 'children' parameter strings
+!>
+!> @details
+!> This subroutine randomly chooses two 'parents' using the Tournament-Style Selection
+!! and crosses the parameter strings to create two new 'children' parameter strings
+!>
+!> @author Dr. John R. Moisan [NASA/GSFC]
+!> @date January, 2013 Dr. John R. Moisan
+!>
+!> @param[out] i_error
+
 subroutine GP_Tournament_Style_Sexual_Reproduction( i_error )
+
+ 
+!---------------------------------------------------------------------------  
+!
+! DESCRIPTION: 
+! Brief description of routine. 
+
+!
+! REVISION HISTORY:
+! TODO_dd_mmm_yyyy - TODO_describe_appropriate_changes - TODO_name
+!
+!---------------------------------------------------------------------------  
 
 !xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 ! randomly choose two 'parents' using the Tournament-Style Selection

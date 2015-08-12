@@ -1,4 +1,30 @@
+!> @brief
+!>  This subroutine randomly picks a GA individual and replaces a randomly chosen parameter
+!1  with a random number
+
+!> @details
+!>  This subroutine randomly picks a GA individual and replaces a randomly chosen parameter
+!!  with a random number
+
+!> @author Dr. John R. Moisan [NASA/GSFC]
+!> @date January, 2013 Dr. John R. Moisan
+!>
+!> @param[in] Child_Parameters
+!> @param[in] individual_quality 
+!> @param[out] Child_Parameters
+
 subroutine GA_Mutations(Child_Parameters, individual_quality )
+
+ 
+!---------------------------------------------------------------------------  
+!
+! DESCRIPTION: 
+! Brief description of routine. 
+!
+! REVISION HISTORY:
+! TODO_dd_mmm_yyyy - TODO_describe_appropriate_changes - TODO_name
+!
+!---------------------------------------------------------------------------  
 
 
 use kinds_mod

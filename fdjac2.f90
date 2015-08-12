@@ -1,4 +1,39 @@
+!> @brief
+!>  This subroutine estimates an M by N jacobian matrix using forward differences.
+!!  It is called by lmdif.
+!>
+!> @details
+!>    This subroutine computes a forward-difference approximation
+!!    to the M by N jacobian matrix associated with a specified
+!!    problem of M functions in N variables.
+!!    It is called by lmdif.
+!>
+!> @author Jorge More, Burton Garbow, Kenneth Hillstrom, and John Burkardt.
+!> @date April 6, 2010 John Burkardt.
+!>
+!> @param[in] FCN - the name of the user-supplied subroutine which calculates the functions.  
+!> @param[in]  M - is the number of functions.
+!> @param[in] N - is the number of variables.  N must not exceed M.
+!> @param[in]  X(N) -  the point where the jacobian is evaluated.
+!> @param[in] FVEC(M) - the functions evaluated at X.
+!> @param[in]  LDFJAC - the leading dimension of FJAC, which must not be less than M.
+!> @param[in] EPSFCN - used in determining a suitable step length for the 
+!>                     forward-difference approximation. 
+!> @param[out]  FJAC(LDFJAC,N) - the M by N approximate jacobian matrix.
+!> @param[out]  IFLAG - an error flag returned by FCN. 
+
 subroutine fdjac2 ( fcn, m, n, x, fvec, fjac, ldfjac, iflag, epsfcn )
+
+ 
+!---------------------------------------------------------------------------  
+!
+! DESCRIPTION: 
+! Brief description of routine. 
+!
+! REVISION HISTORY:
+! TODO_dd_mmm_yyyy - TODO_describe_appropriate_changes - TODO_name
+!
+!---------------------------------------------------------------------------  
 
 !*****************************************************************************80
 !

@@ -1,4 +1,27 @@
+!> @brief
+!>  This subroutine allocates most of the program's allocatable arrays using
+!!  user input values for the dimensions.
+!>
+!> @details
+!>  This subroutine allocates most of the program's allocatable arrays using
+!!  user input values for the dimensions.
+!>
+!> @author Dr. John R. Moisan [NASA/GSFC]
+!> @date January, 2013 Dr. John R. Moisan
+
 subroutine allocate_arrays1()
+
+ 
+!---------------------------------------------------------------------------  
+!
+! DESCRIPTION: 
+! Brief description of routine. 
+!
+! REVISION HISTORY:
+! TODO_dd_mmm_yyyy - TODO_describe_appropriate_changes - TODO_name
+!
+
+!---------------------------------------------------------------------------  
 
 ! program written by: Dr. John R. Moisan [NASA/GSFC] 31 January, 2013
 

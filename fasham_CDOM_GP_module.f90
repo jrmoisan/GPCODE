@@ -1,4 +1,25 @@
+!> @brief
+!>  This module contains routines for the fasham_CDOM_GP model.
+!>
+!> @details
+!>  This module contains routines for the fasham_CDOM_GP model.
+!>
+!> @author Weiyuan Jiang
+!> @date May, 2015 Weiyuan Jiang
+
 module fasham_CDOM_GP_module
+
+ 
+!---------------------------------------------------------------------------  
+!
+! DESCRIPTION: 
+! Brief description of routine. 
+!
+! REVISION HISTORY:
+! TODO_dd_mmm_yyyy - TODO_describe_appropriate_changes - TODO_name
+!
+
+!---------------------------------------------------------------------------  
 
    use kinds_mod
    use mpi

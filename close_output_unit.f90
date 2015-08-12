@@ -1,4 +1,25 @@
+!> @brief
+!>  This subroutine closes the I/O units which are open at the end of the program.
+!>
+!> @details
+!>  This subroutine closes the I/O units which are open at the end of the program.
+!>
+!> @author Dr. John R. Moisan [NASA/GSFC]
+!> @date January, 2013 Dr. John R. Moisan
+
 subroutine close_output_unit()
+
+ 
+!---------------------------------------------------------------------------  
+!
+! DESCRIPTION: 
+! Brief description of routine. 
+!
+! REVISION HISTORY:
+! TODO_dd_mmm_yyyy - TODO_describe_appropriate_changes - TODO_name
+!
+
+!---------------------------------------------------------------------------  
 
 use mpi
 use mpi_module
