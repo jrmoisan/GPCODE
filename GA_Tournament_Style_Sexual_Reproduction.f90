@@ -281,18 +281,18 @@ do  i_GA_Crossover=1,n_GA_Crossovers
         IF ( i_parameter .le. i_GA_Crossover_Point) THEN
   
             Child_One_Parameters(i_Parameter) = &
-               Parent_Parameters(i_,PARAMETER,k_GA_Individual_Male(1))
+               Parent_Parameters(i_parameter,k_GA_Individual_Male(1))
   
             Child_Two_Parameters(i_Parameter) = &
-               Parent_Parameters(i_,PARAMETER,k_GA_Individual_Female(1))
+               Parent_Parameters(i_parameter,k_GA_Individual_Female(1))
   
         ELSE
   
             Child_One_Parameters(i_Parameter) = &
-               Parent_Parameters(i_,PARAMETER,k_GA_Individual_Female(1))
+               Parent_Parameters(i_parameter,k_GA_Individual_Female(1))
   
             Child_Two_Parameters(i_Parameter) = &
-               Parent_Parameters(i_,PARAMETER,k_GA_Individual_Male(1))
+               Parent_Parameters(i_parameter,k_GA_Individual_Male(1))
   
         END IF !   i_parameter .le. i_GA_Crossover_Point
   
@@ -459,10 +459,10 @@ do  i_GA_Crossover=1,n_GA_Crossovers
   
     DO  i_parameter=1,n_parameters
   
-        Child_Parameters(i_,PARAMETER, k_GA_Individual_Male(1)) = &
+        Child_Parameters(i_parameter, k_GA_Individual_Male(1)) = &
                  Child_One_Parameters(i_Parameter)
   
-        Child_Parameters(i_,PARAMETER,k_GA_Individual_Female(1)) = &
+        Child_Parameters(i_parameter,k_GA_Individual_Female(1)) = &
                  Child_Two_Parameters(i_Parameter)
   
     END DO ! i_parameter

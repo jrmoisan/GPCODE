@@ -40,14 +40,14 @@ INTEGER (KIND=i4b) :: i_Error
 INTEGER (KIND=i4b) :: i_Tree
 INTEGER (KIND=i4b) :: i_Node
 INTEGER (KIND=i4b) :: i_level
-INTEGER (KIND=i4b) :: ifunction
+INTEGER (KIND=i4b) :: i_function
 
 !----------------------------------------------------------------------------------
 
 i_Error=0
 
 WRITE (GP_print_unit,'(/A,6(1x,I6))') 'pet: n_CODE_Equations, n_trees, n_levels ', &
-                                           n_CODE_Equations, n_trees, n_levels
+                                            n_CODE_Equations, n_trees, n_levels
 
 WRITE (GP_print_unit,'(/A/)') &
       'pet:  Tree      Level       Func       Node   Type(Func Tree)  Type(Node Tree)'

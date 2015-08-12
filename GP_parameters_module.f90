@@ -37,15 +37,15 @@ IMPLICIT none
 INTEGER (KIND=i4b) :: n_levels
 
 
-LOGICAL :: L_nodefunctions
+LOGICAL :: L_node_functions
 
-INTEGER (KIND=i4b) :: nfunctions
+INTEGER (KIND=i4b) :: n_functions
 
-INTEGER, parameter :: nfunctions_max = 50
+INTEGER, parameter :: n_functions_max = 50
 
-INTEGER (KIND=i4b) :: nfunctions_input
+INTEGER (KIND=i4b) :: n_functions_input
 
-INTEGER (KIND=i4b), DIMENSION(nfunctions_max) :: selectedfunctions
+INTEGER (KIND=i4b), DIMENSION(n_functions_max) :: selected_functions
 
 INTEGER (KIND=i4b) :: n_CODE_equations
 

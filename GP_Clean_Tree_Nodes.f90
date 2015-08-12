@@ -50,7 +50,7 @@ IMPLICIT none
 INTEGER (KIND=i4b) :: i_GP_individual
 INTEGER (KIND=i4b) :: i_Tree
 INTEGER (KIND=i4b) :: i_level
-INTEGER (KIND=i4b) :: ifunction
+INTEGER (KIND=i4b) :: i_function
 INTEGER (KIND=i4b) :: i_Node
 INTEGER (KIND=i4b) :: i_Node_Left
 INTEGER (KIND=i4b) :: i_Node_Right

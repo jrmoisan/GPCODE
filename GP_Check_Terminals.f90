@@ -72,7 +72,7 @@ do  i_Tree=1,nn_Trees
 
         ! calculate the function number at the right end of the upper level
 
-        i_Function = pow2_table( i_level-1)  ! 2**(i_Level-1) -1
+        ifunction = pow2_table( i_level-1)  ! 2**(i_Level-1) -1
 
 
         ! run through each function at the level
@@ -80,7 +80,7 @@ do  i_Tree=1,nn_Trees
         DO  i_Node= pow2_table(i_level) + 1,  pow2_table(i_level+1) , 2
 
 
-            i_Function=i_Function+1        ! sets the 'FUNCTION' node's index
+            ifunction=ifunction+1        ! sets the 'FUNCTION' node's index
 
             !----------------------------------------------------------------------------------
 
@@ -88,8 +88,8 @@ do  i_Tree=1,nn_Trees
                 WRITE (GP_print_unit,'(/A)') &
                       'gct: ERROR  ifunction > n_nodes '
                 WRITE (GP_print_unit,'(A,6(1x,I10)/)') &
-                      'gct: i_Tree, i_Level, i_Function, i_Node, i_Node_Left, i_Node_Right ', &
-                            i_Tree, i_Level, i_Function, i_Node, i_Node_Left, i_Node_Right
+                      'gct: i_Tree, i_Level, ifunction, i_Node, i_Node_Left, i_Node_Right ', &
+                            i_Tree, i_Level, ifunction, i_Node, i_Node_Left, i_Node_Right
 
                 exit ! jjm 20140312
 
@@ -98,14 +98,14 @@ do  i_Tree=1,nn_Trees
             !----------------------------------------------------------------------------------
 
             i_Node_Left=i_Node             ! sets the 'left terminal' node's index;
-                                           ! i_node_left=i_function*2 would also work
+                                           ! i_node_left=ifunction*2 would also work
 
             i_Node_Right=i_Node+1          ! sets the 'right terminal' node's index;
-                                           ! i_node_right=(i_function*2)+1 would also work
+                                           ! i_node_right=(ifunction*2)+1 would also work
 
 
 
-            IF ( temp_Node_Type(i_Function,i_Tree) .gt. 0) THEN
+            IF ( temp_Node_Type(ifunction,i_Tree) .gt. 0) THEN
 
                 ! It is a function node if > 0
 
@@ -124,21 +124,21 @@ do  i_Tree=1,nn_Trees
 
                     IF ( myid == 0 ) THEN
                         WRITE (GP_print_unit,'(/A,6(1x,I10))') &
-                              'gct: i_Tree, i_Level, i_Function, i_Node, i_Node_Left, i_Node_Right ', &
-                                    i_Tree, i_Level, i_Function, i_Node, i_Node_Left, i_Node_Right
+                              'gct: i_Tree, i_Level, ifunction, i_Node, i_Node_Left, i_Node_Right ', &
+                                    i_Tree, i_Level, ifunction, i_Node, i_Node_Left, i_Node_Right
                         WRITE (GP_print_unit,'(A,6(1x,I10))') 'gct: n_CODE_Equations ', n_CODE_Equations
                         WRITE (GP_print_unit,'(A,3(1x,I10)/)') &
-                              'gct: ifunction, i_tree, Node_Type(i_Function, i_Tree)',&
-                                    ifunction, i_tree, temp_Node_Type(i_Function, i_Tree)
+                              'gct: ifunction, i_tree, Node_Type(ifunction, i_Tree)',&
+                                    ifunction, i_tree, temp_Node_Type(ifunction, i_Tree)
                         WRITE (GP_print_unit,'(A,3(1x,I10))') &
                               'gct: Left ', &
-                              i_Node_Left,temp_Node_Type(i_Function, i_Tree),&
+                              i_Node_Left,temp_Node_Type(ifunction, i_Tree),&
                                           temp_Node_Type(i_Node_Left,i_Tree)
                         WRITE (GP_print_unit,'(/A,4(1x,I10))') &
                               'gct: ERROR: i_Node_Left, ifunction, i_tree, &
-                              &Node_Type(i_Function, i_Tree)',&
+                              &Node_Type(ifunction, i_Tree)',&
                                     i_Node_Left, ifunction, i_tree, &
-                                  temp_Node_Type(i_Function, i_Tree)
+                                  temp_Node_Type(ifunction, i_Tree)
                         WRITE (GP_print_unit,'(A,3(1x,I10))') &
                               'gct: i_Node_Left, i_tree, &
                               &Node_Type(i_Node_Left,i_Tree) ',&
@@ -169,21 +169,21 @@ do  i_Tree=1,nn_Trees
 
                     IF ( myid == 0 ) THEN
                         WRITE (GP_print_unit,'(/A,6(1x,I10))') &
-                              'gct: i_Tree, i_Level, i_Function, i_Node, i_Node_Left, i_Node_Right ', &
-                                    i_Tree, i_Level, i_Function, i_Node, i_Node_Left, i_Node_Right
+                              'gct: i_Tree, i_Level, ifunction, i_Node, i_Node_Left, i_Node_Right ', &
+                                    i_Tree, i_Level, ifunction, i_Node, i_Node_Left, i_Node_Right
                         WRITE (GP_print_unit,'(A,6(1x,I6))') 'gct: n_CODE_Equations ', n_CODE_Equations
                         WRITE (GP_print_unit,'(A,3(1x,I10)/)') &
-                              'gct: ifunction, i_tree, Node_Type(i_Function, i_Tree)',&
-                        ifunction, i_tree, temp_Node_Type(i_Function, i_Tree)
+                              'gct: ifunction, i_tree, Node_Type(ifunction, i_Tree)',&
+                        ifunction, i_tree, temp_Node_Type(ifunction, i_Tree)
                         WRITE (GP_print_unit,'(A,3(1x,I10))') &
                           'gct:Right ',&
-                          i_Node_Right,temp_Node_Type(i_Function,  i_Tree),&
+                          i_Node_Right,temp_Node_Type(ifunction,  i_Tree),&
                                        temp_Node_Type(i_Node_Right,i_Tree)
                         WRITE (GP_print_unit,'(/A,4(1x,I10))') &
                           'gct: ERROR: i_Node_Right, ifunction, i_tree, &
-                          &Node_Type(i_Function, i_Tree)',&
+                          &Node_Type(ifunction, i_Tree)',&
                                 i_Node_Right, ifunction, i_tree, &
-                           temp_Node_Type(i_Function, i_Tree)
+                           temp_Node_Type(ifunction, i_Tree)
                         WRITE (GP_print_unit,'(A,3(1x,I10))') &
                           'gct: i_Node_Right, i_tree, &
                            &Node_Type(i_Node_Right,i_Tree) ',&
@@ -201,7 +201,7 @@ do  i_Tree=1,nn_Trees
 
 
 
-            END IF !  temp_Node_Type(i_Function,i_Tree) .gt. 0
+            END IF !  temp_Node_Type(ifunction,i_Tree) .gt. 0
 
         END DO ! i_node
 

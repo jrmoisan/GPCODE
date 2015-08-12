@@ -95,7 +95,7 @@ x_LMDIF(1:n_GP_parameters) = 0.0D0
 
 do  i_parameter=1,n_parameters
 
-    X_LMDIF(i_parameter) = child_parameters(i_,PARAMETER,i_GA_indiv)
+    X_LMDIF(i_parameter) = child_parameters(i_parameter,i_GA_indiv)
 
 END DO ! i_parameter
 
@@ -135,7 +135,7 @@ if (info .eq. 8) info = 4
 
 do  i_parameter=1,n_parameters
 
-    child_parameters(i_,PARAMETER,i_GA_indiv) = &
+    child_parameters(i_parameter,i_GA_indiv) = &
                             DABS ( x_LMDIF(i_parameter) )
 
 END DO ! i_parameter

@@ -61,8 +61,8 @@ INTEGER (KIND=i4b) :: print_equations_flag
 
 INTEGER (KIND=i4b) :: no_forcing_flag
 
-INTEGER (KIND=i4b) :: ifunction_index
-INTEGER (KIND=i4b) :: selectedfunction
+INTEGER (KIND=i4b) :: i_function_index
+INTEGER (KIND=i4b) :: selected_function
 INTEGER (KIND=i4b) :: i
 INTEGER (KIND=i4b) :: ierror
 INTEGER (KIND=i4b) :: hash_index
@@ -145,12 +145,12 @@ random_scale_large    = 50.0d0
 random_scale_small    =  1.0d0
 random_scale_fraction =  0.6d0
 
-selectedfunctions = 0
-nfunctions_input =  0
+selected_functions = 0
+n_functions_input =  0
 
 
 n_Node_Functions = 0
-L_nodefunctions = .FALSE.
+L_node_functions = .FALSE.
 
 n_GP_individuals = 1  !  9
 n_GP_generations = 1
@@ -255,7 +255,7 @@ L_replace_larger_SSE_only = .FALSE.
 !---------------------------------------------------------------------
 
 
-ifunction_index = 0
+i_function_index = 0
 
 
 REWIND (cntl_unitnum)
@@ -677,7 +677,7 @@ DO
 ! if  L_node_functions is .FALSE., the selected_function array is used.
 
     ELSE IF ( Aline(1:len('n_Node_Functions')) == "n_Node_Functions" .or.     &
-            Aline(1:len('n_Node_Functions')) == "n_nodefunctions" ) THEN
+            Aline(1:len('n_Node_Functions')) == "n_node_functions" ) THEN
 
         READ(Aline(len('n_Node_Functions')+1:), * )  n_Node_Functions
 
@@ -685,7 +685,7 @@ DO
             WRITE (GP_print_unit,'(A,1x,I6)') 'rcntl: n_Node_Functions = ', n_Node_Functions
         END IF !myid==0
 
-        L_nodefunctions = .TRUE.
+        L_node_functions = .TRUE.
 
 
 !--------------------------------------------------------------------
@@ -693,24 +693,24 @@ DO
 
 ! selected_function
 
-    ELSE IF ( Aline(1:len('selectedfunction')) == "SELECTEDfunction" .or.     &
-            Aline(1:len('selectedfunction')) == "selectedfunction" ) THEN
+    ELSE IF ( Aline(1:len('selected_function')) == "SELECTED_FUNCTION" .or.     &
+            Aline(1:len('selected_function')) == "selected_function" ) THEN
 
-        READ(Aline(len('selectedfunction')+1:), * )  selectedfunction
+        READ(Aline(len('selected_function')+1:), * )  selected_function
 
-        L_nodefunctions = .FALSE.
-
-
-        ifunction_index = ifunction_index + 1
+        L_node_functions = .FALSE.
 
 
-        IF ( ifunction_index <= nfunctions_max ) THEN
+        i_function_index = i_function_index + 1
 
-            selectedfunctions( ifunction_index ) = selected_function
 
-            nfunctions_input = MAX ( nfunctions_input, i_function_index )
+        IF ( i_function_index <= n_functions_max ) THEN
 
-        END IF ! ifunction_index <= nfunctions_max
+            selected_functions( i_function_index ) = selected_function
+
+            n_functions_input = MAX ( n_functions_input, i_function_index )
+
+        END IF ! i_function_index <= n_functions_max
 
 
 !--------------------------------------------------------------------
@@ -1540,13 +1540,13 @@ CLOSE (cntl_unitnum)
 
 ! check
 
-IF ( L_nodefunctions .and. n_nodefunctions <=0 ) THEN
+IF ( L_node_functions .and. n_node_functions <=0 ) THEN
 
     IF ( myid == 0 ) THEN
         WRITE (GP_print_unit,'(//A)') &
-              'rcntl: BAD VALUE FOR n_nodefunctions '
+              'rcntl: BAD VALUE FOR n_node_functions '
         WRITE (GP_print_unit,'(A,1x,I6//)') &
-              'rcntl:               n_nodefunctions = ', n_nodefunctions
+              'rcntl:               n_node_functions = ', n_node_functions
     END IF !myid==0
 
     ierror = 1
@@ -1559,7 +1559,7 @@ IF ( L_nodefunctions .and. n_nodefunctions <=0 ) THEN
 
     RETURN
 
-END IF ! .not. L_nodefunctions
+END IF ! .not. L_node_functions
 
 
 
@@ -1617,66 +1617,66 @@ IF ( myid == 0) THEN
     WRITE (GP_print_unit,'(A,1x,I6)') 'rcntl: n_gp_individuals = ', n_gp_individuals
     WRITE (GP_print_unit,'(A,1x,I6)') 'rcntl: n_gp_generations = ', n_gp_generations
     WRITE (GP_print_unit,'(A,1x,I6)') 'rcntl: n_Node_Functions = ', n_Node_Functions
-    WRITE (GP_print_unit,'(A,4x,L1 )') 'rcntl: L_nodefunctions =', &
-                                              L_nodefunctions
+    WRITE (GP_print_unit,'(A,4x,L1 )') 'rcntl: L_node_functions =', &
+                                               L_node_functions
     WRITE (GP_print_unit,'(A,1x,E15.7)') 'rcntl: random_scale_small = ', &
-                                                random_scale_small
+                                                 random_scale_small
     WRITE (GP_print_unit,'(A,1x,E15.7)') 'rcntl: random_scale_large = ', &
-                                                random_scale_large
+                                                 random_scale_large
     WRITE (GP_print_unit,'(A,1x,E15.7)') 'rcntl: random_scale_fraction = ', &
-                                                random_scale_fraction
+                                                 random_scale_fraction
     WRITE (GP_print_unit,'(A,1x,I6)') 'rcntl: ga_tournament_style = ', &
-                                             ga_tournament_style
+                                              ga_tournament_style
     WRITE (GP_print_unit,'(A,1x,I12)') 'rcntl: user_input_random_seed =', &
-                                              user_input_random_seed
+                                               user_input_random_seed
     WRITE (GP_print_unit,'(A,1x,I12)') 'rcntl: GA_print_flag =', &
-                                              GA_print_flag
+                                               GA_print_flag
     WRITE (GP_print_unit,'(A,4x,L1 )') 'rcntl: L_GA_print =', &
-                                              L_GA_print
+                                               L_GA_print
     WRITE (GP_print_unit,'(A,1x,I12)') 'rcntl: GA_output_parameters_flag =', &
-                                              GA_output_parameters_flag
+                                               GA_output_parameters_flag
     WRITE (GP_print_unit,'(A,4x,L1 )') 'rcntl: L_GA_output_parameters =', &
-                                              L_GA_output_parameters
+                                               L_GA_output_parameters
     WRITE (GP_print_unit,'(A,1x,I12)') 'rcntl: GP_output_parameters_flag =', &
-                                              GP_output_parameters_flag
+                                               GP_output_parameters_flag
     WRITE (GP_print_unit,'(A,4x,L1 )') 'rcntl: L_GP_output_parameters =', &
-                                              L_GP_output_parameters
+                                               L_GP_output_parameters
     WRITE (GP_print_unit,'(A,1x,I12)') 'rcntl: fort333_output_flag =', &
-                                              fort333_output_flag
+                                               fort333_output_flag
     WRITE (GP_print_unit,'(A,4x,L1 )') 'rcntl: L_fort333_output =', &
-                                              L_fort333_output
+                                               L_fort333_output
     WRITE (GP_print_unit,'(A,1x,I12)') 'rcntl: fort444_output_flag =', &
-                                              fort444_output_flag
+                                               fort444_output_flag
     WRITE (GP_print_unit,'(A,4x,L1 )') 'rcntl: L_fort444_output =', &
-                                              L_fort444_output
+                                               L_fort444_output
     WRITE (GP_print_unit,'(A,1x,I12)') 'rcntl: fort555_output_flag =', &
-                                              fort555_output_flag
+                                               fort555_output_flag
     WRITE (GP_print_unit,'(A,4x,L1 )') 'rcntl: L_fort555_output =', &
                                               L_fort555_output
     WRITE (GP_print_unit,'(A,1x,I12)') 'rcntl: GA_log_flag =', &
-                                              GA_log_flag
+                                               GA_log_flag
     WRITE (GP_print_unit,'(A,4x,L1 )') 'rcntl: L_GA_log =', &
-                                              L_GA_log
+                                               L_GA_log
     WRITE (GP_print_unit,'(A,1x,I12)') 'rcntl: GP_log_flag =', &
-                                              GP_log_flag
+                                               GP_log_flag
     WRITE (GP_print_unit,'(A,4x,L1 )') 'rcntl: L_GP_log =', &
-                                              L_GP_log
+                                               L_GP_log
     WRITE (GP_print_unit,'(A,1x,I12)') 'rcntl: GPSSE_log_flag =', &
-                                              GPSSE_log_flag
+                                               GPSSE_log_flag
     WRITE (GP_print_unit,'(A,4x,L1 )') 'rcntl: L_GPSSE_log =', &
-                                              L_GPSSE_log
+                                               L_GPSSE_log
     WRITE (GP_print_unit,'(A,1x,I12)') 'rcntl: unit50_output_flag =', &
-                                              unit50_output_flag
+                                               unit50_output_flag
     WRITE (GP_print_unit,'(A,4x,L1 )') 'rcntl: L_unit50_output =', &
-                                              L_unit50_output
+                                               L_unit50_output
     WRITE (GP_print_unit,'(A,1x,I12)') 'rcntl: GP_all_summary_flag =', &
-                                              GP_all_summary_flag
+                                               GP_all_summary_flag
     WRITE (GP_print_unit,'(A,4x,L1 )') 'rcntl: L_GP_all_summary =', &
-                                              L_GP_all_summary
+                                               L_GP_all_summary
     WRITE (GP_print_unit,'(A,1x,I12)') 'rcntl: print_equations_flag =', &
-                                              print_equations_flag
+                                               print_equations_flag
     WRITE (GP_print_unit,'(A,4x,L1 )') 'rcntl: L_print_equations =', &
-                                              L_print_equations
+                                               L_print_equations
     WRITE (GP_print_unit,'(A,1x,I6)') &
       'rcntl: number_ga_child_prints = ', number_ga_child_prints
     WRITE (GP_print_unit,'(A,1x,I6)') &
@@ -1698,21 +1698,21 @@ IF ( myid == 0) THEN
                'rcntl: n_partitions = ', n_partitions
 
     WRITE (GP_print_unit,'(A,1x,I12)') 'rcntl: no_forcing_flag =', &
-                                              no_forcing_flag
+                                               no_forcing_flag
     WRITE (GP_print_unit,'(A,4x,L1 )') 'rcntl: L_no_forcing =', &
-                                              L_no_forcing
+                                               L_no_forcing
 
     WRITE (GP_print_unit,'(A,1x,E15.7)') &
            'rcntl: prob_forcing = ', prob_forcing
 
     WRITE (GP_print_unit,'(A,4x,L1 )') 'rcntl: L_truth_model =', &
-                                              L_truth_model
+                                               L_truth_model
 
     WRITE (GP_print_unit,'(A,4x,L1 )') 'rcntl: L_replace_larger_SSE_only =', &
-                                              L_replace_larger_SSE_only 
+                                               L_replace_larger_SSE_only 
 
     WRITE (GP_print_unit,'(A,4x,L1 )') 'rcntl: L_gp_para_lmdif =', &
-                                              L_gp_para_lmdif
+                                               L_gp_para_lmdif
     WRITE (GP_print_unit,'(A,1x,I6 )') &
           'rcntl: gp_para_lmdif_start_gen =', &
                   gp_para_lmdif_start_gen
@@ -1721,13 +1721,13 @@ IF ( myid == 0) THEN
           'rcntl: gp_para_lmdif_modulus =  ', &
                   gp_para_lmdif_modulus
 
-    IF ( .not. L_nodefunctions ) THEN
-        WRITE (GP_print_unit,'(//A,1x,I6)') 'rcntl: nfunctions_input', nfunctions_input
-        DO  i = 1, nfunctions_input
-            WRITE (GP_print_unit,'(A,2(1x,I6))') 'rcntl: i, selectedfunctions(i)', &
-                                                        i, selectedfunctions(i)
+    IF ( .not. L_node_functions ) THEN
+        WRITE (GP_print_unit,'(//A,1x,I6)') 'rcntl: n_functions_input', n_functions_input
+        DO  i = 1, n_functions_input
+            WRITE (GP_print_unit,'(A,2(1x,I6))') 'rcntl: i, selected_functions(i)', &
+                                                         i, selected_functions(i)
         END DO !i
-    END IF ! .not. L_nodefunctions
+    END IF ! .not. L_node_functions
 
     WRITE (GP_print_unit,'(//A,1x,I3//)') &
           'rcntl: normal RETURN ierror = ', ierror

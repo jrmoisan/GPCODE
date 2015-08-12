@@ -61,8 +61,8 @@ WRITE (GP_print_unit,'(A,1x,I6)')   'pv2: n_GA_individuals ', n_GA_individuals
 
 WRITE (GP_print_unit,'(A,1x,I6)')   'pv2: n_GA_Generations    ', n_GA_Generations
 WRITE (GP_print_unit,'(A,1x,I6)')   'pv2: n_levels            ', n_levels
-WRITE (GP_print_unit,'(A,1x,I6)')   'pv2: nfunctions         ', nfunctions
-WRITE (GP_print_unit,'(A,1x,I6)')   'pv2: n_NODEfunctions    ', n_NODEfunctions
+WRITE (GP_print_unit,'(A,1x,I6)')   'pv2: n_functions         ', n_functions
+WRITE (GP_print_unit,'(A,1x,I6)')   'pv2: n_NODE_functions    ', n_NODE_functions
 WRITE (GP_print_unit,'(A,1x,I6)')   'pv2: n_CODE_equations    ', n_CODE_equations
 WRITE (GP_print_unit,'(A,1x,I6)')   'pv2: n_parameters        ', n_parameters
 WRITE (GP_print_unit,'(A,1x,I6)')   'pv2: n_trees             ', n_trees

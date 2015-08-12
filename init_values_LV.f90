@@ -87,12 +87,12 @@ IF (  icall  == 0  ) THEN
 
     IF ( myid == 0 ) THEN
         WRITE (GP_print_unit,'(A,1x,I6)') 'ivLV: n_levels          ', n_levels
-        WRITE (GP_print_unit,'(A,1x,I6)') 'ivLV: nfunctions       ', nfunctions
+        WRITE (GP_print_unit,'(A,1x,I6)') 'ivLV: n_functions       ', n_functions
         WRITE (GP_print_unit,'(A,1x,I6)') 'ivLV: n_CODE_equations  ', n_CODE_equations
         WRITE (GP_print_unit,'(A,1x,I6)') 'ivLV: n_trees           ', n_trees
         WRITE (GP_print_unit,'(A,1x,I6)') 'ivLV: n_nodes           ', n_nodes
         WRITE (GP_print_unit,'(A,1x,I6/)')'ivLV: n_maximum_number_parameters  ', &
-                                                n_maximum_number_parameters
+                                                 n_maximum_number_parameters
     END IF ! myid == 0
 
     RETURN

@@ -60,7 +60,7 @@ INTEGER (KIND=i4b) :: Node_Variable
 INTEGER (KIND=i4b) :: node_variable_save
 INTEGER (KIND=i4b) :: i_GP_individual
 INTEGER (KIND=i4b) :: i_Error
-INTEGER (KIND=i4b) :: testfunction_index
+INTEGER (KIND=i4b) :: test_function_index
 
 LOGICAL :: Node_Not_Found
 
@@ -288,21 +288,21 @@ do  i_GP_Mutation = 1,n_GP_Mutations
 
             ! FUNCTIONS   [Ranges from: 1 to n_Node_Functions]
 
-            IF ( L_nodefunctions ) THEN
+            IF ( L_node_functions ) THEN
 
-                nodefunction=1+INT (cff*FLOAT (n_Node_Functions))
+                node_function=1+INT (cff*FLOAT (n_Node_Functions))
 
                 Node_Function = MIN ( Node_Function, n_Node_Functions )
 
             ELSE
 
-                testfunction_index = 1+INT (cff*FLOAT (nfunctions_input))
-                testfunction_index = MAX ( 1,                 testfunction_index  )
-                testfunction_index = MIN ( nfunctions_input, test_function_index  )
+                test_function_index = 1+INT (cff*FLOAT (n_functions_input))
+                test_function_index = MAX ( 1,                 test_function_index  )
+                test_function_index = MIN ( n_functions_input, test_function_index  )
 
-                nodefunction = selectedfunctions( test_function_index )
+                node_function = selected_functions( test_function_index )
 
-            END IF ! L_nodefunctions
+            END IF ! L_node_functions
 
             GP_Child_Population_Node_Type(Node_to_Mutate,i_Tree_Mutation,i_GP_Individual) = Node_Function
 
@@ -323,7 +323,7 @@ do  i_GP_Mutation = 1,n_GP_Mutations
     IF ( i_Error .eq. 1) THEN
         WRITE (6,'(A)') 'gpmut: Post-GP_Check_Error in GP_Mutation'
         WRITE (6,'(A,2(1x,I6),1x,I2/)') 'gpmut: i_GP_Individual, i_GP_Mutation, i_Error  ', &
-                                               i_GP_Individual, i_GP_Mutation, i_Error
+                                                i_GP_Individual, i_GP_Mutation, i_Error
         RETURN
     END IF
 

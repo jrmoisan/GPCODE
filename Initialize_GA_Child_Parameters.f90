@@ -99,19 +99,19 @@ do  i_GA_Individual=1,n_GA_individuals
     IF ( TRIM (model) == 'fasham_fixed_tree' ) THEN 
         ! fasham model
         i_parameter = 1                                                                         
-        Child_Parameters(i_,PARAMETER,i_GA_Individual) = 0.2D+0 ! Nitrate           [mmol N m-3] 
+        Child_Parameters(i_parameter,i_GA_Individual) = 0.2D+0 ! Nitrate           [mmol N m-3] 
         i_parameter = i_parameter + 1                                                           
-        Child_Parameters(i_,PARAMETER,i_GA_Individual) = 0.1D+0 ! Ammonium          [mmol N m-3] 
+        Child_Parameters(i_parameter,i_GA_Individual) = 0.1D+0 ! Ammonium          [mmol N m-3] 
         i_parameter = i_parameter + 1                                                           
-        Child_Parameters(i_,PARAMETER,i_GA_Individual) = 0.1D+0 ! DON               [mmol N m-3] 
+        Child_Parameters(i_parameter,i_GA_Individual) = 0.1D+0 ! DON               [mmol N m-3] 
         i_parameter = i_parameter + 1                                                           
-        Child_Parameters(i_,PARAMETER,i_GA_Individual) = 0.1D+0 ! DET [Detritus]    [mmol N m-3] 
+        Child_Parameters(i_parameter,i_GA_Individual) = 0.1D+0 ! DET [Detritus]    [mmol N m-3] 
         i_parameter = i_parameter + 1                                                           
-        Child_Parameters(i_,PARAMETER,i_GA_Individual) = 0.1D+0 ! Bacteria          [mmol N m-3] 
+        Child_Parameters(i_parameter,i_GA_Individual) = 0.1D+0 ! Bacteria          [mmol N m-3] 
         i_parameter = i_parameter + 1                                                           
-        Child_Parameters(i_,PARAMETER,i_GA_Individual) = 0.1D+0 ! Phytoplankton     [mmol N m-3] 
+        Child_Parameters(i_parameter,i_GA_Individual) = 0.1D+0 ! Phytoplankton     [mmol N m-3] 
         i_parameter = i_parameter + 1                                                           
-        Child_Parameters(i_,PARAMETER,i_GA_Individual) = 0.1D+0 ! Zooplankton       [mmol N m-3] 
+        Child_Parameters(i_parameter,i_GA_Individual) = 0.1D+0 ! Zooplankton       [mmol N m-3] 
     END IF !  TRIM (model) == 'fasham_fixed_tree' 
 
 !!

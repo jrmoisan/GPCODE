@@ -118,8 +118,8 @@ L_STOP_run = .FALSE.
 do  i_parameter=1,n_parameters
     DO  i_GA_individual=1,n_GA_individuals
 
-        parent_parameters(i_,PARAMETER,i_GA_individual) = &
-         child_parameters(i_,PARAMETER,i_GA_individual)
+        parent_parameters(i_parameter,i_GA_individual) = &
+         child_parameters(i_parameter,i_GA_individual)
 
     END DO !  i_GA_individual
 END DO ! i_parameter
