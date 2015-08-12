@@ -7,7 +7,7 @@
 !> @author Dr. John R. Moisan [NASA/GSFC]
 !> @date January, 2013 Dr. John R. Moisan
 
-module class_Tree_Node
+MODULE class_Tree_Node
 
  
 !---------------------------------------------------------------------------  
@@ -21,88 +21,88 @@ module class_Tree_Node
 
 !---------------------------------------------------------------------------  
 
-    use kinds_mod 
-    use Math_Node_Functions
+    USE kinds_mod 
+    USE Math_Node_Functions
 
-    implicit none
+    IMPLICIT none
 
-    type, public :: Tree_Node
-        integer(kind=i4b) :: node_type
-        integer(kind=i4b) :: node_count
-        type(Tree_Node), pointer :: parent => null()
-        type(Tree_Node), pointer :: left   => null()
-        type(Tree_Node), pointer :: right  => null()
-        integer(kind=i4b) :: operation
-        integer(kind=i4b):: variable_index
-        real(kind=r8b), pointer :: variable
-        real(kind=r8b) :: param
-        procedure(Tree_Node_Val), pointer :: val
-        procedure(Tree_Node_Delete), pointer :: delete
-        procedure(Tree_Node_Accept_Visitor), pointer :: accept
-        procedure(Tree_Node_Randomize), pointer :: Randomize
-        procedure(Tree_Node_Get_Pointers), pointer :: GetNodePointers
-        procedure(Tree_Node_Swap), pointer :: Swap_With
-    end type Tree_Node
+    TYPE, PUBLIC :: Tree_Node
+        INTEGER (KIND=i4b) :: node_type
+        INTEGER (KIND=i4b) :: node_count
+        TYPE(Tree_Node), POINTER :: parent => NULL ()
+        TYPE(Tree_Node), POINTER :: left   => NULL ()
+        TYPE(Tree_Node), POINTER :: right  => NULL ()
+        INTEGER (KIND=i4b) :: operation
+        INTEGER (KIND=i4b):: variable_index
+        REAL (KIND=r8b), POINTER :: variable
+        REAL (KIND=r8b) :: param
+        PROCEDURE(Tree_Node_Val), POINTER :: val
+        PROCEDURE(Tree_Node_Delete), POINTER :: delete
+        PROCEDURE(Tree_Node_Accept_Visitor), POINTER :: accept
+        PROCEDURE(Tree_Node_Randomize), POINTER :: Randomize
+        PROCEDURE(Tree_Node_Get_Pointers), POINTER :: GetNodePointers
+        PROCEDURE(Tree_Node_Swap), POINTER :: Swap_With
+    END TYPE Tree_Node
 
 
-    type, abstract, public :: Tree_Node_Visitor
-        contains
+    TYPE, ABSTRACT, PUBLIC :: Tree_Node_Visitor
+        CONTAINS
         !procedure(Visit_Tree_Node), deferred :: Visit_Tree_Node
-        procedure(Visit_Tree_Node), deferred :: Visit_Tree_Math_Node
-        procedure(Visit_Tree_Node), deferred :: Visit_Tree_Parameter_Node
-        procedure(Visit_Tree_Node), deferred :: Visit_Tree_Variable_Node
-    end type Tree_Node_Visitor
+        PROCEDURE(Visit_Tree_Node), deferred :: Visit_Tree_Math_Node
+        PROCEDURE(Visit_Tree_Node), deferred :: Visit_Tree_Parameter_Node
+        PROCEDURE(Visit_Tree_Node), deferred :: Visit_Tree_Variable_Node
+    END TYPE Tree_Node_Visitor
 
-    type, public :: Tree_Node_Pointer
-        type(Tree_Node), pointer :: n=>null()
-    end type
+    TYPE, PUBLIC :: Tree_Node_Pointer
+        TYPE(Tree_Node), POINTER :: n=>NULL ()
+    END TYPE
 
-   abstract interface
+   ABSTRACT INTERFACE
  
-       subroutine Visit_Tree_Node(this, node)
+       SUBROUTINE Visit_Tree_Node(this, node)
         import Tree_Node_Visitor
         import Tree_Node
-        class(Tree_Node_Visitor), intent(inout) :: this
-        class(Tree_Node), intent(in) :: node
-       end subroutine Visit_Tree_Node
+        CLASS (Tree_Node_Visitor), INTENT(INOUT) :: this
+        CLASS (Tree_Node), INTENT(IN) :: node
+       END SUBROUTINE Visit_Tree_Node
 
-   end interface
+   END INTERFACE
 
-   interface 
-      subroutine Tree_Node_Accept_Visitor(this, visitor)
+   INTERFACE 
+      SUBROUTINE Tree_Node_Accept_Visitor(this, visitor)
          import Tree_Node_Visitor
          import Tree_Node
-         class(Tree_Node), intent(in) :: this
-         class(Tree_Node_Visitor), intent(inout) :: visitor
-      end subroutine Tree_Node_Accept_Visitor
+         CLASS (Tree_Node), INTENT(IN) :: this
+         CLASS (Tree_Node_Visitor), INTENT(INOUT) :: visitor
+      END SUBROUTINE Tree_Node_Accept_Visitor
 
-      function Tree_Node_Val(this) result(v)
-         use kinds_mod
+      FUNCTION Tree_Node_Val(this) RESULT (v)
+         USE kinds_mod
          import Tree_Node
-         class(Tree_Node), intent(in) :: this
-         real(kind=r8b) :: v
-     end function Tree_Node_Val
-   end interface
+         CLASS (Tree_Node), INTENT(IN) :: this
+         REAL (KIND=r8b) :: v
+     END FUNCTION Tree_Node_Val
+   END INTERFACE
 
-contains
+CONTAINS
 
 
     !---------------------------------------------------------------------
     ! Memory management
     !---------------------------------------------------------------------
 
-    subroutine Tree_Node_Delete(this)
-        class(Tree_Node), intent(inout) :: this
+    SUBROUTINE Tree_Node_Delete(this)
+        CLASS (Tree_Node), INTENT(INOUT) :: this
         
-    end subroutine Tree_Node_Delete
+    END SUBROUTINE Tree_Node_Delete
 
 
-    recursive subroutine Tree_Math_Node_Delete(this)
-        class(Tree_Node), intent(inout) :: this
-        call this%left%delete()
-        call this%right%delete()
-        deallocate(this%left, this%right)
-    end subroutine Tree_Math_Node_Delete
+    RECURSIVE SUBROUTINE Tree_Math_Node_Delete(this)
+        CLASS (Tree_Node), INTENT(INOUT) :: this
+        CALL this%left%delete()
+        CALL this%right%delete()
+        DEALLOCATE (this%left, this%right)
+    END SUBROUTINE Tree_Math_Node_Delete
 
 
     !---------------------------------------------------------------------
@@ -110,39 +110,39 @@ contains
     !---------------------------------------------------------------------
 
 
-    recursive function Tree_Math_Node_Val(this) result(v)
-        use kinds_mod
-        class(Tree_Node), intent(in) :: this
-        real (kind=r8b) :: v
+    RECURSIVE FUNCTION Tree_Math_Node_Val(this) RESULT (v)
+        USE kinds_mod
+        CLASS (Tree_Node), INTENT(IN) :: this
+        REAL (KIND=r8b) :: v
 
-        type(Tree_Node), pointer :: np   ! jjm 20140326
+        TYPE(Tree_Node), POINTER :: np   ! jjm 20140326
 
         v = math_funcs( this%operation )%f( this%left%val(), this%right%val() )
 
-    end function Tree_Math_Node_Val
+    END FUNCTION Tree_Math_Node_Val
 
 
-    function Tree_Parameter_Node_Val(this) result(v)
-        use kinds_mod
-        class(Tree_Node), intent(in) :: this
-        real(kind=r8b) :: v
+    FUNCTION Tree_Parameter_Node_Val(this) RESULT (v)
+        USE kinds_mod
+        CLASS (Tree_Node), INTENT(IN) :: this
+        REAL (KIND=r8b) :: v
 
         v = this%param
 
-    end function Tree_Parameter_Node_Val
+    END FUNCTION Tree_Parameter_Node_Val
 
 
-    function Tree_Variable_Node_Val(this) result(v)
-        use kinds_mod
-        class(Tree_Node), intent(in) :: this
-        real(kind=r8b) :: v
-        integer(kind=i4b) :: v_index
+    FUNCTION Tree_Variable_Node_Val(this) RESULT (v)
+        USE kinds_mod
+        CLASS (Tree_Node), INTENT(IN) :: this
+        REAL (KIND=r8b) :: v
+        INTEGER (KIND=i4b) :: v_index
 
         v = this%variable
 
         v_index = this%variable_index
  
-    end function Tree_Variable_Node_Val
+    END FUNCTION Tree_Variable_Node_Val
 
 
     !---------------------------------------------------------------------
@@ -156,23 +156,23 @@ contains
     !end subroutine Tree_Node_Accept_Visitor
 
 
-    recursive subroutine Tree_Math_Node_Accept_Visitor(this, visitor)
-        class(Tree_Node), intent(in) :: this
-        class(Tree_Node_Visitor), intent(inout) :: visitor
-        call visitor%Visit_Tree_Math_Node(this)
-    end subroutine Tree_Math_Node_Accept_Visitor
+    RECURSIVE SUBROUTINE Tree_Math_Node_Accept_Visitor(this, visitor)
+        CLASS (Tree_Node), INTENT(IN) :: this
+        CLASS (Tree_Node_Visitor), INTENT(INOUT) :: visitor
+        CALL visitor%Visit_Tree_Math_Node(this)
+    END SUBROUTINE Tree_Math_Node_Accept_Visitor
 
-    subroutine Tree_Parameter_Node_Accept_Visitor(this, visitor)
-        class(Tree_Node), intent(in) :: this
-        class(Tree_Node_Visitor), intent(inout) :: visitor
-        call visitor%Visit_Tree_Parameter_Node(this)
-    end subroutine Tree_Parameter_Node_Accept_Visitor
+    SUBROUTINE Tree_Parameter_Node_Accept_Visitor(this, visitor)
+        CLASS (Tree_Node), INTENT(IN) :: this
+        CLASS (Tree_Node_Visitor), INTENT(INOUT) :: visitor
+        CALL visitor%Visit_Tree_Parameter_Node(this)
+    END SUBROUTINE Tree_Parameter_Node_Accept_Visitor
 
-    subroutine Tree_Variable_Node_Accept_Visitor(this, visitor)
-        class(Tree_Node), intent(in) :: this
-        class(Tree_Node_Visitor), intent(inout) :: visitor
-        call visitor%Visit_Tree_Variable_Node(this)
-    end subroutine Tree_Variable_Node_Accept_Visitor
+    SUBROUTINE Tree_Variable_Node_Accept_Visitor(this, visitor)
+        CLASS (Tree_Node), INTENT(IN) :: this
+        CLASS (Tree_Node_Visitor), INTENT(INOUT) :: visitor
+        CALL visitor%Visit_Tree_Variable_Node(this)
+    END SUBROUTINE Tree_Variable_Node_Accept_Visitor
 
 
     !subroutine Visit_Tree_Node(this, node)
@@ -185,41 +185,41 @@ contains
     ! Pointer Collection
     !---------------------------------------------------------------------
 
-    subroutine Tree_Node_Get_Pointers(this, pointers, pointer_count, index)
-        use kinds_mod
+    SUBROUTINE Tree_Node_Get_Pointers(this, POINTERs, POINTER_count, index)
+        USE kinds_mod
        
-        class(Tree_Node), intent(inout),target :: this   
-        integer(kind=i4b), intent(in) :: pointer_count
-        class(Tree_Node_Pointer), dimension(pointer_count) :: pointers
-        integer(kind=i4b), intent(inout) :: index
-        type(Tree_Node), pointer       :: a   
+        CLASS (Tree_Node), INTENT(INOUT),TARGET :: this   
+        INTEGER (KIND=i4b), INTENT(IN) :: POINTER_count
+        CLASS (Tree_Node_Pointer), DIMENSION(POINTER_count) :: POINTERs
+        INTEGER (KIND=i4b), INTENT(INOUT) :: index
+        TYPE(Tree_Node), POINTER       :: a   
 
-        select type (a => this)
-            type is (Tree_Node)
-            pointers(index)%n => a
-        endselect
+        select TYPE (a => this)
+            TYPE is (Tree_Node)
+            POINTERs(index)%n => a
+        END SELECT
         index = index + 1
-    end subroutine Tree_Node_Get_Pointers
+    END SUBROUTINE Tree_Node_Get_Pointers
 
 
-    subroutine Tree_Math_Node_Get_Pointers(this, pointers, pointer_count, index)
-        use kinds_mod
+    SUBROUTINE Tree_Math_Node_Get_Pointers(this, POINTERs, POINTER_count, index)
+        USE kinds_mod
      
-        class(Tree_Node), intent(inout),target :: this 
-        integer(kind=i4b), intent(in) :: pointer_count
-        class(Tree_Node_Pointer), dimension(pointer_count) :: pointers
-        integer(kind=i4b), intent(inout) :: index
-        type(Tree_Node), pointer       :: a 
+        CLASS (Tree_Node), INTENT(INOUT),TARGET :: this 
+        INTEGER (KIND=i4b), INTENT(IN) :: POINTER_count
+        CLASS (Tree_Node_Pointer), DIMENSION(POINTER_count) :: POINTERs
+        INTEGER (KIND=i4b), INTENT(INOUT) :: index
+        TYPE(Tree_Node), POINTER       :: a 
 
-        select type (a => this)
-            type is (Tree_Node)
-            pointers(index)%n => a
-        endselect
+        select TYPE (a => this)
+            TYPE is (Tree_Node)
+            POINTERs(index)%n => a
+        END SELECT
         index = index + 1
-        call this%left%GetNodePointers( pointers, pointer_count, index)
-        call this%right%GetNodePointers(pointers, pointer_count, index)
+        CALL this%left%GetNodePointers( POINTERs, POINTER_count, index)
+        CALL this%right%GetNodePointers(POINTERs, POINTER_count, index)
 
-    end subroutine Tree_Math_Node_Get_Pointers
+    END SUBROUTINE Tree_Math_Node_Get_Pointers
 
 
 
@@ -227,37 +227,37 @@ contains
     ! Random Generation
     !---------------------------------------------------------------------
 
-    subroutine Tree_Node_Randomize(this)
-        class(Tree_Node), intent(inout) :: this
-    end subroutine Tree_Node_Randomize
+    SUBROUTINE Tree_Node_Randomize(this)
+        CLASS (Tree_Node), INTENT(INOUT) :: this
+    END SUBROUTINE Tree_Node_Randomize
 
-    subroutine Tree_Math_Node_Randomize(this)
-        class(Tree_Node), intent(inout) :: this
-        real(kind=r8b) :: rrnd
+    SUBROUTINE Tree_Math_Node_Randomize(this)
+        CLASS (Tree_Node), INTENT(INOUT) :: this
+        REAL (KIND=r8b) :: rrnd
 
-        call random_number(rrnd)
-        this%operation = int(rrnd*16)+1
-    end subroutine Tree_Math_Node_Randomize
+        CALL RANDOM_NUMBER(rrnd)
+        this%operation = INT (rrnd*16)+1
+    END SUBROUTINE Tree_Math_Node_Randomize
 
-    subroutine Tree_Parameter_Node_Randomize(this)
-        use kinds_mod
-        class(Tree_Node), intent(inout) :: this
-        real(kind=r8b) :: rrnd
+    SUBROUTINE Tree_Parameter_Node_Randomize(this)
+        USE kinds_mod
+        CLASS (Tree_Node), INTENT(INOUT) :: this
+        REAL (KIND=r8b) :: rrnd
 
-        call random_number(rrnd)
+        CALL RANDOM_NUMBER(rrnd)
         this%param = rrnd*100.D+0
-    end subroutine Tree_Parameter_Node_Randomize
+    END SUBROUTINE Tree_Parameter_Node_Randomize
 
-    subroutine Tree_Variable_Node_Randomize(this)
-        use kinds_mod
-        class(Tree_Node), intent(inout) :: this
-        real(kind=r8b) :: rrnd
+    SUBROUTINE Tree_Variable_Node_Randomize(this)
+        USE kinds_mod
+        CLASS (Tree_Node), INTENT(INOUT) :: this
+        REAL (KIND=r8b) :: rrnd
 
-        call random_number(rrnd)
+        CALL RANDOM_NUMBER(rrnd)
         rrnd = rrnd*100.D+0
-        allocate(this%variable)
+        ALLOCATE (this%variable)
         this%variable = rrnd
-    end subroutine Tree_Variable_Node_Randomize
+    END SUBROUTINE Tree_Variable_Node_Randomize
 
 
 
@@ -265,30 +265,30 @@ contains
     ! Node Swapping
     !---------------------------------------------------------------------
 
-    subroutine Tree_Node_Swap(this, node)
-        use kinds_mod
-        class(Tree_Node), intent(inout),target :: this, node
-        type(Tree_Node), pointer :: tmp
-        integer(kind=i4b) :: ct_diff
+    SUBROUTINE Tree_Node_Swap(this, node)
+        USE kinds_mod
+        CLASS (Tree_Node), INTENT(INOUT),TARGET :: this, node
+        TYPE(Tree_Node), POINTER :: tmp
+        INTEGER (KIND=i4b) :: ct_diff
 
-        type(Tree_Node), pointer       :: a
-        type(Tree_Node), pointer       :: b
+        TYPE(Tree_Node), POINTER       :: a
+        TYPE(Tree_Node), POINTER       :: b
 
 
-        select type(a => this)
-            type is (Tree_Node)
-                select type(b => node)
-                    type is (Tree_Node)
-                        if ( associated(a%parent%left, a) ) then
+        select TYPE(a => this)
+            TYPE is (Tree_Node)
+                select TYPE(b => node)
+                    TYPE is (Tree_Node)
+                        IF ( ASSOCIATED (a%parent%left, a) ) THEN
                             a%parent%left => b
-                        else
+                        ELSE
                             a%parent%right => b
-                        endif
-                        if ( associated(b%parent%left, b) ) then
+                        END IF
+                        IF ( ASSOCIATED (b%parent%left, b) ) THEN
                             b%parent%left => a
-                        else
+                        ELSE
                             b%parent%right => a
-                        endif
+                        END IF
 
                         tmp => b%parent
                         b%parent => a%parent
@@ -296,18 +296,18 @@ contains
 
                         ct_diff = a%node_count - b%node_count
                         tmp => a%parent
-                        do while (associated(tmp))
+                        DO while (ASSOCIATED (tmp))
                             tmp%node_count = tmp%node_count + ct_diff
                             tmp => tmp%parent
-                        enddo
+                        END DO
                         tmp => b%parent
-                        do while (associated(tmp))
+                        DO while (ASSOCIATED (tmp))
                             tmp%node_count = tmp%node_count - ct_diff
                             tmp => tmp%parent
-                        enddo
-                end select
-        end select
-    end subroutine Tree_Node_Swap
+                        END DO
+                END SELECT
+        END SELECT
+    END SUBROUTINE Tree_Node_Swap
 
 
-end module class_Tree_Node
+END MODULE class_Tree_Node

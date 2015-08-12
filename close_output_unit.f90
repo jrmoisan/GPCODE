@@ -7,7 +7,7 @@
 !> @author Dr. John R. Moisan [NASA/GSFC]
 !> @date January, 2013 Dr. John R. Moisan
 
-subroutine close_output_unit()
+SUBROUTINE close_output_unit()
 
  
 !---------------------------------------------------------------------------  
@@ -21,55 +21,55 @@ subroutine close_output_unit()
 
 !---------------------------------------------------------------------------  
 
-use mpi
-use mpi_module
+USE mpi
+USE mpi_module
 
-use GP_Parameters_module
-use GA_Parameters_module
-use GP_variables_module
+USE GP_Parameters_module
+USE GA_Parameters_module
+USE GP_variables_module
 
 !--------------------------------------------------------
 
 
-if( myid /= 0 ) return
+IF ( myid /= 0 ) RETURN
 
-if( L_unit50_output )then
-    close( unit_gp_out )
-endif ! L_unit50_output
+IF ( L_unit50_output ) THEN
+    CLOSE ( unit_gp_out )
+END IF ! L_unit50_output
 
-if( L_GP_log )then
-    close( GP_log_unit )
-endif ! L_GP_log
+IF ( L_GP_log ) THEN
+    CLOSE ( GP_log_unit )
+END IF ! L_GP_log
 
-if( L_GPSSE_log )then
-    close( GPSSE_log_unit )
-    close( GPSSE_best_log_unit )
-endif ! L_GPSSE_log
+IF ( L_GPSSE_log ) THEN
+    CLOSE ( GPSSE_log_unit )
+    CLOSE ( GPSSE_best_log_unit )
+END IF ! L_GPSSE_log
 
-if( L_GA_log )then
-    close( GA_log_unit )
-endif ! L_GA_log
+IF ( L_GA_log ) THEN
+    CLOSE ( GA_log_unit )
+END IF ! L_GA_log
 
-if( L_fort333_output )then
-    close( GA_333_unit )
-endif ! L_fort333_output 
+IF ( L_fort333_output ) THEN
+    CLOSE ( GA_333_unit )
+END IF ! L_fort333_output 
 
-if( L_fort555_output )then
-    close( GA_555_unit )
-endif ! L_fort555_output 
+IF ( L_fort555_output ) THEN
+    CLOSE ( GA_555_unit )
+END IF ! L_fort555_output 
 
-if( L_GA_output_parameters )then
-    close( GA_output_unit )
-endif ! L_GA_output_parameters
+IF ( L_GA_output_parameters ) THEN
+    CLOSE ( GA_output_unit )
+END IF ! L_GA_output_parameters
 
-if( L_GP_output_parameters )then
-    close( GP_output_unit )
-endif ! L_GP_output_parameters
+IF ( L_GP_output_parameters ) THEN
+    CLOSE ( GP_output_unit )
+END IF ! L_GP_output_parameters
 
-if( L_minSSE )then
-    close( GP_minSSE_summary_output_unit )
-endif ! L_minSSE
+IF ( L_minSSE ) THEN
+    CLOSE ( GP_minSSE_summary_output_unit )
+END IF ! L_minSSE
 
-return
+RETURN
 
-end subroutine  
+END SUBROUTINE  

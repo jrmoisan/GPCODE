@@ -9,7 +9,7 @@
 !>
 !> @param[in] icall        
 
-subroutine init_values( icall  )
+SUBROUTINE init_values( icall  )
 
  
 !---------------------------------------------------------------------------  
@@ -23,62 +23,62 @@ subroutine init_values( icall  )
 !
 !---------------------------------------------------------------------------  
 
-use kinds_mod 
+USE kinds_mod 
 
-use mpi
-use mpi_module
-
-
-use GP_parameters_module
-use GP_variables_module
-
-implicit none
+USE mpi
+USE mpi_module
 
 
-integer,intent(in)  :: icall
+USE GP_parameters_module
+USE GP_variables_module
+
+IMPLICIT none
+
+
+INTEGER,INTENT(IN)  :: icall
 
 
 
 !-------------------------------------------------------------------------
 
-if( myid == 0 )then
-    write(GP_print_unit,'(/A,1x,A)')  'iv: model ', trim(model)
-    write(GP_print_unit,'(A,1x,I6/)') 'iv: icall ', icall
-endif ! myid == 0
+IF ( myid == 0 ) THEN
+    WRITE (GP_print_unit,'(/A,1x,A)')  'iv: model ', TRIM (model)
+    WRITE (GP_print_unit,'(A,1x,I6/)') 'iv: icall ', icall
+END IF ! myid == 0
 
 
-if( trim(model) == 'NPZ' ) then
+IF ( TRIM (model) == 'NPZ' ) THEN
 
-    call init_values_NPZ( icall )
-    if( icall == 0 ) return
+    CALL init_values_NPZ( icall )
+    IF ( icall == 0 ) RETURN
 
-elseif( trim(model) == 'LV' )then
+ELSE IF ( TRIM (model) == 'LV' ) THEN
 
-    call init_values_LV( icall )
-    if( icall == 0 ) return
-
-
-elseif( ( index( model, 'DATA') > 0 .or. &
-          index( model, 'data') > 0  )       .and. &
-        n_input_vars > 0               )then
-
-    call init_values_data( icall )
-    if( icall == 0 ) return
+    CALL init_values_LV( icall )
+    IF ( icall == 0 ) RETURN
 
 
-elseif( trim(model) == 'fasham'            .or. &
-        trim(model) == 'fasham_fixed_tree'       )then
+ELSE IF ( ( INDEX ( model, 'DATA') > 0 .or. &
+          INDEX ( model, 'DATA') > 0  )       .and. &
+        n_input_vars > 0               ) THEN
 
-    call init_values_fasham( icall )
-    if( icall == 0 ) return
+    CALL init_values_DATA( icall )
+    IF ( icall == 0 ) RETURN
 
 
-endif ! trim(model) == 'NPZ'
+ELSE IF ( TRIM (model) == 'fasham'            .or. &
+        TRIM (model) == 'fasham_fixed_tree'       ) THEN
+
+    CALL init_values_fasham( icall )
+    IF ( icall == 0 ) RETURN
+
+
+END IF ! TRIM (model) == 'NPZ'
 
 
 !----------------------------------------------------------------------------------
 
 
-return
+RETURN
 
-END subroutine init_values
+END SUBROUTINE init_values

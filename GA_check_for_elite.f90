@@ -12,7 +12,7 @@
 !>
 !> @param[out] index0
 
-subroutine GA_check_for_elite( index0  )
+SUBROUTINE GA_check_for_elite( index0  )
 
  
 !---------------------------------------------------------------------------  
@@ -25,23 +25,23 @@ subroutine GA_check_for_elite( index0  )
 ! TODO_dd_mmm_yyyy - TODO_describe_appropriate_changes - TODO_name
 !---------------------------------------------------------------------------  
 
-use kinds_mod 
-use mpi                                                                                                   
-use mpi_module
+USE kinds_mod 
+USE mpi                                                                                                   
+USE mpi_module
 
-use GP_Parameters_module
-use GA_Parameters_module
-use GP_Variables_module
-use GA_Variables_module
-use GP_Data_module
+USE GP_Parameters_module
+USE GA_Parameters_module
+USE GP_Variables_module
+USE GA_Variables_module
+USE GP_Data_module
 
-implicit none
+IMPLICIT none
 
-integer(kind=i4b) :: index0
-integer(kind=i4b) :: ksafe
+INTEGER (KIND=i4b) :: index0
+INTEGER (KIND=i4b) :: ksafe
 
-real(kind=r4b) :: cff
-real(kind=r8b) :: dff
+REAL (KIND=r4b) :: cff
+REAL (KIND=r8b) :: dff
 
 
 !---------------------------------------------------------------------------
@@ -55,42 +55,42 @@ real(kind=r8b) :: dff
 
 ksafe = 0
 
-do
+DO 
 
     ksafe = ksafe + 1
 
-    if( ksafe > 100 * n_GA_individuals ) then
+    IF ( ksafe > 100 * n_GA_individuals ) THEN
 
-        if( L_ga_print )then
-            write(GA_print_unit,'(A,2(1x,I6))') &
+        IF ( L_ga_print ) THEN
+            WRITE (GA_print_unit,'(A,2(1x,I6))') &
                   'cfe: no good index found  ksafe, n_GA_individuals ', &
                                              ksafe, n_GA_individuals
-        endif ! L_ga_print
+        END IF ! L_ga_print
 
-        call MPI_FINALIZE(ierr)
-        stop 'check_elite bad'
+        CALL MPI_FINALIZE(ierr)
+        STOP 'check_elite bad'
 
-    endif
+    END IF
 
-    call random_number(cff) ! uniform random number generator
+    CALL RANDOM_NUMBER(cff) ! uniform random number generator
 
     dff = cff
 
-    index0  = 1 + int(  dff * real( n_GA_Individuals-1, kind=r8b )  )
+    index0  = 1 + INT (  dff * REAL ( n_GA_Individuals-1, KIND=r8b )  )
 
 
-    if( any( ga_individual_elites == index0 ) )then
+    IF ( ANY ( ga_individual_elites == index0 ) ) THEN
 
-        cycle
+        CYCLE
 
-    endif   ! any( ga_individual_elites == index0 )
-
-
-    if( .not. any( ga_individual_elites == index0 ) ) exit
-
-enddo
+    END IF   ! ANY ( ga_individual_elites == index0 )
 
 
-return
+    IF ( .not. ANY ( ga_individual_elites == index0 ) ) exit
 
-end subroutine GA_check_for_elite
+END DO
+
+
+RETURN
+
+END SUBROUTINE GA_check_for_elite

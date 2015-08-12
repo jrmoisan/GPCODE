@@ -12,7 +12,7 @@
 !>
 !> @param[out] bff8          
 
-subroutine random_real(bff8)
+SUBROUTINE random_REAL (bff8)
 
  
 !---------------------------------------------------------------------------  
@@ -31,15 +31,15 @@ subroutine random_real(bff8)
 ! are generated "uniformly over a log10 scale"
 !xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
-use kinds_mod
+USE kinds_mod
 
-use GP_parameters_module
+USE GP_parameters_module
 
-implicit none
+IMPLICIT none
 
-real(kind=r4b) ::     bff,cff
+REAL (KIND=r4b) ::     bff,cff
 
-real(kind=r8b) ::     bff8, cff8
+REAL (KIND=r8b) ::     bff8, cff8
 
 !xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
@@ -47,9 +47,9 @@ real(kind=r8b) ::     bff8, cff8
 
 !-----------------------------------------------------------------
 
-call random_number(cff) ! uniform random number generator
+CALL RANDOM_NUMBER(cff) ! uniform random number generator
 
-cff8 = real( cff, kind=r8b )
+cff8 = REAL ( cff, KIND=r8b )
 
 !--------------------------------------
 ! defaults
@@ -60,23 +60,23 @@ cff8 = real( cff, kind=r8b )
 
 !--------------------------------------
 
-if( cff8 <= random_scale_fraction  )then
+IF ( cff8 <= random_scale_fraction  ) THEN
 
-    call random_number(bff) ! uniform random number generator
+    CALL RANDOM_NUMBER(bff) ! uniform random number generator
 
-    bff8 = random_scale_small  * real( bff, kind=r8b )
-
-
-else
-
-    call random_number(bff) ! uniform random number generator
-
-    bff8 = random_scale_large  * real( bff, kind=r8b )
+    bff8 = random_scale_small  * REAL ( bff, KIND=r8b )
 
 
-endif
+ELSE
+
+    CALL RANDOM_NUMBER(bff) ! uniform random number generator
+
+    bff8 = random_scale_large  * REAL ( bff, KIND=r8b )
 
 
-return
+END IF
 
-end
+
+RETURN
+
+END 

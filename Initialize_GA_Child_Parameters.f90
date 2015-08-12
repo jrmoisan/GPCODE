@@ -11,7 +11,7 @@
 !>
 !> @param[out] Child_Parameters
 
-subroutine Initialize_GA_Child_Parameters(Child_Parameters)
+SUBROUTINE Initialize_GA_Child_Parameters(Child_Parameters)
 
  
 !---------------------------------------------------------------------------  
@@ -24,26 +24,26 @@ subroutine Initialize_GA_Child_Parameters(Child_Parameters)
 !
 !---------------------------------------------------------------------------  
 
-use kinds_mod 
-use mpi
-use mpi_module
+USE kinds_mod 
+USE mpi
+USE mpi_module
 
-use GP_Parameters_module
-use GA_Parameters_module
-use GP_Variables_module
-use GA_Variables_module
-use GP_Data_module
+USE GP_Parameters_module
+USE GA_Parameters_module
+USE GP_Variables_module
+USE GA_Variables_module
+USE GP_Data_module
 
-use fasham_variables_module
+USE fasham_variables_module
 
-implicit none
+IMPLICIT none
 
 
-real(kind=r8b) :: Child_Parameters(n_GP_parameters,n_GA_Individuals)
-real(kind=r8b) :: dff
+REAL (KIND=r8b) :: Child_Parameters(n_GP_parameters,n_GA_Individuals)
+REAL (KIND=r8b) :: dff
 
-integer(kind=i4b) :: i_parameter
-integer(kind=i4b) :: i_GA_individual
+INTEGER (KIND=i4b) :: i_parameter
+INTEGER (KIND=i4b) :: i_GA_individual
 
 
 !----------------------------------------------------------------------------
@@ -52,32 +52,32 @@ Run_GA_lmdif=.true.
 
 
 
-if( L_ga_print )then
-    write(GA_print_unit,'(A,3(1x, I6))')  'Init: myid, new_rank, n_parameters', &
+IF ( L_ga_print ) THEN
+    WRITE (GA_print_unit,'(A,3(1x, I6))')  'Init: myid, new_rank, n_parameters', &
                                                  myid, new_rank, n_Parameters
-    write(GA_print_unit,'(/A,1x, I6/)')  'Init: n_parameters  ', n_Parameters
-    write(GA_print_unit,'(A,1x, I6/)') 'Init: n_GA_individuals', n_GA_individuals
-endif ! L_ga_print
+    WRITE (GA_print_unit,'(/A,1x, I6/)')  'Init: n_parameters  ', n_Parameters
+    WRITE (GA_print_unit,'(A,1x, I6/)') 'Init: n_GA_individuals', n_GA_individuals
+END IF ! L_ga_print
 
 
 do  i_GA_Individual=1,n_GA_individuals
 
 
-    do  i_Parameter=1,n_Parameters
+    DO  i_Parameter=1,n_Parameters
 
-        call random_real(dff) ! random real number generator
+        CALL random_REAL (dff) ! random real number generator
 
         Child_Parameters(i_Parameter,i_GA_Individual) = dff
 
         !if( i_parameter == 1 ) Child_Parameters(i_Parameter,i_GA_Individual) = 0.29520d0 !debug only 
 
-        if( L_ga_print )then
-            write(GA_print_unit,'(A,2(1x, I6),1x,E15.7)') &
+        IF ( L_ga_print ) THEN
+            WRITE (GA_print_unit,'(A,2(1x, I6),1x,E15.7)') &
              'Init: i_GA_Indiv, i_Param, Child_Par ', &
                     i_GA_Individual, i_Parameter, Child_Parameters(i_Parameter,i_GA_Individual) 
-        endif ! L_ga_print
+        END IF ! L_ga_print
 
-    enddo ! i_parameter
+    END DO ! i_parameter
 
 
     !debug only >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
@@ -96,23 +96,23 @@ do  i_GA_Individual=1,n_GA_individuals
 
     !debug only >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 
-    if( trim(model) == 'fasham_fixed_tree' ) then 
+    IF ( TRIM (model) == 'fasham_fixed_tree' ) THEN 
         ! fasham model
         i_parameter = 1                                                                         
-        Child_Parameters(i_parameter,i_GA_Individual) = 0.2D+0 ! Nitrate           [mmol N m-3] 
+        Child_Parameters(i_,PARAMETER,i_GA_Individual) = 0.2D+0 ! Nitrate           [mmol N m-3] 
         i_parameter = i_parameter + 1                                                           
-        Child_Parameters(i_parameter,i_GA_Individual) = 0.1D+0 ! Ammonium          [mmol N m-3] 
+        Child_Parameters(i_,PARAMETER,i_GA_Individual) = 0.1D+0 ! Ammonium          [mmol N m-3] 
         i_parameter = i_parameter + 1                                                           
-        Child_Parameters(i_parameter,i_GA_Individual) = 0.1D+0 ! DON               [mmol N m-3] 
+        Child_Parameters(i_,PARAMETER,i_GA_Individual) = 0.1D+0 ! DON               [mmol N m-3] 
         i_parameter = i_parameter + 1                                                           
-        Child_Parameters(i_parameter,i_GA_Individual) = 0.1D+0 ! DET [Detritus]    [mmol N m-3] 
+        Child_Parameters(i_,PARAMETER,i_GA_Individual) = 0.1D+0 ! DET [Detritus]    [mmol N m-3] 
         i_parameter = i_parameter + 1                                                           
-        Child_Parameters(i_parameter,i_GA_Individual) = 0.1D+0 ! Bacteria          [mmol N m-3] 
+        Child_Parameters(i_,PARAMETER,i_GA_Individual) = 0.1D+0 ! Bacteria          [mmol N m-3] 
         i_parameter = i_parameter + 1                                                           
-        Child_Parameters(i_parameter,i_GA_Individual) = 0.1D+0 ! Phytoplankton     [mmol N m-3] 
+        Child_Parameters(i_,PARAMETER,i_GA_Individual) = 0.1D+0 ! Phytoplankton     [mmol N m-3] 
         i_parameter = i_parameter + 1                                                           
-        Child_Parameters(i_parameter,i_GA_Individual) = 0.1D+0 ! Zooplankton       [mmol N m-3] 
-    endif !  trim(model) == 'fasham_fixed_tree' 
+        Child_Parameters(i_,PARAMETER,i_GA_Individual) = 0.1D+0 ! Zooplankton       [mmol N m-3] 
+    END IF !  TRIM (model) == 'fasham_fixed_tree' 
 
 !!
 !!    do  ii = 1, 7                                                                           ! debug only
@@ -166,10 +166,10 @@ do  i_GA_Individual=1,n_GA_individuals
 
 
 
-enddo ! i_ga_individual
+END DO ! i_ga_individual
 
 
-return
+RETURN
 
 
-end subroutine Initialize_GA_Child_Parameters
+END SUBROUTINE Initialize_GA_Child_Parameters

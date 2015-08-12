@@ -14,7 +14,7 @@
 !> @param[out] Child_Parameters
 !> @param[out] ierror_tou
 
-subroutine GA_Tournament_Style_Sexual_Reproduction(&
+SUBROUTINE GA_Tournament_Style_Sexual_Reproduction(&
               Parent_Parameters, Child_Parameters, &
               individual_quality, ierror_tou  )
 
@@ -37,44 +37,44 @@ subroutine GA_Tournament_Style_Sexual_Reproduction(&
 !xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
 
-use kinds_mod
-use GP_Parameters_module
-use GA_Parameters_module
-use GP_Variables_module
-use GA_Variables_module
-use GP_Data_module
+USE kinds_mod
+USE GP_Parameters_module
+USE GA_Parameters_module
+USE GP_Variables_module
+USE GA_Variables_module
+USE GP_Data_module
 
-implicit none
+IMPLICIT none
 
-real(kind=r8b) :: parent_parameters(n_GP_parameters,n_GA_individuals)
-real(kind=r8b) ::  child_parameters(n_GP_parameters,n_GA_individuals)
+REAL (KIND=r8b) :: parent_parameters(n_GP_parameters,n_GA_individuals)
+REAL (KIND=r8b) ::  child_parameters(n_GP_parameters,n_GA_individuals)
 
-integer(kind=i4b) :: individual_quality(n_GA_individuals)
+INTEGER (KIND=i4b) :: individual_quality(n_GA_individuals)
 
-integer(kind=i4b) :: i_GA_Crossover,i_GA_Crossover_Point
-integer(kind=i4b) :: k_GA_Individual_Male(2),k_GA_Individual_Female(2)
+INTEGER (KIND=i4b) :: i_GA_Crossover,i_GA_Crossover_Point
+INTEGER (KIND=i4b) :: k_GA_Individual_Male(2),k_GA_Individual_Female(2)
 
-real(kind=r8b) :: child_one_parameters(n_parameters)
-real(kind=r8b) :: child_two_parameters(n_parameters)
+REAL (KIND=r8b) :: child_one_parameters(n_parameters)
+REAL (KIND=r8b) :: child_two_parameters(n_parameters)
 
-real(kind=r8b) :: temp_male_parameters(n_parameters)
-real(kind=r8b) :: temp_female_parameters(n_parameters)
+REAL (KIND=r8b) :: temp_male_parameters(n_parameters)
+REAL (KIND=r8b) :: temp_female_parameters(n_parameters)
 
-real(kind=r4b) :: cff
-real(kind=r8b) :: dff
+REAL (KIND=r4b) :: cff
+REAL (KIND=r8b) :: dff
 
-real(kind=r8b) :: old_male
-real(kind=r8b) :: old_female
-real(kind=r8b) :: mean_parm
-real(kind=r8b) :: std_dev_parm
-real(kind=r8b) :: cff_1
-real(kind=r8b) :: cff_2
+REAL (KIND=r8b) :: old_male
+REAL (KIND=r8b) :: old_female
+REAL (KIND=r8b) :: mean_parm
+REAL (KIND=r8b) :: std_dev_parm
+REAL (KIND=r8b) :: cff_1
+REAL (KIND=r8b) :: cff_2
 
 
-integer(kind=i4b) :: n_replaced
-integer(kind=i4b) :: i_parameter
-integer(kind=i4b) :: ksafe
-integer(kind=i4b) :: ierror_tou 
+INTEGER (KIND=i4b) :: n_replaced
+INTEGER (KIND=i4b) :: i_parameter
+INTEGER (KIND=i4b) :: ksafe
+INTEGER (KIND=i4b) :: ierror_tou 
 
 !---------------------------------------------------------------------------
 
@@ -95,7 +95,7 @@ do  i_GA_Crossover=1,n_GA_Crossovers
     ! this non-elite number is returned to the calling program
   
   
-    call GA_check_for_elite( k_GA_Individual_Male(1) )
+    CALL GA_check_for_elite( k_GA_Individual_Male(1) )
   
   
   
@@ -104,57 +104,57 @@ do  i_GA_Crossover=1,n_GA_Crossovers
     ! pick male parent 2 for sexual crossing of parameter strings
   
   
-    call GA_check_for_elite( k_GA_Individual_Male(2) )
+    CALL GA_check_for_elite( k_GA_Individual_Male(2) )
   
   
     !--------------------------------------------------------------------
   
     ! you picked the same individual for both male parents, so choose another
   
-    if( k_GA_Individual_Male(2) .eq. k_GA_Individual_Male(1) ) then
+    IF ( k_GA_Individual_Male(2) .eq. k_GA_Individual_Male(1) ) THEN
   
-        if( k_GA_Individual_Male(1) .ne. n_GA_individuals) then
+        IF ( k_GA_Individual_Male(1) .ne. n_GA_individuals) THEN
             k_GA_Individual_Male(2) =  &
-               min( k_GA_Individual_Male(1) + 1, n_GA_individuals )
-        else
-            k_GA_Individual_Male(2)= max( k_GA_Individual_Male(1) - 1, 1 )
-        endif !   k_GA_Individual_Male(1) .ne. n_GA_individuals
+               MIN ( k_GA_Individual_Male(1) + 1, n_GA_individuals )
+        ELSE
+            k_GA_Individual_Male(2)= MAX ( k_GA_Individual_Male(1) - 1, 1 )
+        END IF !   k_GA_Individual_Male(1) .ne. n_GA_individuals
   
   
     
         !--------------------------------------------------------------------
     
         ksafe = 0
-        do
-            call GA_check_for_elite( k_GA_Individual_Male(2) )
+        DO 
+            CALL GA_check_for_elite( k_GA_Individual_Male(2) )
     
-            if( k_GA_Individual_Male(2) /= k_GA_Individual_Male(1)      ) exit
+            IF ( k_GA_Individual_Male(2) /= k_GA_Individual_Male(1)      ) exit
             ksafe = ksafe + 1
-            if( ksafe > 2 * n_GA_individuals ) then
-                write(6,'(A)') &
+            IF ( ksafe > 2 * n_GA_individuals ) THEN
+                WRITE (6,'(A)') &
                       'gato: too many iterations to get k_GA_Individual_Male(2)'
-                write(6,'(A,1x,I10)') 'gato: ksafe = ', ksafe
+                WRITE (6,'(A,1x,I10)') 'gato: ksafe = ', ksafe
                 ierror_tou = 1
-                return
-            endif ! ksafe
+                RETURN
+            END IF ! ksafe
 
-        enddo
+        END DO
 
         !--------------------------------------------------------------------
     
         ! at this point, male(1) /= male(2) and 
         ! neither is == any ga_individual_elites
 
-        if( k_GA_Individual_Male(2) == ga_individual_elites(1) )then
-            if( L_ga_print )then
-                write(GA_print_unit,'(//A,3(1x,I6))')&
+        IF ( k_GA_Individual_Male(2) == ga_individual_elites(1) ) THEN
+            IF ( L_ga_print ) THEN
+                WRITE (GA_print_unit,'(//A,3(1x,I6))')&
                   'gato: MATCH  k_GA_Individual_Male(2), ga_individual_elites(1)  ', &
                                 k_GA_Individual_Male(2), ga_individual_elites(1)
-            endif ! L_ga_print
-        endif !  k_GA_Individual_Male(2) == ga_individual_elites(1) 
+            END IF ! L_ga_print
+        END IF !  k_GA_Individual_Male(2) == ga_individual_elites(1) 
       
 
-    endif ! k_GA_Individual_Male(2) .eq. k_GA_Individual_Male(1)
+    END IF ! k_GA_Individual_Male(2) .eq. k_GA_Individual_Male(1)
 
     !--------------------------------------------------------------------
 
@@ -162,59 +162,59 @@ do  i_GA_Crossover=1,n_GA_Crossovers
     ! best fitness means Individual_Ranked_Fitness is largest
   
   
-    if( Individual_Ranked_Fitness(k_GA_Individual_Male(1)) .lt. &
-        Individual_Ranked_Fitness(k_GA_Individual_Male(2))        ) then
+    IF ( Individual_Ranked_Fitness(k_GA_Individual_Male(1)) .lt. &
+        Individual_Ranked_Fitness(k_GA_Individual_Male(2))        ) THEN
   
         k_GA_Individual_Male(1)=k_GA_Individual_Male(2)
   
-    endif !   Individual_Ranked_Fitness(k_GA_Individual_Male(1)) .lt. ...
+    END IF !   Individual_Ranked_Fitness(k_GA_Individual_Male(1)) .lt. ...
   
   
     !---------------------------------------------------------------------------------
   
     ! pick female parent 1 for sexual crossing of parent parameter strings
   
-    call GA_check_for_elite( k_GA_Individual_Female(1) )
+    CALL GA_check_for_elite( k_GA_Individual_Female(1) )
   
   
     !---------------------------------------------------------------------------------
   
     ! pick female parent 2 for sexual crossing of parent parameter strings
   
-    call GA_check_for_elite( k_GA_Individual_Female(2) )
+    CALL GA_check_for_elite( k_GA_Individual_Female(2) )
   
     !---------------------------------------------------------------------------------
   
     ! you picked the same individual for both female parents, so choose another
   
   
-    if( k_GA_Individual_Female(2) .eq. k_GA_Individual_Female(1)) then
+    IF ( k_GA_Individual_Female(2) .eq. k_GA_Individual_Female(1)) THEN
   
-        if( k_GA_Individual_Female(1) .ne. n_GA_individuals ) then
+        IF ( k_GA_Individual_Female(1) .ne. n_GA_individuals ) THEN
             k_GA_Individual_Female(2) =  &
-                   min( k_GA_Individual_Female(1) + 1, n_GA_individuals )
-        else
-            k_GA_Individual_Female(2) =  max( k_GA_Individual_Female(1) - 1, 1 )
-        endif !   k_GA_Individual_Female(1) .ne. n_GA_individuals)
+                   MIN ( k_GA_Individual_Female(1) + 1, n_GA_individuals )
+        ELSE
+            k_GA_Individual_Female(2) =  MAX ( k_GA_Individual_Female(1) - 1, 1 )
+        END IF !   k_GA_Individual_Female(1) .ne. n_GA_individuals)
   
   
         !---------------------------------------------------------------------------------
     
         ksafe = 0
-        do
-            call GA_check_for_elite( k_GA_Individual_Female(2) )
-            if( k_GA_Individual_Female(2) /= k_GA_Individual_Female(1)      ) exit
+        DO 
+            CALL GA_check_for_elite( k_GA_Individual_Female(2) )
+            IF ( k_GA_Individual_Female(2) /= k_GA_Individual_Female(1)      ) exit
             ksafe = ksafe + 1
 
-            if( ksafe > 2 * n_GA_individuals ) then
-                write(6,'(A)') &
+            IF ( ksafe > 2 * n_GA_individuals ) THEN
+                WRITE (6,'(A)') &
                       'gato: too many iterations to get k_GA_Individual_Female(2)'
-                write(6,'(A,1x,I10)') 'gato: ksafe = ', ksafe
+                WRITE (6,'(A,1x,I10)') 'gato: ksafe = ', ksafe
                 ierror_tou = 1
-                return
-            endif ! ksafe
+                RETURN
+            END IF ! ksafe
     
-        enddo
+        END DO
     
         !---------------------------------------------------------------------------------
     
@@ -222,18 +222,18 @@ do  i_GA_Crossover=1,n_GA_Crossovers
         ! neither is == any ga_individual_elites
     
       
-        if( k_GA_Individual_Female(2) == ga_individual_elites(1) )then
+        IF ( k_GA_Individual_Female(2) == ga_individual_elites(1) ) THEN
     
-            if( L_ga_print )then
-                write(GA_print_unit,'(//A,3(1x,I6))')&
+            IF ( L_ga_print ) THEN
+                WRITE (GA_print_unit,'(//A,3(1x,I6))')&
                   'gato: MATCH  k_GA_Individual_Female(2), ga_individual_elites(1)  ', &
                                 k_GA_Individual_Female(2), ga_individual_elites(1)
-            endif ! L_ga_print
+            END IF ! L_ga_print
     
-        endif !  k_GA_Individual_Female(2) == ga_individual_elites(1) 
+        END IF !  k_GA_Individual_Female(2) == ga_individual_elites(1) 
 
   
-    endif !   k_GA_Individual_Female(2) .eq. k_GA_Individual_Female(1)
+    END IF !   k_GA_Individual_Female(2) .eq. k_GA_Individual_Female(1)
 
     !---------------------------------------------------------------------------------
   
@@ -242,12 +242,12 @@ do  i_GA_Crossover=1,n_GA_Crossovers
     ! best fitness means Individual_Ranked_Fitness is largest
   
   
-    if( Individual_Ranked_Fitness(k_GA_Individual_Female(1)) .lt. &
-        Individual_Ranked_Fitness(k_GA_Individual_Female(2))         ) then
+    IF ( Individual_Ranked_Fitness(k_GA_Individual_Female(1)) .lt. &
+        Individual_Ranked_Fitness(k_GA_Individual_Female(2))         ) THEN
   
         k_GA_Individual_Female(1)=k_GA_Individual_Female(2)
   
-    endif ! Individual_Ranked_Fitness(k_GA_Individual_Female(1)) .lt. ...
+    END IF ! Individual_Ranked_Fitness(k_GA_Individual_Female(1)) .lt. ...
   
     !---------------------------------------------------------------------------------
   
@@ -264,69 +264,69 @@ do  i_GA_Crossover=1,n_GA_Crossovers
   
     ! choose the location along the parameter string for the crossover to occur
   
-    call Random_Number(dff) ! uniform random number generator
+    CALL RANDOM_NUMBER(dff) ! uniform random number generator
   
     ! pick a location from 1 to n_parameters-1
   
-    i_GA_Crossover_Point = 1 + int( dff * real(n_Parameters-2,kind=r8b) )
-    i_GA_Crossover_Point = min( i_GA_Crossover_Point , n_Parameters )
-    i_GA_Crossover_Point = max( i_GA_Crossover_Point , 1            )
+    i_GA_Crossover_Point = 1 + INT ( dff * REAL (n_Parameters-2,KIND=r8b) )
+    i_GA_Crossover_Point = MIN ( i_GA_Crossover_Point , n_Parameters )
+    i_GA_Crossover_Point = MAX ( i_GA_Crossover_Point , 1            )
   
     !--------------------------------------------------------------------------------
   
     ! do the crossover at the selected location
   
-    do  i_Parameter=1,n_Parameters
+    DO  i_Parameter=1,n_Parameters
   
-        if( i_parameter .le. i_GA_Crossover_Point) then
-  
-            Child_One_Parameters(i_Parameter) = &
-               Parent_Parameters(i_parameter,k_GA_Individual_Male(1))
-  
-            Child_Two_Parameters(i_Parameter) = &
-               Parent_Parameters(i_parameter,k_GA_Individual_Female(1))
-  
-        else
+        IF ( i_parameter .le. i_GA_Crossover_Point) THEN
   
             Child_One_Parameters(i_Parameter) = &
-               Parent_Parameters(i_parameter,k_GA_Individual_Female(1))
+               Parent_Parameters(i_,PARAMETER,k_GA_Individual_Male(1))
   
             Child_Two_Parameters(i_Parameter) = &
-               Parent_Parameters(i_parameter,k_GA_Individual_Male(1))
+               Parent_Parameters(i_,PARAMETER,k_GA_Individual_Female(1))
   
-        endif !   i_parameter .le. i_GA_Crossover_Point
+        ELSE
   
-    enddo ! i_parameter
+            Child_One_Parameters(i_Parameter) = &
+               Parent_Parameters(i_,PARAMETER,k_GA_Individual_Female(1))
+  
+            Child_Two_Parameters(i_Parameter) = &
+               Parent_Parameters(i_,PARAMETER,k_GA_Individual_Male(1))
+  
+        END IF !   i_parameter .le. i_GA_Crossover_Point
+  
+    END DO ! i_parameter
   
   
     !--------------------------------------------------------------------------------
   
     ! modify the crossover point parameter value
   
-    if( ga_tournament_style == 0 ) then
+    IF ( ga_tournament_style == 0 ) THEN
         ! do not modify the crossover point parameter value
-        continue
-    endif
+        CONTINUE
+    END IF
   
   
-    if( ga_tournament_style == 1 ) then
+    IF ( ga_tournament_style == 1 ) THEN
   
         ! modify the crossover point parameter value
         ! with a new random number in each child
   
-        call random_real(dff)
+        CALL random_REAL (dff)
   
         Child_One_Parameters(i_GA_Crossover_Point) = dff
   
-    endif
+    END IF
   
   
-    if( ga_tournament_style == 2 ) then
+    IF ( ga_tournament_style == 2 ) THEN
   
         ! modify the crossover point parameter value
         ! with JM formula formula
   
-        call random_real(dff)
+        CALL random_REAL (dff)
   
   
         !  Old_Parameter_Range=Old_Male_Parameter-Old_Female_Parameter
@@ -350,28 +350,28 @@ do  i_GA_Crossover=1,n_GA_Crossovers
         mean_parm = 0.5d0 * ( old_male + old_female )
   
   
-        call random_number( cff )
-        std_dev_parm = 0.5d0 + real(cff,kind=r8b) * mean_parm
+        CALL RANDOM_NUMBER( cff )
+        std_dev_parm = 0.5d0 + REAL (cff,KIND=r8b) * mean_parm
   
 
-        call random_number( cff )
-        cff_1 = real( cff, kind = 8 )
+        CALL RANDOM_NUMBER( cff )
+        cff_1 = REAL ( cff, kind = 8 )
   
-        call random_number( cff )
-        cff_2 = real( cff, kind = 8 )
+        CALL RANDOM_NUMBER( cff )
+        cff_2 = REAL ( cff, kind = 8 )
   
   
         dff = mean_parm  + &
               std_dev_parm * &
-              sqrt( -2.0d0 * log(cff_1) ) * cos( 2.0d0 * pi * cff_2 )
+              SQRT ( -2.0d0 * log(cff_1) ) * COS ( 2.0d0 * pi * cff_2 )
   
   
         ! use abs( dff ) because sometimes dff < 0.0
   
-        Child_One_Parameters(i_GA_Crossover_Point) =  abs( dff )  ! jjm 20130604
+        Child_One_Parameters(i_GA_Crossover_Point) =  ABS ( dff )  ! jjm 20130604
   
 
-    endif
+    END IF
   
   
     !----------------------------------------------------------------------------
@@ -379,30 +379,30 @@ do  i_GA_Crossover=1,n_GA_Crossovers
   
     ! modify the crossover point parameter value
   
-    if( ga_tournament_style == 0 ) then
+    IF ( ga_tournament_style == 0 ) THEN
         ! do not modify the crossover point parameter value
-        continue
-    endif
+        CONTINUE
+    END IF
   
   
-    if( ga_tournament_style == 1 ) then
+    IF ( ga_tournament_style == 1 ) THEN
   
         ! modify the crossover point parameter value
         ! with a new random number in each child
   
-        call random_real(dff)
+        CALL random_REAL (dff)
   
         Child_Two_Parameters(i_GA_Crossover_Point) = dff
   
-    endif
+    END IF
   
   
-    if( ga_tournament_style == 2 ) then
+    IF ( ga_tournament_style == 2 ) THEN
   
         ! modify the crossover point parameter value
         ! with JM formula formula
   
-        call random_real(dff)
+        CALL random_REAL (dff)
   
   
         !  Old_Parameter_Range=Old_Male_Parameter-Old_Female_Parameter
@@ -425,27 +425,27 @@ do  i_GA_Crossover=1,n_GA_Crossovers
         mean_parm = 0.5d0 * ( old_male + old_female )
   
   
-        call random_number( cff )
-        std_dev_parm = 0.5d0 + real(cff,kind=r8b) * mean_parm
+        CALL RANDOM_NUMBER( cff )
+        std_dev_parm = 0.5d0 + REAL (cff,KIND=r8b) * mean_parm
   
   
-        call random_number( cff )
-        cff_1 = real( cff, kind = 8 )
+        CALL RANDOM_NUMBER( cff )
+        cff_1 = REAL ( cff, kind = 8 )
   
-        call random_number( cff )
-        cff_2 = real( cff, kind = 8 )
+        CALL RANDOM_NUMBER( cff )
+        cff_2 = REAL ( cff, kind = 8 )
   
   
         dff = mean_parm  + &
               std_dev_parm * &
-              sqrt( -2.0d0 * log(cff_1) ) * cos( 2.0d0 * pi * cff_2 )
+              SQRT ( -2.0d0 * log(cff_1) ) * COS ( 2.0d0 * pi * cff_2 )
   
         ! use abs( dff ) because sometimes dff < 0.0
   
-        Child_Two_Parameters(i_GA_Crossover_Point) = abs(dff)
+        Child_Two_Parameters(i_GA_Crossover_Point) = ABS (dff)
   
 
-    endif
+    END IF
   
   
   
@@ -457,27 +457,27 @@ do  i_GA_Crossover=1,n_GA_Crossovers
   
     ! replace the mating pool with the newly crossed parameter strings
   
-    do  i_parameter=1,n_parameters
+    DO  i_parameter=1,n_parameters
   
-        Child_Parameters(i_parameter, k_GA_Individual_Male(1)) = &
+        Child_Parameters(i_,PARAMETER, k_GA_Individual_Male(1)) = &
                  Child_One_Parameters(i_Parameter)
   
-        Child_Parameters(i_parameter,k_GA_Individual_Female(1)) = &
+        Child_Parameters(i_,PARAMETER,k_GA_Individual_Female(1)) = &
                  Child_Two_Parameters(i_Parameter)
   
-    enddo ! i_parameter
+    END DO ! i_parameter
   
   
-    Run_GA_lmdif( k_GA_Individual_Male(1) )   = .true.
-    Run_GA_lmdif( k_GA_Individual_Female(1) ) = .true.
+    Run_GA_lmdIF ( k_GA_Individual_Male(1) )   = .true.
+    Run_GA_lmdIF ( k_GA_Individual_Female(1) ) = .true.
   
     individual_quality( k_GA_Individual_Male(1) )   = 1
     individual_quality( k_GA_Individual_Female(1) ) = 1
   
     n_replaced = n_replaced + 2
 
-enddo
+END DO
 
-return
+RETURN
 
-end subroutine GA_Tournament_Style_Sexual_Reproduction
+END SUBROUTINE GA_Tournament_Style_Sexual_Reproduction

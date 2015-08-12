@@ -52,7 +52,7 @@
 !> @param[out] SDIAG(N)  the diagonal elements of the upper
 !!   triangular matrix S.
 
-subroutine qrsolv ( n, r, ldr, ipvt, diag, qtb, x, sdiag )
+SUBROUTINE qrsolv ( n, r, ldr, ipvt, diag, qtb, x, sdiag )
 
  
 !---------------------------------------------------------------------------  
@@ -148,54 +148,54 @@ subroutine qrsolv ( n, r, ldr, ipvt, diag, qtb, x, sdiag )
 !    triangular matrix S.
 !
 
-use kinds_mod 
+USE kinds_mod 
 
-  implicit none
+  IMPLICIT none
 
-  integer(kind=i4b) ldr
-  integer(kind=i4b) n
+  INTEGER (KIND=i4b) ldr
+  INTEGER (KIND=i4b) n
 
-  real(kind=r8b) c
-  real(kind=r8b) cotan
-  real(kind=r8b) diag(n)
-  integer(kind=i4b) i
-  integer(kind=i4b) ipvt(n)
-  integer(kind=i4b) j
-  integer(kind=i4b) k
-  integer(kind=i4b) l
-  integer(kind=i4b) nsing
-  real(kind=r8b) qtb(n)
-  real(kind=r8b) qtbpj
-  real(kind=r8b) r(ldr,n)
-  real(kind=r8b) s
-  real(kind=r8b) sdiag(n)
-  real(kind=r8b) sum2
-  real(kind=r8b) t
-  real(kind=r8b) temp
-  real(kind=r8b) wa(n)
-  real(kind=r8b) x(n)
+  REAL (KIND=r8b) c
+  REAL (KIND=r8b) cotan
+  REAL (KIND=r8b) diag(n)
+  INTEGER (KIND=i4b) i
+  INTEGER (KIND=i4b) ipvt(n)
+  INTEGER (KIND=i4b) j
+  INTEGER (KIND=i4b) k
+  INTEGER (KIND=i4b) l
+  INTEGER (KIND=i4b) nsing
+  REAL (KIND=r8b) qtb(n)
+  REAL (KIND=r8b) qtbpj
+  REAL (KIND=r8b) r(ldr,n)
+  REAL (KIND=r8b) s
+  REAL (KIND=r8b) sdiag(n)
+  REAL (KIND=r8b) sum2
+  REAL (KIND=r8b) t
+  REAL (KIND=r8b) temp
+  REAL (KIND=r8b) wa(n)
+  REAL (KIND=r8b) x(n)
 !
 !  Copy R and Q'*B to preserve input and initialize S.
 !
 !  In particular, save the diagonal elements of R in X.
 !
-  do j = 1, n
+  DO j = 1, n
     r(j:n,j) = r(j,j:n)
     x(j) = r(j,j)
-  end do
+  END DO
 
   wa(1:n) = qtb(1:n)
 !
 !  Eliminate the diagonal matrix D using a Givens rotation.
 !
-  do j = 1, n
+  DO j = 1, n
 !
 !  Prepare the row of D to be eliminated, locating the
 !  diagonal element using P from the QR factorization.
 !
     l = ipvt(j)
 
-    if ( diag(l) /= 0.0D+00 ) then
+    IF ( diag(l) /= 0.0D+00 ) THEN
 
       sdiag(j:n) = 0.0D+00
       sdiag(j) = diag(l)
@@ -206,22 +206,22 @@ use kinds_mod
 !
       qtbpj = 0.0D+00
 
-      do k = j, n
+      DO k = j, n
 !
 !  Determine a Givens rotation which eliminates the
 !  appropriate element in the current row of D.
 !
-        if ( sdiag(k) /= 0.0D+00 ) then
+        IF ( sdiag(k) /= 0.0D+00 ) THEN
 
-          if ( abs ( r(k,k) ) < abs ( sdiag(k) ) ) then
+          IF ( ABS ( r(k,k) ) < ABS ( sdiag(k) ) ) THEN
             cotan = r(k,k) / sdiag(k)
-            s = 0.5D+00 / sqrt ( 0.25D+00 + 0.25D+00 * cotan**2 )
+            s = 0.5D+00 / SQRT ( 0.25D+00 + 0.25D+00 * cotan**2 )
             c = s * cotan
-          else
+          ELSE
             t = sdiag(k) / r(k,k)
-            c = 0.5D+00 / sqrt ( 0.25D+00 + 0.25D+00 * t**2 )
+            c = 0.5D+00 / SQRT ( 0.25D+00 + 0.25D+00 * t**2 )
             s = c * t
-          end if
+          END IF
 !
 !  Compute the modified diagonal element of R and
 !  the modified element of (Q'*B,0).
@@ -233,17 +233,17 @@ use kinds_mod
 !
 !  Accumulate the tranformation in the row of S.
 !
-          do i = k+1, n
+          DO i = k+1, n
             temp = c * r(i,k) + s * sdiag(i)
             sdiag(i) = - s * r(i,k) + c * sdiag(i)
             r(i,k) = temp
-          end do
+          END DO
 
-        end if
+        END IF
 
-      end do
+      END DO
 
-    end if
+    END IF
 !
 !  Store the diagonal element of S and restore
 !  the corresponding diagonal element of R.
@@ -251,36 +251,36 @@ use kinds_mod
     sdiag(j) = r(j,j)
     r(j,j) = x(j)
 
-  end do
+  END DO
 !
 !  Solve the triangular system for Z.  If the system is
 !  singular, then obtain a least squares solution.
 !
   nsing = n
 
-  do j = 1, n
+  DO j = 1, n
 
-    if ( sdiag(j) == 0.0D+00 .and. nsing == n ) then
+    IF ( sdiag(j) == 0.0D+00 .and. nsing == n ) THEN
       nsing = j - 1
-    end if
+    END IF
 
-    if ( nsing < n ) then
+    IF ( nsing < n ) THEN
       wa(j) = 0.0D+00
-    end if
+    END IF
 
-  end do
+  END DO
 
-  do j = nsing, 1, -1
+  DO j = nsing, 1, -1
     sum2 = dot_product ( wa(j+1:nsing), r(j+1:nsing,j) )
     wa(j) = ( wa(j) - sum2 ) / sdiag(j)
-  end do
+  END DO
 !
 !  Permute the components of Z back to components of X.
 !
-  do j = 1, n
+  DO j = 1, n
     l = ipvt(j)
     x(l) = wa(j)
-  end do
+  END DO
 
-  return
-end
+  RETURN
+END 

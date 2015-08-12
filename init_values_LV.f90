@@ -9,7 +9,7 @@
 !>
 !> @param[in] icall        
 
-subroutine init_values_LV( icall  )
+SUBROUTINE init_values_LV( icall  )
 
  
 !---------------------------------------------------------------------------  
@@ -49,29 +49,29 @@ subroutine init_values_LV( icall  )
 
 !xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
-use kinds_mod 
+USE kinds_mod 
 
-use mpi
-use mpi_module
+USE mpi
+USE mpi_module
 
-use GP_parameters_module
-use GP_variables_module
+USE GP_parameters_module
+USE GP_variables_module
 
-implicit none
+IMPLICIT none
 
 
-integer,intent(in)  :: icall
+INTEGER,INTENT(IN)  :: icall
 
-logical :: LV_model1 = .TRUE.
+LOGICAL :: LV_model1 = .TRUE.
 
-integer(kind=i4b) :: i_Tree
-integer(kind=i4b) :: i_Node
-real(kind=r8b) :: increment
-integer(kind=i4b) :: i
+INTEGER (KIND=i4b) :: i_Tree
+INTEGER (KIND=i4b) :: i_Node
+REAL (KIND=r8b) :: increment
+INTEGER (KIND=i4b) :: i
 
 !-------------------------------------------------------------------------
 
-if(  icall  == 0  )then
+IF (  icall  == 0  ) THEN
 
 
 
@@ -79,25 +79,25 @@ if(  icall  == 0  )then
 
     n_trees=((n_CODE_equations+1)**2)-(n_CODE_equations+1)
 
-    n_nodes = pow2_table( n_levels )  ! n_nodes = int(2**n_levels)-1
+    n_nodes = pow2_table( n_levels )  ! n_nodes = INT (2**n_levels)-1
 
 
     n_maximum_number_parameters = n_CODE_equations * n_nodes
 
 
-    if( myid == 0 )then
-        write(GP_print_unit,'(A,1x,I6)') 'ivLV: n_levels          ', n_levels
-        write(GP_print_unit,'(A,1x,I6)') 'ivLV: n_functions       ', n_functions
-        write(GP_print_unit,'(A,1x,I6)') 'ivLV: n_CODE_equations  ', n_CODE_equations
-        write(GP_print_unit,'(A,1x,I6)') 'ivLV: n_trees           ', n_trees
-        write(GP_print_unit,'(A,1x,I6)') 'ivLV: n_nodes           ', n_nodes
-        write(GP_print_unit,'(A,1x,I6/)')'ivLV: n_maximum_number_parameters  ', &
+    IF ( myid == 0 ) THEN
+        WRITE (GP_print_unit,'(A,1x,I6)') 'ivLV: n_levels          ', n_levels
+        WRITE (GP_print_unit,'(A,1x,I6)') 'ivLV: nfunctions       ', nfunctions
+        WRITE (GP_print_unit,'(A,1x,I6)') 'ivLV: n_CODE_equations  ', n_CODE_equations
+        WRITE (GP_print_unit,'(A,1x,I6)') 'ivLV: n_trees           ', n_trees
+        WRITE (GP_print_unit,'(A,1x,I6)') 'ivLV: n_nodes           ', n_nodes
+        WRITE (GP_print_unit,'(A,1x,I6/)')'ivLV: n_maximum_number_parameters  ', &
                                                 n_maximum_number_parameters
-    endif ! myid == 0
+    END IF ! myid == 0
 
-    return
+    RETURN
 
-endif ! icall == 0
+END IF ! icall == 0
 
 
 
@@ -112,13 +112,13 @@ endif ! icall == 0
 
 do  i_tree = 1,n_trees
 
-    do  i_node = 1,n_nodes
+    DO  i_node = 1,n_nodes
         GP_Individual_Node_Parameters(i_node,i_tree) = 0.0d0
         tree_evaluation(i_node,i_tree) = 0.0d0
         GP_Individual_Node_Type(i_node,i_tree)       = -9999
-    enddo ! i_node
+    END DO ! i_node
 
-enddo ! i_tree
+END DO ! i_tree
 
 !--------------------------------------------------------------------------------------
 
@@ -163,13 +163,13 @@ enddo ! i_tree
 
 ! Initial Conditions
 
-if( LV_model1 )then
+IF ( LV_model1 ) THEN
     Numerical_CODE_Initial_Conditions(1) = 30.0D+0  ! [prey]         [mmol N m-3]
     Numerical_CODE_Initial_Conditions(2) = 2.0D+0   ! [predator]     [mmol N m-3]
-else
+ELSE
     Numerical_CODE_Initial_Conditions(1) = 19.66561d0   ! 30.0D+0  ! [prey]         [mmol N m-3]
     Numerical_CODE_Initial_Conditions(2) = 0.3960451d0  ! 2.0D+0   ! [predator]     [mmol N m-3]
-endif  ! LV_model1
+END IF  ! LV_model1
 
 
 !xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
@@ -177,44 +177,44 @@ endif  ! LV_model1
 
 !Node_Probability = (/0.8d0,0.6d0,0.4d0,0.d0/)  ! NOTE: Last value MUST BE 0.0!!!]  !original LV
 
-if( n_levels == 4 )then
+IF ( n_levels == 4 ) THEN
 
 
     Node_Probability = (/0.8d0,0.6d0,0.4d0,0.d0/)  ! NOTE: Last value MUST BE 0.0!!!]
 
-elseif( n_levels == 6 )then
+ELSE IF ( n_levels == 6 ) THEN
 !   n_levels = 6
     Node_Probability = (/0.8d0,0.7d0,6.d0, &
                          0.4d0,0.3d0,0.d0/)  ! NOTE: Last value MUST BE 0.0!!!]
 
 
-elseif( n_levels == 7 )then
+ELSE IF ( n_levels == 7 ) THEN
 
     !!  n_levels = 7
     Node_Probability = (/0.8d0,0.7d0,6.d0, &
                          0.5d0,0.4d0,0.3d0,0.d0/)  ! NOTE: Last value MUST BE 0.0!!!]
 
-elseif( n_levels == 8 )then
+ELSE IF ( n_levels == 8 ) THEN
     !   n_levels = 8
     Node_Probability = (/0.9d0,0.8d0,0.7d0,6.d0, &
                          0.5d0,0.4d0,0.3d0,0.d0/)  ! NOTE: Last value MUST BE 0.0!!!]
-else
+ELSE
 
-    increment = 1.0d0 / real( n_levels, kind=r8b )
+    increment = 1.0d0 / REAL ( n_levels, KIND=r8b )
 
-    do  i = 1, n_levels-1
-        Node_Probability(i) = 1.0d0 - increment * real(i,kind=r8b)
-    enddo
+    DO  i = 1, n_levels-1
+        Node_Probability(i) = 1.0d0 - increment * REAL (i,KIND=r8b)
+    END DO
     Node_Probability(n_levels) = 0.0d0
 
-endif ! n_levels == 6
+END IF ! n_levels == 6
 
-if( myid == 0 )then
-    write(GP_print_unit,'(/A,1x,I6)')   'ivDA: n_levels ', n_levels
-    write(GP_print_unit,'(A/(10(1x,E12.5)))') 'ivDA: Node_Probability', &
+IF ( myid == 0 ) THEN
+    WRITE (GP_print_unit,'(/A,1x,I6)')   'ivDA: n_levels ', n_levels
+    WRITE (GP_print_unit,'(A/(10(1x,E12.5)))') 'ivDA: Node_Probability', &
                                                      Node_Probability
-    write(GP_print_unit,'(A)') ' '
-endif ! myid == 0
+    WRITE (GP_print_unit,'(A)') ' '
+END IF ! myid == 0
 
 !xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 !xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
@@ -225,11 +225,11 @@ GP_Individual_Node_Type(1,1) = 3   ! '*'
 
 GP_Individual_Node_Type(2,1) = 0            ! prey growth rate
 
-if( LV_model1 )then
+IF ( LV_model1 ) THEN
     GP_Individual_Node_Parameters(2,1) = 0.4d0  ! [0.04, 0.4; prey growth rate [d-1]
-else
+ELSE
     GP_Individual_Node_Parameters(2,1) = 5.599795d0  ! 0.4    ! [0.04, 0.4; prey growth rate [d-1]
-endif  ! LV_model1
+END IF  ! LV_model1
 
 
 GP_Individual_Node_Type(3,1) = -1  ! Phyto
@@ -237,11 +237,11 @@ GP_Individual_Node_Type(3,1) = -1  ! Phyto
 GP_Individual_Node_Type(1,4) = 3   ! '*'
 GP_Individual_Node_Type(2,4) = 0            ! predator biomass-specific feeding rate [d-1]
 
-if( LV_model1 )then
+IF ( LV_model1 ) THEN
     GP_Individual_Node_Parameters(2,4) = 0.02d0 ! [0.0005, 0.02; predator biomass-specific feeding rate [d-1]
-else
+ELSE
     GP_Individual_Node_Parameters(2,4) = 1.56521d0 !0.02! predator biomass-specific feeding rate [d-1]
-endif  ! LV_model1
+END IF  ! LV_model1
 
 
 GP_Individual_Node_Type(3,4) = 3   ! '*'
@@ -253,11 +253,11 @@ GP_Individual_Node_Type(2,5) = 3   ! '*'
 GP_Individual_Node_Type(3,5) = 3   ! '*'
 GP_Individual_Node_Type(4,5) = 0           ! predator biomass-specific mortality rate [d-1]
 
-if( LV_model1 )then
+IF ( LV_model1 ) THEN
     GP_Individual_Node_Parameters(4,5) = 0.6d0 ! [0.1, 0.6; predator biomass-specific mortality rate [d-1]
-else
+ELSE
     GP_Individual_Node_Parameters(4,5) = 0.8346865d-06 !0.6![ predator biomass-specific mortality rate [d-1]
-endif  ! LV_model1
+END IF  ! LV_model1
 
 
 GP_Individual_Node_Type(5,5) = -2  ! Zoo
@@ -265,25 +265,25 @@ GP_Individual_Node_Type(6,5) = 3   ! '*'
 GP_Individual_Node_Type(7,5) = 3   ! '*'
 GP_Individual_Node_Type(12,5) = 0           ! predator assimilation efficiency [fraction 0<==>1]
 
-if( LV_model1 )then
+IF ( LV_model1 ) THEN
     GP_Individual_Node_Parameters(12,5) = 0.5d0 ! [0.2, 0.5; predator assimilation efficiency [fraction 0<==>1]
-else
+ELSE
     GP_Individual_Node_Parameters(12,5) = 0.2416847d+01 ! 0.5!  predator assimilation efficiency [fraction 0<==>1]
-endif  ! LV_model1
+END IF  ! LV_model1
 
 
 GP_Individual_Node_Type(13,5) = -2 ! Zoo
 GP_Individual_Node_Type(14,5) = 0            ! predator biomass-specific feeding rate [d-1]
-if( LV_model1 )then
+IF ( LV_model1 ) THEN
     GP_Individual_Node_Parameters(14,5) = 0.02d0 ! [0.0005, 0.02; predator biomass-specific feeding rate [d-1]
-else
+ELSE
     GP_Individual_Node_Parameters(14,5) = 0.2585400D+00  ! 0.02  ! predator biomass-specific feeding rate [d-1]
-endif  ! LV_model1
+END IF  ! LV_model1
 
 GP_Individual_Node_Type(15,5) = -1 ! Phytoplankton
 
 !-------------------------------------------------
-if( L_truth_model ) then 
+IF ( L_truth_model ) THEN 
 
                                                                                                         
     Truth_Initial_Conditions(1) = 30.0d0
@@ -318,7 +318,7 @@ if( L_truth_model ) then
     
     Truth_Node_Parameters  = 0.0d0
     
-    if( LV_model1 )then
+    IF ( LV_model1 ) THEN
     
         Truth_Node_Parameters(2,1)  = 0.4d0  ! [0.04, 0.4; prey growth rate [d-1]
         Truth_Node_Parameters(2,4)  = 0.02d0 ! [0.0005, 0.02; predator biomass-specific feeding rate [d-1]
@@ -326,7 +326,7 @@ if( L_truth_model ) then
         Truth_Node_Parameters(12,5) = 0.5d0  ! [0.2, 0.5; predator assimilation efficiency [fraction 0<==>1]
         Truth_Node_Parameters(14,5) = 0.02d0 ! [0.0005, 0.02; predator biomass-specific feeding rate [d-1]
     
-    else
+    ELSE
     
         Truth_Node_Parameters(2,1)  = 5.599795d0     ! 0.4    ! [0.04, 0.4; prey growth rate [d-1]
         Truth_Node_Parameters(2,4)  = 1.56521d0      ! 0.02! predator biomass-specific feeding rate [d-1]
@@ -334,40 +334,40 @@ if( L_truth_model ) then
         Truth_Node_Parameters(12,5) = 0.2416847d+01  ! 0.5 predator assimilation efficiency [fraction 0<==>1]
         Truth_Node_Parameters(14,5) = 0.2585400D+00  ! 0.02  ! predator biomass-specific feeding rate [d-1]
     
-    endif  ! LV_model1
+    END IF  ! LV_model1
 
-endif ! L_truth_model 
+END IF ! L_truth_model 
 
 !-------------------------------------------------
 
-if( myid == 0 )then
-    write(GP_print_unit,'(A,1x,I6, 4x,L1)') 'ivLV: myid, LV_model1 ', &
+IF ( myid == 0 ) THEN
+    WRITE (GP_print_unit,'(A,1x,I6, 4x,L1)') 'ivLV: myid, LV_model1 ', &
                                                    myid, LV_model1
-    write(GP_print_unit,'(A,1x,I6, 2(1x,F10.2))') &
+    WRITE (GP_print_unit,'(A,1x,I6, 2(1x,F10.2))') &
           'ivLV: myid, Numerical_CODE_Initial_Conditions(1:2) ', &
                  myid, Numerical_CODE_Initial_Conditions(1:2)
-    write(GP_print_unit,'(A,2(1x,I6))') &
+    WRITE (GP_print_unit,'(A,2(1x,I6))') &
           'ivLV: myid, GP_Individual_Node_Type(1,1)        ', &
                  myid, GP_Individual_Node_Type(1,1)
-    write(GP_print_unit,'(A,1x,I6, 1x,F10.2)') &
+    WRITE (GP_print_unit,'(A,1x,I6, 1x,F10.2)') &
           'ivLV: myid, GP_Individual_Node_Parameters(2,1)  ', &
                  myid, GP_Individual_Node_Parameters(2,1)
-    write(GP_print_unit,'(A,1x,I6, 1x,F10.2)') &
+    WRITE (GP_print_unit,'(A,1x,I6, 1x,F10.2)') &
           'ivLV: myid, GP_Individual_Node_Parameters(2,4)  ', &
                  myid, GP_Individual_Node_Parameters(2,4)
-    write(GP_print_unit,'(A,1x,I6, 1x,F10.2)') &
+    WRITE (GP_print_unit,'(A,1x,I6, 1x,F10.2)') &
           'ivLV: myid, GP_Individual_Node_Parameters(4,5)  ', &
                  myid, GP_Individual_Node_Parameters(4,5)
-    write(GP_print_unit,'(A,1x,I6, 1x,F10.2)') &
+    WRITE (GP_print_unit,'(A,1x,I6, 1x,F10.2)') &
           'ivLV: myid, GP_Individual_Node_Parameters(12,5) ', &
                  myid, GP_Individual_Node_Parameters(12,5)
-    write(GP_print_unit,'(A,1x,I6, 1x,F10.2)') &
+    WRITE (GP_print_unit,'(A,1x,I6, 1x,F10.2)') &
           'ivLV: myid, GP_Individual_Node_Parameters(14,5) ', &
                  myid, GP_Individual_Node_Parameters(14,5)
-endif ! myid == 0
+END IF ! myid == 0
 
 
 
-return
+RETURN
 
-END subroutine init_values_LV
+END SUBROUTINE init_values_LV

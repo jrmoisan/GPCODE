@@ -63,19 +63,19 @@ PRIVATE
 
 ! integer data types
 
-INTEGER, PUBLIC, PARAMETER :: i1b = selected_int_kind(r=1)
-INTEGER, PUBLIC, PARAMETER :: i2b = selected_int_kind(r=4)
-INTEGER, PUBLIC, PARAMETER :: i4b = selected_int_kind(r=9)
+INTEGER, PUBLIC, PARAMETER :: i1b = selected_int_KIND (r=1)
+INTEGER, PUBLIC, PARAMETER :: i2b = selected_int_KIND (r=4)
+INTEGER, PUBLIC, PARAMETER :: i4b = selected_int_KIND (r=9)
 
 ! real data types
 
-INTEGER, PUBLIC, PARAMETER :: r4b = selected_real_kind(p=6, r=37)
-INTEGER, PUBLIC, PARAMETER :: r8b = selected_real_kind(p=15,r=307)
+INTEGER, PUBLIC, PARAMETER :: r4b = selected_real_KIND (p=6, r=37)
+INTEGER, PUBLIC, PARAMETER :: r8b = selected_real_KIND (p=15,r=307)
 
 ! complex data types
 
-INTEGER, PUBLIC, PARAMETER :: c4b = kind((1.0_r4b,1.0_r4b))
-INTEGER, PUBLIC, PARAMETER :: c8b = kind((1.0_r8b,1.0_r8b))
+INTEGER, PUBLIC, PARAMETER :: c4b = KIND ((1.0_r4b,1.0_r4b))
+INTEGER, PUBLIC, PARAMETER :: c8b = KIND ((1.0_r8b,1.0_r8b))
 
 
 END MODULE kinds_mod

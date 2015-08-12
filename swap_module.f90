@@ -7,7 +7,7 @@
 !> @author Dr. John R. Moisan [NASA/GSFC]
 !> @date January, 2013 Dr. John R. Moisan
 
-module swap_module
+MODULE swap_module
 
  
 !---------------------------------------------------------------------------  
@@ -21,21 +21,21 @@ module swap_module
 
 !---------------------------------------------------------------------------  
 
-use kinds_mod
+USE kinds_mod
 
-implicit none
+IMPLICIT none
 
 INTERFACE swap
     MODULE PROCEDURE swap_r, masked_swap_rs
 END INTERFACE
 
 
-contains
+CONTAINS
 
 
 SUBROUTINE swap_r(a,b)
-real(kind=r8b), INTENT(INOUT) :: a,b
-real(kind=r8b) :: dum
+REAL (KIND=r8b), INTENT(INOUT) :: a,b
+REAL (KIND=r8b) :: dum
 dum=a
 a=b
 b=dum
@@ -43,15 +43,15 @@ END SUBROUTINE swap_r
 
 
 SUBROUTINE masked_swap_rs(a,b,mask)
-real(kind=r8b), INTENT(INOUT) :: a,b
+REAL (KIND=r8b), INTENT(INOUT) :: a,b
 LOGICAL, INTENT(IN) :: mask
-real(kind=r8b) :: swp
-if( mask ) then
+REAL (KIND=r8b) :: swp
+IF ( mask ) THEN
     swp=a
     a=b
     b=swp
-endif
+END IF
 END SUBROUTINE masked_swap_rs
 
 
-end module swap_module
+END MODULE swap_module

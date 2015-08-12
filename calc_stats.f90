@@ -17,7 +17,7 @@
 !> @param[out] rms
 !> @param[out] std_dev
 
-subroutine calc_stats( n_array, array, mean, rms, std_dev, &
+SUBROUTINE calc_stats( n_array, array, mean, rms, std_dev, &
                        dt, sse_min_time, sse_max_time, sse_low_wt  )
 
  
@@ -31,29 +31,29 @@ subroutine calc_stats( n_array, array, mean, rms, std_dev, &
 !
 !---------------------------------------------------------------------------  
 
-use kinds_mod 
-implicit none
+USE kinds_mod 
+IMPLICIT none
 
-integer, intent(in)   :: n_array
-real(kind=r8b),intent(in), dimension( n_array ) :: array
+INTEGER, INTENT(IN)   :: n_array
+REAL (KIND=r8b),INTENT(IN), DIMENSION( n_array ) :: array
 
-real(kind=r8b) :: mean
-real(kind=r8b) :: rms
-real(kind=r8b) :: std_dev
-real(kind=r8b) :: sum1
-real(kind=r8b) :: sum2
-real(kind=r8b) :: arr 
-real(kind=r8b),intent(in) :: dt
-real(kind=r8b),intent(in) :: sse_min_time
-real(kind=r8b),intent(in) :: sse_max_time
-real(kind=r8b),intent(in) :: sse_low_wt   
+REAL (KIND=r8b) :: mean
+REAL (KIND=r8b) :: rms
+REAL (KIND=r8b) :: std_dev
+REAL (KIND=r8b) :: sum1
+REAL (KIND=r8b) :: sum2
+REAL (KIND=r8b) :: arr 
+REAL (KIND=r8b),INTENT(IN) :: dt
+REAL (KIND=r8b),INTENT(IN) :: sse_min_time
+REAL (KIND=r8b),INTENT(IN) :: sse_max_time
+REAL (KIND=r8b),INTENT(IN) :: sse_low_wt   
 
-integer(kind=i4b) :: i
-integer(kind=i4b) :: icount
+INTEGER (KIND=i4b) :: i
+INTEGER (KIND=i4b) :: icount
 
-real(kind=r8b) :: xcount
+REAL (KIND=r8b) :: xcount
 
-real(kind=r8b) :: xi       
+REAL (KIND=r8b) :: xi       
 
 !-------------------------------------------------------------------
 
@@ -66,17 +66,17 @@ sum2     = 0.0d0
 icount = 0
 do  i = 1, n_array
 
-    xi = real( i, kind=r8b) * dt
-    if( xi >= sse_min_time .and. &
-        xi <= sse_max_time        )then
+    xi = REAL ( i, KIND=r8b) * dt
+    IF ( xi >= sse_min_time .and. &
+        xi <= sse_max_time        ) THEN
 
         arr = array(i) 
 
-    else
+    ELSE
 
         arr = array(i) * sse_low_wt
 
-    endif 
+    END IF 
 
     
     sum1 = sum1 + arr
@@ -84,26 +84,26 @@ do  i = 1, n_array
     icount = icount + 1
 
 
-enddo
+END DO
 
-if( icount == 0 )then
+IF ( icount == 0 ) THEN
     mean = 0.0d0
     rms  = 0.0d0
     std_dev = 0.0d0
-    return
-endif ! icount == 0
+    RETURN
+END IF ! icount == 0
 
 
-xcount = real( icount, kind = 8 )
+xcount = REAL ( icount, kind = 8 )
 
 mean = sum1 / xcount
 rms  = sum2 / xcount
 
-std_dev =  sqrt( abs( rms   - mean**2 ) )
+std_dev =  SQRT ( ABS ( rms   - mean**2 ) )
 
-rms  = sqrt( rms )
+rms  = SQRT ( rms )
 
 
-return
+RETURN
 
-end subroutine calc_stats
+END SUBROUTINE calc_stats

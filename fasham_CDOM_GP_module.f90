@@ -7,7 +7,7 @@
 !> @author Weiyuan Jiang
 !> @date May, 2015 Weiyuan Jiang
 
-module fasham_CDOM_GP_module
+MODULE fasham_CDOM_GP_module
 
  
 !---------------------------------------------------------------------------  
@@ -21,127 +21,127 @@ module fasham_CDOM_GP_module
 
 !---------------------------------------------------------------------------  
 
-   use kinds_mod
-   use mpi
-   use mpi_module
+   USE kinds_mod
+   USE mpi
+   USE mpi_module
 
-   use GP_parameters_module
-   use GP_variables_module
-   use fasham_variables_module
-   use fasham_tree_interfaces
-   use twin_module
+   USE GP_parameters_module
+   USE GP_variables_module
+   USE fasham_variables_module
+   USE fasham_tree_interfaces
+   USE twin_module
 
-   implicit none
-   public:: fasham_CDOM_GP
-   public :: newFasham_CDOM_GP
+   IMPLICIT none
+   PUBLIC:: fasham_CDOM_GP
+   PUBLIC :: newFasham_CDOM_GP
 
-   type,extends(twin) :: fasham_CDOM_GP
-      real(kind=r8b),allocatable :: cdoms(:),pars(:),kds(:),mxds(:)
-      real(kind=r8b),allocatable :: dmxddts(:) ! max( 0, d mxd/dt)
-   contains
-      procedure :: init
-      procedure :: setTruth 
-      procedure :: setModel 
-      procedure :: getForcing 
+   TYPE,EXTENDS (twin) :: fasham_CDOM_GP
+      REAL (KIND=r8b),ALLOCATABLE :: cdoms(:),pars(:),kds(:),mxds(:)
+      REAL (KIND=r8b),ALLOCATABLE :: dmxddts(:) ! MAX ( 0, d mxd/dt)
+   CONTAINS
+      PROCEDURE :: init
+      PROCEDURE :: setTruth 
+      PROCEDURE :: setModel 
+      PROCEDURE :: getForcing 
       !procedure :: buildTrees
-   end type fasham_CDOM_GP
+   END TYPE fasham_CDOM_GP
 
-   interface newFasham_CDOM_GP
-      module procedure newFasham_CDOM_GP
-   end interface
+   INTERFACE newFasham_CDOM_GP
+MODULE PROCEDURE newFasham_CDOM_GP
+   END INTERFACE
 
-contains
+CONTAINS
 
-   function newFasham_CDOM_GP() result (fasham)
-      type(fasham_CDOM_GP) :: fasham
+   FUNCTION newFasham_CDOM_GP() RESULT (fasham)
+      TYPE(fasham_CDOM_GP) :: fasham
 
-      integer(kind=i4b) :: i
+      INTEGER (KIND=i4b) :: i
 
       n_CODE_equations =   1
       !n_variables = 1
 
       n_trees=  ((n_CODE_equations+1)**2)-(n_CODE_equations+1)
-      n_nodes = pow2_table( n_levels )  ! n_nodes = int(2**n_levels)-1
+      n_nodes = pow2_table( n_levels )  ! n_nodes = INT (2**n_levels)-1
       n_maximum_number_parameters = n_CODE_equations +  n_nodes        
       n_Variables = n_CODE_equations
       n_inputs = n_input_vars
       GP_minSSE_Individual_SSE = 1.0d99
 
-      if( myid == 0 )then
-          write(6,'(A,1x,I10)')'nfCDGP: n_code_equations            ', n_code_equations
-          write(6,'(A,1x,I10)')'nfCDGP: n_variables                 ', n_variables
-          write(6,'(A,1x,I10)')'nfCDGP: n_trees                     ', n_trees
-          write(6,'(A,1x,I10)')'nfCDGP: n_nodes                     ', n_nodes
-          write(6,'(A,1x,I10)')'nfCDGP: n_maximum_number_parameters ', n_maximum_number_parameters
-          write(6,'(A,1x,I10)')'nfCDGP: n_inputs                    ', n_inputs
-      endif ! myid == 0
+      IF ( myid == 0 ) THEN
+          WRITE (6,'(A,1x,I10)')'nfCDGP: n_code_equations            ', n_code_equations
+          WRITE (6,'(A,1x,I10)')'nfCDGP: n_variables                 ', n_variables
+          WRITE (6,'(A,1x,I10)')'nfCDGP: n_trees                     ', n_trees
+          WRITE (6,'(A,1x,I10)')'nfCDGP: n_nodes                     ', n_nodes
+          WRITE (6,'(A,1x,I10)')'nfCDGP: n_maximum_number_parameters ', n_maximum_number_parameters
+          WRITE (6,'(A,1x,I10)')'nfCDGP: n_inputs                    ', n_inputs
+      END IF ! myid == 0
 
       !call print_values1()
 
-   end function
+   END FUNCTION
 
 !------------------------------------------------------------------------------------
 
 
-   subroutine init(this)
-      class(fasham_CDOM_GP),intent(inout) :: this
+   SUBROUTINE init(this)
+      CLASS (fasham_CDOM_GP),INTENT(INOUT) :: this
 
-      integer :: istat
-      CHARACTER(len=72) :: Aline
-      integer ::  n_count,i_count
-      integer ::  i,n
-      integer :: data_unitnum
-      real(kind=r8b) :: increment
+      INTEGER :: istat
+      CHARACTER(LEN=72) :: Aline
+      INTEGER ::  n_count,i_count
+      INTEGER ::  i,n
+      INTEGER :: data_unitnum
+      REAL (KIND=r8b) :: increment
 !
 !   read in data from data files
 !
       data_unitnum = 30
-      open( unit = data_unitnum, file = 'CDOM.data', action="read")
+      OPEN ( unit = data_unitnum, file = 'CDOM.DATA', action="read")
       i_count = 0
-      do
-         read( data_unitnum, '(A)', iostat = istat ) Aline
-         if( istat /= 0 ) exit
+      DO 
+         READ ( data_unitnum, '(A)', IOSTAT = istat ) Aline
+         IF ( istat /= 0 ) exit
          i_count = i_count + 1
-      enddo
+      END DO
 
       n_count = i_count - 3
       n_time_steps = n_count
 
-      if( myid == 0 )then
-          write(6,'(A,1x,I10)')'initCDGP: n_count      ', n_count               
-          write(6,'(A,1x,I10)')'initCDGP: n_time_steps ', n_time_steps        
-      endif ! myid == 0
+      IF ( myid == 0 ) THEN
+          WRITE (6,'(A,1x,I10)')'initCDGP: n_count      ', n_count               
+          WRITE (6,'(A,1x,I10)')'initCDGP: n_time_steps ', n_time_steps        
+      END IF ! myid == 0
 
-      allocate(this%cdoms(0:n_time_steps))
-      allocate(this%pars(0:n_time_steps))
-      allocate(this%kds(0:n_time_steps))
-      allocate(this%mxds(0:n_time_steps))
-      allocate(this%dmxddts(0:n_time_steps))
+      ALLOCATE (this%cdoms(0:n_time_steps))
+      ALLOCATE (this%pars(0:n_time_steps))
+      ALLOCATE (this%kds(0:n_time_steps))
+      ALLOCATE (this%mxds(0:n_time_steps))
+      ALLOCATE (this%dmxddts(0:n_time_steps))
 
-      close(data_unitnum)   
+      CLOSE (data_unitnum)   
 
 
-      open( unit = data_unitnum, file = 'CDOM.data', action="read")
+      OPEN ( unit = data_unitnum, file = 'CDOM.DATA', action="read")
 
       ! skip header 
-      do i = 1,3
-         read( data_unitnum, '(A)', iostat = istat ) Aline
-      enddo
+      DO i = 1,3
+         READ ( data_unitnum, '(A)', IOSTAT = istat ) Aline
+      END DO
 
 
-      do i = 1, n_count
-         read( data_unitnum, '(A)', iostat = istat ) Aline
-         do n = 1,72
-            if (Aline(n:n) == ',') then
+      DO i = 1, n_count
+         READ ( data_unitnum, '(A)', IOSTAT = istat ) Aline
+         DO n = 1,72
+            IF (Aline(n:n) == ',') THEN
                Aline(n:n)=' '
-            endif
-         enddo
-         read( Aline,*)this%cdoms(i),this%kds(i),this%pars(i),this%mxds(i),this%dmxddts(i)
+            END IF
+         END DO
+         READ ( Aline,*)this%cdoms(i),this%kds(i),this%pars(i),this%mxds(i),this%dmxddts(i)
 
-         if(this%dmxddts(i)<0) this%dmxddts(i)=0
+         IF (this%dmxddts(i)<0) this%dmxddts(i)=0
 
-         write(Aline,*)' '
-      enddo
+         WRITE (Aline,*)' '
+      END DO
 
       this%cdoms(0)   = this%cdoms(1)
       this%kds(0)     = this%kds(1)
@@ -151,63 +151,63 @@ contains
 
       ! print input data
 
-      if( myid == 0 )then
-          write(6,'(/A)')'initCDGP: '
-          write(6,'(/A)')'     i   cdoms(i)        kds(i)          pars(i)         mxds(i)         dmxddts(i)'
-          do  i = 0, n_count
-              write(6,'(I6,5(1x,E15.7))') &
+      IF ( myid == 0 ) THEN
+          WRITE (6,'(/A)')'initCDGP: '
+          WRITE (6,'(/A)')'     i   cdoms(i)        kds(i)          pars(i)         mxds(i)         dmxddts(i)'
+          DO  i = 0, n_count
+              WRITE (6,'(I6,5(1x,E15.7))') &
                 i, this%cdoms(i),this%kds(i),this%pars(i),this%mxds(i),this%dmxddts(i)
-          enddo ! i
-      endif ! myid == 0
+          END DO ! i
+      END IF ! myid == 0
 
-      close(data_unitnum)   
+      CLOSE (data_unitnum)   
 
 !   allocate and initialize all the globals
 
-      if( myid == 0 )then
-          write(6,'(/A/)')   'initCDGP: call allocate_arrays1 '
-      endif ! myid == 0 
-      call allocate_arrays1()
+      IF ( myid == 0 ) THEN
+          WRITE (6,'(/A/)')   'initCDGP: CALL allocate_arrays1 '
+      END IF ! myid == 0 
+      CALL allocate_arrays1()
 
    
-      increment = 1.0d0 / real( n_levels, kind=r8b )
+      increment = 1.0d0 / REAL ( n_levels, KIND=r8b )
 
-      do  i = 1, n_levels-1
-         Node_Probability(i) =  1.0d0 - increment * real(i,kind=r8b)
-      enddo
+      DO  i = 1, n_levels-1
+         Node_Probability(i) =  1.0d0 - increment * REAL (i,KIND=r8b)
+      END DO
       Node_Probability(n_levels) = 0.0d0
 
-      if( myid == 0 )then
-          write(6,'(/A,1x,I6)')   'initCDGP: n_levels ', n_levels           
-          write(6,'(A/(10(1x,E12.5)))') 'initCDGP: Node_Probability', &               
+      IF ( myid == 0 ) THEN
+          WRITE (6,'(/A,1x,I6)')   'initCDGP: n_levels ', n_levels           
+          WRITE (6,'(A/(10(1x,E12.5)))') 'initCDGP: Node_Probability', &               
                                                    Node_Probability
-          write(6,'(A)') ' '
-      endif ! myid == 0 
+          WRITE (6,'(A)') ' '
+      END IF ! myid == 0 
 
 
       bioflo_map = 1
  
-   end subroutine init
+   END SUBROUTINE init
 
 !------------------------------------------------------------------------------------
 
-   subroutine setTruth(this)
+   SUBROUTINE setTruth(this)
 
-      use GP_data_module
-use GP_Parameters_module
-use GP_variables_module
-use GA_Parameters_module
-use GA_Variables_module
-
-
-      class(fasham_CDOM_GP),intent(inout):: this
-
-      integer(kind=i4b) :: i
+      USE GP_data_module
+USE GP_Parameters_module
+USE GP_variables_module
+USE GA_Parameters_module
+USE GA_Variables_module
 
 
-      do i = 1, n_time_steps
+      CLASS (fasham_CDOM_GP),INTENT(INOUT):: this
+
+      INTEGER (KIND=i4b) :: i
+
+
+      DO i = 1, n_time_steps
          Numerical_CODE_Solution( i, 1) = this%cdoms(i)
-      enddo ! i  
+      END DO ! i  
 
 
       Numerical_CODE_Initial_Conditions(1) = this%cdoms(1)
@@ -217,27 +217,27 @@ use GA_Variables_module
       Data_Array=Numerical_CODE_Solution
 
 
-      if( myid == 0 )then
-          do i = 0, n_time_steps
-          write(6,'(A,1x,I10,1x,E15.7)') &
+      IF ( myid == 0 ) THEN
+          DO i = 0, n_time_steps
+          WRITE (6,'(A,1x,I10,1x,E15.7)') &
                 'setCDGP: i, data_array(i,1 ) ', &
                           i, data_array( i, 1) 
-          enddo ! i  
-      endif ! myid == 0 
+          END DO ! i  
+      END IF ! myid == 0 
 
       Numerical_CODE_Solution(1:n_time_steps, 1:n_code_equations) = 0.0d0
 
 
 
-      call set_answer_arrays()
+      CALL set_answer_arrays()
 
-      call comp_data_variance()
+      CALL comp_data_variance()
 
-      call sse0_calc( )
+      CALL sse0_calc( )
 
-      call set_modified_indiv( )
+      CALL set_modified_indiv( )
 
-      call print_values1()
+      CALL print_values1()
 
       ! set L_minSSE to TRUE if there are no elite individuals,
       ! or prob_no_elite > 0 which means elite individuals might be modified
@@ -247,40 +247,40 @@ use GA_Variables_module
 !------------------------------------------------------------------------------------------
 
 
-      call print_values2()
+      CALL print_values2()
 
       Numerical_CODE_Solution(1:n_time_steps, 1:n_code_equations) = 0.0d0
 
 
-   end subroutine setTruth
+   END SUBROUTINE setTruth
 
 !--------------------------------------------------------------------------------
 
 
-   subroutine setModel(this)
+   SUBROUTINE setModel(this)
 
-      class(fasham_CDOM_GP),intent(inout) :: this
-      integer :: ierror
-
-
-      call GP_Tree_Build(ierror)
+      CLASS (fasham_CDOM_GP),INTENT(INOUT) :: this
+      INTEGER :: ierror
 
 
-   end subroutine setModel
+      CALL GP_Tree_Build(ierror)
+
+
+   END SUBROUTINE setModel
 
 
 !--------------------------------------------------------------------------------
 
-   subroutine getForcing(this,preForce,time_step_fraction, i_Time_Step,L_bad )
+   SUBROUTINE getForcing(this,preForce,time_step_fraction, i_Time_Step,L_bad )
 
-      class(fasham_CDOM_GP),intent(in):: this
-      real(kind=r8b) :: preForce(:)
-      real(kind=r8b) :: time_step_fraction
-      integer :: i_Time_Step
-      logical :: L_bad
-      integer :: k
-      real(kind=r8b) :: iter
-      real(kind=r8b) :: aDMXDDT,aPAR,aKd,aMXD
+      CLASS (fasham_CDOM_GP),INTENT(IN):: this
+      REAL (KIND=r8b) :: preForce(:)
+      REAL (KIND=r8b) :: time_step_fraction
+      INTEGER :: i_Time_Step
+      LOGICAL :: L_bad
+      INTEGER :: k
+      REAL (KIND=r8b) :: iter
+      REAL (KIND=r8b) :: aDMXDDT,aPAR,aKd,aMXD
 
 ! TODO: read in frocing from the data arrays
 !   FORCING  -5001  : max(d MLD/ dt,0)
@@ -294,18 +294,18 @@ use GA_Variables_module
 
 !     the last step uses the previous step info
 
-      if( k == n_time_steps ) k = n_time_steps-1
+      IF ( k == n_time_steps ) k = n_time_steps-1
 
       aDMXDDT = this%dmxddts(k) + iter * (this%dmxddts(k + 1) - this%dmxddts(k))
       aMXD    = this%mxds(k)    + iter * (this%mxds(k + 1)    - this%mxds(k))
       aPAR    = this%pars(k)    + iter * (this%pars(k + 1)    - this%pars(k))
       aKd     = this%kds(k)     + iter * (this%kds(k + 1)     - this%kds(k))
 
-      Numerical_CODE_Forcing_Functions(abs(5000-5001))= aDMXDDT
-      Numerical_CODE_Forcing_Functions(abs(5000-5002))= aMXD
-      Numerical_CODE_Forcing_Functions(abs(5000-5003))= aPAR
-      Numerical_CODE_Forcing_Functions(abs(5000-5004))= aKd
+      Numerical_CODE_Forcing_Functions(ABS (5000-5001))= aDMXDDT
+      Numerical_CODE_Forcing_Functions(ABS (5000-5002))= aMXD
+      Numerical_CODE_Forcing_Functions(ABS (5000-5003))= aPAR
+      Numerical_CODE_Forcing_Functions(ABS (5000-5004))= aKd
 
-   end subroutine getForcing
+   END SUBROUTINE getForcing
 
-end module fasham_CDOM_GP_module
+END MODULE fasham_CDOM_GP_module

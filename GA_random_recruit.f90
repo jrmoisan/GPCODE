@@ -12,7 +12,7 @@
 !> @param[out] Child_Parameters 
 !> @param[out] individual_quality
 
-subroutine GA_random_recruit(Child_Parameters, individual_quality )
+SUBROUTINE GA_random_recruit(Child_Parameters, individual_quality )
 
  
 !---------------------------------------------------------------------------  
@@ -25,28 +25,28 @@ subroutine GA_random_recruit(Child_Parameters, individual_quality )
 !
 !---------------------------------------------------------------------------  
 
-use kinds_mod 
-use GP_Parameters_module
-use GA_Parameters_module
-use GP_Variables_module
-use GA_Variables_module
-use GP_Data_module
+USE kinds_mod 
+USE GP_Parameters_module
+USE GA_Parameters_module
+USE GP_Variables_module
+USE GA_Variables_module
+USE GP_Data_module
 
-implicit none
+IMPLICIT none
 
-real(kind=r8b) :: child_parameters(n_GP_parameters,n_GA_individuals)
-real(kind=r8b) :: dff
+REAL (KIND=r8b) :: child_parameters(n_GP_parameters,n_GA_individuals)
+REAL (KIND=r8b) :: dff
 
-integer(kind=i4b) :: i_GA_recruit
-integer(kind=i4b) :: i_GA_Individual_recruit, i_Parameter_recruit
+INTEGER (KIND=i4b) :: i_GA_recruit
+INTEGER (KIND=i4b) :: i_GA_Individual_recruit, i_Parameter_recruit
 
-integer(kind=i4b) :: individual_quality(n_GA_individuals)
+INTEGER (KIND=i4b) :: individual_quality(n_GA_individuals)
 
-integer(kind=i4b) :: n_recruited
+INTEGER (KIND=i4b) :: n_recruited
 
 !----------------------------------------------------------------------------------
 
-if( n_GA_rand_recruits < 1 ) return
+IF ( n_GA_rand_recruits < 1 ) RETURN
 
 
 n_recruited  = 0
@@ -64,29 +64,29 @@ do  i_GA_recruit=1,n_GA_rand_recruits
     ! GA_check_for_elite generates random numbers for the individual number
     ! until it finds one not in the list of elite individuals
 
-    call GA_check_for_elite( i_GA_Individual_recruit )
+    CALL GA_check_for_elite( i_GA_Individual_recruit )
 
     !--------------------------------------------------------------------
 
 
     ! recruit all parameters
 
-    do  i_Parameter_recruit = 1, n_parameters
+    DO  i_Parameter_recruit = 1, n_parameters
 
         !  randomly pick a new real number for this parameter
 
-        call random_real(dff)
+        CALL random_REAL (dff)
 
         child_parameters(i_Parameter_recruit, i_GA_Individual_recruit) = dff
 
-    enddo  ! i_parameter_recruit
+    END DO  ! i_parameter_recruit
 
 
     !--------------------------------------------------------------------
 
     ! set the flag to do the RK integration on this parameter
 
-    Run_GA_lmdif(i_GA_Individual_recruit)=.true.
+    Run_GA_lmdIF (i_GA_Individual_recruit)=.true.
 
 
     ! I don't think this is needed,
@@ -99,8 +99,8 @@ do  i_GA_recruit=1,n_GA_rand_recruits
 
 
 
-enddo
+END DO
 
-return
+RETURN
 
-end subroutine GA_random_recruit
+END SUBROUTINE GA_random_recruit

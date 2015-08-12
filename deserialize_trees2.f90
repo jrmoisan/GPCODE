@@ -14,7 +14,7 @@
 !> @param[in]  Tree_count
 !> @param[out] Trees
 
-subroutine deserialize_trees2( Trees, num_Tracked_resources, Tree_count )
+SUBROUTINE deserialize_trees2( Trees, num_Tracked_resources, Tree_count )
 
  
 !---------------------------------------------------------------------------  
@@ -28,45 +28,45 @@ subroutine deserialize_trees2( Trees, num_Tracked_resources, Tree_count )
 !---------------------------------------------------------------------------  
 
 
-use kinds_mod 
+USE kinds_mod 
 
-use mpi
-use mpi_module
+USE mpi
+USE mpi_module
 
-use GP_variables_module
+USE GP_variables_module
 
-use class_Serialization_Visitor
-use class_Tree_Node
-use Tree_Helper_module
+USE class_Serialization_Visitor
+USE class_Tree_Node
+USE Tree_Helper_module
 
-use Tree_Node_Factory_module
+USE Tree_Node_Factory_module
 
-implicit none
+IMPLICIT none
 
 ! Input
-integer(kind=i4b):: Tree_count, num_Tracked_resources
+INTEGER (KIND=i4b):: Tree_count, num_Tracked_resources
 
 ! Input/Output
-type(Tree_Node_Pointer), &
-     dimension(Tree_count, num_Tracked_resources), intent(inout) :: Trees
+TYPE(Tree_Node_Pointer), &
+     DIMENSION(Tree_count, num_Tracked_resources), INTENT(INOUT) :: Trees
 
 ! Local variables
 
-integer(kind=i4b):: node_count, left, right, node_type
-integer(kind=i4b):: node_id, node_operation, variable_index
-integer(kind=i4b):: i, j, k, l
-integer(kind=i4b):: inode
-integer(kind=i4b):: inodec
-integer(kind=i4b):: counter
-integer(kind=i4b):: parm_counter
+INTEGER (KIND=i4b):: node_count, left, right, node_type
+INTEGER (KIND=i4b):: node_id, node_operation, variable_index
+INTEGER (KIND=i4b):: i, j, k, l
+INTEGER (KIND=i4b):: inode
+INTEGER (KIND=i4b):: inodec
+INTEGER (KIND=i4b):: counter
+INTEGER (KIND=i4b):: parm_counter
 
-real(kind=r8b) :: parameter_value
+REAL (KIND=r8b) :: parameter_value
 
-type(Tree_Node_Pointer), dimension(:), allocatable :: Nodes
-integer(kind=i4b), dimension(:), allocatable :: Node_IDs
+TYPE(Tree_Node_Pointer), DIMENSION(:), ALLOCATABLE :: Nodes
+INTEGER (KIND=i4b), DIMENSION(:), ALLOCATABLE :: Node_IDs
 
 
-type(Tree_Node), pointer :: parent, root
+TYPE(Tree_Node), POINTER :: parent, root
 
 
 !------------------------------------------------------------------------------------
@@ -82,40 +82,40 @@ type(Tree_Node), pointer :: parent, root
 do  i = 1, Tree_count
 
 
-    do j = 1,  num_Tracked_resources
+    DO j = 1,  num_Tracked_resources
 
-        Trees(i, j)%n => null()
+        Trees(i, j)%n => NULL ()
 
         !----------------------------------------------------------------------------
 
         !  count the number of nodes in tree i
 
         counter = 0
-        do  inodec = 1, n_nodes
+        DO  inodec = 1, n_nodes
 
-            if( GP_individual_node_type( inodec, i) > -9999 )then
+            IF ( GP_individual_node_type( inodec, i) > -9999 ) THEN
                 counter =  counter + 1
-            endif ! GP_Individual_Node_Type...
+            END IF ! GP_Individual_Node_Type...
 
-        enddo ! inodec
+        END DO ! inodec
 
         node_count = counter
 
 
-        if( node_count <= 0 )  exit  ! j loop
+        IF ( node_count <= 0 )  exit  ! j loop
 
         !----------------------------------------------------------------------------
 
         ! Dimension arrays that will hold nodes and node ids
 
 
-        allocate( Nodes(node_count), Node_IDs(node_count) )
+        ALLOCATE ( Nodes(node_count), Node_IDs(node_count) )
 
 
 
         counter = 0
         parm_counter = 0
-        do  inode = 1,  n_nodes
+        DO  inode = 1,  n_nodes
 
             node_type        = 0
             node_id          = inode
@@ -126,35 +126,35 @@ do  i = 1, Tree_count
 
 
 
-            if( GP_Individual_Node_Type( inode, i ) > -9999 )then
+            IF ( GP_Individual_Node_Type( inode, i ) > -9999 ) THEN
 
 
                 counter =  counter + 1
 
 
-                if( GP_Individual_Node_Type( inode, i ) == 0 )then
+                IF ( GP_Individual_Node_Type( inode, i ) == 0 ) THEN
 
                     parameter_value =  GP_individual_node_parameters( inode, i )
 
                     node_type = ParameterNodeType
 
-                endif
+                END IF
 
 
-                if( GP_Individual_Node_Type( inode, i ) <  0 )then
+                IF ( GP_Individual_Node_Type( inode, i ) <  0 ) THEN
 
                     variable_index =  GP_Individual_Node_type( inode, i )
                     node_type = VariableNodeType
 
-                endif
+                END IF
 
 
-                if( GP_Individual_Node_Type( inode, i ) >  0 )then
+                IF ( GP_Individual_Node_Type( inode, i ) >  0 ) THEN
 
                     node_operation =  GP_Individual_Node_type( inode, i )
                     node_type = MathNodeType
 
-                endif
+                END IF
 
 
                 !---------------------------------------------------------------------
@@ -167,9 +167,9 @@ do  i = 1, Tree_count
 
                 !---------------------------------------------------------------------
 
-            endif ! GP_Individual_Node_Type...
+            END IF ! GP_Individual_Node_Type...
 
-        enddo ! inode
+        END DO ! inode
 
 
 
@@ -189,10 +189,10 @@ do  i = 1, Tree_count
 
 
 
-        do  k = 1, node_count
+        DO  k = 1, node_count
 
 
-            if( Nodes(k)%n%Node_Type .eq. MathNodeType ) then
+            IF ( Nodes(k)%n%Node_Type .eq. MathNodeType ) THEN
 
 
                 ! Grab the parent & calculate children indexes
@@ -206,73 +206,73 @@ do  i = 1, Tree_count
 
                 ! Grab the children and associate
 
-                do  l = 1,node_count
+                DO  l = 1,node_count
 
-                    if( Node_IDs(l) .eq. left ) then
+                    IF ( Node_IDs(l) .eq. left ) THEN
 
                         parent%left => Nodes(l)%n
                         Nodes(l)%n%parent => parent
                         exit
 
-                    endif
-                enddo
+                    END IF
+                END DO
 
-                do  l = 1, node_count
+                DO  l = 1, node_count
 
-                    if( Node_IDs(l) .eq. right ) then
+                    IF ( Node_IDs(l) .eq. right ) THEN
 
                         parent%right => Nodes(l)%n
                         Nodes(l)%n%parent => parent
                         exit
 
-                    endif
+                    END IF
 
-                enddo
+                END DO
 
 
-            elseif( Nodes(k)%n%Node_Type .eq. VariableNodeType) then
+            ELSE IF ( Nodes(k)%n%Node_Type .eq. VariableNodeType) THEN
 
                 ! If the index is in the -5000 range,
                 ! this is a forcing function variable.
                 ! Associate it with the correct array
 
 
-                if( Nodes(k)%n%variable_index < -5000) then
+                IF ( Nodes(k)%n%variable_index < -5000) THEN
 
 
                     Nodes(k)%n%variable =>  &
-                           Numerical_CODE_Forcing_Functions(abs(5000+Nodes(k)%n%variable_index))
+                           Numerical_CODE_Forcing_Functions(ABS (5000+Nodes(k)%n%variable_index))
 
 
-                else
+                ELSE
 
 
-                    if( abs( Nodes(k)%n%variable_index ) <= n_code_equations )then
+                    IF ( ABS ( Nodes(k)%n%variable_index ) <= n_code_equations ) THEN
 
-                        Nodes(k)%n%variable =>   btmp( abs( Nodes(k)%n%variable_index ) )
+                        Nodes(k)%n%variable =>   btmp( ABS ( Nodes(k)%n%variable_index ) )
 
-                    else
+                    ELSE
 
                         ! this section for the data processing version 
                         ! n_code_equations = 1 only
 
                         Nodes(k)%n%variable =>  &
                              RK_data_array( &
-                                   abs( Nodes(k)%n%variable_index ) - n_code_equations )
+                                   ABS ( Nodes(k)%n%variable_index ) - n_code_equations )
 
-                    endif !   abs( Nodes(k)%n%variable_index ) <= n_code_equations
-
-
-                endif ! Nodes(k)%n%variable_index < -5000
+                    END IF !   ABS ( Nodes(k)%n%variable_index ) <= n_code_equations
 
 
-            elseif( Nodes(k)%n%Node_Type .eq. ParameterNodeType ) then
+                END IF ! Nodes(k)%n%variable_index < -5000
 
-                continue
 
-            endif !   Nodes(k)%n%Node_Type .eq. MathNodeType 
+            ELSE IF ( Nodes(k)%n%Node_Type .eq. ParameterNodeType ) THEN
 
-        enddo ! k
+                CONTINUE
+
+            END IF !   Nodes(k)%n%Node_Type .eq. MathNodeType 
+
+        END DO ! k
 
 
         Trees(i, j)%n => root
@@ -281,17 +281,17 @@ do  i = 1, Tree_count
         ! Clean up
 
 
-        deallocate( Nodes )
-        deallocate( Node_IDs )
+        DEALLOCATE ( Nodes )
+        DEALLOCATE ( Node_IDs )
 
 
-    enddo ! j
+    END DO ! j
 
 
-enddo ! i
+END DO ! i
 
 
 
-return
+RETURN
 
-end subroutine deserialize_trees2
+END SUBROUTINE deserialize_trees2

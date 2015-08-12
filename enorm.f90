@@ -11,7 +11,7 @@
 !> @param[in]  X
 !> @return  enorm
 
-function enorm ( n, x )
+FUNCTION enorm ( n, x )
 
  
 !---------------------------------------------------------------------------  
@@ -62,15 +62,15 @@ function enorm ( n, x )
 !    Output, real(kind=r8b) ENORM, the Euclidean norm of the vector.
 !
 
-use kinds_mod 
+USE kinds_mod 
 
-  implicit none
+  IMPLICIT none
 
-  integer(kind=i4b) n
-  real(kind=r8b) x(n)
-  real(kind=r8b) enorm
+  INTEGER (KIND=i4b) n
+  REAL (KIND=r8b) x(n)
+  REAL (KIND=r8b) enorm
 
-  enorm = sqrt ( sum ( x(1:n)**2 ))
+  enorm = SQRT ( sum ( x(1:n)**2 ))
 
-  return
-end
+  RETURN
+END 

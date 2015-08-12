@@ -23,11 +23,11 @@ MODULE clock_MODULE
 
 !---------------------------------------------------------------------------  
 
-use kinds_mod 
-implicit none
+USE kinds_mod 
+IMPLICIT none
 
 
-integer(kind=i4b) :: clock1, clock2, ratec, maxclk
+INTEGER (KIND=i4b) :: clock1, clock2, ratec, maxclk
 
 
 !----------------------------------------------------------

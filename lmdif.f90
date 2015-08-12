@@ -37,7 +37,7 @@
 !> @param[out] IPVT(N)   defines a permutation matrix P
 !> @param[out] QTF(N)    the first N elements of Q'*FVEC.
 
-subroutine lmdif ( fcn, m, n, x, fvec, ftol, xtol, gtol, maxfev, epsfcn, &
+SUBROUTINE lmdif ( fcn, m, n, x, fvec, ftol, xtol, gtol, maxfev, epsfcn, &
   diag, mode, factor, nprint, info, nfev, fjac, ldfjac, ipvt, qtf )
 
  
@@ -197,60 +197,60 @@ subroutine lmdif ( fcn, m, n, x, fvec, ftol, xtol, gtol, maxfev, epsfcn, &
 !
 !    Output, real(kind=r8b) QTF(N), the first N elements of Q'*FVEC.
 !
-use kinds_mod 
+USE kinds_mod 
 
-  implicit none
+  IMPLICIT none
 
 
-  integer(kind=i4b) ldfjac
-  integer(kind=i4b) m
-  integer(kind=i4b) n
+  INTEGER (KIND=i4b) ldfjac
+  INTEGER (KIND=i4b) m
+  INTEGER (KIND=i4b) n
 
-  real(kind=r8b) actred
-  real(kind=r8b) delta
-  real(kind=r8b) diag(n)
-  real(kind=r8b) dirder
-  real(kind=r8b) enorm
-  real(kind=r8b) epsfcn
-  real(kind=r8b) epsmch
-  real(kind=r8b) factor
-  external fcn
-  real(kind=r8b) fjac(ldfjac,n)
-  real(kind=r8b) fnorm
-  real(kind=r8b) fnorm1
-  real(kind=r8b) ftol
-  real(kind=r8b) fvec(m)
-  real(kind=r8b) gnorm
-  real(kind=r8b) gtol
-  integer(kind=i4b) i
-  integer(kind=i4b) iflag
-  integer(kind=i4b) iter
-  integer(kind=i4b) info
-  integer(kind=i4b) ipvt(n)
-  integer(kind=i4b) j
-  integer(kind=i4b) l
-  integer(kind=i4b) maxfev
-  integer(kind=i4b) mode
-  integer(kind=i4b) nfev
-  integer(kind=i4b) nprint
-  real(kind=r8b) par
-  real(kind=r8b) pnorm
-  real(kind=r8b) prered
-  real(kind=r8b) qtf(n)
-  real(kind=r8b) ratio
-  real(kind=r8b) sum2
-  real(kind=r8b) temp
-  real(kind=r8b) temp1
-  real(kind=r8b) temp2
-  real(kind=r8b) wa1(n)
-  real(kind=r8b) wa2(n)
-  real(kind=r8b) wa3(n)
-  real(kind=r8b) wa4(m)
+  REAL (KIND=r8b) actred
+  REAL (KIND=r8b) delta
+  REAL (KIND=r8b) diag(n)
+  REAL (KIND=r8b) dirder
+  REAL (KIND=r8b) enorm
+  REAL (KIND=r8b) epsfcn
+  REAL (KIND=r8b) epsmch
+  REAL (KIND=r8b) factor
+  EXTERNAL fcn
+  REAL (KIND=r8b) fjac(ldfjac,n)
+  REAL (KIND=r8b) fnorm
+  REAL (KIND=r8b) fnorm1
+  REAL (KIND=r8b) ftol
+  REAL (KIND=r8b) fvec(m)
+  REAL (KIND=r8b) gnorm
+  REAL (KIND=r8b) gtol
+  INTEGER (KIND=i4b) i
+  INTEGER (KIND=i4b) iflag
+  INTEGER (KIND=i4b) iter
+  INTEGER (KIND=i4b) info
+  INTEGER (KIND=i4b) ipvt(n)
+  INTEGER (KIND=i4b) j
+  INTEGER (KIND=i4b) l
+  INTEGER (KIND=i4b) maxfev
+  INTEGER (KIND=i4b) mode
+  INTEGER (KIND=i4b) nfev
+  INTEGER (KIND=i4b) nprint
+  REAL (KIND=r8b) par
+  REAL (KIND=r8b) pnorm
+  REAL (KIND=r8b) prered
+  REAL (KIND=r8b) qtf(n)
+  REAL (KIND=r8b) ratio
+  REAL (KIND=r8b) sum2
+  REAL (KIND=r8b) temp
+  REAL (KIND=r8b) temp1
+  REAL (KIND=r8b) temp2
+  REAL (KIND=r8b) wa1(n)
+  REAL (KIND=r8b) wa2(n)
+  REAL (KIND=r8b) wa3(n)
+  REAL (KIND=r8b) wa4(m)
 
-  real(kind=r8b) x(n)
+  REAL (KIND=r8b) x(n)
 
-  real(kind=r8b) xnorm
-  real(kind=r8b) xtol
+  REAL (KIND=r8b) xnorm
+  REAL (KIND=r8b) xtol
 
   epsmch = epsilon ( epsmch )
 
@@ -258,44 +258,44 @@ use kinds_mod
   iflag = 0
   nfev = 0
 
-  if ( n <= 0 ) then
+  IF ( n <= 0 ) THEN
     go to 300
-  else if ( m < n ) then
+  ELSE IF ( m < n ) THEN
     go to 300
-  else if ( ldfjac < m ) then
+  ELSE IF ( ldfjac < m ) THEN
     go to 300
-  else if ( ftol < 0.0D+00 ) then
+  ELSE IF ( ftol < 0.0D+00 ) THEN
     go to 300
-  else if ( xtol < 0.0D+00 ) then
+  ELSE IF ( xtol < 0.0D+00 ) THEN
     go to 300
-  else if ( gtol < 0.0D+00 ) then
+  ELSE IF ( gtol < 0.0D+00 ) THEN
     go to 300
-  else if ( maxfev <= 0 ) then
+  ELSE IF ( maxfev <= 0 ) THEN
     go to 300
-  else if ( factor <= 0.0D+00 ) then
+  ELSE IF ( factor <= 0.0D+00 ) THEN
     go to 300
-  end if
+  END IF
 
-  if ( mode == 2 ) then
-    do j = 1, n
-      if ( diag(j) <= 0.0D+00 ) then
+  IF ( mode == 2 ) THEN
+    DO j = 1, n
+      IF ( diag(j) <= 0.0D+00 ) THEN
         go to 300
-      end if
-    end do
-  end if
+      END IF
+    END DO
+  END IF
 !
 !  Evaluate the function at the starting point and calculate its norm.
 !
   iflag = 1
 
-  call fcn ( m, n, x, fvec, iflag )
+  CALL fcn ( m, n, x, fvec, iflag )
 
 
   nfev = 1
 
-  if ( iflag < 0 ) then
+  IF ( iflag < 0 ) THEN
     go to 300
-  end if
+  END IF
 
   fnorm = enorm ( m, fvec )
 !
@@ -306,51 +306,51 @@ use kinds_mod
 !
 !  Beginning of the outer loop.
 !
-30 continue
+30 CONTINUE
 !
 !  Calculate the jacobian matrix.
 !
   iflag = 2
 
 
-  call fdjac2 ( fcn, m, n, x, fvec, fjac, ldfjac, iflag, epsfcn )
+  CALL fdjac2 ( fcn, m, n, x, fvec, fjac, ldfjac, iflag, epsfcn )
 
 
   nfev = nfev + n
 
-  if ( iflag < 0 ) then
+  IF ( iflag < 0 ) THEN
     go to 300
-  end if
+  END IF
 !
 !  If requested, call FCN to enable printing of iterates.
 !
-     if ( 0 < nprint ) then
+     IF ( 0 < nprint ) THEN
        iflag = 0
-       if ( mod ( iter-1, nprint ) == 0 ) then
-         call fcn ( m, n, x, fvec, iflag )
-       end if
-       if ( iflag < 0 ) then
+       IF ( mod ( iter-1, nprint ) == 0 ) THEN
+         CALL fcn ( m, n, x, fvec, iflag )
+       END IF
+       IF ( iflag < 0 ) THEN
          go to 300
-       end if
-     end if
+       END IF
+     END IF
 !
 !  Compute the QR factorization of the jacobian.
 !
-     call qrfac ( m, n, fjac, ldfjac, .true., ipvt, n, wa1, wa2 )
+     CALL qrfac ( m, n, fjac, ldfjac, .true., ipvt, n, wa1, wa2 )
 !
 !  On the first iteration and if MODE is 1, scale according
 !  to the norms of the columns of the initial jacobian.
 !
-     if ( iter == 1 ) then
+     IF ( iter == 1 ) THEN
 
-       if ( mode /= 2 ) then
+       IF ( mode /= 2 ) THEN
          diag(1:n) = wa2(1:n)
-         do j = 1, n
-           if ( wa2(j) == 0.0D+00 ) then
+         DO j = 1, n
+           IF ( wa2(j) == 0.0D+00 ) THEN
              diag(j) = 1.0D+00
-           end if
-         end do
-       end if
+           END IF
+         END DO
+       END IF
 !
 !  On the first iteration, calculate the norm of the scaled X
 !  and initialize the step bound DELTA.
@@ -358,72 +358,72 @@ use kinds_mod
        wa3(1:n) = diag(1:n) * x(1:n)
        xnorm = enorm ( n, wa3 )
        delta = factor * xnorm
-       if ( delta == 0.0D+00 ) then
+       IF ( delta == 0.0D+00 ) THEN
          delta = factor
-       end if
-     end if
+       END IF
+     END IF
 !
 !  Form Q' * FVEC and store the first N components in QTF.
 !
      wa4(1:m) = fvec(1:m)
 
-     do j = 1, n
+     DO j = 1, n
 
-       if ( fjac(j,j) /= 0.0D+00 ) then
+       IF ( fjac(j,j) /= 0.0D+00 ) THEN
          sum2 = dot_product ( wa4(j:m), fjac(j:m,j) )
          temp = - sum2 / fjac(j,j)
          wa4(j:m) = wa4(j:m) + fjac(j:m,j) * temp
-       end if
+       END IF
 
        fjac(j,j) = wa1(j)
        qtf(j) = wa4(j)
 
-     end do
+     END DO
 !
 !  Compute the norm of the scaled gradient.
 !
      gnorm = 0.0D+00
 
-     if ( fnorm /= 0.0D+00 ) then
+     IF ( fnorm /= 0.0D+00 ) THEN
 
-       do j = 1, n
+       DO j = 1, n
 
          l = ipvt(j)
 
-         if ( wa2(l) /= 0.0D+00 ) then
+         IF ( wa2(l) /= 0.0D+00 ) THEN
            sum2 = 0.0D+00
-           do i = 1, j
+           DO i = 1, j
              sum2 = sum2 + fjac(i,j) * ( qtf(i) / fnorm )
-           end do
-           gnorm = max ( gnorm, abs ( sum2 / wa2(l) ) )
-         end if
+           END DO
+           gnorm = MAX ( gnorm, ABS ( sum2 / wa2(l) ) )
+         END IF
 
-       end do
+       END DO
 
-     end if
+     END IF
 !
 !  Test for convergence of the gradient norm.
 !
-     if ( gnorm <= gtol ) then
+     IF ( gnorm <= gtol ) THEN
        info = 4
        go to 300
-     end if
+     END IF
 !
 !  Rescale if necessary.
 !
-     if ( mode /= 2 ) then
-       do j = 1, n
-         diag(j) = max ( diag(j), wa2(j) )
-       end do
-     end if
+     IF ( mode /= 2 ) THEN
+       DO j = 1, n
+         diag(j) = MAX ( diag(j), wa2(j) )
+       END DO
+     END IF
 !
 !  Beginning of the inner loop.
 !
-200  continue
+200  CONTINUE
 !
 !  Determine the Levenberg-Marquardt parameter.
 !
-        call lmpar ( n, fjac, ldfjac, ipvt, diag, qtf, delta, par, wa1, wa2 )
+        CALL lmpar ( n, fjac, ldfjac, ipvt, diag, qtf, delta, par, wa1, wa2 )
 !
 !  Store the direction P and X + P.
 !  Calculate the norm of P.
@@ -436,80 +436,80 @@ use kinds_mod
 !
 !  On the first iteration, adjust the initial step bound.
 !
-        if ( iter == 1 ) then
-          delta = min ( delta, pnorm )
-        end if
+        IF ( iter == 1 ) THEN
+          delta = MIN ( delta, pnorm )
+        END IF
 !
 !  Evaluate the function at X + P and calculate its norm.
 !
         iflag = 1
-        call fcn ( m, n, wa2, wa4, iflag )
+        CALL fcn ( m, n, wa2, wa4, iflag )
 
 
         nfev = nfev + 1
 
 
-        if ( iflag < 0 ) then
+        IF ( iflag < 0 ) THEN
           go to 300
-        end if
+        END IF
         fnorm1 = enorm ( m, wa4 )
 !
 !  Compute the scaled actual reduction.
 !
-        if ( 0.1D+00 * fnorm1 < fnorm ) then
+        IF ( 0.1D+00 * fnorm1 < fnorm ) THEN
           actred = 1.0D+00 - ( fnorm1 / fnorm )**2
-        else
+        ELSE
           actred = -1.0D+00
-        end if
+        END IF
 !
 !  Compute the scaled predicted reduction and the scaled directional derivative.
 !
-        do j = 1, n
+        DO j = 1, n
           wa3(j) = 0.0D+00
           l = ipvt(j)
           temp = wa1(l)
           wa3(1:j) = wa3(1:j) + fjac(1:j,j) * temp
-        end do
+        END DO
 
         temp1 = enorm ( n, wa3 ) / fnorm
-        temp2 = ( sqrt ( par ) * pnorm ) / fnorm
+        temp2 = ( SQRT ( par ) * pnorm ) / fnorm
         prered = temp1**2 + temp2**2 / 0.5D+00
         dirder = - ( temp1**2 + temp2**2 )
 !
 !  Compute the ratio of the actual to the predicted reduction.
 !
         ratio = 0.0D+00
-        if ( prered /= 0.0D+00 ) then
+        IF ( prered /= 0.0D+00 ) THEN
           ratio = actred / prered
-        end if
+        END IF
 !
 !  Update the step bound.
 !
-        if ( ratio <= 0.25D+00 ) then
+        IF ( ratio <= 0.25D+00 ) THEN
 
-           if ( actred >= 0.0D+00 ) then
+           IF ( actred >= 0.0D+00 ) THEN
              temp = 0.5D+00
-           endif
+           END IF
 
-           if ( actred < 0.0D+00 ) then
+           IF ( actred < 0.0D+00 ) THEN
              temp = 0.5D+00 * dirder / ( dirder + 0.5D+00 * actred )
-           end if
+           END IF
 
-           if ( 0.1D+00 * fnorm1 >= fnorm .or. temp < 0.1D+00 ) then
+           IF ( 0.1D+00 * fnorm1 >= fnorm .or. temp < 0.1D+00 ) THEN
              temp = 0.1D+00
-           end if
+           END IF
 
-           delta = temp * min ( delta, pnorm / 0.1D+00  )
+           delta = temp * MIN ( delta, pnorm / 0.1D+00  )
            par = par / temp
 
-        else
+        ELSE
 
-           if ( par == 0.0D+00 .or. ratio >= 0.75D+00 ) then
+           IF ( par == 0.0D+00 .or. ratio >= 0.75D+00 ) THEN
              delta = 2.0D+00 * pnorm
              par = 0.5D+00 * par
-           end if
+           END IF
 
-        end if
+        END IF
 !
 !  Test for successful iteration.
 !
@@ -517,70 +517,70 @@ use kinds_mod
 !
 !  Successful iteration. update X, FVEC, and their norms.
 !
-        if ( 0.0001D+00 <= ratio ) then
+        IF ( 0.0001D+00 <= ratio ) THEN
           x(1:n) = wa2(1:n)
           wa2(1:n) = diag(1:n) * x(1:n)
           fvec(1:m) = wa4(1:m)
           xnorm = enorm ( n, wa2 )
           fnorm = fnorm1
           iter = iter + 1
-        end if
+        END IF
 !
 !  Tests for convergence.
 !
-        if ( abs ( actred) <= ftol .and. prered <= ftol &
-          .and. 0.5D+00 * ratio <= 1.0D+00 ) then
+        IF ( ABS ( actred) <= ftol .and. prered <= ftol &
+          .and. 0.5D+00 * ratio <= 1.0D+00 ) THEN
           info = 1
-        end if
+        END IF
 
-        if ( delta <= xtol * xnorm ) then
+        IF ( delta <= xtol * xnorm ) THEN
           info = 2
-        end if
+        END IF
 
-        if ( abs ( actred) <= ftol .and. prered <= ftol &
+        IF ( ABS ( actred) <= ftol .and. prered <= ftol &
           .and. 0.5D+00 * ratio <= 1.0D+00 .and. info == 2 ) info = 3
-        if ( info /= 0 ) go to 300
+        IF ( info /= 0 ) go to 300
 !
 !  Tests for termination and stringent tolerances.
 !
 
-        if ( nfev >= maxfev ) then
+        IF ( nfev >= maxfev ) THEN
           info = 5
-        end if
+        END IF
 
-        if ( abs ( actred) <= epsmch .and. prered <= epsmch &
+        IF ( ABS ( actred) <= epsmch .and. prered <= epsmch &
           .and. 0.5D+00 * ratio <= 1.0D+00 ) info = 6
-        if ( delta <= epsmch * xnorm ) info = 7
-        if ( gnorm <= epsmch ) info = 8
+        IF ( delta <= epsmch * xnorm ) info = 7
+        IF ( gnorm <= epsmch ) info = 8
 
-        if ( info /= 0 ) then
+        IF ( info /= 0 ) THEN
           go to 300
-        end if
+        END IF
 !
 !  End of the inner loop.  Repeat if iteration unsuccessful.
 !
-        if ( ratio < 0.0001D+00 ) then
+        IF ( ratio < 0.0001D+00 ) THEN
           go to 200
-        end if
+        END IF
 !
 !  End of the outer loop.
 !
      go to 30
 
-300 continue
+300 CONTINUE
 
 !
 !  Termination, either normal or user imposed.
 !
-  if ( iflag < 0 ) then
+  IF ( iflag < 0 ) THEN
     info = iflag
-  end if
+  END IF
 
   iflag = 0
 
-  if ( nprint > 0 ) then
-    call fcn ( m, n, x, fvec, iflag )
-  end if
+  IF ( nprint > 0 ) THEN
+    CALL fcn ( m, n, x, fvec, iflag )
+  END IF
 
-  return
-end
+  RETURN
+END 

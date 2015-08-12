@@ -9,7 +9,7 @@
 !> @author Dr. John R. Moisan [NASA/GSFC]
 !> @date January, 2013 Dr. John R. Moisan
 
-module GP_data_module
+MODULE GP_data_module
  
 !---------------------------------------------------------------------------  
 !
@@ -21,19 +21,19 @@ module GP_data_module
 !
 !---------------------------------------------------------------------------  
 
-use kinds_mod 
-use GP_parameters_module
+USE kinds_mod 
+USE GP_parameters_module
 
-implicit none
+IMPLICIT none
 
 !real(kind=r8b) :: Data_Array(0:n_time_steps,n_CODE_equations)
-real(kind=r8b),allocatable, dimension(:,:) :: Data_Array
-real(kind=r8b),allocatable, dimension(:,:) :: Data_Array_log10
+REAL (KIND=r8b),ALLOCATABLE, DIMENSION(:,:) :: Data_Array
+REAL (KIND=r8b),ALLOCATABLE, DIMENSION(:,:) :: Data_Array_log10
 
 
-real(kind=r8b),allocatable, dimension( : )  :: Data_Variance_inv
+REAL (KIND=r8b),ALLOCATABLE, DIMENSION( : )  :: Data_Variance_inv
 
-real(kind=r8b),allocatable, dimension( : )  :: ratio_Data_Variance_inv
+REAL (KIND=r8b),ALLOCATABLE, DIMENSION( : )  :: ratio_Data_Variance_inv
 
 
-end module GP_data_module
+END MODULE GP_data_module

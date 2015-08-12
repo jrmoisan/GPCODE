@@ -9,7 +9,7 @@
 !> @author Dr. John R. Moisan [NASA/GSFC]
 !> @date January, 2013 Dr. John R. Moisan
 
-module GP_variables_module
+MODULE GP_variables_module
 
  
 !---------------------------------------------------------------------------  
@@ -22,12 +22,12 @@ module GP_variables_module
 !
 !---------------------------------------------------------------------------  
 
-use kinds_mod 
-use GP_Parameters_module
+USE kinds_mod 
+USE GP_Parameters_module
 
-use class_Tree_Node
+USE class_Tree_Node
 
-implicit none
+IMPLICIT none
 
 
 
@@ -35,25 +35,25 @@ implicit none
 
 
 !real(kind=r8b) :: Node_Values(n_nodes,n_trees)
-real(kind=r8b),allocatable, dimension( : , : ) :: Node_Values
+REAL (KIND=r8b),ALLOCATABLE, DIMENSION( : , : ) :: Node_Values
 
 !real(kind=r8b) :: Tree_Evaluation(n_nodes,n_trees)
-real(kind=r8b),allocatable, dimension( : , : ) :: Tree_Evaluation
+REAL (KIND=r8b),ALLOCATABLE, DIMENSION( : , : ) :: Tree_Evaluation
 
 
 !real(kind=r8b) :: Tree_Value(n_trees)
-real(kind=r8b),allocatable, dimension( : ) :: Tree_Value
+REAL (KIND=r8b),ALLOCATABLE, DIMENSION( : ) :: Tree_Value
 
 !integer(kind=i4b) :: Node_Eval_Type(n_nodes,n_trees)
-integer(kind=i4b),allocatable, dimension( : , : ) :: Node_Eval_Type
+INTEGER (KIND=i4b),ALLOCATABLE, DIMENSION( : , : ) :: Node_Eval_Type
 !
 !real(kind=r8b) :: bioflo(0:n_CODE_equations,0:n_CODE_equations)
-real(kind=r8b),allocatable, dimension( : , : ) :: bioflo
+REAL (KIND=r8b),ALLOCATABLE, DIMENSION( : , : ) :: bioflo
 
-character(str_len),allocatable, dimension( : , : ) :: bioflo_string
+CHARACTER (str_len),ALLOCATABLE, DIMENSION( : , : ) :: bioflo_string
 
 !real(kind=r8b) :: b_tmp(n_CODE_equations)
-real(kind=r8b),allocatable, dimension( : ) :: b_tmp
+REAL (KIND=r8b),ALLOCATABLE, DIMENSION( : ) :: b_tmp
 
 
 !--------------------------------------------------------------------
@@ -61,17 +61,17 @@ real(kind=r8b),allocatable, dimension( : ) :: b_tmp
 ! Runge-Kutta specific work arrays
 
 !real(kind=r8b) :: kval(4,n_CODE_equations)
-real(kind=r8b),allocatable, dimension( : , : ) :: kval
+REAL (KIND=r8b),ALLOCATABLE, DIMENSION( : , : ) :: kval
 
 !real(kind=r8b) :: btmp(n_CODE_equations)
-real(kind=r8b),allocatable, target, dimension( : ) :: btmp
+REAL (KIND=r8b),ALLOCATABLE, TARGET, DIMENSION( : ) :: btmp
 
 !real(kind=r8b) :: fbio(n_CODE_equations)
-real(kind=r8b),allocatable, dimension( : ) :: fbio
+REAL (KIND=r8b),ALLOCATABLE, DIMENSION( : ) :: fbio
 
 !--------------------------------------------------------------------
 
-real(kind=r8b) :: prob_no_elite
+REAL (KIND=r8b) :: prob_no_elite
 
 !--------------------------------------------------------------------
 
@@ -82,109 +82,109 @@ real(kind=r8b) :: prob_no_elite
 !------------------------------------------------------------------------------------------
 
 
-real(kind=r8b) :: Individual_Fitness
-real(kind=r8b) :: Individual_SSE_best_parent
-real(kind=r8b) :: Individual_SSE_best_parent_nolog10
+REAL (KIND=r8b) :: Individual_Fitness
+REAL (KIND=r8b) :: Individual_SSE_best_parent
+REAL (KIND=r8b) :: Individual_SSE_best_parent_nolog10
 
-integer(kind=i4b) :: n_GP_Elitists
-integer(kind=i4b) :: n_GP_Asexual_Reproductions
-integer(kind=i4b) :: n_GP_Crossovers
-integer(kind=i4b) :: n_GP_Mutations
+INTEGER (KIND=i4b) :: n_GP_Elitists
+INTEGER (KIND=i4b) :: n_GP_Asexual_Reproductions
+INTEGER (KIND=i4b) :: n_GP_Crossovers
+INTEGER (KIND=i4b) :: n_GP_Mutations
 
-integer(kind=i4b) :: n_GP_rand_recruits
+INTEGER (KIND=i4b) :: n_GP_rand_recruits
 
 
 
 ! GP_Node_Parameters_Answer(n_Nodes,n_Trees)
-real(kind=r8b), allocatable, dimension(:,:)  :: GP_Node_Parameters_Answer
+REAL (KIND=r8b), ALLOCATABLE, DIMENSION(:,:)  :: GP_Node_Parameters_Answer
 
 ! GP_Node_Type_Answer(n_Nodes,n_Trees)
-integer(kind=i4b), allocatable, dimension(:,:)  :: GP_Node_Type_Answer
+INTEGER (KIND=i4b), ALLOCATABLE, DIMENSION(:,:)  :: GP_Node_Type_Answer
 
 ! GP_Node_Type_for_Plotting(9,n_Nodes,n_Trees)
-integer(kind=i4b), allocatable, dimension(:,:,:)  :: GP_Node_Type_for_Plotting
+INTEGER (KIND=i4b), ALLOCATABLE, DIMENSION(:,:,:)  :: GP_Node_Type_for_Plotting
 
 !real(kind=r8b) :: GP_Population_Node_Parameters(n_nodes,n_trees,n_GP_individuals)
-real(kind=r8b),allocatable,dimension(:,:,:)     :: GP_Population_Node_Parameters
+REAL (KIND=r8b),ALLOCATABLE,DIMENSION(:,:,:)     :: GP_Population_Node_Parameters
 
 !real(kind=r8b) :: GP_Individual_Node_Parameters(n_nodes,n_trees)
-real(kind=r8b),target,allocatable,dimension(:,:)       :: GP_Individual_Node_Parameters
+REAL (KIND=r8b),TARGET,ALLOCATABLE,DIMENSION(:,:)       :: GP_Individual_Node_Parameters
 
-real(kind=r8b),target,allocatable,dimension(:,:)       :: GP_minSSE_Individual_Node_Parameters
+REAL (KIND=r8b),TARGET,ALLOCATABLE,DIMENSION(:,:)       :: GP_minSSE_Individual_Node_Parameters
 
 
 
 ! GP_diversity_index(n_GP_Individuals)
-integer(kind=i4b),allocatable,dimension(:) :: GP_diversity_index
+INTEGER (KIND=i4b),ALLOCATABLE,DIMENSION(:) :: GP_diversity_index
 
 ! GP_Adult_Population_Node_Type(n_Nodes,n_Trees,n_GP_Individuals)
-integer(kind=i4b),allocatable,dimension(:,:,:) :: GP_Adult_Population_Node_Type
+INTEGER (KIND=i4b),ALLOCATABLE,DIMENSION(:,:,:) :: GP_Adult_Population_Node_Type
 
 ! GP_Child_Population_Node_Type(n_Nodes,n_Trees,n_GP_Individuals)
-integer(kind=i4b),allocatable,dimension(:,:,:) :: GP_Child_Population_Node_Type
+INTEGER (KIND=i4b),ALLOCATABLE,DIMENSION(:,:,:) :: GP_Child_Population_Node_Type
 
 ! Parent_Tree_Swap_Node_Type(n_Nodes,2)
-integer(kind=i4b),allocatable,dimension(:,:) :: Parent_Tree_Swap_Node_Type
+INTEGER (KIND=i4b),ALLOCATABLE,DIMENSION(:,:) :: Parent_Tree_Swap_Node_Type
 
 ! GP_Individual_Node_Type(n_Nodes,n_Trees)
-integer(kind=i4b),allocatable,dimension(:,:) :: GP_Individual_Node_Type
+INTEGER (KIND=i4b),ALLOCATABLE,DIMENSION(:,:) :: GP_Individual_Node_Type
 
-integer(kind=i4b),allocatable,dimension(:,:) :: GP_minSSE_Individual_Node_Type
+INTEGER (KIND=i4b),ALLOCATABLE,DIMENSION(:,:) :: GP_minSSE_Individual_Node_Type
 
 
 !real(kind=r8b) :: GP_Population_Initial_Conditions(n_CODE_equations,n_GP_individuals)
-real(kind=r8b),allocatable,dimension(:,:)       :: GP_Population_Initial_Conditions
+REAL (KIND=r8b),ALLOCATABLE,DIMENSION(:,:)       :: GP_Population_Initial_Conditions
 
 !real(kind=r8b) :: GP_Individual_Initial_Conditions(n_CODE_equations)
-real(kind=r8b),allocatable,dimension(:)         :: GP_Individual_Initial_Conditions
+REAL (KIND=r8b),ALLOCATABLE,DIMENSION(:)         :: GP_Individual_Initial_Conditions
 
 
-real(kind=r8b),allocatable,dimension(:)         :: GP_minSSE_Individual_Initial_Conditions
+REAL (KIND=r8b),ALLOCATABLE,DIMENSION(:)         :: GP_minSSE_Individual_Initial_Conditions
 
 
 !real(kind=r8b) :: GP_Population_Fitness(n_GP_individuals)
-real(kind=r8b),allocatable,dimension(:)         :: GP_Population_Fitness
+REAL (KIND=r8b),ALLOCATABLE,DIMENSION(:)         :: GP_Population_Fitness
 
 
 ! GP_Individual_N_GP_param
-integer(kind=i4b),allocatable,dimension(:) :: GP_Individual_N_GP_param
+INTEGER (KIND=i4b),ALLOCATABLE,DIMENSION(:) :: GP_Individual_N_GP_param
 
 !------------------------------------------------------------------------------
 
 ! Runge_Kutta_Node_Type(n_Nodes,n_Trees)
 !integer(kind=i4b),allocatable,dimension(:,:) :: Runge_Kutta_Node_Type
-integer(kind=i4b),allocatable,dimension(:,:) :: RK_Node_Type
+INTEGER (KIND=i4b),ALLOCATABLE,DIMENSION(:,:) :: RK_Node_Type
 
 !real(kind=r8b) :: Runge_Kutta_Node_Parameters(n_nodes,n_trees)
 !real(kind=r8b),allocatable,dimension(:,:)    :: Runge_Kutta_Node_Parameters
-real(kind=r8b),allocatable,dimension(:,:)    :: RK_Node_Parameters
+REAL (KIND=r8b),ALLOCATABLE,DIMENSION(:,:)    :: RK_Node_Parameters
 
 !real(kind=r8b) :: Runge_Kutta_Initial_Conditions(n_CODE_equations)
 !real(kind=r8b),allocatable,dimension(:)     :: Runge_Kutta_Initial_Conditions
-real(kind=r8b),allocatable,dimension(:)     :: RK_Initial_Conditions
+REAL (KIND=r8b),ALLOCATABLE,DIMENSION(:)     :: RK_Initial_Conditions
 
 !real(kind=r8b) :: Runge_Kutta_Solution(0:n_time_steps,n_CODE_equations)
 !
 !real(kind=r8b),allocatable, dimension(:,:)   :: Runge_Kutta_Solution
-real(kind=r8b),allocatable, dimension(:,:)   :: RK_Solution
+REAL (KIND=r8b),ALLOCATABLE, DIMENSION(:,:)   :: RK_Solution
 
 !---------------------------------------------------------------------------
 
 ! store the node types and parameters for the truth model here
 
-real(kind=r8b),allocatable,dimension(:)          :: Truth_Initial_Conditions
-integer(kind=i4b),allocatable,dimension(:,:)     :: Truth_Node_Type
-real(kind=r8b),target,allocatable,dimension(:,:) :: Truth_Node_Parameters
+REAL (KIND=r8b),ALLOCATABLE,DIMENSION(:)          :: Truth_Initial_Conditions
+INTEGER (KIND=i4b),ALLOCATABLE,DIMENSION(:,:)     :: Truth_Node_Type
+REAL (KIND=r8b),TARGET,ALLOCATABLE,DIMENSION(:,:) :: Truth_Node_Parameters
 
-logical :: Truth_Model_Match       
+LOGICAL :: Truth_Model_Match       
 
 !------------------------------------------------------------------------------
 
-real(kind=r8b) :: GP_Individual_Lowest_SSE
+REAL (KIND=r8b) :: GP_Individual_Lowest_SSE
 
-real(kind=r8b) :: GP_minSSE_Individual_SSE
+REAL (KIND=r8b) :: GP_minSSE_Individual_SSE
 
-integer(kind=i4b) :: GP_minSSE_Individual_N_GP_param
+INTEGER (KIND=i4b) :: GP_minSSE_Individual_N_GP_param
 !---------------------------------------------------------------------------
 
 ! must be kept for re-evaluations of next generations >>>
@@ -194,50 +194,50 @@ integer(kind=i4b) :: GP_minSSE_Individual_N_GP_param
 ! GP_Individual_Ranked_Fitness(n_GP_Individuals)
 ! GP_Integrated_Ranked_Fitness(n_GP_Individuals)
 
-real(kind=r8b),allocatable, dimension(:) :: GP_Child_Individual_SSE_nolog10
+REAL (KIND=r8b),ALLOCATABLE, DIMENSION(:) :: GP_Child_Individual_SSE_nolog10
 
-real(kind=r8b) :: sse_local_nolog10              
-
-
-real(kind=r8b),allocatable, dimension(:) :: GP_Child_Population_SSE
+REAL (KIND=r8b) :: sse_local_nolog10              
 
 
-real(kind=r8b),allocatable, dimension(:) :: GP_Adult_Population_SSE  
+REAL (KIND=r8b),ALLOCATABLE, DIMENSION(:) :: GP_Child_Population_SSE
 
-real(kind=r8b),allocatable, dimension(:) :: GP_Individual_Ranked_Fitness
-real(kind=r8b),allocatable, dimension(:) :: GP_Integrated_Ranked_Fitness
 
-real(kind=r8b),allocatable, dimension(:) :: GP_Population_Ranked_Fitness               ! ???
-real(kind=r8b),allocatable, dimension(:) :: GP_Integrated_Population_Ranked_Fitness    ! ???
+REAL (KIND=r8b),ALLOCATABLE, DIMENSION(:) :: GP_Adult_Population_SSE  
+
+REAL (KIND=r8b),ALLOCATABLE, DIMENSION(:) :: GP_Individual_Ranked_Fitness
+REAL (KIND=r8b),ALLOCATABLE, DIMENSION(:) :: GP_Integrated_Ranked_Fitness
+
+REAL (KIND=r8b),ALLOCATABLE, DIMENSION(:) :: GP_Population_Ranked_Fitness               ! ???
+REAL (KIND=r8b),ALLOCATABLE, DIMENSION(:) :: GP_Integrated_Population_Ranked_Fitness    ! ???
 
 
 !---------------------------------------------------------------------                                                   
                                                                                                                          
 ! input_data_names  - read from input data file
                                                                                                                          
-character(name_len),allocatable, dimension( : ) :: input_data_names
+CHARACTER (name_len),ALLOCATABLE, DIMENSION( : ) :: input_data_names
                                                                                                                          
 ! input_data_array - read from input data file
                                                                                                                          
-real(kind=r8b),allocatable, dimension(:,:) ::  input_data_array
+REAL (KIND=r8b),ALLOCATABLE, DIMENSION(:,:) ::  input_data_array
                                                                                                                          
                                                                                                                          
-real(kind=r8b),allocatable,target, dimension(:) ::  RK_data_array
+REAL (KIND=r8b),ALLOCATABLE,TARGET, DIMENSION(:) ::  RK_data_array
                                                                                                                          
 !---------------------------------------------------------------------                                                   
              
 
 !Numerical_CODE_Initial_Conditions contains columns for forcing functions
-real(kind=r8b),dimension(:), allocatable :: Numerical_CODE_Initial_Conditions
+REAL (KIND=r8b),DIMENSION(:), ALLOCATABLE :: Numerical_CODE_Initial_Conditions
 
 
 !Numerical_CODE_Solution contains columns for forcing functions
-real(kind=r8b),dimension(:,:), allocatable  :: Numerical_CODE_Solution
-real(kind=r8b),dimension(:,:), allocatable  :: Numerical_CODE_Solution_log10
+REAL (KIND=r8b),DIMENSION(:,:), ALLOCATABLE  :: Numerical_CODE_Solution
+REAL (KIND=r8b),DIMENSION(:,:), ALLOCATABLE  :: Numerical_CODE_Solution_log10
 
 
 
-real(kind=r8b),dimension(:),allocatable, target :: Numerical_CODE_Forcing_Functions
+REAL (KIND=r8b),DIMENSION(:),ALLOCATABLE, TARGET :: Numerical_CODE_Forcing_Functions
 
 
 ! In case of multiple tracked resources (e.g. a stack of bio-flow matrices)
@@ -248,36 +248,36 @@ real(kind=r8b),dimension(:),allocatable, target :: Numerical_CODE_Forcing_Functi
 ! in Box_Model/Models/Fasham/Setup.
 
 !integer(kind=i4b), dimension(n_CODE_Equations,n_Tracked_Resources) :: bioflo_map
-integer(kind=i4b), dimension(:,:), allocatable :: bioflo_map
+INTEGER (KIND=i4b), DIMENSION(:,:), ALLOCATABLE :: bioflo_map
 
 
 ! must be kept for re-evaluations of next generations <<<
 
 !type(Tree_Node_Pointer), dimension(n_Trees, n_Tracked_Resources) :: GP_Trees
-type(Tree_Node_Pointer), dimension(:,:),allocatable :: GP_Trees
+TYPE(Tree_Node_Pointer), DIMENSION(:,:),ALLOCATABLE :: GP_Trees
 
 
 !---------------------------------------------------------------------------
 
 !logical, dimension(n_GP_Individuals) :: Run_GP_Calculate_Fitness
-logical, allocatable, dimension(:) :: Run_GP_Calculate_Fitness
+LOGICAL, ALLOCATABLE, DIMENSION(:) :: Run_GP_Calculate_Fitness
 
 
 ! random number routine variables
 
-integer values(1:8), i_seed    ! used?
+INTEGER values(1:8), i_seed    ! used?
 
-integer, dimension(:), allocatable :: seed
-integer, dimension(:), allocatable :: current_seed
-integer, dimension(100) :: temp_seed
-logical :: L_restart = .false. 
+INTEGER, DIMENSION(:), ALLOCATABLE :: seed
+INTEGER, DIMENSION(:), ALLOCATABLE :: current_seed
+INTEGER, DIMENSION(100) :: temp_seed
+LOGICAL :: L_restart = .false. 
 
-real(kind=r8b) :: rrnd
-integer(kind=i4b) :: clock
-integer(kind=i4b) :: n_seed
+REAL (KIND=r8b) :: rrnd
+INTEGER (KIND=i4b) :: clock
+INTEGER (KIND=i4b) :: n_seed
 
 
 
-logical :: L_minSSE  = .false. 
+LOGICAL :: L_minSSE  = .false. 
 
-end module GP_variables_module
+END MODULE GP_variables_module

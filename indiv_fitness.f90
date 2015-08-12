@@ -10,7 +10,7 @@
 !> @param[in] individual 
 !> @return  indiv_fitness
 
-double precision function indiv_fitness( individual  )
+double precision FUNCTION indiv_fitness( individual  )
 
  
 !---------------------------------------------------------------------------  
@@ -29,22 +29,22 @@ double precision function indiv_fitness( individual  )
 ! a finding the optimum parameter set for a coupled set of equations
 !xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
-use kinds_mod 
+USE kinds_mod 
 
-use GP_parameters_module
-use GA_parameters_module
-use GP_variables_module
-use GA_variables_module
+USE GP_parameters_module
+USE GA_parameters_module
+USE GP_variables_module
+USE GA_variables_module
 
 
-implicit none
+IMPLICIT none
 
-integer(kind=i4b),intent(in) ::    individual
+INTEGER (KIND=i4b),INTENT(IN) ::    individual
 
 !--------------------------------------------------------------------
 
 indiv_fitness = sse0 / individual_SSE( individual )
 
-return
+RETURN
 
-end function indiv_fitness
+END FUNCTION indiv_fitness
