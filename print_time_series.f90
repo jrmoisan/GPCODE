@@ -80,7 +80,7 @@ logical :: L_myprint
 
 if( myid /= 0 ) return
 
-write(GP_print_unit,'(/A,2(1x,I6)/)') 'pts: i_GP_generation', i_GP_generation 
+write(GP_print_unit,'(/A,2(1x,I6)/)') 'pts: i_GP_generation', i_GP_generation
 
 L_myprint = .FALSE.
 if( i_GP_generation == 0 )then
@@ -264,7 +264,7 @@ if( myid == 0 )then
 
 
         do  j = 1, n_code_equations
-    
+
             resid_SSE = resid_SSE + &
                        ( Data_Array(i,j) - Numerical_CODE_Solution(i,j) )**2  * &
                                                      Data_Variance_inv(j) * &
@@ -404,9 +404,9 @@ if( myid == 0 )then
 
 
         ! print results
-    
+
         do  j = 1, n_code_equations
-    
+
             write(GP_print_unit, '(/A)') &
                   'pts: i_code_eq           mean            rms             &
                   &stddev            min            max'
@@ -421,29 +421,28 @@ if( myid == 0 )then
                   j, resid_mean(j), resid_rms(j), resid_stddev(j), resid_min(j), resid_max(j)
             write(GP_print_unit, '(A,1x,I2, 5(1x,E15.7))') &
                   'pts: corr coef. ', j, r_corr(j)
-    
+
         enddo ! j
 
         write(GP_print_unit, '(/A,1x,E15.7)') 'pts: y_min', y_min
         write(GP_print_unit, '(A,1x,E15.7/)') 'pts: y_max', y_max
 
+        if( index( model,'LOG10') > 0 .or. &
+            index( model,'log10') > 0         )then
 
-        if( index( model,'LOG10') > 0 .or. &                                                                                       
-            index( model,'log10') > 0         )then                                                                                
-                                                                                                                                   
-    
+
             write(GP_print_unit, '(A,2(1x, I6),1x,E15.7, 2(1x,E15.7))') &
                  '#pts: i_GP_gen, n_time_steps, dt, resid_SSE, SSE/SSE0_nolog10', &
                         i_GP_generation, n_time_steps, dt, resid_SSE, resid_SSE/SSE0_nolog10
-                                                                                                                                   
-        else                                                                                                                       
-                                                                                                                                   
+
+        else
+
             write(GP_print_unit, '(A,2(1x, I6),1x,E15.7, 2(1x,E15.7))') &
                  '#pts: i_GP_gen, n_time_steps, dt, resid_SSE, SSE/SSE0', &
                         i_GP_generation, n_time_steps, dt, resid_SSE, resid_SSE/SSE0
-    
-                                                                                                                                   
-        endif!  index( model,'LOG10') > 0 ...   
+
+
+        endif!  index( model,'LOG10') > 0 ...
 
     endif ! L_myprint
 
@@ -474,22 +473,22 @@ if( myid == 0 )then
     write(plot_unit, '(A,1x,E15.7)')  '#pts: y_min', y_min
     write(plot_unit, '(A,1x,E15.7)')  '#pts: y_max', y_max
 
-    if( index( model,'LOG10') > 0 .or. &                                                                                       
-        index( model,'log10') > 0         )then                                                                                
-                                                                                                                               
+    if( index( model,'LOG10') > 0 .or. &
+        index( model,'log10') > 0         )then
+
 
         write(plot_unit, '(A,2(1x, I6),1x,E15.7, 2(1x,E15.7))') &
              '#pts: i_GP_gen, n_time_steps, dt, resid_SSE, SSE/SSE0_nolog10', &
                     i_GP_generation, n_time_steps, dt, resid_SSE, resid_SSE/SSE0_nolog10
-                                                                                                                               
-    else                                                                                                                       
-                                                                                                                               
+
+    else
+
         write(plot_unit, '(A,2(1x, I6),1x,E15.7, 2(1x,E15.7))') &
              '#pts: i_GP_gen, n_time_steps, dt, resid_SSE, SSE/SSE0', &
                     i_GP_generation, n_time_steps, dt, resid_SSE, resid_SSE/SSE0
 
-                                                                                                                               
-    endif!  index( model,'LOG10') > 0 ...   
+
+    endif!  index( model,'LOG10') > 0 ...
 
     close( plot_unit )
 

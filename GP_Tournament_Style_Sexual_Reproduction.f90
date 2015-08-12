@@ -207,6 +207,7 @@ do
         GP_Adult_Population_Node_Type(1:n_Nodes,i_Female_Tree, k_GP_Individual_Female(1))
 
 
+    !write(6,'(/A)') 'gptssr:1 call GP_Check_Terminals '
 
     call GP_Check_Terminals( &
          Parent_Tree_Swap_Node_Type,n_Nodes,2 , i_Error)
@@ -240,6 +241,8 @@ do
 
     ! move one of the swapped trees into the new child GP_Child_Population_Node_Type
 
+
+    !write(6,'(/A)') 'gptssr:2 call GP_Check_Terminals '
 
     call GP_Check_Terminals( &
          Parent_Tree_Swap_Node_Type(1, 1),n_Nodes,1 , i_Error )
