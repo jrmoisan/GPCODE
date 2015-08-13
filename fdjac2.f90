@@ -22,7 +22,7 @@
 !> @param[out]  FJAC(LDFJAC,N) - the M by N approximate jacobian matrix.
 !> @param[out]  IFLAG - an error flag returned by FCN. 
 
-subroutine fdjac2 ( fcn, m, n, x, fvec, fjac, ldfjac, iflag, epsfcn )
+SUBROUTINE fdjac2 ( fcn, m, n, x, fvec, fjac, ldfjac, iflag, epsfcn )
 
  
 !---------------------------------------------------------------------------  
@@ -105,51 +105,51 @@ subroutine fdjac2 ( fcn, m, n, x, fvec, fjac, ldfjac, iflag, epsfcn )
 !    the relative errors in the functions are of the order of the machine
 !    precision.
 !
-use kinds_mod 
+USE kinds_mod 
 
-  implicit none
+  IMPLICIT none
 
-  integer(kind=i4b) ldfjac
-  integer(kind=i4b) m
-  integer(kind=i4b) n
+  INTEGER (KIND=i4b) ldfjac
+  INTEGER (KIND=i4b) m
+  INTEGER (KIND=i4b) n
 
-  real(kind=r8b) eps
-  real(kind=r8b) epsfcn
-  real(kind=r8b) epsmch
-  external fcn
-  real(kind=r8b) fjac(ldfjac,n)
-  real(kind=r8b) fvec(m)
-  real(kind=r8b) h
-  integer(kind=i4b) i
-  integer(kind=i4b) iflag
-  integer(kind=i4b) j
-  real(kind=r8b) temp
-  real(kind=r8b) wa(m)
-  real(kind=r8b) x(n)
+  REAL (KIND=r8b) eps
+  REAL (KIND=r8b) epsfcn
+  REAL (KIND=r8b) epsmch
+  EXTERNAL fcn
+  REAL (KIND=r8b) fjac(ldfjac,n)
+  REAL (KIND=r8b) fvec(m)
+  REAL (KIND=r8b) h
+  INTEGER (KIND=i4b) i
+  INTEGER (KIND=i4b) iflag
+  INTEGER (KIND=i4b) j
+  REAL (KIND=r8b) temp
+  REAL (KIND=r8b) wa(m)
+  REAL (KIND=r8b) x(n)
 
   epsmch = epsilon ( epsmch )
 
-  eps = sqrt ( max ( epsfcn, epsmch ) )
+  eps = SQRT ( MAX ( epsfcn, epsmch ) )
 
-  do j = 1, n
+  DO j = 1, n
 
     temp = x(j)
-    h = eps * abs ( temp )
-    if ( h == 0.0D+00 ) then
+    h = eps * ABS ( temp )
+    IF ( h == 0.0D+00 ) THEN
       h = eps
-    end if
+    END IF
 
     x(j) = temp + h
-    call fcn ( m, n, x, wa, iflag )
+    CALL fcn ( m, n, x, wa, iflag )
 
-    if ( iflag < 0 ) then
+    IF ( iflag < 0 ) THEN
       exit
-    end if
+    END IF
 
     x(j) = temp
     fjac(1:m,j) = ( wa(1:m) - fvec(1:m) ) / h
 
-  end do
+  END DO
 
-  return
-end
+  RETURN
+END 

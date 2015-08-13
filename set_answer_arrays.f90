@@ -7,7 +7,7 @@
 !> @author Dr. John R. Moisan [NASA/GSFC]
 !> @date January, 2013 Dr. John R. Moisan
 
-subroutine set_answer_arrays(  )  
+SUBROUTINE set_answer_arrays(  )  
 !
  
 !---------------------------------------------------------------------------  
@@ -34,31 +34,31 @@ subroutine set_answer_arrays(  )
 ! coupled ordinary differential equations
 !xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
-use kinds_mod
+USE kinds_mod
 
-use mpi
-use mpi_module
-
-
-use GP_Parameters_module
-use GA_Parameters_module
-use GP_variables_module
-use GA_Variables_module
-use GP_Data_module
+USE mpi
+USE mpi_module
 
 
-use Tree_Node_Factory_module
-use class_Tree_Node
+USE GP_Parameters_module
+USE GA_Parameters_module
+USE GP_variables_module
+USE GA_Variables_module
+USE GP_Data_module
 
 
-implicit none
+USE Tree_Node_Factory_module
+USE class_Tree_Node
 
 
-integer(kind=i4b) :: i_GP_individual
-integer(kind=i4b) :: i_tree
-integer(kind=i4b) :: i_node
-integer(kind=i4b) :: ii
-integer(kind=i4b) :: i
+IMPLICIT none
+
+
+INTEGER (KIND=i4b) :: i_GP_individual
+INTEGER (KIND=i4b) :: i_tree
+INTEGER (KIND=i4b) :: i_node
+INTEGER (KIND=i4b) :: ii
+INTEGER (KIND=i4b) :: i
 
 
 
@@ -69,31 +69,31 @@ integer(kind=i4b) :: i
 
 !write(6,'(/A/)') 'saa: call Initialize_Model  '
 
-if( trim(model)  == 'fasham' .or.  &
-    trim(model)  == 'fasham_fixed_tree' )then
+IF ( TRIM (model)  == 'fasham' .or.  &
+    TRIM (model)  == 'fasham_fixed_tree' ) THEN
 
-    call Initialize_Model( .false., .true., 6 )    ! for built-in Fasham function model
+    CALL Initialize_Model( .false., .true., 6 )    ! for built-in Fasham FUNCTION model
 
-elseif( index(model, 'CDOM' ) == 0 )then
-
-
-    call Initialize_Model( .true., .true., 6 )    ! for the regular tree, node array model
+ELSE IF ( INDEX (model, 'CDOM' ) == 0 ) THEN
 
 
-endif ! model == 'fasham'
+    CALL Initialize_Model( .true., .true., 6 )    ! for the regular tree, node array model
+
+
+END IF ! model == 'fasham'
 
 
 
 !------------------------------------------------------------------------------
 
 
-if( myid == 0 )then
+IF ( myid == 0 ) THEN
 
     ! print the trees made from fasham functions
 
-    call Generate_Dot_Graph( GP_Trees(:,1), n_Trees, output_dir )
+    CALL Generate_Dot_Graph( GP_Trees(:,1), n_Trees, output_dir )
 
-endif ! myid == 0
+END IF ! myid == 0
 
 
 !------------------------------------------------------------------------------
@@ -109,20 +109,20 @@ GP_Node_Parameters_Answer = GP_Individual_Node_Parameters ! Matrix Operation
 
 !--------------------------------------------------------------------------
 
-if( L_unit50_output )then
+IF ( L_unit50_output ) THEN
 
     ! calculate array for writing on unit50.txt ( unit_gp_out )
 
-    do  i_GP_Individual=1,n_GP_individuals
+    DO  i_GP_Individual=1,n_GP_individuals
         GP_Node_Type_for_Plotting(1:n_Nodes,1:n_Trees,i_GP_Individual) = &
                               GP_Node_Type_Answer(1:n_Nodes,1:n_Trees)
-    enddo
+    END DO
 
-    if( myid == 0 )then
-        write(unit_gp_out) GP_Node_Type_for_Plotting
-    endif ! myid == 0
+    IF ( myid == 0 ) THEN
+        WRITE (unit_gp_out) GP_Node_Type_for_Plotting
+    END IF ! myid == 0
 
-endif ! L_unit50_output
+END IF ! L_unit50_output
 
 !--------------------------------------------------------------------------
 
@@ -141,66 +141,66 @@ Numerical_CODE_Solution(0,1:n_CODE_equations) = &
 
 
 
-if( myid == 0 )then
+IF ( myid == 0 ) THEN
 
-    write(6,'(A)') ' '
+    WRITE (6,'(A)') ' '
 
-    do  ii = 1, n_CODE_equations
-        write(6,'(A,1x,I6,1x,E15.7)') &
+    DO  ii = 1, n_CODE_equations
+        WRITE (6,'(A,1x,I6,1x,E15.7)') &
               'saa: ii, Numerical_CODE_Initial_Conditions(ii) ', &
                     ii, Numerical_CODE_Initial_Conditions(ii)
-    enddo ! ii
+    END DO ! ii
 
     
 
-    do  ii = 1, n_CODE_equations
-        write(6,'(A,1x,I6,1x,E15.7)') &
+    DO  ii = 1, n_CODE_equations
+        WRITE (6,'(A,1x,I6,1x,E15.7)') &
               'saa: ii, Numerical_CODE_Solution(0,ii)         ', &
                     ii, Numerical_CODE_Solution(0,ii)
-    enddo ! ii
+    END DO ! ii
 
 
-    write(6,'(/A,2(1x,I6))') 'saa: n_trees, n_nodes ', n_trees, n_nodes
+    WRITE (6,'(/A,2(1x,I6))') 'saa: n_trees, n_nodes ', n_trees, n_nodes
 
     !-------------------------------------------------------------------------------
 
     ! this section prints nothing for the data processing model
 
-    write(6,'(/A)') &
+    WRITE (6,'(/A)') &
           'saa: i_tree  i_node  GP_Individual_Node_Parameters( i_node, i_tree ) '
 
-    do  i_tree = 1, n_trees
-        do  i_node = 1, n_nodes
+    DO  i_tree = 1, n_trees
+        DO  i_node = 1, n_nodes
 
-            if( GP_Individual_Node_Type( i_node, i_tree ) == 0     )then
-                write(6,'(2(1x,I8),6x,E15.7)') &
+            IF ( GP_Individual_Node_Type( i_node, i_tree ) == 0     ) THEN
+                WRITE (6,'(2(1x,I8),6x,E15.7)') &
                       i_tree, i_node, GP_Individual_Node_Parameters( i_node, i_tree )
-            endif ! GP_Individual_Node_Type( i_node, i_tree ) == 0
+            END IF ! GP_Individual_Node_Type( i_node, i_tree ) == 0
 
-        enddo ! i_node
-    enddo ! i_tree
+        END DO ! i_node
+    END DO ! i_tree
 
 
-    write(6,'(//A)') &
+    WRITE (6,'(//A)') &
           'saa: i_tree  i_node  GP_Individual_Node_Type( i_node, i_tree ) '
 
-    do  i_tree = 1, n_trees
-        do  i_node = 1, n_nodes
+    DO  i_tree = 1, n_trees
+        DO  i_node = 1, n_nodes
 
-            if( GP_Individual_Node_Type( i_node, i_tree ) /= -9999 )then
-                write(6,'(3(1x,I8))') &
+            IF ( GP_Individual_Node_Type( i_node, i_tree ) /= -9999 ) THEN
+                WRITE (6,'(3(1x,I8))') &
                         i_tree, i_node, GP_Individual_Node_Type( i_node, i_tree )
-            endif ! GP_Individual_Node_Type( i_node, i_tree ) /= -9999
+            END IF ! GP_Individual_Node_Type( i_node, i_tree ) /= -9999
 
-        enddo ! i_node
-    enddo ! i_tree
+        END DO ! i_node
+    END DO ! i_tree
 
-    write(6,'(A)') ' '
+    WRITE (6,'(A)') ' '
 
     !-------------------------------------------------------------------------------
 
 
-endif ! myid == 0
+END IF ! myid == 0
 
 
 
@@ -209,55 +209,55 @@ endif ! myid == 0
 
 ! run the Runge-Kutta model only once with proc 0
 
-if( myid == 0 )then
+IF ( myid == 0 ) THEN
 
     ! Runge_Kutta_Box_Model now put the time series in Numerical_CODE_Solution
 
-    write(GP_print_unit,'(A,1x,I6)') &
-          'saa: call Runge_Kutta_Box_Model  n_input_vars ',  n_input_vars
+    WRITE (GP_print_unit,'(A,1x,I6)') &
+          'saa: CALL Runge_Kutta_Box_Model  n_input_vars ',  n_input_vars
 
-    if( n_input_vars == 0 )then
+    IF ( n_input_vars == 0 ) THEN
 
-        call Runge_Kutta_Box_Model( .FALSE. )
+        CALL Runge_Kutta_Box_Model( .FALSE. )
 
-    else
+    ELSE
 
         ! input_data_array(0,:) is the function truth value 
         ! input_data_array(1:n_input_vars,:) are the inputs to the function
 
-        do  i = 1, n_input_data_points
+        DO  i = 1, n_input_data_points
         
-            do  ii = 1, n_CODE_equations
+            DO  ii = 1, n_CODE_equations
                 Numerical_CODE_Solution( i, ii ) = input_data_array(0,i) 
-                write(6,'(A,2(1x,I6),1x,E20.10)') 'saa: i,ii, Numerical_CODE_Solution(i,ii)', &
+                WRITE (6,'(A,2(1x,I6),1x,E20.10)') 'saa: i,ii, Numerical_CODE_Solution(i,ii)', &
                                                         i,ii, Numerical_CODE_Solution(i,ii)
-            enddo ! ii
+            END DO ! ii
         
-        enddo ! i 
+        END DO ! i 
 
-        if( index( model, 'LOG10') > 0 .or. &
-            index( model, 'log10') > 0        )then
+        IF ( INDEX ( model, 'LOG10') > 0 .or. &
+            INDEX ( model, 'log10') > 0        ) THEN
 
-            write(6,'(A/)') ' '
+            WRITE (6,'(A/)') ' '
 
-            do  i = 1, n_input_data_points
+            DO  i = 1, n_input_data_points
             
-                do  ii = 1, n_CODE_equations
+                DO  ii = 1, n_CODE_equations
                     Numerical_CODE_Solution_log10( i, ii ) = &
                                      log10( input_data_array(0,i) ) 
-                    write(6,'(A,2(1x,I6),1x,E20.10)') &
+                    WRITE (6,'(A,2(1x,I6),1x,E20.10)') &
                           'saa: i,ii, Numerical_CODE_Solution_log10(i,ii)', &
                                 i,ii, Numerical_CODE_Solution_log10(i,ii)
-                enddo ! ii
+                END DO ! ii
             
-            enddo ! i 
+            END DO ! i 
 
-        endif ! index( model, 'LOG10') > 0 ...      
-    endif ! n_input_vars == 0
+        END IF ! INDEX ( model, 'LOG10') > 0 ...      
+    END IF ! n_input_vars == 0
 
-endif ! myid == 0
+END IF ! myid == 0
 
 
-return
+RETURN
 
-end subroutine set_answer_arrays
+END SUBROUTINE set_answer_arrays

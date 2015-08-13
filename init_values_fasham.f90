@@ -9,7 +9,7 @@
 !>
 !> @param[in] icall        
 
-subroutine init_values_fasham( icall  )
+SUBROUTINE init_values_fasham( icall  )
 
  
 !---------------------------------------------------------------------------  
@@ -27,34 +27,34 @@ subroutine init_values_fasham( icall  )
 !     for GPCODE testing/developing
 
 
-use kinds_mod
-use mpi
-use mpi_module
+USE kinds_mod
+USE mpi
+USE mpi_module
 
-use GP_parameters_module
-use GP_variables_module
-use fasham_variables_module
-use fasham_tree_interfaces
-
-
-implicit none
+USE GP_parameters_module
+USE GP_variables_module
+USE fasham_variables_module
+USE fasham_tree_interfaces
 
 
-integer,intent(in)  :: icall
+IMPLICIT none
 
 
-integer(kind=i4b) :: i_Tree
-integer(kind=i4b) :: i_Node
+INTEGER,INTENT(IN)  :: icall
 
-integer(kind=i4b) :: i
-real(kind=r8b) :: increment
+
+INTEGER (KIND=i4b) :: i_Tree
+INTEGER (KIND=i4b) :: i_Node
+
+INTEGER (KIND=i4b) :: i
+REAL (KIND=r8b) :: increment
 
 
 !-------------------------------------------------------------------------
 
 !   Fasham model
 
-if( icall  == 0  )then
+IF ( icall  == 0  ) THEN
 
     n_CODE_equations =   7
  
@@ -62,32 +62,32 @@ if( icall  == 0  )then
  
     n_trees=  ((n_CODE_equations+1)**2)-(n_CODE_equations+1)
  
-    n_nodes = pow2_table( n_levels )  ! n_nodes = int(2**n_levels)-1
+    n_nodes = pow2_table( n_levels )  ! n_nodes = INT (2**n_levels)-1
  
  
     n_maximum_number_parameters = n_CODE_equations +  n_nodes        !orig 
 
-    if( myid == 0 )then
-        write(GP_print_unit,'(A,1x,I6)') 'ivFA: n_levels           ', n_levels
-        write(GP_print_unit,'(A,2(1x,I6))')&
-              'ivFA: int(2**n_levels)-1 , pow2_table( n_levels )', &
-                     int(2**n_levels)-1 , pow2_table( n_levels )
-        write(GP_print_unit,'(A,1x,I6)') 'ivFA: n_CODE_equations   ', n_CODE_equations
-        write(GP_print_unit,'(A,1x,I6)') 'ivFA: n_input_vars       ', n_input_vars
-        write(GP_print_unit,'(A,1x,I6)') 'ivFA: n_trees            ', n_trees
-        write(GP_print_unit,'(A,1x,I6)') 'ivFA: n_variables        ', n_variables
-        write(GP_print_unit,'(A,1x,I6)') 'ivFA: n_code_forcing     ', n_code_forcing
-        write(GP_print_unit,'(A,1x,I6)') 'ivFA: n_Tracked_Resources', n_Tracked_Resources
-        write(GP_print_unit,'(A,1x,I6)') 'ivFA: n_nodes            ', n_nodes
-        write(GP_print_unit,'(A,1x,I6/)')'ivFA: n_maximum_number_parameters  ', &
+    IF ( myid == 0 ) THEN
+        WRITE (GP_print_unit,'(A,1x,I6)') 'ivFA: n_levels           ', n_levels
+        WRITE (GP_print_unit,'(A,2(1x,I6))')&
+              'ivFA: INT (2**n_levels)-1 , pow2_table( n_levels )', &
+                     INT (2**n_levels)-1 , pow2_table( n_levels )
+        WRITE (GP_print_unit,'(A,1x,I6)') 'ivFA: n_CODE_equations   ', n_CODE_equations
+        WRITE (GP_print_unit,'(A,1x,I6)') 'ivFA: n_input_vars       ', n_input_vars
+        WRITE (GP_print_unit,'(A,1x,I6)') 'ivFA: n_trees            ', n_trees
+        WRITE (GP_print_unit,'(A,1x,I6)') 'ivFA: n_variables        ', n_variables
+        WRITE (GP_print_unit,'(A,1x,I6)') 'ivFA: n_code_forcing     ', n_code_forcing
+        WRITE (GP_print_unit,'(A,1x,I6)') 'ivFA: n_Tracked_Resources', n_Tracked_Resources
+        WRITE (GP_print_unit,'(A,1x,I6)') 'ivFA: n_nodes            ', n_nodes
+        WRITE (GP_print_unit,'(A,1x,I6/)')'ivFA: n_maximum_number_parameters  ', &
                                                 n_maximum_number_parameters
 
 
-    endif ! myid == 0
+    END IF ! myid == 0
 
-    return
+    RETURN
 
-endif ! icall == 0
+END IF ! icall == 0
 
 
 ! load the arrays
@@ -98,13 +98,13 @@ endif ! icall == 0
 
 do  i_tree = 1,n_trees
 
-    do  i_node = 1,n_nodes
+    DO  i_node = 1,n_nodes
         GP_Individual_Node_Parameters(i_node,i_tree) = 0.0d0
         tree_evaluation(i_node,i_tree) = 0.0d0
         GP_Individual_Node_Type(i_node,i_tree)       = -9999
-    enddo ! i_node
+    END DO ! i_node
 
-enddo ! i_tree
+END DO ! i_tree
 
 !--------------------------------------------------------------------------------------
 
@@ -151,39 +151,39 @@ enddo ! i_tree
 !-----------------------------------------------------------------------------------------
 
 
-    if( myid == 0 )then
-        write(GP_print_unit,'(A,1x,E12.5)') 'ivFA: alpha  ', alpha
-        write(GP_print_unit,'(A,1x,E12.5)') 'ivFA: aK1    ', aK1
-        write(GP_print_unit,'(A,1x,E12.5)') 'ivFA: aK2    ', aK2
-        write(GP_print_unit,'(A,1x,E12.5)') 'ivFA: amu1   ', amu1
-        write(GP_print_unit,'(A,1x,E12.5)') 'ivFA: akc    ', akc
-        write(GP_print_unit,'(A,1x,E12.5)') 'ivFA: gamma1 ', gamma1
-        write(GP_print_unit,'(A,1x,E12.5)') 'ivFA: phi    ', phi
-        write(GP_print_unit,'(A,1x,E12.5)') 'ivFA: g      ', g
-        write(GP_print_unit,'(A,1x,E12.5)') 'ivFA: beta1  ', beta1
-        write(GP_print_unit,'(A,1x,E12.5)') 'ivFA: beta2  ', beta2
-        write(GP_print_unit,'(A,1x,E12.5)') 'ivFA: beta3  ', beta3
-        write(GP_print_unit,'(A,1x,E12.5)') 'ivFA: amu2   ', amu2
-        write(GP_print_unit,'(A,1x,E12.5)') 'ivFA: amu5   ', amu5
-        write(GP_print_unit,'(A,1x,E12.5)') 'ivFA: aK3    ', aK3
-        write(GP_print_unit,'(A,1x,E12.5)') 'ivFA: omega  ', omega
-        write(GP_print_unit,'(A,1x,E12.5)') 'ivFA: epsilon', epsilon
-        write(GP_print_unit,'(A,1x,E12.5)') 'ivFA: Vb     ', Vb
-        write(GP_print_unit,'(A,1x,E12.5)') 'ivFA: Vp     ', Vp
-        write(GP_print_unit,'(A,1x,E12.5)') 'ivFA: amu3   ', amu3
-        write(GP_print_unit,'(A,1x,E12.5)') 'ivFA: aK4    ', aK4
-        write(GP_print_unit,'(A,1x,E12.5)') 'ivFA: eta    ', eta
-        write(GP_print_unit,'(A,1x,E12.5)') 'ivFA: V      ', V
-        write(GP_print_unit,'(A,1x,E12.5)') 'ivFA: p1     ', p1
-        write(GP_print_unit,'(A,1x,E12.5)') 'ivFA: p2     ', p2
-        write(GP_print_unit,'(A,1x,E12.5)') 'ivFA: p3     ', p3
-        write(GP_print_unit,'(A,1x,E12.5)') 'ivFA: aN0    ', aN0
+    IF ( myid == 0 ) THEN
+        WRITE (GP_print_unit,'(A,1x,E12.5)') 'ivFA: alpha  ', alpha
+        WRITE (GP_print_unit,'(A,1x,E12.5)') 'ivFA: aK1    ', aK1
+        WRITE (GP_print_unit,'(A,1x,E12.5)') 'ivFA: aK2    ', aK2
+        WRITE (GP_print_unit,'(A,1x,E12.5)') 'ivFA: amu1   ', amu1
+        WRITE (GP_print_unit,'(A,1x,E12.5)') 'ivFA: akc    ', akc
+        WRITE (GP_print_unit,'(A,1x,E12.5)') 'ivFA: gamma1 ', gamma1
+        WRITE (GP_print_unit,'(A,1x,E12.5)') 'ivFA: phi    ', phi
+        WRITE (GP_print_unit,'(A,1x,E12.5)') 'ivFA: g      ', g
+        WRITE (GP_print_unit,'(A,1x,E12.5)') 'ivFA: beta1  ', beta1
+        WRITE (GP_print_unit,'(A,1x,E12.5)') 'ivFA: beta2  ', beta2
+        WRITE (GP_print_unit,'(A,1x,E12.5)') 'ivFA: beta3  ', beta3
+        WRITE (GP_print_unit,'(A,1x,E12.5)') 'ivFA: amu2   ', amu2
+        WRITE (GP_print_unit,'(A,1x,E12.5)') 'ivFA: amu5   ', amu5
+        WRITE (GP_print_unit,'(A,1x,E12.5)') 'ivFA: aK3    ', aK3
+        WRITE (GP_print_unit,'(A,1x,E12.5)') 'ivFA: omega  ', omega
+        WRITE (GP_print_unit,'(A,1x,E12.5)') 'ivFA: epsilon', epsilon
+        WRITE (GP_print_unit,'(A,1x,E12.5)') 'ivFA: Vb     ', Vb
+        WRITE (GP_print_unit,'(A,1x,E12.5)') 'ivFA: Vp     ', Vp
+        WRITE (GP_print_unit,'(A,1x,E12.5)') 'ivFA: amu3   ', amu3
+        WRITE (GP_print_unit,'(A,1x,E12.5)') 'ivFA: aK4    ', aK4
+        WRITE (GP_print_unit,'(A,1x,E12.5)') 'ivFA: eta    ', eta
+        WRITE (GP_print_unit,'(A,1x,E12.5)') 'ivFA: V      ', V
+        WRITE (GP_print_unit,'(A,1x,E12.5)') 'ivFA: p1     ', p1
+        WRITE (GP_print_unit,'(A,1x,E12.5)') 'ivFA: p2     ', p2
+        WRITE (GP_print_unit,'(A,1x,E12.5)') 'ivFA: p3     ', p3
+        WRITE (GP_print_unit,'(A,1x,E12.5)') 'ivFA: aN0    ', aN0
     
-        write(GP_print_unit,'(A,1x,E12.5)') 'ivFA: akw    ', akw
-        write(GP_print_unit,'(A,1x,E12.5)') 'ivFA: am     ', am
+        WRITE (GP_print_unit,'(A,1x,E12.5)') 'ivFA: akw    ', akw
+        WRITE (GP_print_unit,'(A,1x,E12.5)') 'ivFA: am     ', am
 
 
-    endif ! myid == 0
+    END IF ! myid == 0
 !-----------------------------------------------------------------------------------------
 
 ! initialize the biological data fields
@@ -229,7 +229,7 @@ enddo ! i_tree
 
     ! Since indexes are all negative, take the absolute value
 
-    bioflo_map = abs(bioflo_map)
+    bioflo_map = ABS (bioflo_map)
 
 !-------------------------------------------------------------------------------
 
@@ -251,15 +251,15 @@ enddo ! i_tree
 ! Initial Conditions
 
 
-if( myid == 0 )then
+IF ( myid == 0 ) THEN
 
-    write(GP_print_unit,'(/A,1x,I6)')   'ivFA: n_CODE_equations  ', n_CODE_equations
-    write(GP_print_unit,'(A/(7(1x,E15.7)))') &
+    WRITE (GP_print_unit,'(/A,1x,I6)')   'ivFA: n_CODE_equations  ', n_CODE_equations
+    WRITE (GP_print_unit,'(A/(7(1x,E15.7)))') &
           'ivFA: Numerical_CODE_Initial_Conditions(1:n_code_equations)', &
                  Numerical_CODE_Initial_Conditions(1:n_code_equations)
-    write(GP_print_unit,'(A/)') ' '
+    WRITE (GP_print_unit,'(A/)') ' '
    
-endif ! myid == 0
+END IF ! myid == 0
 
 
 
@@ -267,42 +267,42 @@ endif ! myid == 0
 
 !Node_Probability = (/0.8d0,0.6d0,0.4d0,0.d0/)  ! NOTE: Last value MUST BE 0.0!!!]
 
-if( n_levels == 6 )then
+IF ( n_levels == 6 ) THEN
 !   n_levels = 6
     Node_Probability = (/0.8d0,0.7d0,6.d0, &
                          0.4d0,0.3d0,0.d0/)  ! NOTE: Last value MUST BE 0.0!!!]
 
 
-elseif( n_levels == 7 )then
+ELSE IF ( n_levels == 7 ) THEN
     !!  n_levels = 7
     Node_Probability = (/0.8d0,0.7d0,6.d0, &
                          0.5d0,0.4d0,0.3d0,0.d0/)  ! NOTE: Last value MUST BE 0.0!!!]
 
-elseif( n_levels == 8 )then
+ELSE IF ( n_levels == 8 ) THEN
     !   n_levels = 8
     Node_Probability = (/0.9d0,0.8d0,0.7d0,6.d0, &
                          0.5d0,0.4d0,0.3d0,0.d0/)  ! NOTE: Last value MUST BE 0.0!!!]
-else
+ELSE
 
     ! n_levels has some other value
 
-    increment = 1.0d0 / real( n_levels, kind=r8b )
+    increment = 1.0d0 / REAL ( n_levels, KIND=r8b )
 
-    do  i = 1, n_levels-1
-        Node_Probability(i) =  1.0d0 - increment * real(i,kind=r8b)  ! orig 
+    DO  i = 1, n_levels-1
+        Node_Probability(i) =  1.0d0 - increment * REAL (i,KIND=r8b)  ! orig 
         !Node_Probability(i) = ( 1.0d0 - increment * real(i,kind=r8b) )**2
-    enddo
+    END DO
     Node_Probability(n_levels) = 0.0d0
 
-endif ! n_levels == 6
+END IF ! n_levels == 6
 
-if( myid == 0 )then
-    write(GP_print_unit,'(/A,1x,I6)')   'ivFA: n_levels ', n_levels
-    write(GP_print_unit,'(A/(10(1x,E12.5)))') 'ivFA: Node_Probability', &
+IF ( myid == 0 ) THEN
+    WRITE (GP_print_unit,'(/A,1x,I6)')   'ivFA: n_levels ', n_levels
+    WRITE (GP_print_unit,'(A/(10(1x,E12.5)))') 'ivFA: Node_Probability', &
                                                      Node_Probability
-    write(GP_print_unit,'(A)') ' '
+    WRITE (GP_print_unit,'(A)') ' '
     !flush(GP_print_unit)
-endif ! myid == 0
+END IF ! myid == 0
 
 
 !------------------------------------------------------------------------------------------------
@@ -1880,17 +1880,17 @@ endif ! myid == 0
 
 !=============================================================================================
 
-if( L_truth_model ) then                                                                                         
+IF ( L_truth_model ) THEN                                                                                         
 
     Truth_Initial_Conditions =  Numerical_CODE_Initial_Conditions
     Truth_Node_Type          = GP_Individual_Node_Type
     Truth_Node_Parameters    = GP_Individual_Node_Parameters
 
-endif ! L_truth_model 
+END IF ! L_truth_model 
 
 !=============================================================================================
 
 
-return
+RETURN
 
-END subroutine init_values_fasham
+END SUBROUTINE init_values_fasham

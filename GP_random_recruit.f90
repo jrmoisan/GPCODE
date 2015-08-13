@@ -9,7 +9,7 @@
 !>
 !> @param[out] ierror_r      
 
-subroutine GP_random_recruit( ierror_r )
+SUBROUTINE GP_random_recruit( ierror_r )
 
  
 !---------------------------------------------------------------------------  
@@ -24,22 +24,22 @@ subroutine GP_random_recruit( ierror_r )
 
 !xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
-use kinds_mod
-use mpi
-use mpi_module
-use GP_Parameters_module
-use GA_Parameters_module
-use GP_Variables_module
-use GA_Variables_module
+USE kinds_mod
+USE mpi
+USE mpi_module
+USE GP_Parameters_module
+USE GA_Parameters_module
+USE GP_Variables_module
+USE GA_Variables_module
 
-implicit none
+IMPLICIT none
 
-real(kind=r4b) :: cff
+REAL (KIND=r4b) :: cff
 
-integer(kind=i4b) :: ierror_r
-integer(kind=i4b) :: i_GP_recruit
+INTEGER (KIND=i4b) :: ierror_r
+INTEGER (KIND=i4b) :: i_GP_recruit
 
-integer(kind=i4b) :: n_GP_recruited
+INTEGER (KIND=i4b) :: n_GP_recruited
 
 
 !-----------------------------------------------------------------------------
@@ -54,29 +54,29 @@ do  i_GP_recruit = n_GP_Elitists+1 , n_GP_individuals
     !--------------------------------------------------------------------------
 
 
-    call Random_Number(cff) ! uniform random number generator
+    CALL RANDOM_NUMBER(cff) ! uniform random number generator
 
     ! the range of cff is [0. to 1.]
 
-    if( cff <= GP_rand_recruit_Probability ) then
+    IF ( cff <= GP_rand_recruit_Probability ) THEN
 
         n_GP_recruited = n_GP_recruited + 1
 
         ! recruit all entire tree for this individual
 
-        call GP_Tree_Build_single( i_GP_recruit, ierror_r )
+        CALL GP_Tree_Build_single( i_GP_recruit, ierror_r )
 
 
-        if( n_GP_recruited >= n_GP_rand_recruits ) exit
+        IF ( n_GP_recruited >= n_GP_rand_recruits ) exit
 
 
-    endif  ! cff <= GP_rand_recruit_Probability
+    END IF  ! cff <= GP_rand_recruit_Probability
 
 
 
-enddo ! i_GP_recruit
+END DO ! i_GP_recruit
 
 
-return
+RETURN
 
-end subroutine GP_random_recruit
+END SUBROUTINE GP_random_recruit

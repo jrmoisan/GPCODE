@@ -12,7 +12,7 @@
 !> @param[in]  buildtrees
 !> @param[out] treeSlice 
 
-subroutine Build_Trees( treeSlice, buildtrees ) 
+SUBROUTINE Build_Trees( treeSlice, buildtrees ) 
 
  
 !---------------------------------------------------------------------------  
@@ -25,27 +25,27 @@ subroutine Build_Trees( treeSlice, buildtrees )
 !
 !---------------------------------------------------------------------------  
 
-use kinds_mod 
-use mpi
-use mpi_module
+USE kinds_mod 
+USE mpi
+USE mpi_module
 
-use class_Tree_Node
+USE class_Tree_Node
 
-use Tree_Node_Factory_module
-use GP_variables_module
-use fasham_variables_module
-use Fasham_Tree_Interfaces
+USE Tree_Node_Factory_module
+USE GP_variables_module
+USE fasham_variables_module
+USE Fasham_Tree_Interfaces
 
 
-type(Tree_Node_Pointer), dimension(n_Trees) :: treeSlice
+TYPE(Tree_Node_Pointer), DIMENSION(n_Trees) :: treeSlice
     
-logical, intent(in) :: buildtrees
+LOGICAL, INTENT(IN) :: buildtrees
 
 
 !------------------------------------------------------------------------------------------------
 
 
-if( buildtrees )then
+IF ( buildtrees ) THEN
 
     !  create trees from the GP_Individual_Node_Type which was read in
     
@@ -54,18 +54,18 @@ if( buildtrees )then
     ! from the GP_Individual_Node_Type and GP_Individual_Node_parameter arrays
     ! modified version of  deserialize_trees
     
-    call deserialize_trees2( treeSlice, n_Tracked_resources, n_trees    )
+    CALL deserialize_trees2( treeSlice, n_Tracked_resources, n_trees    )
     
     
 
-else 
+ELSE 
 
 
     ! build trees using the fasham functions 
 
 
-    if( trim(model) == 'fasham'    .or.     &
-        trim(model) == 'fasham_fixed_tree' )then
+    IF ( TRIM (model) == 'fasham'    .or.     &
+        TRIM (model) == 'fasham_fixed_tree' ) THEN
     
     
         !  Fasham specific trees
@@ -76,7 +76,7 @@ else
         ! Created on June 24, 2013, 11:52 AM
         !-----------------------------------------
 
-        write(6,'(/A/)') 'build_trees:  set Fasham tree pointers '
+        WRITE (6,'(/A/)') 'build_trees:  set Fasham tree POINTERs '
         
         !-----------------------------------------------------------------------------
 
@@ -157,12 +157,12 @@ else
 
         !-----------------------------------------------------------------------------
         
-    endif ! model == 'fasham'   .or. model == 'fasham_fixed_tree'
+    END IF ! model == 'fasham'   .or. model == 'fasham_fixed_tree'
 
-endif !  buildtrees 
+END IF !  buildtrees 
 
 
 
-return
+RETURN
 
-end subroutine Build_Trees
+END SUBROUTINE Build_Trees

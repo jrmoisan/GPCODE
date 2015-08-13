@@ -13,7 +13,7 @@
 !> @param[in] i_GP_individual
 !> @param[in] new_comm 
 
-subroutine GPCODE_GA_lmdif_Parameter_Optimization( &
+SUBROUTINE GPCODE_GA_lmdif_Parameter_Optimization( &
                   i_GP_Generation,i_GP_individual, &
                              new_comm )
 
@@ -35,83 +35,83 @@ subroutine GPCODE_GA_lmdif_Parameter_Optimization( &
 ! a finding the optimum parameter set for a coupled set of equations
 !xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
-use kinds_mod
-use mpi
-use mpi_module
-use clock_module
+USE kinds_mod
+USE mpi
+USE mpi_module
+USE clock_module
 
-use GP_parameters_module
-use GA_parameters_module
-use GP_variables_module
-use GA_variables_module
-use GP_data_module
-
-
-implicit none
-
-integer(kind=i4b),intent(in) :: i_GP_Generation
-integer(kind=i4b),intent(in) :: i_GP_individual
-integer(kind=i4b),intent(in) :: new_comm
-
-integer(kind=i4b) :: child_number
-
-integer(kind=i4b) ::  isource
-integer(kind=i4b) ::  message_len
-integer(kind=i4b) ::  numsent
-integer(kind=i4b) ::  sender
-integer(kind=i4b) ::  nsafe
-integer(kind=i4b) ::  i_dummy
-integer(kind=i4b) ::  i_individual
-integer(kind=i4b) ::  i_2_individual
-
-integer,parameter ::  itag  = 1
-integer,parameter ::  itag2 = 2
-integer,parameter ::  itag3 = 3
-
-integer,parameter ::  itag4 = 50000
-
-integer(kind=i4b) ::  itag7
+USE GP_parameters_module
+USE GA_parameters_module
+USE GP_variables_module
+USE GA_variables_module
+USE GP_data_module
 
 
-real(kind=r8b),&
-  dimension(n_GP_parameters,n_GA_individuals) ::  parent_parameters
+IMPLICIT none
 
-real(kind=r8b),&
-  dimension(n_GP_parameters,n_GA_individuals) ::  child_parameters
+INTEGER (KIND=i4b),INTENT(IN) :: i_GP_Generation
+INTEGER (KIND=i4b),INTENT(IN) :: i_GP_individual
+INTEGER (KIND=i4b),INTENT(IN) :: new_comm
+
+INTEGER (KIND=i4b) :: child_number
+
+INTEGER (KIND=i4b) ::  isource
+INTEGER (KIND=i4b) ::  message_len
+INTEGER (KIND=i4b) ::  numsent
+INTEGER (KIND=i4b) ::  sender
+INTEGER (KIND=i4b) ::  nsafe
+INTEGER (KIND=i4b) ::  i_dummy
+INTEGER (KIND=i4b) ::  i_individual
+INTEGER (KIND=i4b) ::  i_2_individual
+
+INTEGER,PARAMETER ::  itag  = 1
+INTEGER,PARAMETER ::  itag2 = 2
+INTEGER,PARAMETER ::  itag3 = 3
+
+INTEGER,PARAMETER ::  itag4 = 50000
+
+INTEGER (KIND=i4b) ::  itag7
 
 
-real(kind=r8b), dimension(n_GP_parameters + 3)  :: buffer
-real(kind=r8b), dimension(n_GP_parameters + 3)  :: buffer_recv
+REAL (KIND=r8b),&
+  DIMENSION(n_GP_parameters,n_GA_individuals) ::  parent_parameters
+
+REAL (KIND=r8b),&
+  DIMENSION(n_GP_parameters,n_GA_individuals) ::  child_parameters
 
 
-integer(kind=i4b) ::      i
-integer(kind=i4b) :: i_GA_Best_Parent
-
-integer(kind=i4b) :: i_GA_generation_last
+REAL (KIND=r8b), DIMENSION(n_GP_parameters + 3)  :: buffer
+REAL (KIND=r8b), DIMENSION(n_GP_parameters + 3)  :: buffer_recv
 
 
-real(kind=r8b),parameter :: zero = 0.0d0
+INTEGER (KIND=i4b) ::      i
+INTEGER (KIND=i4b) :: i_GA_Best_Parent
+
+INTEGER (KIND=i4b) :: i_GA_generation_last
+
+
+REAL (KIND=r8b),PARAMETER :: zero = 0.0d0
 
 
 ! individual_quality contains information on the result of lmdif
 ! if lmdif encounters an error, set individual_quality to -1
 ! if < 0 , reject this individual  ! jjm
 
-integer(kind=i4b) :: individual_quality(n_GA_individuals)
+INTEGER (KIND=i4b) :: individual_quality(n_GA_individuals)
 
-real(kind=r8b), external :: indiv_fitness
+REAL (KIND=r8b), EXTERNAL :: indiv_fitness
 
-logical :: L_stop_run
+LOGICAL :: L_STOP_run
 
-logical :: L_too_many_iters
+LOGICAL :: L_too_many_iters
 
 
-integer(kind=i4b) :: jj
-integer(kind=i4b) :: i_ga_ind
+INTEGER (KIND=i4b) :: jj
+INTEGER (KIND=i4b) :: i_ga_ind
 
-integer(kind=i4b) :: ierror_tou
+INTEGER (KIND=i4b) :: ierror_tou
 
-integer(kind=i4b) :: n_procs
+INTEGER (KIND=i4b) :: n_procs
 
 
 !----------------------------------------------------------------------
@@ -119,43 +119,43 @@ integer(kind=i4b) :: n_procs
 
    ierror_tou = 0
 
-   call mpi_comm_rank( new_comm, new_rank, ierr )
-   call MPI_COMM_SIZE( new_comm, n_procs, ierr)
+   CALL mpi_comm_rank( new_comm, new_rank, ierr )
+   CALL MPI_COMM_SIZE( new_comm, n_procs, ierr)
 
-   if( myid == 0 )return
+   IF ( myid == 0 )RETURN
 
    L_too_many_iters = .FALSE.
    i_dummy = 0
 
-   do  jj = 1, n_GP_parameters+3
+   DO  jj = 1, n_GP_parameters+3
       buffer(jj)      = 0.0D0
       buffer_recv(jj) = 0.0D0
-   enddo ! jj
+   END DO ! jj
 
 
    n_parameters = n_GP_parameters
    child_parameters( 1:n_GP_parameters, 1:n_GA_individuals) = 0.0d0
 
-   L_stop_run  = .FALSE.
+   L_STOP_run  = .FALSE.
    !L_stop_run  = .TRUE.
 
-   do  i_GA_generation = 1, n_GA_Generations
+   DO  i_GA_generation = 1, n_GA_Generations
 
     ! Run_GA_lmdif determines if the new child
     ! has to be sent to lmdif for 'local' optimization
 
       Run_GA_lmdif=.false.
 
-      if( new_rank == 0 )then
-         if( L_ga_print )then
-            write(GA_print_unit,'(/A,1x,I6,1x,A/)') &
+      IF ( new_rank == 0 ) THEN
+         IF ( L_ga_print ) THEN
+            WRITE (GA_print_unit,'(/A,1x,I6,1x,A/)') &
                   'GA Generation ',i_GA_generation,' is underway'
-         endif ! L_ga_print
-      endif ! new_rank == 0
+         END IF ! L_ga_print
+      END IF ! new_rank == 0
 
-      if( new_rank == 0 )then
+      IF ( new_rank == 0 ) THEN
 
-        if( i_GA_generation .eq. 1 ) then
+        IF ( i_GA_generation .eq. 1 ) THEN
 
             ! on the first generation,
             ! randomly create the initial individual parameter arrays
@@ -164,7 +164,7 @@ integer(kind=i4b) :: n_procs
             ! sets:
             !  child_parameters
 
-            call Initialize_GA_Child_Parameters( Child_Parameters )
+            CALL Initialize_GA_Child_Parameters( Child_Parameters )
 
             ! debug 
             !if( L_ga_print )then
@@ -182,7 +182,7 @@ integer(kind=i4b) :: n_procs
 
             Run_GA_lmdif=.true.
 
-        else  ! i_GA_generation > 1
+        ELSE  ! i_GA_generation > 1
 
             ! create the second 'generation' of parameter estimates using either:
 
@@ -201,7 +201,7 @@ integer(kind=i4b) :: n_procs
             ! sets:
             ! ga_individual_elites
 
-            call GA_save_elites( )
+            CALL GA_save_elites( )
 
             !-------------------------------------------------------------------------------
 
@@ -219,7 +219,7 @@ integer(kind=i4b) :: n_procs
             !  Individual_Ranked_Fitness
             !  Child_Parameters
 
-            call GA_Fitness_Proportionate_Reproduction(&
+            CALL GA_Fitness_Proportionate_Reproduction(&
                             Parent_Parameters,Child_Parameters, &
                                                 individual_quality )
 
@@ -229,7 +229,7 @@ integer(kind=i4b) :: n_procs
             !   do "GA Parameter Crossover" Operations Using Tournament-Style Selection
             !   and randomly use it to replace the parents with the new children
 
-            if( n_GA_Crossovers .gt. 0) then
+            IF ( n_GA_Crossovers .gt. 0) THEN
 
                 ! uses:
                 !  Individual_Ranked_Fitness
@@ -241,11 +241,11 @@ integer(kind=i4b) :: n_procs
 
 
                 ierror_tou = 0
-                call GA_Tournament_Style_Sexual_Reproduction( &
+                CALL GA_Tournament_Style_Sexual_Reproduction( &
                             Parent_Parameters, Child_Parameters, &
                             individual_quality, ierror_tou )
 
-            endif !   n_GA_Crossovers .gt. 0
+            END IF !   n_GA_Crossovers .gt. 0
 
             ! debug 
             !if( L_ga_print )then
@@ -267,7 +267,7 @@ integer(kind=i4b) :: n_procs
             !   select a random individual and put a new random number into one of
             !   its parameters
 
-            if( n_GA_Mutations .gt. 0) then
+            IF ( n_GA_Mutations .gt. 0) THEN
 
                 ! uses:
 
@@ -276,9 +276,9 @@ integer(kind=i4b) :: n_procs
                 !  Run_GA_lmdif
                 !  individual_quality
 
-                call GA_Mutations( Child_Parameters, individual_quality )
+                CALL GA_Mutations( Child_Parameters, individual_quality )
 
-            endif !   n_GA_Mutations .gt. 0
+            END IF !   n_GA_Mutations .gt. 0
 
             ! debug 
             !if( L_ga_print )then
@@ -301,7 +301,7 @@ integer(kind=i4b) :: n_procs
             !   select a random, non-elite individual and put new random numbers into
             !   its parameters
 
-            if( n_GA_rand_recruits > 0) then
+            IF ( n_GA_rand_recruits > 0) THEN
 
                 ! uses:
 
@@ -310,34 +310,34 @@ integer(kind=i4b) :: n_procs
                 !  Run_GA_lmdif
                 !  individual_quality
 
-                call GA_random_recruit( Child_Parameters, individual_quality )
+                CALL GA_random_recruit( Child_Parameters, individual_quality )
 
-            endif !   n_GA_rand_recruits .gt. 0
-
-
-        endif ! i_GA_generation .eq. 1
+            END IF !   n_GA_rand_recruits .gt. 0
 
 
-    endif ! new_rank == 0
+        END IF ! i_GA_generation .eq. 1
 
-    call MPI_BCAST( ierror_tou,  1,    &
+
+    END IF ! new_rank == 0
+
+    CALL MPI_BCAST( ierror_tou,  1,    &
                     MPI_INTEGER, 0, new_comm, ierr )
 
     ! handle error in GA_Tournament_Style_Sexual_Reproduction
 
-    if( ierror_tou > 0 )then
-        call MPI_FINALIZE(ierr)
-        stop
-    endif ! ierror_tou > 0 )then
+    IF ( ierror_tou > 0 ) THEN
+        CALL MPI_FINALIZE(ierr)
+        STOP
+    END IF ! ierror_tou > 0 ) THEN
 
     !  broadcast child parameters
 
     child_number =  n_GA_individuals * n_GP_parameters
-    call MPI_BCAST( Child_Parameters,  child_number,    &
+    CALL MPI_BCAST( Child_Parameters,  child_number,    &
                     MPI_DOUBLE_PRECISION, 0, new_comm, ierr )
 
     ! broadcast Run_GA_lmdif
-    call MPI_BCAST( Run_GA_lmdif,  n_GA_individuals,    &
+    CALL MPI_BCAST( Run_GA_lmdif,  n_GA_individuals,    &
                         MPI_LOGICAL, 0, new_comm, ierr )
 
 
@@ -351,7 +351,7 @@ integer(kind=i4b) :: n_procs
 
     nsafe = 0
 
-    if( new_rank == 0  )then
+    IF ( new_rank == 0  ) THEN
 
         ! processor 0 sends job assignments to N  processors
         ! where N is the smaller of (number of processors -1)
@@ -362,16 +362,16 @@ integer(kind=i4b) :: n_procs
         numsent = 0
         i_ga_ind = 0
 
-        do  isource = 1, min( n_procs-1, n_GA_individuals )
+        DO  isource = 1, MIN ( n_procs-1, n_GA_individuals )
 
             i_ga_ind = i_ga_ind + 1
 
-            call MPI_SEND( i_dummy,  1, MPI_INTEGER,    &
+            CALL MPI_SEND( i_dummy,  1, MPI_INTEGER,    &
                            isource, isource,  new_comm, ierr )
 
             numsent = numsent + 1
 
-        enddo ! isource
+        END DO ! isource
 
         ! at this point i_ga_ind = numsent
 
@@ -380,11 +380,11 @@ integer(kind=i4b) :: n_procs
         ! processor 0 loops over the number of individuals and waits for a message
         ! from the other processors
 
-        do  isource = 1, n_GA_individuals
+        DO  isource = 1, n_GA_individuals
 
 
             buffer_recv = 0.0d0
-            call MPI_RECV( buffer_recv, n_GP_parameters+3, &
+            CALL MPI_RECV( buffer_recv, n_GP_parameters+3, &
                            MPI_DOUBLE_PRECISION, &
                            MPI_ANY_SOURCE, MPI_ANY_TAG,  &
                            new_comm, MPI_STAT,  ierr )
@@ -399,26 +399,26 @@ integer(kind=i4b) :: n_procs
 
             ! store the information received in the above message
 
-            if( Run_GA_lmdif(i_individual) ) then
+            IF ( Run_GA_lmdIF (i_individual) ) THEN
 
 
-                do  jj = 1, n_GP_parameters
+                DO  jj = 1, n_GP_parameters
                     child_parameters(jj,i_individual) =  buffer_recv(jj)
-                enddo ! jj
+                END DO ! jj
 
                 individual_SSE(i_individual)     =       buffer_recv( n_GP_parameters+1)
-                individual_quality(i_individual) = nint( buffer_recv( n_GP_parameters+2) )
+                individual_quality(i_individual) = NINT ( buffer_recv( n_GP_parameters+2) )
                 individual_SSE_nolog10(i_individual) =   buffer_recv( n_GP_parameters+3)
 
-                if( individual_quality(i_individual) < 0 .or.  &                         ! jjm 20150108
-                    individual_SSE(i_individual) < 1.0D-20         )then                 ! jjm 20150108
+                IF ( individual_quality(i_individual) < 0 .or.  &                         ! jjm 20150108
+                    individual_SSE(i_individual) < 1.0D-20         ) THEN                 ! jjm 20150108
 
                     individual_SSE(i_individual) = big_real                              ! jjm 20150108
                     individual_SSE_nolog10(i_individual) =   big_real
 
-                endif ! individual_quality(i_individual) < 0                             ! jjm 20150108
+                END IF ! individual_quality(i_individual) < 0                             ! jjm 20150108
 
-            endif ! Run_GA_lmdif(i_individual)
+            END IF ! Run_GA_lmdIF (i_individual)
 
 
             !--------------------------------------------------------------------------------
@@ -427,7 +427,7 @@ integer(kind=i4b) :: n_procs
             ! check to see if all individuals have been processed
 
 
-            if( numsent <  n_GA_individuals )then
+            IF ( numsent <  n_GA_individuals ) THEN
 
                 ! numsent <  n_GA_individuals
                 ! means not all individuals have been processed
@@ -439,14 +439,14 @@ integer(kind=i4b) :: n_procs
 
                 i_ga_ind = i_ga_ind + 1
 
-                call MPI_SEND( i_ga_ind, 1, MPI_INTEGER,    &
+                CALL MPI_SEND( i_ga_ind, 1, MPI_INTEGER,    &
                                sender, numsent+1,  new_comm, ierr )
 
                 ! just sent a new task, so increment the number sent
 
                 numsent = numsent + 1
 
-            else
+            ELSE
 
                 ! DONE !
 
@@ -456,13 +456,13 @@ integer(kind=i4b) :: n_procs
                 ! tell the "sender" processor that it is done and
                 ! send it a message to stop
 
-                call MPI_SEND( 0, 0, MPI_INTEGER,    &
+                CALL MPI_SEND( 0, 0, MPI_INTEGER,    &
                                sender, 0,  new_comm, ierr )
 
 
-            endif ! numsent
+            END IF ! numsent
 
-        enddo ! isource
+        END DO ! isource
 
 
         !----------------------------------------------------------------------
@@ -478,17 +478,17 @@ integer(kind=i4b) :: n_procs
         ! so when the above loop is finished, send a stop signal to the unused
         ! processors so the program can continue
 
-        if( n_GA_individuals < n_procs -1 )then
+        IF ( n_GA_individuals < n_procs -1 ) THEN
 
-            do  i = n_GA_individuals+1, n_procs-1
+            DO  i = n_GA_individuals+1, n_procs-1
 
-                call MPI_SEND( 0, 0, MPI_INTEGER,             &
+                CALL MPI_SEND( 0, 0, MPI_INTEGER,             &
                                i , 0, new_comm , ierr )
-            enddo ! i
+            END DO ! i
 
-        endif ! n_GA_individuals < n_procs -1
+        END IF ! n_GA_individuals < n_procs -1
 
-    else  ! not new_rank == 0   ! new_rank == 0
+    ELSE  ! not new_rank == 0   ! new_rank == 0
 
 
         ! code for processors 1 - ( n_GA_individuals )  ! - 1 )
@@ -499,17 +499,17 @@ integer(kind=i4b) :: n_procs
         ! the individual named in the message tag = MPI_STAT( MPI_TAG )
 
         recv_loop:&
-        do
+        DO 
 
 
-            call MPI_RECV( i_dummy, 1, MPI_INTEGER,    &
+            CALL MPI_RECV( i_dummy, 1, MPI_INTEGER,    &
                            0, MPI_ANY_TAG,  new_comm , MPI_STAT, ierr )
 
             ! was a stop signal received ?
 
             ! if the tag is <= 0, this is a stop signal
 
-            if( MPI_STAT( MPI_TAG ) <= 0 ) exit recv_loop
+            IF ( MPI_STAT( MPI_TAG ) <= 0 ) exit recv_loop
 
             !---------------------------------------------------------------
 
@@ -519,7 +519,7 @@ integer(kind=i4b) :: n_procs
 
             buffer = 0.0D0
 
-            if( Run_GA_lmdif(i_2_individual)) then
+            IF ( Run_GA_lmdIF (i_2_individual)) THEN
 
                 ! do the Runge-Kutta integration for individual i_2_individual
 
@@ -531,29 +531,29 @@ integer(kind=i4b) :: n_procs
                 !  individual_SSE
                 !  child_parameters
 
-                call setup_run_fcn( i_2_individual, &
+                CALL setup_run_fcn( i_2_individual, &
                                     child_parameters,individual_quality, &
                                                new_comm )
 
-                do  jj = 1, n_GP_parameters
+                DO  jj = 1, n_GP_parameters
                     buffer(jj) =  child_parameters(jj, i_2_individual)
-                enddo ! jj
+                END DO ! jj
 
                 buffer(n_GP_parameters+1) = &
                       individual_SSE(i_2_individual)
                 buffer(n_GP_parameters+2) = &
-                      real( individual_quality(i_2_individual), kind=r8b )
+                      REAL ( individual_quality(i_2_individual), KIND=r8b )
                 buffer(n_GP_parameters+3) = &
                       individual_SSE_nolog10(i_2_individual)
 
-            endif !  Run_GA_lmdif(i_2_individual)
+            END IF !  Run_GA_lmdIF (i_2_individual)
 
             ! send the R-K integration results
             ! for individual i_2_individual to processor 0
 
             itag7 = i_2_individual ! + itag4
 
-            call MPI_SEND( buffer, n_GP_parameters+3,  &
+            CALL MPI_SEND( buffer, n_GP_parameters+3,  &
                            MPI_DOUBLE_PRECISION, 0, &
                            itag7, new_comm, ierr )
 
@@ -561,40 +561,40 @@ integer(kind=i4b) :: n_procs
 
             nsafe = nsafe + 1
 
-            if( nsafe > 100 * n_GA_individuals ) then
+            IF ( nsafe > 100 * n_GA_individuals ) THEN
 
-                if( L_GA_print )then
-                    write(GA_print_unit,'(A,1x,I10)') &
+                IF ( L_GA_print ) THEN
+                    WRITE (GA_print_unit,'(A,1x,I10)') &
                       'GP_GA_opt: too many iterations  nsafe =', nsafe
                     !flush(GA_print_unit)
-                endif ! L_GA_print
+                END IF ! L_GA_print
 
-                write(6,'(A,1x,I10)') &
+                WRITE (6,'(A,1x,I10)') &
                   'GP_GA_opt: too many iterations  nsafe =', nsafe
                 !flush(6)
 
                 L_too_many_iters = .TRUE.
                 exit recv_loop
 
-            endif ! nsafe
+            END IF ! nsafe
 
             !---------------------------------------------------------------
 
 
-         enddo  recv_loop
+         END DO  recv_loop
 
-    endif ! new_rank == 0
+    END IF ! new_rank == 0
 
-    if( L_too_many_iters )then
-        call MPI_FINALIZE(ierr)
-        stop 'bad nsafe'
-    endif !  L_too_many_iters
+    IF ( L_too_many_iters ) THEN
+        CALL MPI_FINALIZE(ierr)
+        STOP 'bad nsafe'
+    END IF !  L_too_many_iters
 
     !-------------------------------------------------------------------
 
     ! wait until all n_GA_individuals individuals  have been processed
 
-    call MPI_BARRIER( new_comm, ierr )
+    CALL MPI_BARRIER( new_comm, ierr )
 
     !-------------------------------------------------------------------
 
@@ -602,7 +602,7 @@ integer(kind=i4b) :: n_procs
     !  calculate the fitness for this generation
 
 
-    if( new_rank == 0  )then
+    IF ( new_rank == 0  ) THEN
 
         ! uses:
         !  child_parameters
@@ -616,29 +616,29 @@ integer(kind=i4b) :: n_procs
         !  integrated_ranked_fitness
 
 
-        call GA_calc_fitness( child_parameters, individual_quality, &
-                           i_GA_Best_Parent, Parent_Parameters, L_stop_run, &
+        CALL GA_calc_fitness( child_parameters, individual_quality, &
+                           i_GA_Best_Parent, Parent_Parameters, L_STOP_run, &
                            i_GP_Generation, i_GP_individual, &
                            new_comm  )
 
-    endif ! new_rank == 0
+    END IF ! new_rank == 0
 
-    call MPI_BCAST( L_stop_run,  1,    &
+    CALL MPI_BCAST( L_STOP_run,  1,    &
                     MPI_LOGICAL, 0, new_comm, ierr )
-    if( L_stop_run )then
+    IF ( L_STOP_run ) THEN
 
         i_GA_generation_last = i_GA_generation
 
         exit
 
-    endif ! L_stop_run
+    END IF ! L_STOP_run
 
 
-enddo  ! i_generation
+END DO  ! i_generation
 
 ! wait until all processors have finished the generation loop
 
-call MPI_BARRIER( new_comm, ierr )    ! necessary?
+CALL MPI_BARRIER( new_comm, ierr )    ! necessary?
 
 
 !----------------------------------------------------------------------
@@ -655,19 +655,19 @@ call MPI_BARRIER( new_comm, ierr )    ! necessary?
 ! after the RK process and lmdif
 
 
-if( new_rank == 0  )then
+IF ( new_rank == 0  ) THEN
 
     ! uses:
 
     ! sets:
 
-    call select_best_RK_lmdif_result( &
+    CALL select_best_RK_lmdif_RESULT ( &
                 i_GP_Generation,i_GP_individual, &
                 i_GA_best_parent, parent_parameters, &
                 child_parameters, &
-                L_stop_run,            new_comm  )
+                L_STOP_run,            new_comm  )
 
-endif ! new_rank == 0
+END IF ! new_rank == 0
 
 
 !------------------------------------------------------------------------
@@ -675,13 +675,13 @@ endif ! new_rank == 0
 ! broadcast individual_fitness
 
 message_len = 1
-call MPI_BCAST( individual_fitness, message_len,    &
+CALL MPI_BCAST( individual_fitness, message_len,    &
                 MPI_DOUBLE_PRECISION, 0, new_comm, ierr )
 
 ! broadcast Individual_SSE_best_parent
 
 message_len = 1
-call MPI_BCAST( Individual_SSE_best_parent, message_len,    &
+CALL MPI_BCAST( Individual_SSE_best_parent, message_len,    &
                 MPI_DOUBLE_PRECISION, 0, new_comm, ierr )
 
 
@@ -691,7 +691,7 @@ call MPI_BCAST( Individual_SSE_best_parent, message_len,    &
 
 
 message_len = 1
-call MPI_BCAST( Individual_SSE_best_parent_nolog10, message_len,    &
+CALL MPI_BCAST( Individual_SSE_best_parent_nolog10, message_len,    &
                 MPI_DOUBLE_PRECISION, 0, new_comm, ierr )
 
 
@@ -701,7 +701,7 @@ call MPI_BCAST( Individual_SSE_best_parent_nolog10, message_len,    &
 
 message_len = n_trees * n_nodes
 
-call MPI_BCAST( GP_Individual_Node_Parameters, message_len,    &
+CALL MPI_BCAST( GP_Individual_Node_Parameters, message_len,    &
                 MPI_DOUBLE_PRECISION, 0, new_comm, ierr )
 
 
@@ -709,12 +709,12 @@ call MPI_BCAST( GP_Individual_Node_Parameters, message_len,    &
 
 message_len = n_CODE_equations
 
-call MPI_BCAST( GP_Individual_Initial_Conditions, message_len,    &
+CALL MPI_BCAST( GP_Individual_Initial_Conditions, message_len,    &
                 MPI_DOUBLE_PRECISION, 0, new_comm, ierr )
 
 
 
-return
+RETURN
 
 
-end subroutine GPCODE_GA_lmdif_Parameter_Optimization
+END SUBROUTINE GPCODE_GA_lmdif_Parameter_Optimization

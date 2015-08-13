@@ -9,7 +9,7 @@
 !> @author Dr. John R. Moisan [NASA/GSFC]
 !> @date January, 2013 Dr. John R. Moisan
 
-subroutine bcast3( )
+SUBROUTINE bcast3( )
 
  
 !---------------------------------------------------------------------------  
@@ -31,39 +31,39 @@ subroutine bcast3( )
 ! coupled ordinary differential equations
 !xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
-use kinds_mod
-use mpi
-use mpi_module
+USE kinds_mod
+USE mpi
+USE mpi_module
 
-use GP_Parameters_module
-use GA_Parameters_module
-use GP_Variables_module
-use GA_Variables_module
-use GP_Data_module
-use GP_variables_module
+USE GP_Parameters_module
+USE GA_Parameters_module
+USE GP_Variables_module
+USE GA_Variables_module
+USE GP_Data_module
+USE GP_variables_module
 
 
-implicit none
+IMPLICIT none
 
-integer(kind=i4b) :: buffer_length
+INTEGER (KIND=i4b) :: buffer_length
 
 !-------------------------------------------------------------------------------
 
 ! GP_Child_Population_SSE
 
 
-call MPI_BCAST( GP_Child_Population_SSE, n_GP_individuals,    &
+CALL MPI_BCAST( GP_Child_Population_SSE, n_GP_individuals,    &
                 MPI_DOUBLE_PRECISION, 0, MPI_COMM_WORLD, ierr )
 
 
 
-if( index( model, 'log10') > 0 .or. &
-    index( model, 'LOG10') > 0        )then
+IF ( INDEX ( model, 'log10') > 0 .or. &
+    INDEX ( model, 'LOG10') > 0        ) THEN
 
-    call MPI_BCAST( GP_Child_Individual_SSE_nolog10, n_GP_individuals,    &
+    CALL MPI_BCAST( GP_Child_Individual_SSE_nolog10, n_GP_individuals,    &
                     MPI_DOUBLE_PRECISION, 0, MPI_COMM_WORLD, ierr )
 
-endif ! index( model, 'log10') > 0 .or. ...
+END IF ! INDEX ( model, 'log10') > 0 .or. ...
 
 !------------------------------------------------------------------------------
 
@@ -71,7 +71,7 @@ endif ! index( model, 'log10') > 0 .or. ...
 ! GP_Adult_Population_SSE
 
 
-call MPI_BCAST( GP_Adult_Population_SSE, n_GP_individuals,    &
+CALL MPI_BCAST( GP_Adult_Population_SSE, n_GP_individuals,    &
 
                 MPI_DOUBLE_PRECISION, 0, MPI_COMM_WORLD, ierr )
 
@@ -83,7 +83,7 @@ call MPI_BCAST( GP_Adult_Population_SSE, n_GP_individuals,    &
 buffer_length = n_nodes * n_trees * n_GP_individuals
 
 
-call MPI_BCAST( GP_population_node_parameters,  buffer_length,    &
+CALL MPI_BCAST( GP_population_node_parameters,  buffer_length,    &
                 MPI_DOUBLE_PRECISION, 0, MPI_COMM_WORLD, ierr )
 
 !------------------------------------------------------------------------------
@@ -91,7 +91,7 @@ call MPI_BCAST( GP_population_node_parameters,  buffer_length,    &
 ! GP_Population_Ranked_Fitness
 
 
-call MPI_BCAST( GP_Population_Ranked_Fitness, n_GP_individuals,    &
+CALL MPI_BCAST( GP_Population_Ranked_Fitness, n_GP_individuals,    &
                 MPI_DOUBLE_PRECISION, 0, MPI_COMM_WORLD, ierr )
 
 
@@ -100,7 +100,7 @@ call MPI_BCAST( GP_Population_Ranked_Fitness, n_GP_individuals,    &
 ! GP_Integrated_Population_Ranked_Fitness
 
 
-call MPI_BCAST( GP_Integrated_Population_Ranked_Fitness, &
+CALL MPI_BCAST( GP_Integrated_Population_Ranked_Fitness, &
                 n_GP_individuals,    &
                 MPI_DOUBLE_PRECISION, 0, MPI_COMM_WORLD, ierr )
 
@@ -113,13 +113,13 @@ call MPI_BCAST( GP_Integrated_Population_Ranked_Fitness, &
 
 buffer_length = n_CODE_equations  * n_GP_individuals
 
-call MPI_BCAST( GP_Population_Initial_Conditions, &
+CALL MPI_BCAST( GP_Population_Initial_Conditions, &
                 buffer_length,    &
                 MPI_DOUBLE_PRECISION, 0, MPI_COMM_WORLD, ierr )
 
 
 !------------------------------------------------------------------------------
 
-return
+RETURN
 
-end subroutine bcast3
+END SUBROUTINE bcast3

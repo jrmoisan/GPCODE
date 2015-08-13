@@ -12,7 +12,7 @@
 !>
 !> @param[in] i_GP_generation
 
-subroutine read_all_summary_file( i_GP_generation )
+SUBROUTINE read_all_summary_file( i_GP_generation )
 
  
 !---------------------------------------------------------------------------  
@@ -34,33 +34,33 @@ subroutine read_all_summary_file( i_GP_generation )
 ! to the values in the file
 !xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
-use kinds_mod
+USE kinds_mod
 
-use mpi
-use mpi_module
+USE mpi
+USE mpi_module
 
-use GP_Parameters_module
-use GA_Parameters_module
-use GP_Variables_module
-use GA_Variables_module
-use GP_Data_module
-use GP_variables_module
+USE GP_Parameters_module
+USE GA_Parameters_module
+USE GP_Variables_module
+USE GA_Variables_module
+USE GP_Data_module
+USE GP_variables_module
 
-implicit none
+IMPLICIT none
 
-integer(kind=i4b) :: i_code_eq
-integer(kind=i4b) :: istat
+INTEGER (KIND=i4b) :: i_code_eq
+INTEGER (KIND=i4b) :: istat
 
-integer(kind=i4b),intent(in)  :: i_GP_Generation
-integer(kind=i4b)             :: i_GP_Gen
-integer(kind=i4b)             :: i_GP_indiv
+INTEGER (KIND=i4b),INTENT(IN)  :: i_GP_Generation
+INTEGER (KIND=i4b)             :: i_GP_Gen
+INTEGER (KIND=i4b)             :: i_GP_indiv
 
-integer(kind=i4b) :: i_Tree
-integer(kind=i4b) :: i_Node
+INTEGER (KIND=i4b) :: i_Tree
+INTEGER (KIND=i4b) :: i_Node
 
-logical :: Lprint
+LOGICAL :: Lprint
 
-character(200) :: Aline
+CHARACTER (200) :: Aline
 
 !-------------------------------------------------------------------------------
 
@@ -75,7 +75,7 @@ GP_population_node_parameters    = 0.0d0
 
 !-------------------------------------------------------------------------------
 
-open( GP_restart_file_input_unit, file='GP_restart_file', &
+OPEN ( GP_restart_file_input_unit, file='GP_restart_file', &
       form = 'formatted', access = 'sequential', &
       status = 'old' )
 
@@ -84,50 +84,50 @@ open( GP_restart_file_input_unit, file='GP_restart_file', &
 
 Lprint = .FALSE.
 
-if( i_GP_generation == 1                                  .or. &
-    mod( i_GP_generation, GP_child_print_interval ) == 0  .or. &
-    i_GP_generation == n_GP_generations                          )then
+IF ( i_GP_generation == 1                                  .or. &
+    MOD ( i_GP_generation, GP_child_print_interval ) == 0  .or. &
+    i_GP_generation == n_GP_generations                          ) THEN
     Lprint = .TRUE.
-endif ! i_GP_generation == 1 .or. ...
+END IF ! i_GP_generation == 1 .or. ...
 
 !-------------------------------------------------------------------------------
 
 readloop:&
-do
+DO 
 
     ! read the summary file header for each individual
     ! which has n_GP_parameters >= n_code_equations
 
 
-    read(GP_restart_file_input_unit, *, iostat=istat) &
+    READ (GP_restart_file_input_unit, *, IOSTAT=istat) &
          i_GP_Gen, i_GP_indiv, &
          n_code_equations, n_trees, n_nodes, n_levels,  &
          GP_Adult_Population_SSE(i_GP_indiv)
 
-    if( istat /= 0 ) exit readloop
+    IF ( istat /= 0 ) exit readloop
 
 
     !---------------------------------------------------------------------------
 
     ! read initial conditions
 
-    do
+    DO 
 
-        read(GP_restart_file_input_unit, '(A)', iostat=istat) Aline
+        READ (GP_restart_file_input_unit, '(A)', IOSTAT=istat) Aline
 
-        if( istat /= 0 )then
+        IF ( istat /= 0 ) THEN
             exit readloop
-        endif ! istat /=0
+        END IF ! istat /=0
 
 
-        if( Aline(1:2) == '> '   ) exit
+        IF ( Aline(1:2) == '> '   ) exit
 
-        read(Aline, *)&
+        READ (Aline, *)&
              i_GP_Gen, i_GP_indiv, i_code_eq, &
              GP_Population_Initial_Conditions( i_code_eq, i_GP_indiv )
 
 
-    enddo  ! i
+    END DO  ! i
 
     !---------------------------------------------------------------------------
 
@@ -136,22 +136,22 @@ do
 
     !  read the node types from the old  summary file
 
-    do
+    DO 
 
-        read(GP_restart_file_input_unit, '(A)',iostat=istat ) Aline
+        READ (GP_restart_file_input_unit, '(A)',IOSTAT=istat ) Aline
 
-        if( istat /= 0 )then
+        IF ( istat /= 0 ) THEN
             exit readloop
-        endif ! istat /=0
+        END IF ! istat /=0
 
 
-        if( Aline(1:2) == '> '   ) exit
+        IF ( Aline(1:2) == '> '   ) exit
 
-        read(Aline, * ) &
+        READ (Aline, * ) &
              i_GP_Gen, i_GP_indiv,i_tree, i_node, &
              GP_Adult_Population_Node_Type(i_Node,i_Tree,i_GP_indiv)
 
-    enddo
+    END DO
 
 
 
@@ -160,18 +160,18 @@ do
 
     ! read all non-zero parameters from the old summary file file
 
-    do
+    DO 
 
-        read(GP_restart_file_input_unit, '(A)',iostat=istat ) Aline
-        if( istat /= 0 )then
+        READ (GP_restart_file_input_unit, '(A)',IOSTAT=istat ) Aline
+        IF ( istat /= 0 ) THEN
             exit readloop
-        endif ! istat /=0
+        END IF ! istat /=0
 
 
 
-        if( Aline(1:2) == '>>' ) exit
+        IF ( Aline(1:2) == '>>' ) exit
 
-        read(Aline,*) &
+        READ (Aline,*) &
               i_GP_Gen, i_GP_indiv,i_tree, i_node, &
               GP_population_node_parameters( i_node,i_tree, i_GP_indiv)
 
@@ -182,22 +182,22 @@ do
         ! run setup, the program will run normally and only take the first
         ! n_GP_individuals
 
-        if( i_GP_indiv >= n_GP_individuals ) exit readloop
+        IF ( i_GP_indiv >= n_GP_individuals ) exit readloop
 
         !-----------------------------------------------------------------------
 
-    enddo
+    END DO
 
-enddo readloop
+END DO readloop
 
 
 !-------------------------------------------------------------------------------
 
 
-close( GP_restart_file_input_unit  )
+CLOSE ( GP_restart_file_input_unit  )
 
 
-return
+RETURN
 
 
-end subroutine read_all_summary_file
+END SUBROUTINE read_all_summary_file

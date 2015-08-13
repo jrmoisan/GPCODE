@@ -23,28 +23,28 @@ SUBROUTINE sort(n, arr)
 !
 !---------------------------------------------------------------------------  
 
-use kinds_mod
+USE kinds_mod
 
-use mpi                                                                                                   
-use mpi_module
+USE mpi                                                                                                   
+USE mpi_module
 
 
-use GA_parameters_module
-use GP_parameters_module
-use swap_module
+USE GA_parameters_module
+USE GP_parameters_module
+USE swap_module
 
 IMPLICIT NONE
 
-integer(kind=i4b),intent(in) :: n
-real(kind=r8b), DIMENSION(n), INTENT(INOUT) :: arr
+INTEGER (KIND=i4b),INTENT(IN) :: n
+REAL (KIND=r8b), DIMENSION(n), INTENT(INOUT) :: arr
 
-integer(kind=i4b), PARAMETER :: NN=15, NSTACK=50
+INTEGER (KIND=i4b), PARAMETER :: NN=15, NSTACK=50
 
-real(kind=r8b) :: a
+REAL (KIND=r8b) :: a
 
-integer(kind=i4b) :: k,i,j,jstack,l,r
+INTEGER (KIND=i4b) :: k,i,j,jstack,l,r
 
-integer(kind=i4b), DIMENSION(NSTACK) :: istack
+INTEGER (KIND=i4b), DIMENSION(NSTACK) :: istack
 
 !----------------------------------------------------------------
 
@@ -53,60 +53,60 @@ integer(kind=i4b), DIMENSION(NSTACK) :: istack
 jstack=0
 l=1
 r=n
-do
-    if( r-l < NN) then
-        do j=l+1,r
+DO 
+    IF ( r-l < NN) THEN
+        DO j=l+1,r
             a=arr(j)
-            do i=j-1,l,-1
-                if( arr(i) <= a) exit
+            DO i=j-1,l,-1
+                IF ( arr(i) <= a) exit
                 arr(i+1)=arr(i)
-            enddo
+            END DO
             arr(i+1)=a
-        enddo
-        if( jstack == 0) RETURN
+        END DO
+        IF ( jstack == 0) RETURN
         r=istack(jstack)
         l=istack(jstack-1)
         jstack=jstack-2
-    else
+    ELSE
         k=(l+r)/2
-        call swap(arr(k),arr(l+1))
-        call swap(arr(l),arr(r),arr(l)>arr(r))
-        call swap(arr(l+1),arr(r),arr(l+1)>arr(r))
-        call swap(arr(l),arr(l+1),arr(l)>arr(l+1))
+        CALL swap(arr(k),arr(l+1))
+        CALL swap(arr(l),arr(r),arr(l)>arr(r))
+        CALL swap(arr(l+1),arr(r),arr(l+1)>arr(r))
+        CALL swap(arr(l),arr(l+1),arr(l)>arr(l+1))
         i=l+1
         j=r
         a=arr(l+1)
-        do
-            do
+        DO 
+            DO 
                 i=i+1
-                if( arr(i) >= a) exit
-            enddo
-            do
+                IF ( arr(i) >= a) exit
+            END DO
+            DO 
                 j=j-1
-                if( arr(j) <= a) exit
-            enddo
-            if( j < i) exit
-            call swap(arr(i),arr(j))
-        enddo
+                IF ( arr(j) <= a) exit
+            END DO
+            IF ( j < i) exit
+            CALL swap(arr(i),arr(j))
+        END DO
         arr(l+1)=arr(j)
         arr(j)=a
         jstack=jstack+2
-        if( jstack > NSTACK ) then
-            write(GA_print_unit,*) 'sort: NSTACK too small'
-            write(GP_print_unit,*) 'sort: NSTACK too small'
-            call MPI_FINALIZE(ierr)
-            stop 'stack too small'
-        endif 
-        if( r-i+1 >= j-l ) then
+        IF ( jstack > NSTACK ) THEN
+            WRITE (GA_print_unit,*) 'sort: NSTACK too small'
+            WRITE (GP_print_unit,*) 'sort: NSTACK too small'
+            CALL MPI_FINALIZE(ierr)
+            STOP 'stack too small'
+        END IF 
+        IF ( r-i+1 >= j-l ) THEN
             istack(jstack)=r
             istack(jstack-1)=i
             r=j-1
-        else
+        ELSE
             istack(jstack)=j-1
             istack(jstack-1)=l
             l=i
-        endif
-    endif
-enddo
+        END IF
+    END IF
+END DO
 
 END SUBROUTINE sort

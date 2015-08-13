@@ -7,7 +7,7 @@
 !> @author Dr. John R. Moisan [NASA/GSFC]
 !> @date January, 2013 Dr. John R. Moisan
 
-subroutine print_values1( )
+SUBROUTINE print_values1( )
 
  
 !---------------------------------------------------------------------------  
@@ -29,99 +29,99 @@ subroutine print_values1( )
 ! coupled ordinary differential equations
 !xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
-use kinds_mod 
+USE kinds_mod 
 
-use mpi
-use mpi_module
+USE mpi
+USE mpi_module
 
-use GP_Parameters_module
-use GA_Parameters_module
-use GP_Variables_module
-use GA_Variables_module
-use GP_Data_module
-use GP_variables_module
+USE GP_Parameters_module
+USE GA_Parameters_module
+USE GP_Variables_module
+USE GA_Variables_module
+USE GP_Data_module
+USE GP_variables_module
 
 
-implicit none
+IMPLICIT none
 
 !----------------------------------------------------------------------------------------
 
-if (myid /=0) return
+if (myid /=0) RETURN
 
 
-write(GP_print_unit,'(A,1x,I10)')    'pv1: n_GA_individuals           ', &
+WRITE (GP_print_unit,'(A,1x,I10)')    'pv1: n_GA_individuals           ', &
                                            n_GA_individuals
-write(GP_print_unit,'(A,1x,I10)')    'pv1: n_time_steps               ', &
+WRITE (GP_print_unit,'(A,1x,I10)')    'pv1: n_time_steps               ', &
                                            n_time_steps
-write(GP_print_unit,'(A,1x,I10)')    'pv1: n_GA_Generations           ', &
+WRITE (GP_print_unit,'(A,1x,I10)')    'pv1: n_GA_Generations           ', &
                                            n_GA_Generations
-write(GP_print_unit,'(A,1x, E15.7)') 'pv1: GA_Crossover_Probability   ', &
+WRITE (GP_print_unit,'(A,1x, E15.7)') 'pv1: GA_Crossover_Probability   ', &
                                            GA_Crossover_Probability
-write(GP_print_unit,'(A,1x, E15.7)') 'pv1: GA_Mutation_Probability    ', &
+WRITE (GP_print_unit,'(A,1x, E15.7)') 'pv1: GA_Mutation_Probability    ', &
                                            GA_Mutation_Probability
-write(GP_print_unit,'(A,1x, E15.7)') 'pv1: GA_save_elites_Probability ', &
+WRITE (GP_print_unit,'(A,1x, E15.7)') 'pv1: GA_save_elites_Probability ', &
                                            GA_save_elites_Probability
 
-write(GP_print_unit,'(/A,1x, E15.7)')'pv1: GP_Tree_Probability        ', &
+WRITE (GP_print_unit,'(/A,1x, E15.7)')'pv1: GP_Tree_Probability        ', &
                                            GP_Tree_Probability
 
-write(GP_print_unit,'(A,1x, E15.7)') 'pv1: GP_Elitist_Probability     ', &
+WRITE (GP_print_unit,'(A,1x, E15.7)') 'pv1: GP_Elitist_Probability     ', &
                                            GP_Elitist_Probability
 
-write(GP_print_unit,'(A,1x, E15.7)') 'pv1: GP_Crossover_Probability   ', &
+WRITE (GP_print_unit,'(A,1x, E15.7)') 'pv1: GP_Crossover_Probability   ', &
                                            GP_Crossover_Probability
 
-write(GP_print_unit,'(A,1x, E15.7)') 'pv1: GP_Asexual_Reproduction_Probability ', &
+WRITE (GP_print_unit,'(A,1x, E15.7)') 'pv1: GP_Asexual_Reproduction_Probability ', &
                                            GP_Asexual_Reproduction_Probability
 
-write(GP_print_unit,'(A,1x, E15.7)') 'pv1: GP_Mutation_Probability    ', &
+WRITE (GP_print_unit,'(A,1x, E15.7)') 'pv1: GP_Mutation_Probability    ', &
                                            GP_Mutation_Probability
-write(GP_print_unit,'(/A,1x,I10)')   'pv1: n_gp_individuals           ', &
+WRITE (GP_print_unit,'(/A,1x,I10)')   'pv1: n_gp_individuals           ', &
                                            n_gp_individuals
-write(GP_print_unit,'(A,1x,I10)')    'pv1: n_gp_generations           ', &
+WRITE (GP_print_unit,'(A,1x,I10)')    'pv1: n_gp_generations           ', &
                                            n_gp_generations
 
 
 
-if( GA_Crossover_Probability+GA_Mutation_Probability .gt. 1.0d0 ) then
-    write(GP_print_unit,'(A)') &
+IF ( GA_Crossover_Probability+GA_Mutation_Probability .gt. 1.0d0 ) THEN
+    WRITE (GP_print_unit,'(A)') &
        'pv1: Sum of Crossover and Mutation Probabilities are too high'
-endif !   GA_Crossover_Probability+GA_Mutation_Probability .gt. 1.0d0
+END IF !   GA_Crossover_Probability+GA_Mutation_Probability .gt. 1.0d0
 
 
 ! calculate the number of GA Crossovers
-n_GA_Crossovers = nint(GA_Crossover_Probability * n_GA_individuals)
+n_GA_Crossovers = NINT (GA_Crossover_Probability * n_GA_individuals)
 
 ! calculate the number of GA Mutations
-n_GA_Mutations  = nint(GA_Mutation_Probability  * n_GA_individuals)
+n_GA_Mutations  = NINT (GA_Mutation_Probability  * n_GA_individuals)
 
 ! calculate the number of GA elites
-n_GA_save_elites = nint(GA_save_elites_Probability  * n_GA_individuals)
+n_GA_save_elites = NINT (GA_save_elites_Probability  * n_GA_individuals)
 
 ! calculate the number of GA random recruitments
-n_GA_rand_recruits  = nint(GA_rand_recruit_Probability  * n_GA_individuals)
+n_GA_rand_recruits  = NINT (GA_rand_recruit_Probability  * n_GA_individuals)
 
 ! calculate the number of GP random recruitments
-n_GP_rand_recruits  = nint(GP_rand_recruit_Probability  * n_GP_individuals)
+n_GP_rand_recruits  = NINT (GP_rand_recruit_Probability  * n_GP_individuals)
 
 
-write(GP_print_unit,'(A,1x,I6)') &
+WRITE (GP_print_unit,'(A,1x,I6)') &
       'pv1: n_GA_Crossovers                ', n_GA_Crossovers
-write(GP_print_unit,'(A,1x,I6)') &
+WRITE (GP_print_unit,'(A,1x,I6)') &
       'pv1: n_GA_Mutations                 ', n_GA_Mutations
-write(GP_print_unit,'(A,1x,I6)') &
+WRITE (GP_print_unit,'(A,1x,I6)') &
       'pv1: n_GA_save_elites               ', n_GA_save_elites
-write(GP_print_unit,'(A,1x,I6)') &
+WRITE (GP_print_unit,'(A,1x,I6)') &
       'pv1: n_GA_rand_recruits             ', n_GA_rand_recruits
-write(GP_print_unit,'(A,1x,E12.5)') &
+WRITE (GP_print_unit,'(A,1x,E12.5)') &
       'pv1: GA_rand_recruit_Probability ', GA_rand_recruit_Probability
 
-write(GP_print_unit,'(A,1x,I6)') &
+WRITE (GP_print_unit,'(A,1x,I6)') &
       'pv1: n_GP_rand_recruits             ', n_GP_rand_recruits
-write(GP_print_unit,'(A,1x,E12.5)') &
+WRITE (GP_print_unit,'(A,1x,E12.5)') &
       'pv1: GP_rand_recruit_Probability ', GP_rand_recruit_Probability
 
 
-return
+RETURN
 
-end subroutine print_values1
+END SUBROUTINE print_values1
