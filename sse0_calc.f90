@@ -1,4 +1,27 @@
+!> @brief
+!>  This subroutine computes the SSE0 value -- the weighted sum of squared residuals where
+!!  the residuals are the ( truth value - zero )
+!>
+!> @details
+!>  This subroutine computes the SSE0 value -- the weighted sum of squared residuals where
+!!  the residuals are the ( truth value - zero )
+!>
+!> @author Dr. John R. Moisan [NASA/GSFC]
+!> @date January, 2013 Dr. John R. Moisan
+
 subroutine sse0_calc()
+
+ 
+!---------------------------------------------------------------------------  
+!
+! DESCRIPTION: 
+! Brief description of routine. 
+!
+! REVISION HISTORY:
+! TODO_dd_mmm_yyyy - TODO_describe_appropriate_changes - TODO_name
+!
+
+!---------------------------------------------------------------------------  
 
 
 use kinds_mod

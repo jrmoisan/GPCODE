@@ -1,4 +1,29 @@
+!> @brief
+!>  This subroutine randomly replaces all the parameters in a non-elite GA
+!!  individual
+!>
+!> @details
+!>  This subroutine randomly replaces all the parameters in a non-elite GA
+!!  individual
+!>
+!> @author Dr. John R. Moisan [NASA/GSFC]
+!> @date January, 2013 Dr. John R. Moisan
+!>
+!> @param[out] Child_Parameters 
+!> @param[out] individual_quality
+
 subroutine GA_random_recruit(Child_Parameters, individual_quality )
+
+ 
+!---------------------------------------------------------------------------  
+!
+! DESCRIPTION: 
+! Brief description of routine. 
+
+! REVISION HISTORY:
+! TODO_dd_mmm_yyyy - TODO_describe_appropriate_changes - TODO_name
+!
+!---------------------------------------------------------------------------  
 
 use kinds_mod 
 use GP_Parameters_module
@@ -47,7 +72,6 @@ do  i_GA_recruit=1,n_GA_rand_recruits
     ! recruit all parameters
 
     do  i_Parameter_recruit = 1, n_parameters
-    !do  i_Parameter_recruit = 2, n_parameters  ! debug only
 
         !  randomly pick a new real number for this parameter
 

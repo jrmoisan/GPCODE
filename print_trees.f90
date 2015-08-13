@@ -1,5 +1,31 @@
+!> @brief
+!>  This subroutine prints the values in a tree from the node_type and parameter arrays.
+!>
+!> @details
+!>  This subroutine prints the values in a tree from the node_type and parameter arrays.
+!>
+!> @author Dr. John R. Moisan [NASA/GSFC]
+!> @date January, 2013 Dr. John R. Moisan
+!>
+!> @param[in] i_gen
+!> @param[in] n_indiv_start
+!> @param[in] n_indiv_stop
+!> @param[in] tree_type 
+!> @param[in] tree_descrip 
+
 subroutine print_trees( i_gen, n_indiv_start, n_indiv_stop, &
                         tree_type, tree_descrip )
+
+ 
+!---------------------------------------------------------------------------  
+!
+! DESCRIPTION: 
+! Brief description of routine. 
+!
+! REVISION HISTORY:
+! TODO_dd_mmm_yyyy - TODO_describe_appropriate_changes - TODO_name
+!
+!---------------------------------------------------------------------------  
 
 ! program written by: Dr. John R. Moisan [NASA/GSFC] 31 January, 2013
 

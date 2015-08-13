@@ -1,4 +1,26 @@
+!> @brief
+!>  This subroutine defines the LV model and sets the initial values for the LV truth model.
+!>
+!> @details
+!>  This subroutine defines the LV model and sets the initial values for the LV truth model.
+!>
+!> @author Dr. John R. Moisan [NASA/GSFC]
+!> @date January, 2013 Dr. John R. Moisan
+!>
+!> @param[in] icall        
+
 subroutine init_values_LV( icall  )
+
+ 
+!---------------------------------------------------------------------------  
+!
+! DESCRIPTION: 
+!  Brief description of routine. 
+!
+! REVISION HISTORY:
+! TODO_dd_mmm_yyyy - TODO_describe_appropriate_changes - TODO_name
+!
+!---------------------------------------------------------------------------  
 
 
 !     written by John R. Moisan [14 November 2012]
@@ -148,6 +170,7 @@ else
     Numerical_CODE_Initial_Conditions(1) = 19.66561d0   ! 30.0D+0  ! [prey]         [mmol N m-3]
     Numerical_CODE_Initial_Conditions(2) = 0.3960451d0  ! 2.0D+0   ! [predator]     [mmol N m-3]
 endif  ! LV_model1
+
 
 !xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 

@@ -1,4 +1,25 @@
+!> @brief
+!>  This module defines interfaces for the Fasham model tree functions.        
+!>
+!> @details
+!>  This module defines interfaces for the Fasham model tree functions.        
+!>
+!> @author Dave ??
+!> @date August 7, 2013  Dave ??
+
 module Fasham_Tree_Interfaces
+
+ 
+!---------------------------------------------------------------------------  
+!
+! DESCRIPTION: 
+! Brief description of routine. 
+!
+! REVISION HISTORY:
+! TODO_dd_mmm_yyyy - TODO_describe_appropriate_changes - TODO_name
+!
+
+!---------------------------------------------------------------------------  
 
        use kinds_mod
        use class_Tree_Node

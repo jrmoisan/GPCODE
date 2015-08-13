@@ -1,4 +1,25 @@
+!> @brief
+!>  This subroutine reads the input data file when data or datalog10 models are used.
+!>
+!> @details
+!>  This subroutine reads the input data file when data or datalog10 models are used.
+!>
+!> @author Dr. John R. Moisan [NASA/GSFC]
+!> @date January, 2013 Dr. John R. Moisan
+
 subroutine read_input_data( )
+
+ 
+!---------------------------------------------------------------------------  
+!
+! DESCRIPTION: 
+! Brief description of routine. 
+!
+! REVISION HISTORY:
+! TODO_dd_mmm_yyyy - TODO_describe_appropriate_changes - TODO_name
+!
+
+!---------------------------------------------------------------------------  
 
 use kinds_mod
 

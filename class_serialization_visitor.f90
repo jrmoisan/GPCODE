@@ -1,7 +1,29 @@
-! Tree Serialization routines
-! Written by Dave Coulter
+!> @brief
+!>  This module contains methods to evaluate tree objects.
+!>
+!> @details
+!>  This module contains methods to evaluate tree objects.
+!>
+!> @author Dave Coulter
+!> @date June, 2013 Dave Coulter
+
 
 module class_Serialization_Visitor
+ 
+!---------------------------------------------------------------------------  
+! Tree Serialization routines
+! Written by Dave Coulter
+!
+! DESCRIPTION: 
+!  Brief description of routine. 
+!
+! REVISION HISTORY:
+! TODO_dd_mmm_yyyy - TODO_describe_appropriate_changes - TODO_name
+!
+
+
+!---------------------------------------------------------------------------  
+
 use kinds_mod 
 use mpi                                                                                                   
 use mpi_module

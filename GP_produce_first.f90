@@ -1,4 +1,26 @@
+!> @brief
+!>  This subroutine does the processing for the first GP generation.
+!>
+!> @details
+!>  This subroutine does the processing for the first GP generation.
+!>
+!> @author Dr. John R. Moisan [NASA/GSFC]
+!> @date January, 2013 Dr. John R. Moisan
+!>
+!> @param[in] i_GP_generation
+
 subroutine GP_produce_first(i_GP_generation)
+
+ 
+!---------------------------------------------------------------------------  
+!
+! DESCRIPTION: 
+! Brief description of routine. 
+!
+! REVISION HISTORY:
+! TODO_dd_mmm_yyyy - TODO_describe_appropriate_changes - TODO_name
+!
+!---------------------------------------------------------------------------  
 
 use kinds_mod
 use mpi

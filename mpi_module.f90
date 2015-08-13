@@ -1,4 +1,24 @@
+!> @brief
+!>  This module declares variables needed for MPI.
+!>
+!> @details
+!>  This module declares variables needed for MPI.
+!>
+!> @author Dr. John R. Moisan [NASA/GSFC]
+!> @date January, 2013 Dr. John R. Moisan
+
 MODULE mpi_MODULE
+
+ 
+!---------------------------------------------------------------------------  
+!
+! DESCRIPTION: 
+! Brief description of routine. 
+!
+! REVISION HISTORY:
+! TODO_dd_mmm_yyyy - TODO_describe_appropriate_changes - TODO_name
+!
+!---------------------------------------------------------------------------  
 
 use kinds_mod 
 

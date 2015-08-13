@@ -1,4 +1,28 @@
+!> @brief
+!> program to use a twin experiment to test the effectiveness of
+!> a finding the optimum equation and parameter sets for a system of
+!> coupled ordinary differential equations
+!>
+!> @details
+!> program to use a twin experiment to test the effectiveness of
+!> a finding the optimum equation and parameter sets for a system of
+!> coupled ordinary differential equations
+!>
+!> @author Dr. John R. Moisan [NASA/GSFC]
+!> @date January, 2013 Dr. John R. Moisan
+
+
 program main
+
+ 
+!---------------------------------------------------------------------------  
+!
+! DESCRIPTION: 
+! Brief description of routine. 
+! REVISION HISTORY:
+! TODO_dd_mmm_yyyy - TODO_describe_appropriate_changes - TODO_name
+!
+!---------------------------------------------------------------------------  
 
 ! program written by: Dr. John R. Moisan [NASA/GSFC] 31 January, 2013
 
@@ -57,8 +81,8 @@ integer(kind=i4b) :: comm_world
 
 
 character(15),parameter :: program_version   = '201502.004_v16'
-character(10),parameter :: modification_date = '20150813'
-character(50),parameter :: branch  =  'v16'
+character(10),parameter :: modification_date = '20150812'
+character(50),parameter :: branch  =  'master'
 
 integer(kind=i4b), parameter ::  zero = 0
 
@@ -139,6 +163,7 @@ n_inputs = n_input_vars
 
 
 if( myid == 0 )then
+
     if( L_replace_larger_SSE_only )then
         write(6,'(/A/)') &
          '0: GP_Fit* only  replaces the individual if the SSE decreases after replacement'

@@ -1,6 +1,35 @@
+!> @brief
+!>  This subroutine replaces GA individuals with others which have greater fitness
+!>
+!> @details
+!> for each individual,i,  choose a random number in  [0.0, 1.0]
+!! the range of the integrated_ranked_fitness is also [0.0, 1.0]
+!! cycle through all individuals until one, j,  is found such that:
+!!     the integrated_ranked_fitness(j) > random number
+!! then replace child parameters of i with child parameters of j
+!>
+!> @author Dr. John R. Moisan [NASA/GSFC]
+!> @date January, 2013 Dr. John R. Moisan
+!>
+!> @param[in] Parent_Parameters
+!> @param[in] individual_quality
+!> @param[out] Child_Parameters
+
 subroutine GA_Fitness_Proportionate_Reproduction( &
                             Parent_Parameters,Child_Parameters, &
                             individual_quality )
+ 
+!---------------------------------------------------------------------------  
+!
+! DESCRIPTION: 
+! Brief description of routine. 
+!
+! REVISION HISTORY:
+! TODO_dd_mmm_yyyy - TODO_describe_appropriate_changes - TODO_name
+!
+
+!---------------------------------------------------------------------------  
+
 !xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
 use kinds_mod

@@ -1,4 +1,31 @@
+!> @brief
+!>  This subroutine computes tree objects using inputs from the tree node type
+!!  and tree node parameter arrays.
+!>
+!> @details
+!>  This subroutine computes tree objects using inputs from the tree node type
+!!  and tree node parameter arrays.
+!>
+!> @author Dr. John R. Moisan [NASA/GSFC]
+!> @date January, 2013 Dr. John R. Moisan
+!>
+!> @param[in]  Trees
+!> @param[in]  num_Tracked_resources
+!> @param[in]  Tree_count
+!> @param[out] Trees
+
 subroutine deserialize_trees2( Trees, num_Tracked_resources, Tree_count )
+
+ 
+!---------------------------------------------------------------------------  
+!
+! DESCRIPTION: 
+! Brief description of routine. 
+!
+! REVISION HISTORY:
+! TODO_dd_mmm_yyyy - TODO_describe_appropriate_changes - TODO_name
+!
+!---------------------------------------------------------------------------  
 
 
 use kinds_mod 

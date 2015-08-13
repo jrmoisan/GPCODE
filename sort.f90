@@ -1,4 +1,27 @@
+!> @brief
+!>  This subroutine sorts the array "arr".
+!>
+!> @details
+!>  This subroutine sorts the array "arr".
+!>
+!> @author Dr. John R. Moisan [NASA/GSFC]
+!> @date January, 2013 Dr. John R. Moisan
+!>
+!> @param[in]  n
+!> @param[inout] arr
+
 SUBROUTINE sort(n, arr)
+
+ 
+!---------------------------------------------------------------------------  
+!
+! DESCRIPTION: 
+! Brief description of routine. 
+!
+! REVISION HISTORY:
+! TODO_dd_mmm_yyyy - TODO_describe_appropriate_changes - TODO_name
+!
+!---------------------------------------------------------------------------  
 
 use kinds_mod
 

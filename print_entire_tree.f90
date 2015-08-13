@@ -1,4 +1,25 @@
+!> @brief
+!>  This subroutine prints a tree stored in a node_type array
+!>
+!> @details
+!>  This subroutine prints a tree stored in a node_type array
+!>
+!> @author Dr. John R. Moisan [NASA/GSFC]
+!> @date January, 2013 Dr. John R. Moisan
+
 subroutine print_entire_tree( )
+
+ 
+!---------------------------------------------------------------------------  
+!
+! DESCRIPTION: 
+! Brief description of routine. 
+!
+! REVISION HISTORY:
+! TODO_dd_mmm_yyyy - TODO_describe_appropriate_changes - TODO_name
+!
+
+!---------------------------------------------------------------------------  
 
 ! This subroutine prints a node_type array
 

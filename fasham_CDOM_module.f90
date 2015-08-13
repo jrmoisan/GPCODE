@@ -1,4 +1,25 @@
+!> @brief                                                                                                      
+!>  This module contains routines for the fasham_CDOM model.                                                
+!>                                                                                                               
+!> @details                                                                                                    
+!>  This module contains routines for the fasham_CDOMmodel.                                                
+!>                                                                                                               
+!> @author Weiyuan Jiang                                                                                       
+!> @date May, 2015 Weiyuan Jiang                                                                               
+                                                                                                               
 module fasham_CDOM_module
+
+ 
+!---------------------------------------------------------------------------                                   
+!                                                                                                              
+! DESCRIPTION:                                                                                                 
+! Brief description of routine.                                                                               
+!                                                                                                              
+! REVISION HISTORY:                                                                                            
+! TODO_dd_mmm_yyyy - TODO_describe_appropriate_changes - TODO_name                                             
+!                                                                                                              
+                                                                                                               
+!---------------------------------------------------------------------------                                   
 
    use kinds_mod
    use mpi
@@ -187,10 +208,6 @@ contains
       endif ! myid == 0 
 
       Numerical_CODE_Solution(1:n_time_steps, 1:n_code_equations) = 0.0d0
-
-      if( myid == 0 )then
-          write(6,'(A)')   'setCD: call comp_data_variance'
-      endif ! myid == 0 
 
       call comp_data_variance()
 

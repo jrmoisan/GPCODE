@@ -1,4 +1,27 @@
+!> @brief
+!>  This module declares variables used in the GA process, and sets the values
+!>  of some GA parameters 
+!>
+!> @details
+!>  This module declares variables used in the GA process, and sets the values
+!>  of some GA parameters 
+!>
+!> @author Dr. John R. Moisan [NASA/GSFC]
+!> @date January, 2013 Dr. John R. Moisan
+
 module GA_parameters_module
+
+ 
+!---------------------------------------------------------------------------  
+!
+!
+! DESCRIPTION: 
+! Brief description of routine. 
+
+! REVISION HISTORY:
+! TODO_dd_mmm_yyyy - TODO_describe_appropriate_changes - TODO_name
+!
+!---------------------------------------------------------------------------  
 
 ! set the GA related parameters
 

@@ -1,4 +1,28 @@
+!> @brief
+!>  This subroutine does the processing for GP generations after the first.   
+!>
+!> @details
+!>  This subroutine does the processing for GP generations after the first.   
+!>
+!> @author Dr. John R. Moisan [NASA/GSFC]
+!> @date January, 2013 Dr. John R. Moisan
+!>
+!> @param[in] i_GP_generation 
+!> @param[in] i_GP_best_parent
+!> @param[out] L_nextloop
+
 subroutine GP_produce_next(i_GP_generation, i_GP_best_parent, L_nextloop)
+
+ 
+!---------------------------------------------------------------------------  
+!
+! DESCRIPTION: 
+! Brief description of routine. 
+!
+! REVISION HISTORY:
+! TODO_dd_mmm_yyyy - TODO_describe_appropriate_changes - TODO_name
+!
+!---------------------------------------------------------------------------  
 
 use kinds_mod
 use mpi
@@ -47,26 +71,6 @@ if( myid == 0 )then
     ! fill child sse for individuals not  modified in this generation
 
     GP_Child_Population_SSE  = GP_Adult_Population_SSE   ! needed ??  jjm 20140522
-
-    if( i_GP_generation == 1                                  .or. &
-        mod( i_GP_generation, GP_child_print_interval ) == 0  .or. &
-        i_GP_generation == n_GP_generations                          )then
-
-        write(GP_print_unit,'(//A)') 'gpn:3 before modifications'
-        write(GP_print_unit,'(A)')&
-           'gpn:3 i_GP_gen i_GP_indiv    GP_Child_Pop_SSE  &
-            &   GP_Child_Pop_SSE/SSE0'
-        flush(GP_print_unit)
-
-        do  i_GP_individual = 1, n_GP_individuals
-            write(GP_print_unit,'(2(1x,I10), 2(1x, E15.7))') &
-                  i_GP_generation, i_GP_individual, &
-                  GP_Child_Population_SSE(i_GP_Individual), &
-                  GP_Child_Population_SSE(i_GP_Individual)/SSE0
-        enddo ! i_GP_individual
-        flush(GP_print_unit)
-
-    endif ! i_GP_generation == 1 .or. ...
 
 
     !----------------------------------------------------------------------------------

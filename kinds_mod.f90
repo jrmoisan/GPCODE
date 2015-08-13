@@ -1,7 +1,27 @@
-!-------------------------- beginning of kinds_mod.f90 -------------------------
-                                                                               !
-MODULE kinds_mod                                                               !
-                                                                               !
+!> @brief
+!>  This module contains the definitions of the symbolic kind names used in TYPE statements.
+!>
+!> @details
+!>  This module contains the definitions of the symbolic kind names used in TYPE statements.
+!>
+!> @author Dr. John R. Moisan [NASA/GSFC]
+!> @date January, 2013 Dr. John R. Moisan
+
+                                                                             
+MODULE kinds_mod                                                               
+                                                                              
+ 
+!---------------------------------------------------------------------------  
+!
+! DESCRIPTION: 
+! Brief description of routine. 
+!
+! REVISION HISTORY:
+! TODO_dd_mmm_yyyy - TODO_describe_appropriate_changes - TODO_name
+!
+
+!---------------------------------------------------------------------------  
+
 !*******************************************************************************
 !  NAME: kinds_mod                                                             !
 !                                                                              !

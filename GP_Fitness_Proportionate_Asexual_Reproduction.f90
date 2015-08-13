@@ -1,4 +1,26 @@
+!> @brief
+!>  This subroutine replaces randomly chosen GP individuals with another randomly   
+!!  chosen GP individual which may have a higher fitness          
+!>
+!> @details
+!>  This subroutine replaces randomly chosen GP individuals with another randomly   
+!!  chosen GP individual which may have a higher fitness          
+!>
+!> @author Dr. John R. Moisan [NASA/GSFC]
+!> @date January, 2013 Dr. John R. Moisan
+
 subroutine GP_Fitness_Proportionate_Asexual_Reproduction
+
+ 
+!---------------------------------------------------------------------------  
+!
+! DESCRIPTION: 
+! Brief description of routine. 
+!
+! REVISION HISTORY:
+! TODO_dd_mmm_yyyy - TODO_describe_appropriate_changes - TODO_name
+!
+!---------------------------------------------------------------------------  
 
 !xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 

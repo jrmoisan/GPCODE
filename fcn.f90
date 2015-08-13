@@ -1,4 +1,33 @@
+!> @brief
+!>  This subroutine sets the parameters needed for the Runge-Kutta integration into
+!!  the appropriate arrays and calls the routine which does the integration.
+!>
+!> @details
+!>  This subroutine sets the parameters needed for the Runge-Kutta integration into
+!!  the appropriate arrays and calls the routine which does the integration.
+!>
+!> @author Dr. John R. Moisan [NASA/GSFC]
+!> @date January, 2013 Dr. John R. Moisan
+!>
+!> @param[in]  mm
+!> @param[in]  nn
+!> @param[out] x
+!> @param[out] fvec
+!> @param[out] iflag
+
 subroutine fcn(mm,nn,x,fvec,iflag)
+
+ 
+!---------------------------------------------------------------------------  
+!
+! DESCRIPTION: 
+! Brief description of routine. 
+!
+! REVISION HISTORY:
+! TODO_dd_mmm_yyyy - TODO_describe_appropriate_changes - TODO_name
+!
+
+!---------------------------------------------------------------------------  
 
 use kinds_mod 
 

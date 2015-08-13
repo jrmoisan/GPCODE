@@ -1,5 +1,26 @@
+!> @brief
+!>  This subroutine fills the time series array with the truth model values 
+!>
+!> @details
+!>  This subroutine fills the time series array with the truth model values 
+!>
+!> @author Dr. John R. Moisan [NASA/GSFC]
+!> @date January, 2013 Dr. John R. Moisan
+
 subroutine set_answer_arrays(  )  
 !
+ 
+!---------------------------------------------------------------------------  
+!
+! DESCRIPTION: 
+! Brief description of routine. 
+!
+! REVISION HISTORY:
+! TODO_dd_mmm_yyyy - TODO_describe_appropriate_changes - TODO_name
+!
+
+!---------------------------------------------------------------------------  
+
 ! Weiyuan note : This program get the answer for the truth model.
 !  if the model truth is from node_type, use RK model to get the answer
 !  if the model truth is from data, assign the values directly

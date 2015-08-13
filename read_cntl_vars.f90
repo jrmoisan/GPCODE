@@ -1,4 +1,26 @@
+!> @brief
+!>  This subroutine reads the control input provided by the user.               
+!>
+!> @details
+!>  This subroutine reads the control input provided by the user.               
+!>
+!> @author Dr. John R. Moisan [NASA/GSFC]
+!> @date January, 2013 Dr. John R. Moisan
+!>
+!> @param[out] ierror        
+
 subroutine read_cntl_vars( ierror )
+
+ 
+!---------------------------------------------------------------------------  
+!
+! DESCRIPTION: 
+! Brief description of routine. 
+!
+! REVISION HISTORY:
+! TODO_dd_mmm_yyyy - TODO_describe_appropriate_changes - TODO_name
+!
+!---------------------------------------------------------------------------  
 
 
 use kinds_mod

@@ -1,4 +1,29 @@
+!> @brief
+!>  This subroutine re-arranges the GP individuals in order of descending
+!!  fitness at the end of a GP generation.
+!>
+!> @details
+!>  This subroutine re-arranges the GP individuals in order of descending
+!!  fitness at the end of a GP generation.
+!>
+!> @author Dr. John R. Moisan [NASA/GSFC]
+!> @date January, 2013 Dr. John R. Moisan
+!>
+!> @param[in]  i_GP_best_parent
+!> @param[out] i_GP_best_parent
+
 subroutine GP_ranking_sort( i_GP_best_parent ) 
+
+ 
+!---------------------------------------------------------------------------  
+!
+! DESCRIPTION: 
+! Brief description of routine. 
+!
+! REVISION HISTORY:
+! TODO_dd_mmm_yyyy - TODO_describe_appropriate_changes - TODO_name
+!
+!---------------------------------------------------------------------------  
 
 
 use kinds_mod 

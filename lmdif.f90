@@ -1,5 +1,55 @@
+!> @brief
+!>  This subroutine minimizes M functions in N variables by the Levenberg-Marquardt method.
+!>
+!> @details
+!>    LMDIF minimizes the sum of the squares of M nonlinear functions in
+!!    N variables by a modification of the Levenberg-Marquardt algorithm.
+!!    The user must provide a subroutine which calculates the functions.
+!!    The jacobian is then calculated by a forward-difference approximation.
+!>
+!> @author Jorge More, Burton Garbow, Kenneth Hillstrom, and John Burkardt.                                    
+!> @date April 6, 2010 John Burkardt.                                                                          
+!>
+
+!> @param[in] FCN   the name of the user-supplied subroutine which calculates the functions.
+!> @param[in] M   the number of functions.
+!> @param[in] N   the number of variables.  N must not exceed M.
+!> @param[inout] X(N)   On input, X must contain an initial estimate of the solution vector.  
+!!                      On output X contains the final estimate of the solution vector.
+!> @param[out] FVEC(M)  the functions evaluated at the output X.
+!> @param[in] FTOL  measures the relative error desired in the sum of squares.
+!> @param[in] XTOL   measures the relative error desired in the approximate solution. 
+!> @param[in] GTOL   measures the orthogonality desired between 
+!!                   the function vector and the columns of the jacobian.
+!> @param[in] MAXFEV  Termination occurs when the number of calls to FCN is at least MAXFEV.
+!> @param[in] EPSFCN  is used in determining a suitable step length 
+!!                    for the forward-difference approximation.
+!> @param[inout] DIAG(N)   
+!!    If MODE = 1, then DIAG is set internally.  
+!!    If MODE = 2, then DIAG must contain positive entries that serve as scale factors for the variables.
+!> @param[in] MODE   scaling option.
+!> @param[in] FACTOR   determines the initial step bound. 
+!> @param[in] NPRINT   enables controlled printing of iterates 
+!> @param[in] LDFJAC   the leading dimension of the array FJAC.
+!> @param[out] INFO   error flag.
+!> @param[out] NFEV   the number of calls to FCN.
+!> @param[out] FJAC(LDFJAC,N)   an M by N array.
+!> @param[out] IPVT(N)   defines a permutation matrix P
+!> @param[out] QTF(N)    the first N elements of Q'*FVEC.
+
 subroutine lmdif ( fcn, m, n, x, fvec, ftol, xtol, gtol, maxfev, epsfcn, &
   diag, mode, factor, nprint, info, nfev, fjac, ldfjac, ipvt, qtf )
+
+ 
+!---------------------------------------------------------------------------  
+!
+! DESCRIPTION: 
+! Brief description of routine. 
+!
+! REVISION HISTORY:
+! TODO_dd_mmm_yyyy - TODO_describe_appropriate_changes - TODO_name
+!
+!---------------------------------------------------------------------------  
 
 !*****************************************************************************80
 !

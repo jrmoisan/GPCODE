@@ -1,4 +1,27 @@
+!> @brief
+!>  This subroutine computes the variance of the truth data for each variable. This variance is 
+!!  used to weight the contributions of each variable to the overall SSE value.
+!>
+!> @details
+!>  This subroutine computes the variance of the truth data for each variable. This variance is 
+!!  used to weight the contributions of each variable to the overall SSE value.
+!>
+!> @author Dr. John R. Moisan [NASA/GSFC]
+!> @date January, 2013 Dr. John R. Moisan
+
 subroutine comp_data_variance()
+
+ 
+!---------------------------------------------------------------------------  
+!
+! DESCRIPTION: 
+! Brief description of routine. 
+!
+! REVISION HISTORY:
+! TODO_dd_mmm_yyyy - TODO_describe_appropriate_changes - TODO_name
+!
+
+!---------------------------------------------------------------------------  
 
 ! program written by: Dr. John R. Moisan [NASA/GSFC] 31 January, 2013
 

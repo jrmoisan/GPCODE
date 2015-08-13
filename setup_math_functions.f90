@@ -1,4 +1,25 @@
+!> @brief
+!>  This subroutine sets pointers to the various mathematical functions.
+!>
+!> @details
+!>  This subroutine sets pointers to the various mathematical functions.
+!>
+!> @author Dr. John R. Moisan [NASA/GSFC]
+!> @date January, 2013 Dr. John R. Moisan
+
 subroutine setup_math_functions()
+
+ 
+!---------------------------------------------------------------------------  
+!
+! DESCRIPTION: 
+! Brief description of routine. 
+!
+! REVISION HISTORY:
+! TODO_dd_mmm_yyyy - TODO_describe_appropriate_changes - TODO_name
+!
+
+!---------------------------------------------------------------------------  
 
 ! This binds the math_funcs to the pointers
    use kinds_mod 

@@ -1,6 +1,33 @@
+!> @brief
+!>  This subroutine loads arrays needed for running the Runge-Kutta integration process,
+!!  and processes the output of that process.
+!>
+!> @details
+!>  This subroutine loads arrays needed for running the Runge-Kutta integration process,
+!!  and processes the output of that process.
+!>
+!> @author Dr. John R. Moisan [NASA/GSFC]
+!> @date January, 2013 Dr. John R. Moisan
+!>
+!> @param[in] i_GA_indiv
+!> @param[inout] child_parameters
+!> @param[in] individual_quality
+!> @param[in] new_comm
+
 subroutine setup_run_fcn( i_GA_indiv,  &
                           child_parameters, individual_quality, &
                                      new_comm  )
+
+ 
+!---------------------------------------------------------------------------  
+!
+! DESCRIPTION: 
+! Brief description of routine. 
+!
+! REVISION HISTORY:
+! TODO_dd_mmm_yyyy - TODO_describe_appropriate_changes - TODO_name
+!
+!---------------------------------------------------------------------------  
 
 ! written by: Dr. John R. Moisan [NASA/GSFC] 5 December, 2012
 !xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
@@ -69,14 +96,6 @@ x_LMDIF(1:n_GP_parameters) = 0.0D0
 do  i_parameter=1,n_parameters
 
     X_LMDIF(i_parameter) = child_parameters(i_parameter,i_GA_indiv)
-
-    !if( new_rank == 1 )then
-    !    if( L_ga_print )then
-    !        write(GA_print_unit,'(A,3(1x,I6),1x,E20.10)') &
-    !              'setrf:1 new_rank, i_GA_indiv, i_parameter,  X_LMDIF', &
-    !                       new_rank, i_GA_indiv, i_parameter,  X_LMDIF(i_parameter)
-    !    endif ! L_ga_print
-    !endif ! new_rank == 1
 
 enddo ! i_parameter
 

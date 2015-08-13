@@ -1,4 +1,31 @@
+!> @brief
+!>  This subroutine writes the tree information for 
+!!  all the GP individuals in the current GP generation.
+!>
+!> @details
+!>  This subroutine writes the tree information for 
+!!  all the GP individuals in the current GP generation.
+!!  The file written to is the last generation summary file, and, on option,
+!!  a file containing the tree information for all individuals and all GP generations
+!>
+!> @author Dr. John R. Moisan [NASA/GSFC]
+!> @date January, 2013 Dr. John R. Moisan
+!>
+!> @param[in] GP_unit      
+!> @param[in] i_GP_generation
+
 subroutine summary_GP_all( GP_unit, i_GP_generation )
+
+ 
+!---------------------------------------------------------------------------  
+!
+! DESCRIPTION: 
+! Brief description of routine. 
+!
+! REVISION HISTORY:
+! TODO_dd_mmm_yyyy - TODO_describe_appropriate_changes - TODO_name
+!
+!---------------------------------------------------------------------------  
 
 ! program written by: Dr. John R. Moisan [NASA/GSFC] 31 January, 2013
 

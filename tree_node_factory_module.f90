@@ -1,4 +1,25 @@
+!> @brief
+!>  This module contains procedures used to evaluate the tree objects.
+!>
+!> @details
+!>  This module contains procedures used to evaluate the tree objects.
+!>
+!> @author Dr. John R. Moisan [NASA/GSFC]
+!> @date January, 2013 Dr. John R. Moisan
+
 module Tree_Node_Factory_module
+
+ 
+!---------------------------------------------------------------------------  
+!
+! DESCRIPTION: 
+! Brief description of routine. 
+!
+! REVISION HISTORY:
+! TODO_dd_mmm_yyyy - TODO_describe_appropriate_changes - TODO_name
+!
+
+!---------------------------------------------------------------------------  
 
 !
 ! File:   Tree_Node_Factory.f03

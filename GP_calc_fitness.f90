@@ -1,5 +1,32 @@
+!> @brief
+!>  This subroutine computes the fitness of the GP individuals of a generation
+!!  and selects the most fit GP individual, i_GP_best_parent     
+!>
+!> @details
+!>  This subroutine computes the fitness of the GP individuals of a generation
+!!  and selects the most fit GP individual, i_GP_best_parent     
+!>
+!> @author Dr. John R. Moisan [NASA/GSFC]
+!> @date January, 2013 Dr. John R. Moisan
+!>
+!> @param[in] i_GP_generation
+!> @param[inout] i_GP_best_parent 
+!> @param[inout] nop
+
 subroutine GP_calc_fitness( i_GP_generation, &
                             i_GP_best_parent, nop )
+
+ 
+!---------------------------------------------------------------------------  
+!
+! DESCRIPTION: 
+! Brief description of routine. 
+
+!
+! REVISION HISTORY:
+! TODO_dd_mmm_yyyy - TODO_describe_appropriate_changes - TODO_name
+!
+!---------------------------------------------------------------------------  
 
 ! program written by: Dr. John R. Moisan [NASA/GSFC] 31 January, 2013
 

@@ -1,4 +1,28 @@
+!> @brief
+!>  This function computes the Euclidean norm of a vector.
+!>
+!> @details
+!>  This function computes the Euclidean norm of a vector.
+!>
+!> @author Jorge More, Burton Garbow, Kenneth Hillstrom, and   John Burkardt
+!> @date  April 6, 2010 John Burkardt
+!>
+!> @param[in]  N           
+!> @param[in]  X
+!> @return  enorm
+
 function enorm ( n, x )
+
+ 
+!---------------------------------------------------------------------------  
+!
+! DESCRIPTION: 
+! Brief description of routine. 
+!
+! REVISION HISTORY:
+! TODO_dd_mmm_yyyy - TODO_describe_appropriate_changes - TODO_name
+!
+!---------------------------------------------------------------------------  
 
 !*****************************************************************************80
 !

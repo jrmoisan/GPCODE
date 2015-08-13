@@ -1,4 +1,30 @@
+!> @brief                                                                                                      
+!>  This subroutine constructs a GP tree for one  GP individual.                                             
+!>
+!> @details                                                                                                    
+!>  This subroutine constructs a GP tree for one GP individual.                                             
+!!  Nodes are set to values for operators and values, and nodes                                                
+!!  holding parameters are marked with zeroes, and the values                                                  
+!!  of the parameters are set in the GA process.                                                               
+!>
+!> @author Dr. John R. Moisan [NASA/GSFC]                                                                      
+!> @date January, 2013 Dr. John R. Moisan                                                                      
+!>
+!> @param[in] i_GP_individual                                                                                 
+
 subroutine GP_Tree_Build_single( i_GP_individual )
+
+
+                                                                                                              
+!---------------------------------------------------------------------------                                   
+!                                                                                                              
+! DESCRIPTION:                                                                                                 
+! Brief description of routine.                                                                               
+!                                                                                                              
+! REVISION HISTORY:                                                                                            
+! TODO_dd_mmm_yyyy - TODO_describe_appropriate_changes - TODO_name                                             
+!                                                                                                              
+!---------------------------------------------------------------------------                                   
 
 
 use kinds_mod

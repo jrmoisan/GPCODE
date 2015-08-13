@@ -1,4 +1,30 @@
+!> @brief
+!>  This subroutine prints the time series of the current solution with columns for
+!!  solution, truth and residual.  Some statistics are printed.  
+!>
+!> @details
+!>  This subroutine prints the time series of the current solution with columns for
+!!  solution, truth and residual.  Some statistics are printed.  
+!>
+!> @author Dr. John R. Moisan [NASA/GSFC]
+!> @date January, 2013 Dr. John R. Moisan
+!>
+!> @param[in]  i_GP_best_parent
+!> @param[in]  i_GP_generation
+!> @param[out] nop
+
 subroutine print_time_series( i_GP_best_parent,  nop, i_GP_generation )
+
+ 
+!---------------------------------------------------------------------------  
+!
+! DESCRIPTION: 
+! Brief description of routine. 
+!
+! REVISION HISTORY:
+! TODO_dd_mmm_yyyy - TODO_describe_appropriate_changes - TODO_name
+!
+!---------------------------------------------------------------------------  
 
 ! program written by: Dr. John R. Moisan [NASA/GSFC] 31 January, 2013
 

@@ -1,4 +1,25 @@
+!> @brief
+!>  This module defines the tree node class.
+!>
+!> @details
+!>  This module defines the tree node class.
+!>
+!> @author Dr. John R. Moisan [NASA/GSFC]
+!> @date January, 2013 Dr. John R. Moisan
+
 module class_Tree_Node
+
+ 
+!---------------------------------------------------------------------------  
+!
+! DESCRIPTION: 
+! Brief description of routine. 
+!
+! REVISION HISTORY:
+! TODO_dd_mmm_yyyy - TODO_describe_appropriate_changes - TODO_name
+!
+
+!---------------------------------------------------------------------------  
 
     use kinds_mod 
     use Math_Node_Functions

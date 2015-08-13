@@ -1,4 +1,29 @@
+!> @brief
+!>  This subroutine prints tree information for the minSSE GP individual and
+!!  also writes this information to an output file.                                                             
+!>
+!> @details
+!>  This subroutine prints tree information for the minSSE GP individual and
+!!  also writes this information to an output file.                                                             
+!>
+!> @author Dr. John R. Moisan [NASA/GSFC]
+!> @date January, 2013 Dr. John R. Moisan
+!>
+!> @param[in] GP_minSSE_generation
+!> @param[in] GP_minSSE_indiv
+
 subroutine summary_GP_minSSE_indiv( GP_minSSE_generation, GP_minSSE_indiv )
+
+ 
+!---------------------------------------------------------------------------  
+!
+! DESCRIPTION: 
+! Brief description of routine. 
+!
+! REVISION HISTORY:
+! TODO_dd_mmm_yyyy - TODO_describe_appropriate_changes - TODO_name
+!
+!---------------------------------------------------------------------------  
 
 ! program written by: Dr. John R. Moisan [NASA/GSFC] 31 January, 2013
 

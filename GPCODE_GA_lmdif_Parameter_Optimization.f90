@@ -1,6 +1,33 @@
+!> @brief
+!>  This subroutine controls the integration and fitness evaluation for the   
+!!  GA individuals
+!>
+!> @details
+!>  This subroutine controls the integration and fitness evaluation for the   
+!!  GA individuals
+!>
+!> @author Dr. John R. Moisan [NASA/GSFC]
+!> @date January, 2013 Dr. John R. Moisan
+!>
+!> @param[in] i_GP_Generation
+!> @param[in] i_GP_individual
+!> @param[in] new_comm 
+
 subroutine GPCODE_GA_lmdif_Parameter_Optimization( &
                   i_GP_Generation,i_GP_individual, &
                              new_comm )
+
+ 
+!---------------------------------------------------------------------------  
+!
+! DESCRIPTION: 
+! Brief description of routine. 
+
+!
+! REVISION HISTORY:
+! TODO_dd_mmm_yyyy - TODO_describe_appropriate_changes - TODO_name
+!
+!---------------------------------------------------------------------------  
 
 ! written by: Dr. John R. Moisan [NASA/GSFC] 5 December, 2012
 !xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
@@ -219,6 +246,7 @@ integer(kind=i4b) :: n_procs
                             individual_quality, ierror_tou )
 
             endif !   n_GA_Crossovers .gt. 0
+
             ! debug 
             !if( L_ga_print )then
             !    !write(GA_print_unit,'(/A,1x,I6)') &
@@ -232,7 +260,6 @@ integer(kind=i4b) :: n_procs
             !    enddo ! i_ga_ind
             !endif ! L_ga_print
             ! debug 
-
 
 
 

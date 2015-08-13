@@ -1,4 +1,29 @@
+!> @brief
+!>  This subroutine prints tree information for the best GP individual and    
+!!  also writes this information to an output file.              
+!>
+!> @details
+!>  This subroutine prints tree information for the best GP individual and    
+!!  also writes this information to an output file.              
+!>
+!> @author Dr. John R. Moisan [NASA/GSFC]
+!> @date January, 2013 Dr. John R. Moisan
+!>
+!> @param[in] i_GP_generation
+!> @param[in] i_GP_indiv
+
 subroutine summary_GP_indiv( i_GP_generation, i_GP_indiv ) 
+
+ 
+!---------------------------------------------------------------------------  
+!
+! DESCRIPTION: 
+! Brief description of routine. 
+!
+! REVISION HISTORY:
+! TODO_dd_mmm_yyyy - TODO_describe_appropriate_changes - TODO_name
+!
+!---------------------------------------------------------------------------  
 
 ! program written by: Dr. John R. Moisan [NASA/GSFC] 31 January, 2013
 

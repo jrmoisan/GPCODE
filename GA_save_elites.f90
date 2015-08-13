@@ -1,4 +1,27 @@
+!> @brief
+!>  This subroutine marks the most fit GA individuals as "elite" so that they 
+!!  will not be modified by the mutation, tournament, etc. subroutines
+!>
+!> @details
+!>  This subroutine marks the most fit GA individuals as "elite" so that they 
+!!  will not be modified by the mutation, tournament, etc. subroutines
+!>
+!> @author Dr. John R. Moisan [NASA/GSFC]
+!> @date January, 2013 Dr. John R. Moisan
+
 subroutine GA_save_elites( )
+
+ 
+!---------------------------------------------------------------------------  
+!
+! DESCRIPTION: 
+! Brief description of routine. 
+
+!
+! REVISION HISTORY:
+! TODO_dd_mmm_yyyy - TODO_describe_appropriate_changes - TODO_name
+!
+!---------------------------------------------------------------------------  
 
 use kinds_mod 
 use GP_Parameters_module

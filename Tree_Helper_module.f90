@@ -1,4 +1,25 @@
+!> @brief
+!>  This module provides functions needed to process tree objects.              
+!>
+!> @details
+!>  This module provides functions needed to process tree objects.              
+!>
+!> @author Dr. John R. Moisan [NASA/GSFC]
+!> @date January, 2013 Dr. John R. Moisan
+
 module Tree_Helper_module
+ 
+!---------------------------------------------------------------------------  
+!
+! DESCRIPTION: 
+! Brief description of routine. 
+!
+! REVISION HISTORY:
+! TODO_dd_mmm_yyyy - TODO_describe_appropriate_changes - TODO_name
+!
+
+!---------------------------------------------------------------------------  
+
 use kinds_mod 
 use class_Tree_Node
 

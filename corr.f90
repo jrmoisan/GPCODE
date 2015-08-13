@@ -1,6 +1,40 @@
+!> @brief
+!>  This subroutine computes the correlation between the X and Y arrays.
+!>
+!> @details
+!>  This subroutine computes the correlation between the X and Y arrays.
+!>
+!> @author James J. Filliben                                     
+!> @date June,      1972 James J. Filliben                                     
+!> @date September, 1975 James J. Filliben                                     
+!> @date November,  1975 James J. Filliben                                     
+!>
+!> @param[in] X
+!> @param[in] Y
+!> @param[in] N
+!> @param[in] IWRITE
+!> @param[in] dt
+!> @param[in] sse_min_time
+!> @param[in] sse_max_time
+!> @param[in] sse_low_wt
+!> @param[out] C
+
 SUBROUTINE CORR( X,Y,N,IWRITE,C , &
                  dt, sse_min_time, sse_max_time, sse_low_wt  ) 
-!                                                                       
+ 
+!---------------------------------------------------------------------------  
+!
+! DESCRIPTION: 
+! Brief description of routine. 
+!
+! REVISION HISTORY:
+! TODO_dd_mmm_yyyy - TODO_describe_appropriate_changes - TODO_name
+!     ORIGINAL VERSION--JUNE      1972.                                 
+!     UPDATED         --SEPTEMBER 1975.                                 
+!     UPDATED         --NOVEMBER  1975.                                 
+!
+!---------------------------------------------------------------------------  
+
 !     PURPOSE--THIS SUBROUTINE COMPUTES THE                             
 !              SAMPLE CORRELATION COEFFICIENT                           
 !              BETWEEN THE 2 SETS OF DATA IN THE INPUT VECTORS X AND Y. 

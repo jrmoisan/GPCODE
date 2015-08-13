@@ -1,3 +1,27 @@
+!> @brief
+!>  This subroutine loads arrays needed for the lmdif process, and stores the 
+!!  outputs of the lmdif process.
+!>
+!> @details
+!>  This subroutine loads arrays needed for the lmdif process, and stores the 
+!!  outputs of the lmdif process.
+!>
+!> @author Dr. John R. Moisan [NASA/GSFC]
+!> @date January, 2013 Dr. John R. Moisan
+!>
+!> @param[in]    i_G_indiv
+!> @param[in]    max_n_gp_params
+!> @param[inout] child_parameters
+!> @param[in]    individual_quality
+!> @param[in]    n_indiv
+!> @param[out]   my_indiv_SSE
+!> @param[in]    n_parms
+!> @param[in]    n_parms_dim
+!> @param[out]   info
+!> @param[in]    i_GP_gen
+!> @param[in]    L_myprint
+!> @param[in]    myprint_unit
+
 subroutine setup_run_para_lmdif( i_G_indiv,  &
                                  max_n_gp_params, &
                                  child_parameters, &
@@ -7,6 +31,17 @@ subroutine setup_run_para_lmdif( i_G_indiv,  &
                                  info, &
                                  i_GP_gen, &
                                  L_myprint, myprint_unit  )
+
+ 
+!---------------------------------------------------------------------------  
+!
+! DESCRIPTION: 
+! Brief description of routine. 
+!
+! REVISION HISTORY:
+! TODO_dd_mmm_yyyy - TODO_describe_appropriate_changes - TODO_name
+!
+!---------------------------------------------------------------------------  
 
 ! written by: Dr. John R. Moisan [NASA/GSFC] 5 December, 2012
 !xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx

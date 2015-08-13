@@ -1,4 +1,31 @@
+!> @brief
+!> This subroutine looks through a specific temp_Node_Type array
+!! for nodes that do not correctly set terminals.
+!>
+!> @details
+!> This subroutine looks through a specific temp_Node_Type array
+!! for nodes that do not correctly set terminals.
+!>
+!> @author Dr. John R. Moisan [NASA/GSFC]
+!> @date January, 2013 Dr. John R. Moisan
+!>
+!> @param[in] temp_Node_Type
+!> @param[in] nn_Nodes
+!> @param[in] nn_Trees 
+!> @param[out] i_Error
+
 subroutine GP_Check_Terminals( temp_Node_Type, nn_Nodes, nn_Trees, i_Error)
+
+ 
+!---------------------------------------------------------------------------  
+!
+! DESCRIPTION: 
+! Brief description of routine. 
+
+! REVISION HISTORY:
+! TODO_dd_mmm_yyyy - TODO_describe_appropriate_changes - TODO_name
+!
+!---------------------------------------------------------------------------  
 
 ! This subroutine looks through a specific temp_Node_Type array
 ! for nodes that do not correctly set terminals.
