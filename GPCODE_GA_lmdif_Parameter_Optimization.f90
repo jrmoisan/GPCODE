@@ -248,6 +248,7 @@ integer(kind=i4b) :: n_procs
 
         endif ! i_GA_generation .eq. 1
 
+
     endif ! new_rank == 0
 
     call MPI_BCAST( ierror_tou,  1,    &

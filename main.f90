@@ -57,7 +57,7 @@ integer(kind=i4b) :: comm_world
 
 
 character(15),parameter :: program_version   = '201502.004_v16'
-character(10),parameter :: modification_date = '20150730'
+character(10),parameter :: modification_date = '20150813'
 character(50),parameter :: branch  =  'master'
 
 integer(kind=i4b), parameter ::  zero = 0
@@ -198,7 +198,7 @@ endif ! myid == 0
 !----------------------------------------------------
 
 
-   call setup1( )
+call setup1( )
 
 !----------------------------------------------------
 
@@ -270,9 +270,6 @@ endif ! myid == 0
 
 !----------------------------------------------------------------------
 
-if( myid == 0 )then
-    write(6,'(/A,1x,I5)')     '0: start generation loop  myid = ', myid
-endif ! myid == 0
 
    generation_loop:&
    do  i_GP_Generation= 1, n_GP_Generations
@@ -324,6 +321,7 @@ endif ! myid == 0
             write(6,'(I12,1x,I12)')  i, current_seed(i)
         enddo ! i
         write(6,'(A)') ' '
+        !flush(6)
 
         !--------------------------------------------------------------------------------
 

@@ -43,7 +43,7 @@ integer(kind=i4b) ::   info
 integer(kind=i4b) :: i_time_step
 integer(kind=i4b) :: i_parameter
 
-integer(kind=i4b),intent(in) :: new_comm 
+integer(kind=i4b),intent(in) :: new_comm
 
 ! individual_quality contains information on the result of lmdif
 ! if lmdif encounters an error, set individual_quality to -1
@@ -59,8 +59,8 @@ external :: fcn
 
 !--------------------------------------------------------------------------------------------
 
-                                                                                                                                
-call mpi_comm_rank( new_comm, new_rank, ierr ) 
+
+call mpi_comm_rank( new_comm, new_rank, ierr )
 
 
 

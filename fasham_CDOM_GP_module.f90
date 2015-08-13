@@ -195,6 +195,7 @@ use GA_Variables_module
 
       Data_Array=Numerical_CODE_Solution
 
+
       if( myid == 0 )then
           do i = 0, n_time_steps
           write(6,'(A,1x,I10,1x,E15.7)') &

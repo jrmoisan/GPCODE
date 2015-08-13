@@ -150,13 +150,6 @@ else
 endif  ! LV_model1
 
 
-!---------------------------------------------------------------                                        
-                                                                                                        
-Truth_Initial_Conditions(1) = 30.0d0
-Truth_Initial_Conditions(2) =  2.0d0 
-                                                                                                        
-!---------------------------------------------------------------                                        
-
 !xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
 
@@ -270,6 +263,10 @@ GP_Individual_Node_Type(15,5) = -1 ! Phytoplankton
 !-------------------------------------------------
 if( L_truth_model ) then 
 
+                                                                                                        
+    Truth_Initial_Conditions(1) = 30.0d0
+    Truth_Initial_Conditions(2) =  2.0d0 
+                                                                                                        
     Truth_Node_Type           = -9999                                                                       
     
     Truth_Node_Type(1,1) = 3   ! '*'

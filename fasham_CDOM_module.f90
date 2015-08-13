@@ -322,7 +322,7 @@ contains
  
    end subroutine setModel
 
-   subroutine getForcing(this,preForce,time_step_fraction, i_Time_Step,L_bad )
+   subroutine getForcing( this, preForce, time_step_fraction, i_Time_Step, L_bad )
       class(fasham_CDOM),intent(in) :: this
       real (kind=8) :: preForce(:)
       real (kind=8) :: time_step_fraction
@@ -356,6 +356,7 @@ contains
       Numerical_CODE_Forcing_Functions(abs(5000-5002))= aMXD
       Numerical_CODE_Forcing_Functions(abs(5000-5003))= aPAR
       Numerical_CODE_Forcing_Functions(abs(5000-5004))= aKd
+
 
    end subroutine getForcing
 

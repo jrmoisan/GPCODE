@@ -126,7 +126,6 @@ call print_values1()
 
 ! allocate variable dimension arrays
 
-
 call allocate_arrays1( )
 
 
@@ -144,8 +143,8 @@ GP_Individual_Node_Type=-9999                    ! Matrix Operation
 GP_Population_Node_Parameters=0.0D0              ! Matrix Operation
 
 
-GP_Adult_Population_Node_Type=-9999              ! Matrix Operation
-GP_Child_Population_Node_Type=-9999              ! Matrix Operation
+GP_Adult_Population_Node_Type = -9999              ! Matrix Operation
+GP_Child_Population_Node_Type = -9999              ! Matrix Operation
 
 GP_minSSE_Individual_SSE = 1.0d99
 
