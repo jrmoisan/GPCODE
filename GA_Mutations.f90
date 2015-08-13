@@ -28,7 +28,7 @@ if( n_GA_Mutations < 1 ) return
 
 n_mutated  = 0
 
-do i_GA_Mutation=1,n_GA_Mutations
+do  i_GA_Mutation=1,n_GA_Mutations
 
 
     !---------------------------------------------------------------------

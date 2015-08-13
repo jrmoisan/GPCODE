@@ -52,7 +52,8 @@ tree_node_count = 0
 if( trim(model) == 'fasham_CDOM' .or. &
     trim(model) == 'fasham_CDOM_GP' ) then
     dt = 1.0d0
-endif ! trim(model) == 'fasham_CDOM' ...
+endif !  trim(model) == 'fasham_CDOM' ...           
+
 
 
 
@@ -108,6 +109,10 @@ do  i_Time_Step = 1, n_Time_Steps
 
         if( trim(model) == 'fasham_CDOM'     .or. &
             trim(model) == 'fasham_CDOM_GP'        ) then
+
+            !write(6,'(A,2(1x,I6))') &
+            !      'rkbm: call acdom%getforcing i_time_step, iter ', &
+            !                                   i_time_step, iter 
 
             call aCDOM%getForcing( btmp, &
                                    Runge_Kutta_Time_Step(iter), &
@@ -256,6 +261,14 @@ do  i_Time_Step = 1, n_Time_Steps
     !---------------------------------------------------------------------------
 
     Numerical_CODE_Solution(i_Time_Step,1:n_Variables)=max(b_tmp(1:n_Variables),0.0D+0)
+   
+    !if( myid == 0 )then
+    !    write(6,'(A,2(1x,I6),12(1x,E15.7))') &
+    !            'rkbm:P myid, i_time_step, RK_Soln ', &
+    !                    myid, i_time_step, &
+    !                    Numerical_CODE_Solution(i_time_step,1:n_CODE_equations)
+    !endif ! myid == 0 
+
 
 
 

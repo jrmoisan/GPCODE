@@ -106,6 +106,7 @@ do  i_GP_Mutation = 1,n_GP_Mutations
 
     !----------------------------------------------------------------------------------
 
+    !write(6,'(A)') 'gpmut:1 call GP_Check_Terminals in GP_Mutation'
     call GP_Check_Terminals( &
          GP_Child_Population_Node_Type(1, 1, i_GP_Individual),n_Nodes,n_Trees , i_Error)
 
@@ -290,6 +291,7 @@ do  i_GP_Mutation = 1,n_GP_Mutations
 
 
 
+    !write(6,'(A)') 'gpmut:2 call GP_Check_Terminals in GP_Mutation'
     call GP_Check_Terminals( &
          GP_Child_Population_Node_Type(1,1, i_GP_Individual),n_Nodes,n_Trees, i_Error)
 

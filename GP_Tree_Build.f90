@@ -273,6 +273,7 @@ do  i_GP_Individual=1,n_GP_Individuals
 
     !---------------------------------------------------------------------------------
 
+    !write(6,'(/A)') 'gtb: GP_Check_Terminals in GP_Tree_Build'
 
     call GP_Check_Terminals(&
          GP_Child_Population_Node_Type( 1, 1, i_GP_Individual),n_Nodes,n_Trees , i_Error )

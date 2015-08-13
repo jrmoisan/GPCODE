@@ -91,12 +91,16 @@ contains
       allocate(this%dmxddts(0:n_time_steps))
 
       close(data_unitnum)   
+
+
       open( unit = data_unitnum, file = 'CDOM.data', action="read")
 
       ! skip header 
       do i = 1,3
          read( data_unitnum, '(A)', iostat = istat ) Aline
       enddo
+
+
       do i = 1, n_count
          read( data_unitnum, '(A)', iostat = istat ) Aline
          do n = 1,72
@@ -110,10 +114,11 @@ contains
 
          write(Aline,*)' '
       enddo
-      this%cdoms(0) = this%cdoms(1)
-      this%kds(0) = this%kds(1)
-      this%pars(0) = this%pars(1)
-      this%mxds(0) = this%mxds(1)
+
+      this%cdoms(0)   = this%cdoms(1)
+      this%kds(0)     = this%kds(1)
+      this%pars(0)    = this%pars(1)
+      this%mxds(0)    = this%mxds(1)
       this%dmxddts(0) = this%dmxddts(1)
 
       ! print input data
@@ -138,6 +143,7 @@ contains
       call allocate_arrays1()
    
       increment = 1.0d0 / real( n_levels, kind=8 )
+
       do  i = 1, n_levels-1
          Node_Probability(i) =  1.0d0 - increment * real(i,kind=8)
       enddo
@@ -165,8 +171,10 @@ contains
          Numerical_CODE_Solution( i, 1) = this%cdoms(i)
       enddo ! i  
 
+
       Numerical_CODE_Initial_Conditions(1) = this%cdoms(1)
       Numerical_CODE_Solution(0,1) = this%cdoms(1)
+
 
       Data_Array=Numerical_CODE_Solution
 
@@ -179,6 +187,10 @@ contains
       endif ! myid == 0 
 
       Numerical_CODE_Solution(1:n_time_steps, 1:n_code_equations) = 0.0d0
+
+      if( myid == 0 )then
+          write(6,'(A)')   'setCD: call comp_data_variance'
+      endif ! myid == 0 
 
       call comp_data_variance()
 
@@ -267,8 +279,8 @@ contains
       n_parameters = 0
 
       do  i_CODE_equation=1,n_CODE_equations
-         n_parameters=n_parameters+1
-         answer(n_parameters)=Numerical_CODE_Initial_Conditions(i_CODE_equation)
+          n_parameters=n_parameters+1
+          answer(n_parameters)=Numerical_CODE_Initial_Conditions(i_CODE_equation)
       enddo ! i_CODE_equation
 
 ! calculate how many parameters total to fit for the specific individual CODE
@@ -276,10 +288,10 @@ contains
       do  i_tree=1,n_trees
          do  i_node=1,n_nodes
 
-            if( GP_individual_node_type(i_node,i_tree) .eq. 0) then
-               n_parameters=n_parameters+1
-               answer(n_parameters)=GP_Individual_Node_Parameters(i_node,i_tree)
-            endif ! GP_individual_node_type(i_node,i_tree) .eq. 0
+             if( GP_individual_node_type(i_node,i_tree) .eq. 0) then
+                 n_parameters=n_parameters+1
+                 answer(n_parameters)=GP_Individual_Node_Parameters(i_node,i_tree)
+             endif ! GP_individual_node_type(i_node,i_tree) .eq. 0
 
          enddo ! i_node
       enddo ! i_tree
@@ -298,9 +310,12 @@ contains
 
       call this%generateGraph()
 
+
       call print_values2()
 
+
       call sse0_calc( )
+
 
       call set_modified_indiv( )
 
@@ -311,7 +326,7 @@ contains
  
    end subroutine setModel
 
-   subroutine getForcing(this,preForce,time_step_fraction, i_Time_Step,L_bad )
+   subroutine getForcing( this, preForce, time_step_fraction, i_Time_Step, L_bad )
       class(fasham_CDOM),intent(in) :: this
       real (kind=8) :: preForce(:)
       real (kind=8) :: time_step_fraction
@@ -345,6 +360,7 @@ contains
       Numerical_CODE_Forcing_Functions(abs(5000-5002))= aMXD
       Numerical_CODE_Forcing_Functions(abs(5000-5003))= aPAR
       Numerical_CODE_Forcing_Functions(abs(5000-5004))= aKd
+
 
    end subroutine getForcing
 

@@ -84,6 +84,7 @@ use GP_variables_module
     endif
 
 
+
 !   calculate the light value only during the day [night = zenith .ge. pi/2.D+0]
 
     if( abs(zenith) .lt. pi/2.D+0 ) then
@@ -103,11 +104,14 @@ use GP_variables_module
         do  iz=0,100
             z=float(iz)*delz
 
+
+
             if( abs( z * ( akw +  akc*abs(phyto) ) ) < 150.0d0 )then 
                 parz = par0 * exp( -z * ( akw +  akc*abs(phyto) ) )
             else
                 parz = 1.0D-65
             endif 
+
 
             if( parz > 1.0D+100 )then
                 L_bad = .true. 
@@ -123,6 +127,7 @@ use GP_variables_module
                 tmp = 0.0d0
 
             endif ! Vp**2 + (alpha * parz)**2 > 0.0d0
+
 
 
             if( isnan( tmp ) )then
@@ -142,6 +147,7 @@ use GP_variables_module
         aJ=aJ*delz/aMLD
 
     endif !  par0 .gt. 0.D+0
+
 
 end subroutine JQforce
 

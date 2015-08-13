@@ -127,6 +127,11 @@ call print_values1()
 ! allocate variable dimension arrays
 
 
+if( myid == 0 )then
+    write(6,'(/A,1x,I6)') 'set1: call allocate_arrays1'
+    flush(6)
+endif ! myid == 0
+
 call allocate_arrays1( )
 
 
@@ -144,8 +149,8 @@ GP_Individual_Node_Type=-9999                    ! Matrix Operation
 GP_Population_Node_Parameters=0.0D0              ! Matrix Operation
 
 
-GP_Adult_Population_Node_Type=-9999              ! Matrix Operation
-GP_Child_Population_Node_Type=-9999              ! Matrix Operation
+GP_Adult_Population_Node_Type = -9999              ! Matrix Operation
+GP_Child_Population_Node_Type = -9999              ! Matrix Operation
 
 GP_minSSE_Individual_SSE = 1.0d99
 
@@ -199,6 +204,8 @@ if( myid == 0 )then
     call set_answer_arrays( )
 
 endif ! myid == 0
+
+
 
 
 !------------------------------------------------------------------------

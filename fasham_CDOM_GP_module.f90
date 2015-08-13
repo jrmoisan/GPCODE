@@ -82,6 +82,7 @@ contains
          if( istat /= 0 ) exit
          i_count = i_count + 1
       enddo
+
       n_count = i_count - 3
       n_time_steps = n_count
 
@@ -97,12 +98,16 @@ contains
       allocate(this%dmxddts(0:n_time_steps))
 
       close(data_unitnum)   
+
+
       open( unit = data_unitnum, file = 'CDOM.data', action="read")
 
       ! skip header 
       do i = 1,3
          read( data_unitnum, '(A)', iostat = istat ) Aline
       enddo
+
+
       do i = 1, n_count
          read( data_unitnum, '(A)', iostat = istat ) Aline
          do n = 1,72
@@ -116,10 +121,11 @@ contains
 
          write(Aline,*)' '
       enddo
-      this%cdoms(0) = this%cdoms(1)
-      this%kds(0) = this%kds(1)
-      this%pars(0) = this%pars(1)
-      this%mxds(0) = this%mxds(1)
+
+      this%cdoms(0)   = this%cdoms(1)
+      this%kds(0)     = this%kds(1)
+      this%pars(0)    = this%pars(1)
+      this%mxds(0)    = this%mxds(1)
       this%dmxddts(0) = this%dmxddts(1)
 
       ! print input data
@@ -165,6 +171,7 @@ contains
 !------------------------------------------------------------------------------------
 
    subroutine setTruth(this)
+
       use GP_data_module
 use GP_Parameters_module
 use GP_variables_module
@@ -181,10 +188,13 @@ use GA_Variables_module
          Numerical_CODE_Solution( i, 1) = this%cdoms(i)
       enddo ! i  
 
+
       Numerical_CODE_Initial_Conditions(1) = this%cdoms(1)
       Numerical_CODE_Solution(0,1) = this%cdoms(1)
 
+
       Data_Array=Numerical_CODE_Solution
+
 
       if( myid == 0 )then
           do i = 0, n_time_steps
@@ -227,10 +237,13 @@ use GA_Variables_module
 
 
    subroutine setModel(this)
+
       class(fasham_CDOM_GP),intent(inout) :: this
       integer :: ierror
 
+
       call GP_Tree_Build(ierror)
+
 
    end subroutine setModel
 
@@ -238,6 +251,7 @@ use GA_Variables_module
 !--------------------------------------------------------------------------------
 
    subroutine getForcing(this,preForce,time_step_fraction, i_Time_Step,L_bad )
+
       class(fasham_CDOM_GP),intent(in):: this
       real(kind=r8b) :: preForce(:)
       real(kind=r8b) :: time_step_fraction
@@ -261,10 +275,10 @@ use GA_Variables_module
 
       if( k == n_time_steps ) k = n_time_steps-1
 
-      aDMXDDT =this%dmxddts(k)+iter*(this%dmxddts(k+1)-this%dmxddts(k))
-      aMXD = this%mxds(k)+iter*(this%mxds(k+1)-this%mxds(k))
-      aPAR = this%pars(k)+iter*(this%pars(k+1)-this%pars(k))
-      aKd  = this%kds(k)+iter*(this%kds(k+1)-this%kds(k))
+      aDMXDDT = this%dmxddts(k) + iter * (this%dmxddts(k + 1) - this%dmxddts(k))
+      aMXD    = this%mxds(k)    + iter * (this%mxds(k + 1)    - this%mxds(k))
+      aPAR    = this%pars(k)    + iter * (this%pars(k + 1)    - this%pars(k))
+      aKd     = this%kds(k)     + iter * (this%kds(k + 1)     - this%kds(k))
 
       Numerical_CODE_Forcing_Functions(abs(5000-5001))= aDMXDDT
       Numerical_CODE_Forcing_Functions(abs(5000-5002))= aMXD

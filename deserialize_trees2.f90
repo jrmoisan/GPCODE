@@ -52,7 +52,6 @@ type(Tree_Node), pointer :: parent, root
 !--------------------------------------------------------------------------------------
 
 
-
 do  i = 1, Tree_count
 
 
@@ -82,6 +81,7 @@ do  i = 1, Tree_count
 
         ! Dimension arrays that will hold nodes and node ids
 
+
         allocate( Nodes(node_count), Node_IDs(node_count) )
 
 
@@ -100,6 +100,7 @@ do  i = 1, Tree_count
 
 
             if( GP_Individual_Node_Type( inode, i ) > -9999 )then
+
 
                 counter =  counter + 1
 
@@ -148,7 +149,6 @@ do  i = 1, Tree_count
         ! First node is always the root
 
         root => Nodes(1)%n
-
 
 
 
@@ -213,7 +213,6 @@ do  i = 1, Tree_count
                 if( Nodes(k)%n%variable_index < -5000) then
 
 
-
                     Nodes(k)%n%variable =>  &
                            Numerical_CODE_Forcing_Functions(abs(5000+Nodes(k)%n%variable_index))
 
@@ -224,7 +223,6 @@ do  i = 1, Tree_count
                     if( abs( Nodes(k)%n%variable_index ) <= n_code_equations )then
 
                         Nodes(k)%n%variable =>   btmp( abs( Nodes(k)%n%variable_index ) )
-
 
                     else
 
@@ -264,6 +262,7 @@ do  i = 1, Tree_count
 
 
 enddo ! i
+
 
 
 return

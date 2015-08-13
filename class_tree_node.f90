@@ -167,36 +167,34 @@ contains
     subroutine Tree_Node_Get_Pointers(this, pointers, pointer_count, index)
         use kinds_mod
        
-        class(Tree_Node), intent(inout),target :: this   ! jjm
+        class(Tree_Node), intent(inout),target :: this   
         integer(kind=i4b), intent(in) :: pointer_count
         class(Tree_Node_Pointer), dimension(pointer_count) :: pointers
         integer(kind=i4b), intent(inout) :: index
-        type(Tree_Node), pointer       :: a   ! jjm
+        type(Tree_Node), pointer       :: a   
 
         select type (a => this)
             type is (Tree_Node)
             pointers(index)%n => a
         endselect
         index = index + 1
-      
     end subroutine Tree_Node_Get_Pointers
 
 
     subroutine Tree_Math_Node_Get_Pointers(this, pointers, pointer_count, index)
         use kinds_mod
      
-        class(Tree_Node), intent(inout),target :: this  ! jjm
+        class(Tree_Node), intent(inout),target :: this 
         integer(kind=i4b), intent(in) :: pointer_count
         class(Tree_Node_Pointer), dimension(pointer_count) :: pointers
         integer(kind=i4b), intent(inout) :: index
-        type(Tree_Node), pointer       :: a   !jjm
+        type(Tree_Node), pointer       :: a 
 
         select type (a => this)
             type is (Tree_Node)
             pointers(index)%n => a
         endselect
         index = index + 1
-    
         call this%left%GetNodePointers( pointers, pointer_count, index)
         call this%right%GetNodePointers(pointers, pointer_count, index)
 
@@ -248,12 +246,12 @@ contains
 
     subroutine Tree_Node_Swap(this, node)
         use kinds_mod
-        class(Tree_Node), intent(inout),target :: this, node   ! jjm
+        class(Tree_Node), intent(inout),target :: this, node
         type(Tree_Node), pointer :: tmp
         integer(kind=i4b) :: ct_diff
 
-        type(Tree_Node), pointer       :: a   !jjm
-        type(Tree_Node), pointer       :: b   !jjm
+        type(Tree_Node), pointer       :: a
+        type(Tree_Node), pointer       :: b
 
 
         select type(a => this)

@@ -215,6 +215,8 @@ GP_Adult_Population_Node_Type = GP_Child_Population_Node_Type   ! keep jjm 20150
 GP_Adult_Population_SSE       = GP_Child_Population_SSE         ! keep jjm 20150522
 
 
+
+
 message_len =  1
 call MPI_BCAST( ierror_t, message_len,    &
                 MPI_INTEGER,  0, MPI_COMM_WORLD, ierr )
@@ -277,6 +279,7 @@ endif ! trim(model) == 'fasham_fixed_tree'
 ! GP_Integrated_Population_Ranked_Fitness
 ! GP_Population_Ranked_Fitness
 ! Run_GP_Calculate_Fitness
+
 
 
 call bcast2()

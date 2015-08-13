@@ -85,6 +85,11 @@ if( n_code_equations > 1 )then
 
             x_obs = x_obs + sse_wt
     
+            !if( myid == 0 )then
+            !    write(6,'(A,1x,I10,1x,E15.7)') &
+            !             'cdv: i_time_step, Data_Array(i_time_step,i_CODE_equation) ', &
+            !                   i_time_step, Data_Array(i_time_step,i_CODE_equation) 
+            !endif ! myid == 0 
 
             ssum  = ssum  +   Data_Array(i_time_step,i_CODE_equation) * sse_wt
             ssum2 = ssum2 +  (Data_Array(i_time_step,i_CODE_equation) * sse_wt )**2
@@ -133,6 +138,7 @@ if( n_code_equations > 1 )then
                    i_CODE_equation, Data_Variance(i_CODE_equation)
     
             write(GP_print_unit,'(A/)') 'cdv: bad data variance -- stopping program '
+
             call MPI_FINALIZE(ierr)
             stop 'bad data var'
     
@@ -147,6 +153,7 @@ if( n_code_equations > 1 )then
                    i_CODE_equation, Data_Variance_inv(i_CODE_equation)
     
             write(GP_print_unit,'(A/)') 'cdv: bad data variance inv -- stopping program '
+
             call MPI_FINALIZE(ierr)
             stop 'bad data var_inv'
     
@@ -160,6 +167,7 @@ if( n_code_equations > 1 )then
                  'cdv: i_CODE_eq, Data_Variance, Data_Variance_inv ', &
                        i_CODE_equation, Data_Variance(    i_CODE_equation), &
                                         Data_Variance_inv(i_CODE_equation)
+
         endif ! myid == 0
     
 

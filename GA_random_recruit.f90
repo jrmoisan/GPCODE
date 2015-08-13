@@ -47,6 +47,7 @@ do  i_GA_recruit=1,n_GA_rand_recruits
     ! recruit all parameters
 
     do  i_Parameter_recruit = 1, n_parameters
+    !do  i_Parameter_recruit = 2, n_parameters  ! debug only
 
         !  randomly pick a new real number for this parameter
 
