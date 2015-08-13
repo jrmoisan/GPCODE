@@ -85,11 +85,12 @@ if( n_code_equations > 1 )then
 
             x_obs = x_obs + sse_wt
     
-            !if( myid == 0 )then
-            !    write(6,'(A,1x,I10,1x,E15.7)') &
-            !             'cdv: i_time_step, Data_Array(i_time_step,i_CODE_equation) ', &
-            !                   i_time_step, Data_Array(i_time_step,i_CODE_equation) 
-            !endif ! myid == 0 
+            if( myid == 0 )then
+                write(6,'(A,1x,I10,1x,E15.7)') &
+                         'cdv: i_time_step, Data_Array(i_time_step,i_CODE_equation) ', &
+                               i_time_step, Data_Array(i_time_step,i_CODE_equation) 
+
+            endif ! myid == 0 
 
             ssum  = ssum  +   Data_Array(i_time_step,i_CODE_equation) * sse_wt
             ssum2 = ssum2 +  (Data_Array(i_time_step,i_CODE_equation) * sse_wt )**2
