@@ -55,6 +55,10 @@ INTEGER (KIND=i4b),INTENT(IN)  :: i_GP_Generation
 INTEGER (KIND=i4b)             :: i_GP_Gen
 INTEGER (KIND=i4b)             :: i_GP_indiv
 
+integer(kind=i4b)             :: in_n_code_equations
+integer(kind=i4b)             :: in_n_trees
+integer(kind=i4b)             :: in_n_nodes
+integer(kind=i4b)             :: in_n_levels
 INTEGER (KIND=i4b) :: i_Tree
 INTEGER (KIND=i4b) :: i_Node
 
@@ -101,11 +105,62 @@ DO
 
     READ (GP_restart_file_input_unit, *, IOSTAT=istat) &
          i_GP_Gen, i_GP_indiv, &
-         n_code_equations, n_trees, n_nodes, n_levels,  &
+         in_n_code_equations, in_n_trees, in_n_nodes, in_n_levels,  &
          GP_Adult_Population_SSE(i_GP_indiv)
 
     IF ( istat /= 0 ) exit readloop
 
+
+    !-------------------------------------------------------------------
+
+    ! this is done to check that the restart file tree agrees with the
+    ! tree determined from the user input
+
+    ! if any of these quantities are not equal to the input quantities,
+    ! the program will fail in GP_Check_Terminals
+
+    if( myid == 0 .and. i_GP_indiv == 1 )then
+
+        write(6,'(A,4(1x,I6))') &
+        'rasf: n_code_equations, n_trees, n_nodes, n_levels            ', &
+               n_code_equations, n_trees, n_nodes, n_levels
+
+        write(6,'(A,4(1x,I6))') &
+        'rasf: in_n_code_equations, in_n_trees, in_n_nodes, in_n_levels', &
+               in_n_code_equations, in_n_trees, in_n_nodes, in_n_levels
+
+    endif ! myid == 0
+
+    if( in_n_code_equations == n_code_equations  .and.  &
+        in_n_trees          == n_trees           .and.  &
+        in_n_nodes          == n_nodes           .and.  &
+        in_n_levels         == n_levels                   )then
+
+        continue
+    else
+
+        if( myid == 0 )then
+
+            write(6,'(/A/)') &
+            'rasf: the restart file tree does not match the setup tree -- &
+            & stopping in subroutine read_all_summary_file '
+
+            write(6,'(A,4(1x,I6))') &
+            'rasf: n_code_equations, n_trees, n_nodes, n_levels', &
+                   n_code_equations, n_trees, n_nodes, n_levels
+
+            write(6,'(A,4(1x,I6)/)') &
+            'rasf: in_n_code_equations, in_n_trees, in_n_nodes, in_n_levels', &
+                   in_n_code_equations, in_n_trees, in_n_nodes, in_n_levels
+
+        endif ! myid == 0
+
+        call MPI_FINALIZE(ierr)
+        stop 'bad restart file - bad tree'
+
+
+
+    endif  !  in_n_code_equations == n_code_equations  .and. ...
 
     !---------------------------------------------------------------------------
 
@@ -191,6 +246,24 @@ DO
 END DO readloop
 
 
+!-------------------------------------------------------------------------------
+if( i_GP_indiv < n_GP_individuals )then
+
+    if( myid == 0 )then                                                                                                              
+        write(6,'(/A/)') &                                                                                                           
+        'rasf: the restart file has too few GP individuals -- & 
+        & stopping in subroutine read_all_summary_file '                                                                             
+                                                                                                                                     
+        write(6,'(A,1x,I6)') 'rasf: i_GP_indiv      ', i_GP_indiv
+        write(6,'(A,1x,I6)') 'rasf: n_GP_individuals', n_GP_individuals
+                                                                                                                                     
+    endif ! myid == 0                                                                                                                
+                                                                                                                                     
+    call MPI_FINALIZE(ierr)                                                                                                          
+    stop 'bad restart file - too few GP indiv'         
+
+
+endif  ! i_GP_indiv < n_GP_individuals
 !-------------------------------------------------------------------------------
 
 
