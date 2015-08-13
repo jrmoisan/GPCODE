@@ -128,6 +128,12 @@ contains
     ! Visitor methods
     !---------------------------------------------------------------------
 
+    !subroutine Tree_Node_Accept_Visitor(this, visitor)
+    !    class(Tree_Node), intent(in) :: this
+    !    class(Tree_Node_Visitor), intent(inout) :: visitor
+    !    call visitor%Visit_Tree_Node(this)
+    !end subroutine Tree_Node_Accept_Visitor
+
 
     recursive subroutine Tree_Math_Node_Accept_Visitor(this, visitor)
         class(Tree_Node), intent(in) :: this
@@ -147,6 +153,11 @@ contains
         call visitor%Visit_Tree_Variable_Node(this)
     end subroutine Tree_Variable_Node_Accept_Visitor
 
+
+    !subroutine Visit_Tree_Node(this, node)
+    !    class(Tree_Node_Visitor), intent(inout) :: this
+    !    class(Tree_Node), intent(in) :: node
+    !end subroutine Visit_Tree_Node
 
 
     !---------------------------------------------------------------------

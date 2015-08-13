@@ -126,6 +126,12 @@ call print_values1()
 
 ! allocate variable dimension arrays
 
+
+if( myid == 0 )then
+    write(6,'(/A,1x,I6)') 'set1: call allocate_arrays1'
+    flush(6)
+endif ! myid == 0
+
 call allocate_arrays1( )
 
 

@@ -229,6 +229,7 @@ do  i_GP_Individual=1,n_GP_Individuals
 
                             if( node_variable == 0 ) node_variable = node_variable_save 
 
+                            !write(6,'(A,1x,I6)')'gtb: CDOM_GP node_variable ', node_variable
 
                             GP_Child_Population_Node_Type(i_Node,i_Tree,i_GP_Individual) = &
                                                                           -Node_Variable
@@ -237,6 +238,7 @@ do  i_GP_Individual=1,n_GP_Individuals
 
 
 
+                        !write(6,'(A,1x,I6)')'gtb:2  node_variable ', node_variable
 
                     else  !   cff > GP_Set_Terminal_to_Parameter_Probability
 
@@ -271,6 +273,7 @@ do  i_GP_Individual=1,n_GP_Individuals
 
     !---------------------------------------------------------------------------------
 
+    !write(6,'(/A)') 'gtb: GP_Check_Terminals in GP_Tree_Build'
 
     call GP_Check_Terminals(&
          GP_Child_Population_Node_Type( 1, 1, i_GP_Individual),n_Nodes,n_Trees , i_Error )

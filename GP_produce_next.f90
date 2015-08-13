@@ -48,26 +48,6 @@ if( myid == 0 )then
 
     GP_Child_Population_SSE  = GP_Adult_Population_SSE   ! needed ??  jjm 20140522
 
-    if( i_GP_generation == 1                                  .or. &
-        mod( i_GP_generation, GP_child_print_interval ) == 0  .or. &
-        i_GP_generation == n_GP_generations                          )then
-
-        write(GP_print_unit,'(//A)') 'gpn:3 before modifications'
-        write(GP_print_unit,'(A)')&
-           'gpn:3 i_GP_gen i_GP_indiv    GP_Child_Pop_SSE  &
-            &   GP_Child_Pop_SSE/SSE0'
-        flush(GP_print_unit)
-
-        do  i_GP_individual = 1, n_GP_individuals
-            write(GP_print_unit,'(2(1x,I10), 2(1x, E15.7))') &
-                  i_GP_generation, i_GP_individual, &
-                  GP_Child_Population_SSE(i_GP_Individual), &
-                  GP_Child_Population_SSE(i_GP_Individual)/SSE0
-        enddo ! i_GP_individual
-        flush(GP_print_unit)
-
-    endif ! i_GP_generation == 1 .or. ...
-
 
     !----------------------------------------------------------------------------------
 
@@ -92,6 +72,11 @@ if( myid == 0 )then
 
 
     if( n_GP_Asexual_Reproductions .gt. 0 )then
+
+        !write(GP_print_unit,'(A,1x,I6)') &
+        !      'gpn: call GP_Fit_Prop_Asexual_Repro &
+        !      &n_GP_Asexual_Reproductions =', n_GP_Asexual_Reproductions
+        !flush(GP_print_unit)
 
         call GP_Fitness_Proportionate_Asexual_Reproduction
 
@@ -119,6 +104,11 @@ if( myid == 0 )then
 
         if( n_GP_Crossovers .gt. 0 )then
 
+            !write(GP_print_unit,'(A,1x,I6)') &
+            !         'gpn: call GP_Tour_Style_Sexual_Repro n_GP_Crossovers =', &
+            !                                               n_GP_Crossovers
+            !flush( GP_print_unit )
+
             ierror_t = 0
             call GP_Tournament_Style_Sexual_Reproduction( ierror_t )
 
@@ -142,6 +132,11 @@ if( myid == 0 )then
     if( trim(model) /= 'fasham_fixed_tree' )then
 
         if( n_GP_Mutations .gt. 0 )then
+
+            !write(GP_print_unit,'(A,1x,I6)') &
+            !         'gpn: call GP_Mutations   n_GP_Mutations  =', &
+            !                                   n_GP_Mutations 
+            !flush(GP_print_unit)
 
             ierror_m = 0
             call GP_Mutations( ierror_m )
@@ -167,6 +162,11 @@ if( myid == 0 )then
     if( trim(model) /= 'fasham_fixed_tree' )then
 
         if( n_GP_rand_recruits .gt. 0 )then
+
+            !write(GP_print_unit,'(A,1x,I6)') &
+            !         'gpn: call GP_random_recruit   n_GP_rand_recruits  =', &
+            !                                        n_GP_rand_recruits 
+            !flush(GP_print_unit)
 
             ierror_rr = 0
             call GP_random_recruit( ierror_rr )
