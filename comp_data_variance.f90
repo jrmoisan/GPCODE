@@ -163,7 +163,7 @@ IF ( n_code_equations > 1 ) THEN
             WRITE (GP_print_unit,'(A/)') 'cdv: bad DATA variance -- STOPping program '
 
             CALL MPI_FINALIZE(ierr)
-            STOP 'bad DATA var'
+            STOP 'bad data var'
     
         END IF ! ABS ( Data_Variance(i_CODE_equation) ) < 1.0D-30
     
@@ -178,7 +178,7 @@ IF ( n_code_equations > 1 ) THEN
             WRITE (GP_print_unit,'(A/)') 'cdv: bad DATA variance inv -- STOPping program '
 
             CALL MPI_FINALIZE(ierr)
-            STOP 'bad DATA var_inv'
+            STOP 'bad data var_inv'
     
         END IF ! ABS ( Data_Variance_inv(i_CODE_equation) ) <=0.0D0
     

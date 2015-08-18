@@ -1,12 +1,17 @@
-Description of the unit 5 input control file                        20150623
+Description of the unit 5 input control file                        20150721
                                                                     J. McCarthy
 
 
 
+Any input on a line following a "#" character is ignored, and can be comments.
+
 Some of the keywords can be input with some letters capitalized. These variants
 are shown in parentheses in the keyword definition sections below.
 
+All lines of input are read in free format, so it is not necessary to keep values
+within specific column ranges.  
 
+It IS NECESSARY to have at least one space between values.
 
 !------------------------------------------------------------------------------
 
@@ -32,7 +37,7 @@ GA_Mutation_Probability  = probability of mutation in a parameter
 
 
 
-col 1-23	GA_Mutation_Probability  (ga_mutation_probability)
+col 1-23	GA_Mutation_Probability  ( ga_mutation_probability )
 col 25-80	value of the GA mutation probability
 Example:
 
@@ -139,7 +144,7 @@ GP_Asexual_Reproduction_Probability  = probability of asexual reproduction
 
 col 1-35	GP_Asexual_Reproduction_Probability
                         ( gp_asexual_reproduction_probability )
-col 37-80	value of the GP elitist probability
+col 37-80	value of the GP asexual reproduction probability
 
 Example:
 
@@ -234,7 +239,7 @@ Note:  default value = 2500
 !--------------------------------------------------------------------
 
 
-DT = length of the time step for the Runge-Kutta integration (unit = minute**-1)
+DT = length of the time step for the Runge-Kutta integration ( unit = minute**-1 )
 
 
 
@@ -258,7 +263,7 @@ Note:	dt is converted internally to units of days**-1
 
 
 
-col 1-12	sse_low_wt
+col 1-12	sse_low_wt ( SSE_LOW_WT )
 col 14-80	value of sse_low_wt
 
 Example:
@@ -276,7 +281,7 @@ Note:	default value = 1.0d0
 
 
 
-col 1-12	sse_min_time
+col 1-12	sse_min_time ( SSE_MIN_TIME )
 col 14-80	value of sse_min_time in days
 
 Example:
@@ -293,7 +298,7 @@ Note:	default value = 0.0d0
 
 
 
-col 1-12	sse_max_time
+col 1-12	sse_max_time ( SSE_MAX_TIME )
 col 14-80	value of sse_max_time in days
 
 Example:
@@ -382,7 +387,7 @@ Note:	default value = 7
 selected_function
 
 
-col 1-17	selected_function
+col 1-17	selected_function ( SELECTED_FUNCTION )
 col 19-80	index number of a node function to include in run
 
 Example:
@@ -539,7 +544,7 @@ Note:	default value = 0 -- i.e. system clock value is used
 GA_print - determines if the GA_print file is generated.
 
 
-col 1-8		GA_print
+col 1-8		GA_print ( ga_print )
 col 10-80	GA_print_flag
 
 
@@ -560,7 +565,7 @@ GA_print  1
 GA_output_parameters - determines if the GA_output_parameters file is generated.
 
 
-col 1-20	GA_output_parameters
+col 1-20	GA_output_parameters ( ga_output_parameters )
 col 21-80	GA_output_parameters_flag
 
 
@@ -581,7 +586,7 @@ GA_output_parameters  1
 GP_output_parameters - determines if the GP_output_parameters file is generated.
 
 
-col 1-20	GP_output_parameters
+col 1-20	GP_output_parameters ( gp_output_parameters )
 col 21-80	GP_output_parameters_flag
 
 
@@ -665,7 +670,7 @@ fort555_output  1
 GA_log - determines if the GA_log file is generated.
 
 
-col 1-6		GA_log
+col 1-6		GA_log ( ga_log )
 col 8-80	GA_log_flag
 
 
@@ -686,7 +691,7 @@ GA_log  1
 GP_log - determines if the GP_log file is generated.
 
 
-col 1-6		GP_log
+col 1-6		GP_log ( gp_log )
 col 8-80	GP_log_flag
 
 
@@ -709,7 +714,7 @@ GP_log  1
 GPSSE_log - determines if the GPSSE_log file is generated.
 
 
-col 1-6		GPSSE_log
+col 1-6		GPSSE_log ( gpsse_log )
 col 8-80	GPSSE_log_flag
 
 
@@ -755,7 +760,7 @@ unit50_output 1
 GP_all_summary - determines if the GP_all_summary file is generated.
 
 
-col 1-13	GP_all_summary
+col 1-13	GP_all_summary ( GP_ALL_SUMMARY or gp_all_summary )
 col 15-80	GP_all_summary_flag
 
 
@@ -795,11 +800,11 @@ print_equations  1
 
 
 
-! number_ga_child_prints
+! number_ga_child_prints 
 !    = number of times in GA process where special printout is printed
 
 
-col 1-22	number_ga_child_prints
+col 1-22	number_ga_child_prints ( NUMBER_GA_CHILD_PRINTS )
 col 24-80	number of GA generations where child printout is printed
 
 
@@ -820,7 +825,7 @@ number_ga_child_prints  2
 !    = number of times in GP process where special printout is printed
 
 
-col 1-22	number_GP_child_prints
+col 1-22	number_GP_child_prints  ( NUMBER_GP_CHILD_PRINTS )
 col 24-80	number of GP generations where child printout is printed
 
 
@@ -841,7 +846,7 @@ number_GP_child_prints  2
 ! n_input_vars  = number of input variables
 
 
-col 1-12	n_input_vars
+col 1-12	n_input_vars ( N_INPUT_VARS )
 col 14-80	number of input variables
 
 		if number of input variables > 0, this is a data processing run
@@ -861,7 +866,7 @@ n_input_vars 6
 ! n_levels      = number of levels used in constructing trees
 
 
-col 1-8		n_levels
+col 1-8		n_levels ( N_LEVELS )
 col 10-80	number of tree levels            
 
 	
@@ -879,7 +884,7 @@ n_levels 10
 ! prob_no_elite      = sets a probability for modifying elite individuals
 
 
-col 1-13	prob_no_elite
+col 1-13	prob_no_elite ( PROB_NO_ELITE )
 col 15-80	probability that allows elite individuals to be modified
 
 	
@@ -905,7 +910,7 @@ numbers chosen in these routines.
 ! then the node type  is a variable type,  else a parameter type
 
 
-col 1-17	term_to_parm_prob
+col 1-17	term_to_parm_prob ( TERM_TO_PARM_PROB ) 
 col 19-80	probability that determines if a node is a variable or parameter
 
 	
@@ -922,7 +927,7 @@ term_to_parm_prob 0.4
 ! restart  =  restart the run by using the GP_ALL_summary file from a previous run
 
 
-col 1-7		restart
+col 1-7		restart ( RESTART )
 
 	
 	DEFAULT =   restart = .FALSE.
@@ -948,7 +953,7 @@ n_partitions = number of partitions to be used to divide processors
 
 
 
-col 1-12	n_partitions	
+col 1-12	n_partitions ( N_PARTITIONS )	
 col 14-		n_partitions value	
 
 	
@@ -960,14 +965,15 @@ n_partitions  2
 
 !--------------------------------------------------------------------
 
-L_no_forcing
+no_forcing   
 
 if L_no_forcing is .TRUE. ,
 set the forcing function node value -5004 to zero
+for the fasham model
 
 
 
-col 1-12	L_no_forcing	
+col 1-12	no_forcing	( NO_FORCING or No_Forcing ) 
 col 14-		no_forcing_flag      
 
 if no_forcing_flag > 0 , L_no_forcing = .TRUE.
@@ -985,11 +991,11 @@ prob_forcing      = probability that a variable node will be a
                     forcing function node
 
 
-col 1-12	prob_forcing	
+col 1-12	prob_forcing	( PROB_FORCING ) 
 col 14-		prob_forcing value	
 
 	
-	DEFAULT =   prob_forcing = 0.4
+	DEFAULT =   prob_forcing = 0.2
 
 Example:
 
@@ -1006,24 +1012,8 @@ truth_model       = turn on comparisons of the current tree with the
                     truth model tree and print results
 
 
-    elseif( Aline(1:len('truth_model')) == "TRUTH_MODEL" .or.     &
-            Aline(1:len('truth_model')) == "Truth_Model" .or.     &
-            Aline(1:len('truth_model')) == "truth_model"     ) then
-
-        READ(Aline(len('truth_model')+1:), * )  truth_model
-
-        if( myid == 0 )then
-            write(GP_print_unit,'(A,1x,I3)') &
-                  'rcntl: truth_model = ', truth_model
-        endif !myid==0
-
-        if( truth_model > 0 ) L_truth_model = .true.
-
-
-
-
 col 1-11	truth_model 	
-col 13-		truth_model  value	
+col 13-		truth_model  integer value	
 
 	
 	DEFAULT =   L_truth_model = .FALSE.
@@ -1043,30 +1033,8 @@ gp_para_lmdif   = 1) turn on call to GP_para_lmdif_process
                   3) set modulus for GP generations  to call GP_para_lmdif_process
 
 
-    elseif( Aline(1:len('gp_para_lmdif')) == "GP_PARA_LMDIF" .or.     &
-            Aline(1:len('gp_para_lmdif')) == "GP_Para_Lmdif" .or.     &
-            Aline(1:len('gp_para_lmdif')) == "gp_para_lmdif"     ) then
 
-        READ(Aline(len('gp_para_lmdif')+1:), * , iostat = istat )  &
-             gp_para_lmdif_start_gen, gp_para_lmdif_modulus
-
-
-        L_gp_para_lmdif = .true.
-
-        if( gp_para_lmdif_modulus == 0 ) gp_para_lmdif_modulus = 5
-
-        if( myid == 0 )then
-            write(GP_print_unit,'(A,3x,L1)') &
-                  'rcntl: L_gp_para_lmdif = ', L_gp_para_lmdif
-            write(GP_print_unit,'(A,1x,I6)') &
-                  'rcntl: gp_para_lmdif_modulus ', &
-                          gp_para_lmdif_modulus
-        endif !myid==0
-
-
-
-
-col 1-13	gp_para_lmdif 
+col 1-13	gp_para_lmdif ( GP_PARA_LMDIF or GP_Para_Lmdif )
 col 15-24	gp_para_lmdif_start_gen
 col 25-34	gp_para_lmdif_modulus
 
@@ -1084,6 +1052,28 @@ Example:
 gp_para_lmdif 20 20 
 
 
+
+
+!--------------------------------------------------------------------
+
+
+replace_larger_SSE_only = set switch to replace individuals in GP_Tou*
+                          only if the SSE of the individual is reduced by the replacement
+
+
+
+col 1-23	replace_larger_SSE_only
+
+		sets L_replace_larger_SSE_only to .TRUE. if present
+
+
+	
+	DEFAULT =   L_replace_larger_SSE_only = .FALSE.
+
+
+Example:
+
+replace_larger_SSE_only
 
 
 
@@ -1165,4 +1155,437 @@ GP_Population_Ranked_Fitness(i_GP_Individual)
 ---------------------------------------------------------------
 
 unit50.txt
+
+
+
+
+
+
+--------------------------------------------------------------------------------
+--------------------------------------------------------------------------------
+--------------------------------------------------------------------------------
+
+
+Sample run scripts for discover
+
+
+--------------------------------------------------------------------------------
+--------------------------------------------------------------------------------
+--------------------------------------------------------------------------------
+
+#!/bin/bash
+
+
+. /usr/share/modules/init/bash
+
+
+# load needed modules
+
+module purge
+module load comp/intel-15.0.0.090
+module load mpi/impi-5.0.1.035
+export FC=mpif90
+module load other/cmake-2.8.11.2
+module load other/git-1.8.5.2
+
+module list
+
+
+# set home directory and make a run directory 
+
+homedir=/discover/nobackup/jmccarth/ga
+
+case=new_jjmv16_LV           
+
+cd $homedir
+mkdir ${case}
+cd ${case}
+
+
+
+datestamp=`date +%C%y%m%d`
+timestamp=`date +%H%M%S`
+datetime=${datestamp}_${timestamp}
+
+
+#  $newdir is the run directory
+
+newdir=testGP_${datestamp}_${timestamp}_${RANDOM}
+mkdir $newdir
+cd    $newdir
+
+
+echo "pwd  $PWD "
+echo "datetime ${datestamp}_${timestamp} "
+
+
+
+
+rm unit5
+
+cat > unit5  <<EOF
+model  LV
+GA_Crossover_Probability      0.6
+GA_Mutation_Probability       0.2
+GA_save_elites_Probability    0.27
+ga_rand_recruit_probability   0.27
+ga_tournament_style           0
+n_GA_Generations              10
+n_GA_Individuals              4 
+n_time_steps                  300
+dt                            100.
+n_gp_generations        1000
+n_gp_individuals        100
+random_scale_large           50.
+random_scale_small           2.1
+random_scale_fraction        0.6
+ga_print  0
+gp_log    0
+gpsse_log    1
+gp_all_summary  1
+GP_Tree_Probability  0.5
+GP_Elitist_Probability               0.011 
+gp_rand_recruit_probability          0.011 
+GP_Asexual_Reproduction_Probability  0.4
+GP_Crossover_Probability             0.3
+GP_Mutation_Probability              0.2
+number_gp_child_prints              2 
+n_input_vars   0
+n_levels 4
+selected_function  1     #   Addition: a + b
+selected_function  2     #   Subtraction: a - b
+selected_function  3     #   Multiply: a * b
+selected_function  4     #   Protected Divide
+USER_INPUT_RANDOM_SEED 0 # 421273318
+gp_para_lmdif 10 10 
+n_partitions 2
+EOF
+
+#restart
+#fort333_output 1
+#fort555_output 1
+
+
+# selected_function  1     #   Addition: a + b
+# selected_function  2     #   Subtraction: a - b
+# selected_function  3     #   Multiply: a * b
+# selected_function  4     #   Protected Divide
+# selected_function  5     #   Ivlev Grazing Function
+# selected_function  6     #   Michaelis-Menton Term
+# selected_function  7     #   Mayzaud-Poulet Grazing Function
+# selected_function  8     #   Power: a ^ b
+# selected_function  9     #   EXP: exp(-abs(a*b))
+# selected_function  10    #   Minimum: min(a,b)
+# selected_function  11    #   Maximum: max(a,b)
+# selected_function  12    #   IF a .ne. 0 THEN b ELSE 0
+# selected_function  13    #   IF a .GT. b THEN 1 ELSE 0
+# selected_function  14    #   IF a .GE. b THEN 1 ELSE 0
+# selected_function  15    #   IF a .LT. b THEN 1 ELSE 0
+# selected_function  16    #   IF a .LE. b THEN 1 ELSE 0
+# selected_function  17    #   EXP_LP: exp(a)
+# selected_function  18    #   EXP_RP: exp(b)
+# selected_function  19    #   EXP_LM: exp(-a)
+# selected_function  20    #   EXP_RM: exp(-b)
+
+
+# copy unit5 to different filenames which are needed by some versions
+
+cp unit5 GPGA_cntl_vars.in
+
+
+# make subdirectories for tree plots
+# ./Trees has the tree plots for the truth model
+# ./pts/Trees has the tree plots for the latest generation solution
+
+mkdir Trees
+mkdir pts
+mkdir pts/Trees
+
+
+scriptname=run_LV_jjmv16_discover_small.jcl
+jobname=LVsmall1
+
+cp ${homedir}/${scriptname}  .
+
+# copy a previous summary file to use as a restart file
+#cp /discover/nobackup/jmccarth/ga/GP_last_gen_summary_file_20150615_110629_15993  GP_restart_file
+
+cat >run_script <<EOF
+#!/bin/bash
+
+#SBATCH -J ${jobname}
+#SBATCH --time=01:00:00
+#SBATCH --nodes=1   --ntasks=10  --cpus-per-task=1  --ntasks-per-node=10
+#SBATCH -o output.%j
+#SBATCH -e error.%j
+#SBATCH --account=s1209
+#SBATCH --qos=debug            
+
+
+# copy the load module to the run directory
+set -vx
+cp /home/jmccarth/work/ga/GPGA_code_v16/GP_para_tree            ./main.x
+set +vx
+
+ls -l main.x      
+
+# run the program 
+
+mpirun -np 10 ./main.x
+
+
+# rename output files if necessary
+
+if [[ -s fort.60 ]]
+then
+   mv fort.60 GA_print
+fi 
+if [[ -s fort.70 ]]
+then
+   mv fort.70 GPSSE_log 
+fi 
+
+exit 0
+EOF
+
+
+ls -lt
+
+# submit the above script
+
+sbatch run_script
+
+
+exit 0
+
+
+
+--------------------------------------------------------------------------------
+--------------------------------------------------------------------------------
+--------------------------------------------------------------------------------
+
+
+Sample run scripts for pleiades
+
+
+--------------------------------------------------------------------------------
+--------------------------------------------------------------------------------
+--------------------------------------------------------------------------------
+
+#!/bin/bash
+
+
+
+. /usr/share/modules/init/bash
+
+
+# load needed modules
+
+module purge
+
+module load comp-intel/2015.0.090 mpi-intel/5.0.1.035 git/1.7.7.4 math/intel_mkl_64_10.0.011
+module load mpi-sgi/mpt.2.11r13
+module load pkgsrc/2015Q1
+
+module list
+
+
+# set home directory and make a run directory 
+
+
+homedir=/nobackup/jmccarth/ga
+case=new3_LV_jjmv16_dir
+
+cd $homedir
+mkdir ${case}
+
+cd ${case}
+
+
+
+datestamp=`date +%C%y%m%d`
+timestamp=`date +%H%M%S`
+datetime=${datestamp}_${timestamp}
+
+
+#  $newdir is the run directory
+
+newdir=testGP_${datestamp}_${timestamp}_${RANDOM}
+mkdir $newdir
+cd    $newdir
+
+
+echo "pwd  $PWD "
+echo "datetime ${datestamp}_${timestamp} "
+
+
+
+
+rm unit5
+
+cat > unit5  <<EOF
+model  LV
+GA_Crossover_Probability      0.4
+GA_Mutation_Probability       0.30
+GA_save_elites_Probability    0.26    
+ga_rand_recruit_probability   0.26
+ga_tournament_style           0
+n_GA_Generations             10
+n_GA_Individuals             4
+n_gp_generations       1000  
+n_gp_individuals       100   
+random_scale_large          50.00
+random_scale_small           3.0
+random_scale_fraction        0.6
+ga_print  0
+gp_log    0
+gpsse_log    1
+gp_all_summary  0
+GP_Tree_Probability  0.50
+GP_Elitist_Probability               0.011
+gp_rand_recruit_probability          0.011 
+GP_Asexual_Reproduction_Probability  0.31
+GP_Crossover_Probability             0.41
+GP_Mutation_Probability              0.11
+number_gp_child_prints              2
+dt            100.
+n_time_steps  300
+n_input_vars   0
+n_levels     4
+selected_function  1     #   Addition: a + b
+selected_function  2     #   Subtraction: a - b
+selected_function  3     #   Multiply: a * b
+selected_function  4     #   Protected Divide
+selected_function  8     #   Power: a ^ b
+selected_function  9     #   EXP: exp(-abs(a*b))
+selected_function  10    #   Minimum: min(a,b)
+selected_function  11    #   Maximum: max(a,b)
+prob_no_elite 0.0
+gp_para_lmdif 20 20
+USER_INPUT_RANDOM_SEED 0  # 65902470   
+n_partitions 2
+EOF
+
+#sse_min_time       100.
+#sse_max_time  10000000.
+#sse_low_wt    1.0e-2
+
+# selected_function  1     #   Addition: a + b
+# selected_function  2     #   Subtraction: a - b
+# selected_function  3     #   Multiply: a * b
+# selected_function  4     #   Protected Divide
+# selected_function  5     #   Ivlev Grazing Function
+# selected_function  6     #   Michaelis-Menton Term
+# selected_function  7     #   Mayzaud-Poulet Grazing Function
+# selected_function  8     #   Power: a ^ b
+# selected_function  9     #   EXP: exp(-abs(a*b))
+# selected_function  10    #   Minimum: min(a,b)
+# selected_function  11    #   Maximum: max(a,b)
+# selected_function  12    #   IF a .ne. 0 THEN b ELSE 0
+# selected_function  13    #   IF a .GT. b THEN 1 ELSE 0
+# selected_function  14    #   IF a .GE. b THEN 1 ELSE 0
+# selected_function  15    #   IF a .LT. b THEN 1 ELSE 0
+# selected_function  16    #   IF a .LE. b THEN 1 ELSE 0
+# selected_function  17    #   EXP_LP: exp(a)
+# selected_function  18    #   EXP_RP: exp(b)
+# selected_function  19    #   EXP_LM: exp(-a)
+# selected_function  20    #   EXP_RM: exp(-b)
+
+#n_partitions 4
+
+
+# copy unit5 to different filenames which are needed by some versions
+
+cp unit5 GPGA_cntl_vars.in
+
+
+# make subdirectories for tree plots
+# ./Trees has the tree plots for the truth model
+# ./pts/Trees has the tree plots for the latest generation solution
+
+mkdir Trees
+mkdir pts
+mkdir pts/Trees
+
+
+scriptname=run_jjmv16_LV_pleiades_small.jcl
+jobname=LVsmall2
+
+cp ${homedir}/${scriptname}  .
+
+# copy a previous summary file to use as a restart file
+#cp /discover/nobackup/jmccarth/ga/GP_last_gen_summary_file_20150615_110629_15993  GP_restart_file
+
+cat >run_script <<EOF
+#!/bin/bash
+
+#PBS -S /bin/bash
+#PBS -N ${jobname}
+# This example uses the Sandy Bridge nodes
+# User job can access ~31 GB of memory per Sandy Bridge node.
+# A memory intensive job that needs more than ~1.9 GB
+# per process should use less than 16 cores per node
+# to allow more memory per MPI process. This example
+# asks for 32 nodes and 8 MPI processes per node.
+# This request implies 32x8 = 256 MPI processes for the job.
+#PBS -l select=1:ncpus=10:mpiprocs=10:model=san
+#PBS -l walltime=01:00:00
+#PBS -o ${homedir}/${case}/${newdir}/output
+#PBS -j oe
+#PBS -W group_list=s1209
+#PBS -q debug 
+
+
+
+. /usr/share/modules/init/bash
+
+
+module load comp-intel/2015.0.090 mpi-intel/5.0.1.035 git/1.7.7.4 math/intel_mkl_64_10.0.011
+module load mpi-sgi/mpt.2.11r13
+module load pkgsrc/2015Q1
+module list
+
+
+echo "working directory $PWD"
+
+# copy the load module to the run directory
+
+set -vx
+cp /home1/jmccarth/ga/GPGA_code_v16/GP_para_tree ./main.x
+set +vx
+
+ls -l main.x      
+
+
+# run the program 
+
+mpiexec  -np 10   ./main.x   > run_output
+
+
+
+# rename output files if necessary
+
+if [[ -s fort.60 ]]
+then
+    mv fort.60 GA_print
+fi
+if [[ -s fort.70 ]]
+then
+    mv fort.70 GPSSE_log
+fi
+
+exit 0
+EOF
+
+
+ls -lt
+
+# submit the above script
+
+qsub ./run_script
+
+
+
+exit 0
+
 

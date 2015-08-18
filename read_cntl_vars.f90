@@ -620,6 +620,12 @@ DO
 
 
 
+        if( trim(model) == 'fasham_cdom'   ) model = 'fasham_CDOM' 
+        if( trim(model) == 'fasham_cdom_gp') model = 'fasham_CDOM_GP'
+
+
+
+
         ! set up max_forcing_index for use in GP_Check_Tree
 
         IF ( INDEX ( model, 'fasham') > 0 ) THEN
@@ -1499,6 +1505,27 @@ DO
             WRITE (GP_print_unit,'(A,4x,L1)') &
                   'rcntl: L_replace_larger_SSE_only = ', L_replace_larger_SSE_only
         END IF !myid==0
+
+
+
+!--------------------------------------------------------------------
+
+
+! replace_larger_SSE_only
+
+
+
+    elseif( Aline(1:len('replace_larger_SSE_only')) == "REPLACE_LARGER_SSE_ONLY" .or.     &
+            Aline(1:len('replace_larger_SSE_only')) == "replace_larger_SSE_only" .or.     &
+            Aline(1:len('replace_larger_SSE_only')) == "replace_larger_sse_only"     ) then
+
+        
+        L_replace_larger_SSE_only = .true.
+
+        if( myid == 0 )then
+            write(GP_print_unit,'(A,4x,L1)') &
+                  'rcntl: L_replace_larger_SSE_only = ', L_replace_larger_SSE_only
+        endif !myid==0
 
 
 
