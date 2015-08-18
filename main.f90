@@ -161,6 +161,17 @@ CALL read_cntl_vars( ierror  )
 
 n_inputs = n_input_vars
 
+if( myid == 0 )then
+    if( L_replace_larger_SSE_only )then
+        write(6,'(/A/)') &
+         '0: GP_Fit* only  replaces the individual if the SSE decreases after replacement'
+    else
+        write(6,'(/A/)') &
+         '0: GP_Fit* always replaces the individual regardless of the SSE'
+    endif !  L_replace_larger_SSE_only
+endif ! myid == 0
+
+!----------------------------------------------------
 
 IF ( myid == 0 ) THEN
 
@@ -188,7 +199,7 @@ CALL setup_output_unit()
 
 ! for reading input files for the "DATA" model
 
-CALL read_input_DATA()
+CALL read_input_data()
 
 
 !----------------------------------------------------

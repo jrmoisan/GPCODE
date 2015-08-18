@@ -172,7 +172,7 @@ do  i_GA_Individual=1,n_GA_individuals
   
     Individual_Ranked_Fitness(i_GA_Individual) = Individual_Ranked_Fitness(j_GA_Individual)
     individual_quality( i_GA_individual )      = individual_quality( j_GA_individual )
-    Run_GA_lmdIF (i_GA_Individual) = .true.  ! jjm 20140605 correct?
+    Run_GA_lmdif(i_GA_Individual) = .true.  ! jjm 20140605 correct?
   
     n_replaced = n_replaced + 1
   
