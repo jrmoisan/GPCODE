@@ -229,7 +229,7 @@ do  i_GP_Individual=1,n_GP_Individuals
                         GP_Child_Population_Node_Type(i_Node,i_Tree,i_GP_Individual) = &
                                                                           -Node_Variable
 
-                     !----------------------------------------------------------------------
+                        !----------------------------------------------------------------------
 
                         IF ( model == 'fasham' ) THEN
 
