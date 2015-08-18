@@ -1,4 +1,29 @@
-subroutine summary_GP_minSSE_indiv( GP_minSSE_generation, GP_minSSE_indiv )
+!> @brief
+!>  This subroutine prints tree information for the minSSE GP individual and
+!!  also writes this information to an output file.                                                             
+!>
+!> @details
+!>  This subroutine prints tree information for the minSSE GP individual and
+!!  also writes this information to an output file.                                                             
+!>
+!> @author Dr. John R. Moisan [NASA/GSFC]
+!> @date January, 2013 Dr. John R. Moisan
+!>
+!> @param[in] GP_minSSE_generation
+!> @param[in] GP_minSSE_indiv
+
+SUBROUTINE summary_GP_minSSE_indiv( GP_minSSE_generation, GP_minSSE_indiv )
+
+ 
+!---------------------------------------------------------------------------  
+!
+! DESCRIPTION: 
+! Brief description of routine. 
+!
+! REVISION HISTORY:
+! TODO_dd_mmm_yyyy - TODO_describe_appropriate_changes - TODO_name
+!
+!---------------------------------------------------------------------------  
 
 ! program written by: Dr. John R. Moisan [NASA/GSFC] 31 January, 2013
 
@@ -14,33 +39,33 @@ subroutine summary_GP_minSSE_indiv( GP_minSSE_generation, GP_minSSE_indiv )
 
 !xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
-use kinds_mod
+USE kinds_mod
 
-use mpi
-use mpi_module
+USE mpi
+USE mpi_module
 
-use GP_Parameters_module
-use GA_Parameters_module
-use GP_Variables_module
-use GA_Variables_module
-use GP_Data_module
-use GP_variables_module
-
-
-implicit none
+USE GP_Parameters_module
+USE GA_Parameters_module
+USE GP_Variables_module
+USE GA_Variables_module
+USE GP_Data_module
+USE GP_variables_module
 
 
+IMPLICIT none
 
-integer(kind=i4b) :: i_code_eq
 
 
-integer(kind=i4b),intent(in)  :: GP_minSSE_generation
-integer(kind=i4b),intent(in)  :: GP_minSSE_indiv
+INTEGER (KIND=i4b) :: i_code_eq
 
-integer(kind=i4b) :: i_Tree
-integer(kind=i4b) :: i_Node
 
-logical :: Lprint
+INTEGER (KIND=i4b),INTENT(IN)  :: GP_minSSE_generation
+INTEGER (KIND=i4b),INTENT(IN)  :: GP_minSSE_indiv
+
+INTEGER (KIND=i4b) :: i_Tree
+INTEGER (KIND=i4b) :: i_Node
+
+LOGICAL :: Lprint
 
 !----------------------------------------------------------------------------------------
 
@@ -55,12 +80,12 @@ logical :: Lprint
 ! assume this subroutine is called only by cpu 0
 !---------------------------------------------------
 
-if(myid /=0) return
+IF (myid /=0) RETURN
 
-if( .not. L_minSSE) return
+IF ( .not. L_minSSE) RETURN
 
-write(GP_print_unit,'(A,2(1x,I6))') &
-      '0: call summary_GP_minSSE_indiv GP_minSSE_generation, GP_minSSE_Individual ', &
+WRITE (GP_print_unit,'(A,2(1x,I6))') &
+      '0: CALL summary_GP_minSSE_indiv GP_minSSE_generation, GP_minSSE_Individual ', &
                               GP_minSSE_generation, GP_minSSE_indiv
 
 
@@ -78,16 +103,16 @@ Lprint = .TRUE.
 ! which has n_GP_parameters >= n_code_equations
 
 
-if( Lprint )then
-    write(GP_print_unit, '(/A/7(1x,I10))') &
+IF ( Lprint ) THEN
+    WRITE (GP_print_unit, '(/A/7(1x,I10))') &
       'sgpMSi:  gen    indiv   n_code_eq  n_trees    n_nodes  n_levels    n_parms', &
             GP_minSSE_generation, GP_minSSE_indiv, &
              n_code_equations, n_trees, n_nodes, n_levels, &
              GP_minSSE_Individual_N_GP_param
              !nparm_temp
-endif ! Lprint
+END IF ! Lprint
 
-write(GP_minSSE_summary_output_unit, '(2x,6(1x,I6))') &
+WRITE (GP_minSSE_summary_output_unit, '(2x,6(1x,I6))') &
             GP_minSSE_generation, GP_minSSE_indiv, &
              n_code_equations, n_trees, n_nodes, n_levels
 
@@ -97,30 +122,30 @@ write(GP_minSSE_summary_output_unit, '(2x,6(1x,I6))') &
 ! initial conditions
 
 
-if( Lprint )then
-    write(GP_print_unit,'(/A)')&
+IF ( Lprint ) THEN
+    WRITE (GP_print_unit,'(/A)')&
       'sgpMSi:   gen    indiv   i_code_eq  &
             &GP_minSSE_indiv_Init_Cond(i_code_eq) '
-endif ! Lprint
+END IF ! Lprint
 
 
 do  i_code_eq = 1, n_CODE_Equations
 
-    if( Lprint )then
-        write(GP_print_unit,'(3(1x,I10), 7x, E24.16)')&
+    IF ( Lprint ) THEN
+        WRITE (GP_print_unit,'(3(1x,I10), 7x, E24.16)')&
         GP_minSSE_generation, GP_minSSE_indiv, i_code_eq, &
         GP_minSSE_individual_Initial_Conditions( i_code_eq )
-    endif ! Lprint
+    END IF ! Lprint
 
-    write(GP_minSSE_summary_output_unit, '(2x,2(1x,I6),1x,I3, 1x, E24.16,2x,A)')&
+    WRITE (GP_minSSE_summary_output_unit, '(2x,2(1x,I6),1x,I3, 1x, E24.16,2x,A)')&
           GP_minSSE_generation, GP_minSSE_indiv, i_code_eq, &
           GP_minSSE_individual_Initial_Conditions( i_code_eq ), &
           'gen_indiv_eq'
 
-enddo  ! i_code_eq
+END DO  ! i_code_eq
 
 
-write(GP_minSSE_summary_output_unit, '(A,2(1x,I6))') '> ', GP_minSSE_generation, GP_minSSE_indiv
+WRITE (GP_minSSE_summary_output_unit, '(A,2(1x,I6))') '> ', GP_minSSE_generation, GP_minSSE_indiv
 
 
 
@@ -133,24 +158,24 @@ write(GP_minSSE_summary_output_unit, '(A,2(1x,I6))') '> ', GP_minSSE_generation,
 !  write node types to summary file
 
 do  i_Tree=1,n_Trees
-    do  i_Node=1,n_Nodes
+    DO  i_Node=1,n_Nodes
 
-        if( GP_minSSE_individual_Node_Type(i_Node,i_Tree) .ne. -9999 ) then
+        IF ( GP_minSSE_individual_Node_Type(i_Node,i_Tree) .ne. -9999 ) THEN
 
 
-            write(GP_minSSE_summary_output_unit, '(2x,2(1x,I6),3(1x,I6))') &
+            WRITE (GP_minSSE_summary_output_unit, '(2x,2(1x,I6),3(1x,I6))') &
                   GP_minSSE_generation, GP_minSSE_indiv, i_tree, i_node, &
                   GP_minSSE_individual_Node_Type(i_Node,i_Tree)
 
 
-        endif ! GP_minSSE_individual_Node_Type(i_Node,i_Tree) .ne. -9999
+        END IF ! GP_minSSE_individual_Node_Type(i_Node,i_Tree) .ne. -9999
 
 
-    enddo  ! i_node
-enddo ! i_tree
+    END DO  ! i_node
+END DO ! i_tree
 
 
-write(GP_minSSE_summary_output_unit, '(A,2(1x,I6))') '> ',GP_minSSE_generation, GP_minSSE_indiv
+WRITE (GP_minSSE_summary_output_unit, '(A,2(1x,I6))') '> ',GP_minSSE_generation, GP_minSSE_indiv
 
 
 !---------------------------------------------------------------------------------
@@ -159,26 +184,26 @@ write(GP_minSSE_summary_output_unit, '(A,2(1x,I6))') '> ',GP_minSSE_generation, 
 ! print the node parameters (if there are any)
 
 
-if( Lprint )then
-    write(GP_print_unit,'(/A/)') &
+IF ( Lprint ) THEN
+    WRITE (GP_print_unit,'(/A/)') &
     'sgpMSi: i_GP_gen i_GP_indiv     tree        node   &
     &GP_population_node_parameters'
 
-    do  i_tree=1,n_trees
-        do  i_node=1,n_nodes
+    DO  i_tree=1,n_trees
+        DO  i_node=1,n_nodes
 
-            if( GP_minSSE_individual_Node_Type(i_Node,i_Tree) == 0  ) then
+            IF ( GP_minSSE_individual_Node_Type(i_Node,i_Tree) == 0  ) THEN
 
-                write(GP_print_unit,'( 2(1x,I10),2(1x,I10),2x, E24.16)') &
+                WRITE (GP_print_unit,'( 2(1x,I10),2(1x,I10),2x, E24.16)') &
                       GP_minSSE_generation, GP_minSSE_indiv, i_tree, i_node, &
                       GP_minSSE_individual_node_parameters(i_node,i_tree)
 
-            endif  ! GP_minSSE_individual_Node_Type(i_Node,i_Tree) == 0 
+            END IF  ! GP_minSSE_individual_Node_Type(i_Node,i_Tree) == 0 
 
-        enddo ! i_node
-    enddo  ! i_tree
+        END DO ! i_node
+    END DO  ! i_tree
 
-endif ! Lprint
+END IF ! Lprint
 
 
 !---------------------------------------------------------------------------------
@@ -188,22 +213,22 @@ endif ! Lprint
 
 
 do  i_tree=1,n_trees
-    do  i_node=1,n_nodes
+    DO  i_node=1,n_nodes
 
-        if( GP_minSSE_individual_Node_Type(i_Node,i_Tree) == 0        ) then
+        IF ( GP_minSSE_individual_Node_Type(i_Node,i_Tree) == 0        ) THEN
 
-            write(GP_minSSE_summary_output_unit,'(2x,2(1x,I6),2(1x,I6), 1x,E24.16)') &
+            WRITE (GP_minSSE_summary_output_unit,'(2x,2(1x,I6),2(1x,I6), 1x,E24.16)') &
                   GP_minSSE_generation, GP_minSSE_indiv, i_tree, i_node, &
                   GP_minSSE_individual_node_parameters( i_node,i_tree )
 
-        endif ! GP_minSSE_individual_Node_Type(i_Node,i_Tree) == 0  
+        END IF ! GP_minSSE_individual_Node_Type(i_Node,i_Tree) == 0  
 
-    enddo ! i_node
-enddo  ! i_tree
+    END DO ! i_node
+END DO  ! i_tree
 
 
 
-write(GP_minSSE_summary_output_unit, '(A,2(1x,I6))') &
+WRITE (GP_minSSE_summary_output_unit, '(A,2(1x,I6))') &
        '>>',GP_minSSE_generation, GP_minSSE_indiv
 
 
@@ -214,6 +239,6 @@ write(GP_minSSE_summary_output_unit, '(A,2(1x,I6))') &
 !---------------------------------------------------------------------------------
 
 
-return
+RETURN
 
-end subroutine summary_GP_minSSE_indiv
+END SUBROUTINE summary_GP_minSSE_indiv

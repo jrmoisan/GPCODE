@@ -1,62 +1,83 @@
-module twin_module
+!> @brief
+!>  This module provides procedures for the fasham_CDOM and fasham_CDOM_GP models
+!>
+!> @details
+!>  This module provides procedures for the fasham_CDOM and fasham_CDOM_GP models
+!>
+!> @author Weiyuan Jiang
+!> @date June, 2015 Weiyuan Jiang
 
-   use kinds_mod
-   use mpi
-   use mpi_module
 
-   use GP_parameters_module
-   use GP_variables_module
+MODULE twin_module
 
-   implicit none
-   public :: twin
 
-   type,abstract :: twin
-   contains
-      procedure(Iinit), deferred :: init
-      procedure(IsetTruth), deferred :: setTruth
-      procedure(IsetModel), deferred :: setModel
-      procedure(IgetForcing), deferred :: getForcing
-      procedure :: generateGraph
-   end type twin
+!---------------------------------------------------------------------------
+!
+! DESCRIPTION:
+! Brief description of routine.
+!
+! REVISION HISTORY:
+! TODO_dd_mmm_yyyy - TODO_describe_appropriate_changes - TODO_name
+!
+!---------------------------------------------------------------------------
 
-   abstract interface
+   USE kinds_mod
+   USE mpi
+   USE mpi_module
 
-      subroutine Iinit(this)
+   USE GP_parameters_module
+   USE GP_variables_module
+
+   IMPLICIT none
+   PUBLIC :: twin
+
+   TYPE,ABSTRACT :: twin
+   CONTAINS
+      PROCEDURE(Iinit), deferred :: init
+      PROCEDURE(IsetTruth), deferred :: setTruth
+      PROCEDURE(IsetModel), deferred :: setModel
+      PROCEDURE(IgetForcing), deferred :: getForcing
+      PROCEDURE :: generateGraph
+   END TYPE twin
+
+   ABSTRACT INTERFACE
+
+      SUBROUTINE Iinit(this)
          import twin
-         class(twin),intent(inout):: this
-      end subroutine Iinit
+         CLASS (twin),INTENT(INOUT):: this
+      END SUBROUTINE Iinit
 
-      subroutine IsetTruth(this)
+      SUBROUTINE IsetTruth(this)
          import twin
-         class(twin),intent(inout):: this
-      end subroutine IsetTruth
+         CLASS (twin),INTENT(INOUT):: this
+      END SUBROUTINE IsetTruth
 
-      subroutine IsetModel(this)
+      SUBROUTINE IsetModel(this)
          import twin
-         class(twin),intent(inout):: this
-      end subroutine IsetModel
+         CLASS (twin),INTENT(INOUT):: this
+      END SUBROUTINE IsetModel
 
-      subroutine IgetForcing(this,preForce,time_step_fraction, i_Time_Step,L_bad )
+      SUBROUTINE IgetForcing(this,preForce,time_step_fraction, i_Time_Step,L_bad )
          import twin
-         class(twin),intent(in) :: this
-         real (kind=8) :: preForce(:)
-         real (kind=8) :: time_step_fraction
-         integer :: i_Time_Step
-         logical :: L_bad
-      end subroutine IgetForcing
-   end interface
+         CLASS (twin),INTENT(IN) :: this
+         REAL (KIND=8) :: preForce(:)
+         REAL (KIND=8) :: time_step_fraction
+         INTEGER :: i_Time_Step
+         LOGICAL :: L_bad
+      END SUBROUTINE IgetForcing
+   END INTERFACE
 
-   class(twin),allocatable :: aCDOM
+   CLASS (twin),ALLOCATABLE :: aCDOM
 
-contains
+CONTAINS
 
-   subroutine generateGraph(this)
-      class(twin):: this
-      if (myid/=0) return
+   SUBROUTINE generateGraph(this)
+      CLASS (twin):: this
+      IF (myid/=0) RETURN
 
-      call deserialize_trees2( GP_Trees, n_Tracked_resources, n_trees    )
-      call Generate_Dot_Graph( GP_Trees(:,1), n_Trees, output_dir )
+      CALL deserialize_trees2( GP_Trees, n_Tracked_resources, n_trees    )
+      CALL Generate_Dot_Graph( GP_Trees(:,1), n_Trees, output_dir )
 
-   end subroutine generateGraph
+   END SUBROUTINE generateGraph
 
-end module twin_module
+END MODULE twin_module

@@ -1,6 +1,40 @@
+!> @brief
+!>  This subroutine computes the correlation between the X and Y arrays.
+!>
+!> @details
+!>  This subroutine computes the correlation between the X and Y arrays.
+!>
+!> @author James J. Filliben                                     
+!> @date June,      1972 James J. Filliben                                     
+!> @date September, 1975 James J. Filliben                                     
+!> @date November,  1975 James J. Filliben                                     
+!>
+!> @param[in] X
+!> @param[in] Y
+!> @param[in] N
+!> @param[in] IWRITE
+!> @param[in] dt
+!> @param[in] sse_min_time
+!> @param[in] sse_max_time
+!> @param[in] sse_low_wt
+!> @param[out] C
+
 SUBROUTINE CORR( X,Y,N,IWRITE,C , &
                  dt, sse_min_time, sse_max_time, sse_low_wt  ) 
-!                                                                       
+ 
+!---------------------------------------------------------------------------  
+!
+! DESCRIPTION: 
+! Brief description of routine. 
+!
+! REVISION HISTORY:
+! TODO_dd_mmm_yyyy - TODO_describe_appropriate_changes - TODO_name
+!     ORIGINAL VERSION--JUNE      1972.                                 
+!     UPDATED         --SEPTEMBER 1975.                                 
+!     UPDATED         --NOVEMBER  1975.                                 
+!
+!---------------------------------------------------------------------------  
+
 !     PURPOSE--THIS SUBROUTINE COMPUTES THE                             
 !              SAMPLE CORRELATION COEFFICIENT                           
 !              BETWEEN THE 2 SETS OF DATA IN THE INPUT VECTORS X AND Y. 
@@ -65,38 +99,38 @@ SUBROUTINE CORR( X,Y,N,IWRITE,C , &
 !                                                                       
 !---------------------------------------------------------------------  
 
-use kinds_mod 
+USE kinds_mod 
 
-implicit none
+IMPLICIT none
 
-integer, intent(in) :: n
-integer, intent(in) :: iwrite
+INTEGER, INTENT(IN) :: n
+INTEGER, INTENT(IN) :: iwrite
 
-real(kind=r8b),intent(in)    ::  dt
-real(kind=r8b),intent(in)    ::  sse_min_time
-real(kind=r8b),intent(in)    ::  sse_max_time
-real(kind=r8b),intent(in)    ::  sse_low_wt
+REAL (KIND=r8b),INTENT(IN)    ::  dt
+REAL (KIND=r8b),INTENT(IN)    ::  sse_min_time
+REAL (KIND=r8b),INTENT(IN)    ::  sse_max_time
+REAL (KIND=r8b),INTENT(IN)    ::  sse_low_wt
 
-real(kind=r8b)  ::  xi  
-real(kind=r8b)  ::  sse_wt
+REAL (KIND=r8b)  ::  xi  
+REAL (KIND=r8b)  ::  sse_wt
 
 
-real(kind=r8b), dimension(n) ::     X
-real(kind=r8b), dimension(n) ::     Y
+REAL (KIND=r8b), DIMENSION(n) ::     X
+REAL (KIND=r8b), DIMENSION(n) ::     Y
 
-real(kind=r8b)               ::     C
+REAL (KIND=r8b)               ::     C
 
-real(kind=r8b)  :: AN 
-real(kind=r8b)  ::  HOLD
-real(kind=r8b)  ::  XBAR
-real(kind=r8b)  ::  YBAR
+REAL (KIND=r8b)  :: AN 
+REAL (KIND=r8b)  ::  HOLD
+REAL (KIND=r8b)  ::  XBAR
+REAL (KIND=r8b)  ::  YBAR
 !                                                                       
-real(kind=r8b)  ::  SUM1
-real(kind=r8b)  ::  SUM2
-real(kind=r8b)  ::  SUM3
-integer(kind=i4b) :: ipr    
-integer(kind=i4b) :: IFLAG
-integer(kind=i4b) :: I
+REAL (KIND=r8b)  ::  SUM1
+REAL (KIND=r8b)  ::  SUM2
+REAL (KIND=r8b)  ::  SUM3
+INTEGER (KIND=i4b) :: ipr    
+INTEGER (KIND=i4b) :: IFLAG
+INTEGER (KIND=i4b) :: I
 
 !---------------------------------------------------------------------  
 
@@ -109,17 +143,17 @@ integer(kind=i4b) :: I
       C=0.0d0 
 
       IFLAG=0 
-      IF( N .LT. 1 )then
+      IF( N .LT. 1 ) THEN
           WRITE(IPR,25) 
-          write(ipr,'(A)') 'The third argument is the number of points = dimension of the input array'
+          WRITE (ipr,'(A)') 'The third argument is the number of points = DIMENSION of the input array'
           WRITE(IPR,47)N 
           RETURN 
-      endif !(N.LT.1)
+      END IF !(N.LT.1)
 
-      if( N .EQ. 1 )then
+      IF ( N .EQ. 1 ) THEN
           WRITE(IPR,28) 
           RETURN 
-      endif ! N.EQ.1
+      END IF ! N.EQ.1
 
       HOLD=X(1) 
       DO  60 I=2,N 

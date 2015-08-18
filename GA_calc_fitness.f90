@@ -1,7 +1,38 @@
-subroutine GA_calc_fitness( child_parameters, individual_quality, &
+!> @brief
+!>  This subroutine finds the fittest GA individual, i.e. the GA individual with
+!!  the smallest SSE value
+!>
+!> @details
+!>  This subroutine finds the fittest GA individual, i.e. the GA individual with
+!!  the smallest SSE value
+!>
+!> @author Dr. John R. Moisan [NASA/GSFC]
+!> @date January, 2013 Dr. John R. Moisan
+!>
+!> @param[in] i_GP_Generation
+!> @param[in] i_GP_individual
+!> @param[in] new_comm 
+!> @param[in] parent_parameters
+!> @param[in] individual_quality
+!> @param[out] child_parameters
+!> @param[out] i_GA_Best_Parent
+!> @param[out] L_stop_run
+
+SUBROUTINE GA_calc_fitness( child_parameters, individual_quality, &
                          i_GA_Best_Parent, parent_parameters,  &
-                         L_stop_run,  i_GP_Generation, i_GP_individual, &
+                         L_STOP_run,  i_GP_Generation, i_GP_individual, &
                          new_comm  )
+
+ 
+!---------------------------------------------------------------------------  
+!
+!
+! DESCRIPTION: 
+!  Brief description of routine. 
+
+! REVISION HISTORY:
+! TODO_dd_mmm_yyyy - TODO_describe_appropriate_changes - TODO_name
+!---------------------------------------------------------------------------  
 
 
 ! written by: Dr. John R. Moisan [NASA/GSFC] 5 December, 2012
@@ -10,87 +41,88 @@ subroutine GA_calc_fitness( child_parameters, individual_quality, &
 ! a finding the optimum parameter set for a coupled set of equations
 !xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
-use kinds_mod
-use mpi
-use mpi_module
+USE kinds_mod
+USE mpi
+USE mpi_module
 
 
-use GP_parameters_module
-use GA_parameters_module
-use GP_variables_module
-use GA_variables_module
+USE GP_parameters_module
+USE GA_parameters_module
+USE GP_variables_module
+USE GA_variables_module
 
 
-implicit none
+IMPLICIT none
 
 
-integer,parameter ::  itag = 1
+INTEGER,PARAMETER ::  itag = 1
 
 
-real(kind=r8b),dimension( n_GP_parameters,n_GA_individuals ) :: parent_parameters
-real(kind=r8b),dimension( n_GP_parameters,n_GA_individuals ) :: child_parameters
+REAL (KIND=r8b),DIMENSION( n_GP_parameters,n_GA_individuals ) :: parent_parameters
+REAL (KIND=r8b),DIMENSION( n_GP_parameters,n_GA_individuals ) :: child_parameters
 
-integer(kind=i4b),intent(in) :: i_GP_Generation
-integer(kind=i4b),intent(in) :: i_GP_individual
+INTEGER (KIND=i4b),INTENT(IN) :: i_GP_Generation
+INTEGER (KIND=i4b),INTENT(IN) :: i_GP_individual
 
-integer(kind=i4b),intent(in) :: new_comm
+INTEGER (KIND=i4b),INTENT(IN) :: new_comm
 
-real(kind=r8b) :: dble_cff
+REAL (KIND=r8b) :: dble_cff
 
-integer(kind=i4b) ::    i_GA_Best_Parent
-integer(kind=i4b) ::    n_counted
-integer(kind=i4b) ::    index_min_sse
-integer(kind=i4b) ::    icount
+INTEGER (KIND=i4b) ::    i_GA_Best_Parent
+INTEGER (KIND=i4b) ::    n_counted
+INTEGER (KIND=i4b) ::    index_min_sse
+INTEGER (KIND=i4b) ::    icount
+INTEGER (KIND=i4b) ::    i
 
-real(kind=r8b), parameter :: max_err = 1.0d8  !100.0d0
-real(kind=r8b), parameter :: max_err2 = max_err**2
+REAL (KIND=r8b), parameter :: max_err = 1.0d8  !100.0d0
+REAL (KIND=r8b), parameter :: max_err2 = max_err**2
 
-real(kind=r8b) :: edit_level
-real(kind=r8b) :: mean_individual_fit
-real(kind=r8b) :: mean_individual_SSE
-real(kind=r8b) :: mean_fitness
+REAL (KIND=r8b) :: edit_level
+REAL (KIND=r8b) :: mean_individual_fit
+REAL (KIND=r8b) :: mean_individual_SSE
+REAL (KIND=r8b) :: mean_fitness
 
-real(kind=r8b) :: xn
-real(kind=r8b) :: var_fitness
-real(kind=r8b) :: sigma_fitness
+REAL (KIND=r8b) :: xn
+REAL (KIND=r8b) :: var_fitness
+REAL (KIND=r8b) :: sigma_fitness
 
 
 ! individual_quality contains information on the result of lmdif
 ! if lmdif encounters an error, set individual_quality to -1
 ! if < 0 , reject this individual  ! jjm
 
-integer(kind=i4b) :: individual_quality(n_GA_individuals)
+INTEGER (KIND=i4b) :: individual_quality(n_GA_individuals)
 
 
-external :: fcn
+EXTERNAL :: fcn
 
-real(kind=r8b), external :: indiv_fitness
+REAL (KIND=r8b), EXTERNAL :: indiv_fitness
 
-logical :: L_stop_run
-logical :: op
+LOGICAL :: L_STOP_run
+LOGICAL :: op
 
-integer(kind=i4b) :: i_parameter
-integer(kind=i4b) :: i_GA_individual
+INTEGER (KIND=i4b) :: i_parameter
+INTEGER (KIND=i4b) :: i_GA_individual
 
 
 !----------------------------------------------------------------------------------
 
-call mpi_comm_rank( new_comm, new_rank, ierr )
+CALL mpi_comm_rank( new_comm, new_rank, ierr )
 
 
 
-L_stop_run = .FALSE.
+L_STOP_run = .FALSE.
 
 
 
 do  i_parameter=1,n_parameters
-    do  i_GA_individual=1,n_GA_individuals
+    DO  i_GA_individual=1,n_GA_individuals
 
         parent_parameters(i_parameter,i_GA_individual) = &
          child_parameters(i_parameter,i_GA_individual)
 
-    enddo !  i_GA_individual
-enddo ! i_parameter
+    END DO !  i_GA_individual
+END DO ! i_parameter
 
 !-----------------------------------------------------------------------------------
 
@@ -103,7 +135,7 @@ enddo ! i_parameter
 ! to the maximum, user-specified, error
 
 
-edit_level = real(n_time_steps,kind=r8b) * max_err2
+edit_level = REAL (n_time_steps,KIND=r8b) * max_err2
 
 !-----------------------------------------------------------------------------------
 
@@ -118,19 +150,19 @@ edit_level = real(n_time_steps,kind=r8b) * max_err2
 
 do  i_GA_individual=1,n_GA_individuals  ! calculate the total populations SSE
 
-    if( individual_SSE(i_GA_individual) <= 1.0d-20 ) then
+    IF ( individual_SSE(i_GA_individual) <= 1.0d-20 ) THEN
         individual_quality( i_GA_individual ) = -1
-    endif !individual_SSE(i_GA_individual) <= 1.0d-20
+    END IF !individual_SSE(i_GA_individual) <= 1.0d-20
 
-    if( individual_quality(i_GA_individual) > 0 ) then
+    IF ( individual_quality(i_GA_individual) > 0 ) THEN
 
-        if( individual_SSE(i_GA_individual) > big_real      ) then
+        IF ( individual_SSE(i_GA_individual) > big_real      ) THEN
             individual_quality( i_GA_individual ) = -1
-        endif !   individual_SSE(i_GA_individual) >  edit_level
+        END IF !   individual_SSE(i_GA_individual) >  edit_level
 
-    endif !  individual_quality > 0
+    END IF !  individual_quality > 0
 
-enddo ! i_GA_individual
+END DO ! i_GA_individual
 
 !-----------------------------------------------------------------------------------
 
@@ -149,21 +181,21 @@ enddo ! i_GA_individual
 
 do  i_GA_individual=1,n_GA_individuals
 
-    if( individual_quality( i_GA_individual ) > 0 ) then
+    IF ( individual_quality( i_GA_individual ) > 0 ) THEN
 
         ! indiv_fitness is a function
 
         individual_ranked_fitness(i_GA_individual) = &
-                         indiv_fitness( i_GA_individual ) ! function
+                         indiv_fitness( i_GA_individual ) ! FUNCTION
 
-    else
+    ELSE
 
         individual_ranked_fitness(i_GA_individual) = 0.0d0
 
-    endif ! individual_quality( i_GA_individual ) > 0
+    END IF ! individual_quality( i_GA_individual ) > 0
 
 
-enddo ! i_GA_individual
+END DO ! i_GA_individual
 
 
 !-------------------------------------------------------------------------
@@ -177,10 +209,10 @@ min_sse = 1.0D20
 index_min_sse = 0
 sum_individual_SSE = 0.0D0
 
-!write(6,'(A)') ' '
+
 do  i_GA_individual=1,n_GA_individuals
 
-    if( individual_quality( i_GA_individual ) > 0 ) then
+    IF ( individual_quality( i_GA_individual ) > 0 ) THEN
 
 
         ! indiv_fitness is a function
@@ -194,17 +226,17 @@ do  i_GA_individual=1,n_GA_individuals
 
         n_counted = n_counted + 1
 
-        if( individual_SSE(i_GA_individual) < min_sse )then
+        IF ( individual_SSE(i_GA_individual) < min_sse ) THEN
 
             min_sse = individual_SSE(i_GA_individual)
             index_min_sse = i_GA_individual
 
-        endif !    individual_SSE(i_GA_individual) < min_sse
+        END IF !    individual_SSE(i_GA_individual) < min_sse
 
 
-    endif !   individual_quality( i_GA_individual ) > 0
+    END IF !   individual_quality( i_GA_individual ) > 0
 
-enddo ! i_GA_individual
+END DO ! i_GA_individual
 
 
 
@@ -214,16 +246,16 @@ sum_individual_fit = dble_cff
 
 
 mean_individual_fit = 0.0d0
-if( n_counted > 0 )then
-    mean_individual_fit = sum_individual_fit / real( n_counted, kind=r8b)
-endif ! n_counted > 0
+IF ( n_counted > 0 ) THEN
+    mean_individual_fit = sum_individual_fit / REAL ( n_counted, KIND=r8b)
+END IF ! n_counted > 0
 
 
 mean_individual_SSE = 0.0D0
 
-if( n_counted > 0 )then
-    mean_individual_SSE = sum_individual_SSE / real( n_counted, kind=r8b)
-endif ! n_counted > 0
+IF ( n_counted > 0 ) THEN
+    mean_individual_SSE = sum_individual_SSE / REAL ( n_counted, KIND=r8b)
+END IF ! n_counted > 0
 
 
 !---------------------------------------------------------------------------------
@@ -237,7 +269,7 @@ icount = 0
 do  i_GA_individual=1,n_GA_individuals
 
 
-    if( individual_quality( i_GA_individual ) > 0 ) then
+    IF ( individual_quality( i_GA_individual ) > 0 ) THEN
 
         mean_fitness = mean_fitness +  &
                            individual_ranked_fitness(i_GA_individual)
@@ -245,23 +277,23 @@ do  i_GA_individual=1,n_GA_individuals
                            individual_ranked_fitness(i_GA_individual)**2
         icount = icount + 1
 
-    endif !  individual_quality( i_GA_individual ) > 0
+    END IF !  individual_quality( i_GA_individual ) > 0
 
-enddo ! i_GA_individual
+END DO ! i_GA_individual
 
-xn =  real( icount, kind=r8b )
+xn =  REAL ( icount, KIND=r8b )
 
-if( icount > 0  ) then
+IF ( icount > 0  ) THEN
 
     mean_fitness = mean_fitness / xn
-    sigma_fitness = sqrt( abs( var_fitness / xn  - mean_fitness**2 )   )
+    sigma_fitness = SQRT ( ABS ( var_fitness / xn  - mean_fitness**2 )   )
 
-else
+ELSE
 
     mean_fitness  =  0.0d0
     sigma_fitness =  0.0d0
 
-endif
+END IF
 
 
 !---------------------------------------------------------------------------------
@@ -276,7 +308,7 @@ do  i_GA_individual=1,n_GA_individuals  ! calculate the sum of the rankings
     integrated_ranked_fitness(i_GA_individual)=dble_cff
 
 
-enddo ! i_GA_individual
+END DO ! i_GA_individual
 
 !---------------------------------------------------------------------------------
 
@@ -286,71 +318,70 @@ enddo ! i_GA_individual
 
 do  i_GA_individual=1,n_GA_individuals
 
-    if( abs( integrated_ranked_fitness(n_GA_individuals) ) > 1.0D-20 )then
+    IF ( ABS ( integrated_ranked_fitness(n_GA_individuals) ) > 1.0D-20 ) THEN
 
         integrated_ranked_fitness(i_GA_individual) = &
         integrated_ranked_fitness(i_GA_individual) / &
                           integrated_ranked_fitness(n_GA_individuals)
 
-    else
+    ELSE
         integrated_ranked_fitness(i_GA_individual) = 0.0D0
 
-    endif ! abs( integrated_ranked_fitness(n_GA_individuals) ) > 1.0D-20
+    END IF ! ABS ( integrated_ranked_fitness(n_GA_individuals) ) > 1.0D-20
 
-enddo ! i_GA_individual
+END DO ! i_GA_individual
 
 !-------------------------------------------------------------------------------
 
-if( i_GA_generation == 1                                 .or. &
-    mod(i_GA_generation, GA_child_print_interval ) == 0  .or. &
-    i_GA_generation == n_GA_generations       )then
+IF ( i_GA_generation == 1                                 .or. &
+    MOD (i_GA_generation, GA_child_print_interval ) == 0  .or. &
+    i_GA_generation == n_GA_generations       ) THEN
 
 
-    if( L_ga_print )then
-        write(GA_print_unit,'(/A)')&
-         'gacf:i_GA_ind   ind_SSE            ind_ranked_fitness    &
-         &integ_rank_fitness  ind_quality'
-        do  i_GA_individual=1,n_GA_individuals
-            write(GA_print_unit,'(6x,I6,3(1x,E20.12),1x,I6)') &
+    IF ( L_ga_print ) THEN
+        WRITE (GA_print_unit,'(A)')&
+        'gacf:i_GA_ind  ind_SSE         ind_ranked_fit  integ_rank_fit  ind_quality'
+        DO  i_GA_individual=1,n_GA_individuals
+            WRITE (GA_print_unit,'(6x,I6,3(1x,E15.7),1x,I6)') &
                   i_GA_individual, individual_SSE(i_GA_individual), &
                         individual_ranked_fitness(i_GA_individual), &
                         integrated_ranked_fitness(i_GA_individual), &
                               individual_quality( i_GA_individual )
-        enddo ! i_GA_individual
-    endif ! L_ga_print
+        END DO ! i_GA_individual
+    END IF ! L_ga_print
 
-endif !  i_GA_generation == 1 ...
+END IF !  i_GA_generation == 1 ...
 
 !-------------------------------------------------------------------------------
 
 
-if( new_rank == 0 )then
+IF ( new_rank == 0 ) THEN
 
 
-    if( L_fort333_output  )then
+    IF ( L_fort333_output  ) THEN
 
 
         inquire( unit = GA_333_unit, opened = op )
 
 
-        if( .not. op )then
+        IF ( .not. op ) THEN
 
-            open( GA_333_unit, file = 'GA_333', &
+            OPEN ( GA_333_unit, file = 'GA_333', &
                   form = 'unformatted', access='sequential', &
                   status = 'unknown' )
 
-            write(GA_333_unit) n_GP_individuals, n_GA_individuals
+            WRITE (GA_333_unit) n_GP_individuals, n_GA_individuals
 
-        endif ! L_fort333_output
+        END IF ! L_fort333_output
 
 
 
-        write(GA_333_unit) i_GP_Generation, i_GP_individual, i_GA_generation, &
+        WRITE (GA_333_unit) i_GP_Generation, i_GP_individual, i_GA_generation, &
                    individual_SSE(1:n_GA_individuals)
 
-    endif !  L_fort333_output
+    END IF !  L_fort333_output
 
-endif !   new_rank == 0
+END IF !   new_rank == 0
 !-------------------------------------------------------------------------------
 
 
@@ -364,48 +395,52 @@ dble_cff=individual_ranked_fitness(1)
 
 do  i_GA_individual=2,n_GA_individuals
 
-    if( individual_ranked_fitness(i_GA_individual) .gt. dble_cff) then
+    IF ( individual_ranked_fitness(i_GA_individual) .gt. dble_cff) THEN
 
         dble_cff=individual_ranked_fitness(i_GA_individual)
 
         i_GA_Best_Parent=i_GA_Individual
 
-    endif !   individual_ranked_fitness(i_GA_individual) .gt. dble_cff
+    END IF !   individual_ranked_fitness(i_GA_individual) .gt. dble_cff
 
-enddo ! i_GA_individual
+END DO ! i_GA_individual
 
 !------------------------------------------------------------------------------
 
-if( L_ga_print )then
-    write(GA_print_unit,'(/A,1x,I3,2(1x,I6),2(1x,E15.7))') &
+IF ( L_ga_print ) THEN
+    WRITE (GA_print_unit,'(A,1x,I3,2(1x,I6),2(1x,E15.7))') &
           'gacf: new_rank, Generation, i_GA_Best_Parent, indiv_ranked_fitness, indiv_SSE', &
                  new_rank, i_GA_Generation, i_GA_Best_Parent,   &
                  individual_ranked_fitness( i_GA_Best_Parent ), &
                             individual_SSE( i_GA_Best_Parent )
-endif ! L_ga_print
+    WRITE (GA_print_unit,'(A,1x,I3,2(1x,I6),3(1x,E15.7))') &
+          'gacf: new_rank, Generation, i_GA_Best_Parent,  Child_Parameters(:,i_GA_Best_Parent)  ', &
+                 new_rank, i_GA_Generation, i_GA_Best_Parent,  &
+                 Child_Parameters(1:n_GP_parameters,i_GA_Best_Parent)    
+END IF ! L_ga_print
 
 
 !-----------------------------------------------------------------------
 
 
-if( L_GA_log )then
+IF ( L_GA_log ) THEN
 
     ! write information to a GA log file giving:
     ! generation, individual, SSE, individual_fitness
 
-    write(GA_log_unit)  &
+    WRITE (GA_log_unit)  &
           n_GA_individuals, &
           i_GP_Generation, i_GP_individual, &
           i_GA_generation, &
           individual_SSE(1:n_GA_individuals), &
           individual_ranked_fitness(1:n_GA_individuals)
 
-endif ! L_GA_log
+END IF ! L_GA_log
 
 !-----------------------------------------------------------------------
 
 
 
-return
+RETURN
 
-end subroutine GA_calc_fitness
+END SUBROUTINE GA_calc_fitness

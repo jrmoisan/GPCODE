@@ -1,4 +1,27 @@
-subroutine GP_para_lmdif_process( i_GP_Generation, max_n_gp_params  )
+!> @brief
+!>  This subroutine calls the lmdif subroutine in parallel for all GP individuals
+!>
+!> @details
+!>  This subroutine calls the lmdif subroutine in parallel for all GP individuals
+!>
+!> @author Dr. John R. Moisan [NASA/GSFC]
+!> @date January, 2013 Dr. John R. Moisan
+!>
+!> @param[in] i_GP_Generation
+!> @param[in] max_n_gp_params 
+
+SUBROUTINE GP_para_lmdif_process( i_GP_Generation, max_n_gp_params  )
+
+ 
+!---------------------------------------------------------------------------  
+!
+! DESCRIPTION: 
+!  Brief description of routine. 
+!
+! REVISION HISTORY:
+! TODO_dd_mmm_yyyy - TODO_describe_appropriate_changes - TODO_name
+!
+!---------------------------------------------------------------------------  
 
 ! written by: Dr. John R. Moisan [NASA/GSFC] 5 December, 2012
 !xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
@@ -6,74 +29,74 @@ subroutine GP_para_lmdif_process( i_GP_Generation, max_n_gp_params  )
 ! a finding the optimum parameter set for a coupled set of equations
 !xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
-use kinds_mod 
-use mpi
-use mpi_module
-use clock_module
+USE kinds_mod 
+USE mpi
+USE mpi_module
+USE clock_module
 
-use GP_parameters_module
-use GA_parameters_module
-use GP_variables_module
-use GA_variables_module
-use GP_data_module
-
-
-implicit none
-
-integer(kind=i4b) :: i_GP_Generation
-integer(kind=i4b) :: i_GP_individual
-integer(kind=i4b), intent(in)  :: max_n_gp_params
-
-integer(kind=i4b) :: child_number
-
-integer(kind=i4b) ::  isource
-integer(kind=i4b) ::  message_len
-integer(kind=i4b) ::  numsent
-integer(kind=i4b) ::  sender
-integer(kind=i4b) ::  nsafe
-integer(kind=i4b) ::  i_dummy
-integer(kind=i4b) ::  i_individual
-integer(kind=i4b) ::  i_2_individual
-
-integer,parameter ::  itag  = 1
-integer,parameter ::  itag2 = 2
-integer,parameter ::  itag3 = 3
+USE GP_parameters_module
+USE GA_parameters_module
+USE GP_variables_module
+USE GA_variables_module
+USE GP_data_module
 
 
-real(kind=r8b),&
- dimension(max_n_gp_params,n_GP_individuals) ::  child_parameters
+IMPLICIT none
+
+INTEGER (KIND=i4b) :: i_GP_Generation
+INTEGER (KIND=i4b) :: i_GP_individual
+INTEGER (KIND=i4b), INTENT(IN)  :: max_n_gp_params
+
+INTEGER (KIND=i4b) :: child_number
+
+INTEGER (KIND=i4b) ::  isource
+INTEGER (KIND=i4b) ::  message_len
+INTEGER (KIND=i4b) ::  numsent
+INTEGER (KIND=i4b) ::  sender
+INTEGER (KIND=i4b) ::  nsafe
+INTEGER (KIND=i4b) ::  i_dummy
+INTEGER (KIND=i4b) ::  i_individual
+INTEGER (KIND=i4b) ::  i_2_individual
+
+INTEGER,PARAMETER ::  itag  = 1
+INTEGER,PARAMETER ::  itag2 = 2
+INTEGER,PARAMETER ::  itag3 = 3
 
 
-real(kind=r8b) :: buffer2(max_n_gp_params+ 3)
-real(kind=r8b) :: buffer2_recv(max_n_gp_params + 3)
+REAL (KIND=r8b),&
+ DIMENSION(max_n_gp_params,n_GP_individuals) ::  child_parameters
 
 
-integer(kind=i4b) :: i
-integer(kind=i4b) :: jj
+REAL (KIND=r8b) :: buffer2(max_n_gp_params+ 3)
+REAL (KIND=r8b) :: buffer2_recv(max_n_gp_params + 3)
 
-integer(kind=i4b) :: n_parms
-integer(kind=i4b) :: n_parms_dim
-integer(kind=i4b) :: nn
-integer(kind=i4b) :: i_CODE_equation
+
+INTEGER (KIND=i4b) :: i
+INTEGER (KIND=i4b) :: jj
+
+INTEGER (KIND=i4b) :: n_parms
+INTEGER (KIND=i4b) :: n_parms_dim
+INTEGER (KIND=i4b) :: nn
+INTEGER (KIND=i4b) :: i_CODE_equation
 
 
 ! individual_quality contains information on the result of lmdif
 ! if lmdif encounters an error, set individual_quality to -1
 ! if < 0 , reject this individual  ! jjm
 
-integer(kind=i4b), dimension( n_GP_individuals ) :: individual_quality
+INTEGER (KIND=i4b), DIMENSION( n_GP_individuals ) :: individual_quality
 
-real(kind=r8b), external :: indiv_fitness
+REAL (KIND=r8b), EXTERNAL :: indiv_fitness
 
-integer(kind=i4b) :: info
+INTEGER (KIND=i4b) :: info
 
-integer(kind=i4b) :: i_Tree
-integer(kind=i4b) :: i_Node
+INTEGER (KIND=i4b) :: i_Tree
+INTEGER (KIND=i4b) :: i_Node
 
-logical :: L_GP_print
+LOGICAL :: L_GP_print
 
-real(kind=r8b) ::  temp_SSE
-real(kind=r8b) ::  save_SSE
+REAL (KIND=r8b) ::  temp_SSE
+REAL (KIND=r8b) ::  save_SSE
 
 !----------------------------------------------------------------------
 
@@ -82,13 +105,13 @@ real(kind=r8b) ::  save_SSE
 L_GP_print = .FALSE.
 !!L_GP_print = .TRUE. 
 
-if( i_GP_generation == 1 .or. &
-    mod( i_GP_generation, GP_child_print_interval ) == 0 .or. &
-    i_GP_generation == n_GP_generations )then
+IF ( i_GP_generation == 1 .or. &
+    MOD ( i_GP_generation, GP_child_print_interval ) == 0 .or. &
+    i_GP_generation == n_GP_generations ) THEN
 
     L_GP_print = .TRUE.
 
-endif ! i_GP_generation...
+END IF ! i_GP_generation...
 
 i_dummy = 0
 
@@ -96,7 +119,7 @@ i_dummy = 0
 do  jj = 1, max_n_gp_params+3
     buffer2(jj)      = 0.0D0
     buffer2_recv(jj) = 0.0D0
-enddo ! jj
+END DO ! jj
 
 
 
@@ -105,70 +128,70 @@ enddo ! jj
 ! load the population node parameters into the child parameters
 
 do  i_GP_individual = 1, n_GP_individuals
-    do  jj = 1, max_n_gp_params
+    DO  jj = 1, max_n_gp_params
         child_parameters(jj, i_GP_individual) = 0.0d0
-    enddo ! jj
-enddo ! i_GP_individual
+    END DO ! jj
+END DO ! i_GP_individual
 
 
 !-----------------------------------------------------------------------------
 
 nn = 0
 
-if( myid == 0 )then
+IF ( myid == 0 ) THEN
 
-    do  i_GP_individual = 1, n_GP_individuals
+    DO  i_GP_individual = 1, n_GP_individuals
 
         nn = 0
 
-        do  i_CODE_equation=1,n_CODE_equations
+        DO  i_CODE_equation=1,n_CODE_equations
 
             nn = nn + 1
             child_parameters( nn, i_GP_individual) =  &
                 GP_Population_Initial_Conditions(i_CODE_Equation, i_GP_Individual)
 
-        enddo  ! i_CODE_equation
+        END DO  ! i_CODE_equation
 
-        do  i_tree=1,n_trees
-            do  i_node=1,n_nodes
+        DO  i_tree=1,n_trees
+            DO  i_node=1,n_nodes
 
-                if( GP_Adult_population_Node_Type(i_Node,i_Tree, i_GP_individual ) == 0 ) then
+                IF ( GP_Adult_population_Node_Type(i_Node,i_Tree, i_GP_individual ) == 0 ) THEN
 
                     nn = nn + 1
                     child_parameters( nn, i_GP_individual) =  &
                          GP_population_node_parameters(i_node,i_tree,i_GP_individual)
 
-                endif ! GP_Adult_population_Node_Type(i_Node,i_Tree, i_GP_individual ) == 0
+                END IF ! GP_Adult_population_Node_Type(i_Node,i_Tree, i_GP_individual ) == 0
 
-            enddo ! i_node
-        enddo  ! i_tree
+            END DO ! i_node
+        END DO  ! i_tree
 
         GP_n_parms( i_GP_individual ) = nn
 
-    enddo ! i_GP_individual
+    END DO ! i_GP_individual
 
-endif ! myid == 0
+END IF ! myid == 0
 
-call MPI_BCAST( GP_n_parms,  n_GP_individuals,    &
+CALL MPI_BCAST( GP_n_parms,  n_GP_individuals,    &
                 MPI_INTEGER, 0, MPI_COMM_WORLD, ierr )
 
 
 child_number =  n_GP_individuals * max_n_gp_params
 
 
-if( myid == 0 )then
-    if( L_GP_print )then
-        write(GP_print_unit,'(/A,2(1x,I6))') &
+IF ( myid == 0 ) THEN
+    IF ( L_GP_print ) THEN
+        WRITE (GP_print_unit,'(/A,2(1x,I6))') &
         'gplp:  broadcast child parameters myid, i_GP_generation', &
                                            myid, i_GP_generation
-        write(GP_print_unit,'(A,3(1x,I6))') &
+        WRITE (GP_print_unit,'(A,3(1x,I6))') &
           'gplp: myid,  maxval( GP_n_parms ), max_n_gp_params ', &
                  myid,  maxval( GP_n_parms ), max_n_gp_params
-    endif ! L_GP_print
-endif ! myid == 0
+    END IF ! L_GP_print
+END IF ! myid == 0
 
 
-call MPI_BCAST( Child_Parameters,  child_number,    &
+CALL MPI_BCAST( Child_Parameters,  child_number,    &
                 MPI_DOUBLE_PRECISION, 0, MPI_COMM_WORLD, ierr )
 
 
@@ -176,7 +199,7 @@ individual_quality(1:n_GP_individuals) = 1
 
 nsafe = 0
 
-if( myid == 0  )then
+IF ( myid == 0  ) THEN
 
     ! processor 0 sends job assignments to N  processors
     ! where N is the smaller of (number of processors -1)
@@ -187,18 +210,18 @@ if( myid == 0  )then
     numsent = 0
     i_GP_individual = 0
 
-    do  isource = 1, min( numprocs-1, n_GP_individuals )
+    DO  isource = 1, MIN ( numprocs-1, n_GP_individuals )
 
 
         i_GP_individual = i_GP_individual + 1
 
 
-        call MPI_SEND( i_dummy,  1, MPI_INTEGER,    &
+        CALL MPI_SEND( i_dummy,  1, MPI_INTEGER,    &
                        isource, isource,  MPI_COMM_WORLD, ierr )
         numsent = numsent + 1
 
 
-    enddo ! isource
+    END DO ! isource
 
 
     ! at this point i_GP_individual = numsent
@@ -206,11 +229,11 @@ if( myid == 0  )then
     ! processor 0 loops over the number of individuals and waits for a message
     ! from the other processors
 
-    do  isource = 1, n_GP_individuals
+    DO  isource = 1, n_GP_individuals
 
 
         buffer2_recv = 0.0d0
-        call MPI_RECV( buffer2_recv, max_n_gp_params+3, &
+        CALL MPI_RECV( buffer2_recv, max_n_gp_params+3, &
                        MPI_DOUBLE_PRECISION, &
                        MPI_ANY_SOURCE, MPI_ANY_TAG,  &
                        MPI_COMM_WORLD, MPI_STAT,  ierr )
@@ -227,26 +250,26 @@ if( myid == 0  )then
 
         ! store the information received in the above message
 
-        if( Run_GP_Calculate_Fitness(i_individual) )then
+        IF ( Run_GP_Calculate_Fitness(i_individual) ) THEN
 
-            do  jj = 1, max_n_gp_params
+            DO  jj = 1, max_n_gp_params
                 child_parameters(jj,i_individual) =  buffer2_recv(jj )
-            enddo ! jj
+            END DO ! jj
 
             GP_Child_Population_SSE(i_individual) =  &
                                  buffer2_recv( max_n_gp_params+1)
             individual_quality(i_individual) = &
-                           nint( buffer2_recv( max_n_gp_params+2) )
+                           NINT ( buffer2_recv( max_n_gp_params+2) )
             GP_Child_Individual_SSE_nolog10(i_individual) =  &
                                  buffer2_recv( max_n_gp_params+3)
 
-        endif ! Run_GP_Calculate_Fitness
+        END IF ! Run_GP_Calculate_Fitness
 
         !-------------------------------------------------------------------------------------
 
         ! check to see if all individuals have been processed
 
-        if( numsent <  n_GP_individuals )then
+        IF ( numsent <  n_GP_individuals ) THEN
 
             ! numsent <  n_GP_individuals
             ! means not all individuals have been processed
@@ -258,14 +281,14 @@ if( myid == 0  )then
 
             i_GP_individual = i_GP_individual + 1
 
-            call MPI_SEND( i_GP_individual, 1, MPI_INTEGER,    &
+            CALL MPI_SEND( i_GP_individual, 1, MPI_INTEGER,    &
                            sender, numsent+1,  MPI_COMM_WORLD, ierr )
 
             ! just sent a new task, so increment the number sent
 
             numsent = numsent + 1
 
-        else
+        ELSE
 
             !     DONE !
 
@@ -275,12 +298,12 @@ if( myid == 0  )then
             ! tell the "sender" processor that it is done and
             ! send it a message to stop
 
-            call MPI_SEND( MPI_BOTTOM, 0, MPI_DOUBLE_PRECISION,    &
+            CALL MPI_SEND( MPI_BOTTOM, 0, MPI_DOUBLE_PRECISION,    &
                            sender, 0,  MPI_COMM_WORLD, ierr )
 
-        endif ! numsent
+        END IF ! numsent
 
-    enddo ! isource
+    END DO ! isource
 
 
     !----------------------------------------------------------------------
@@ -296,21 +319,21 @@ if( myid == 0  )then
     ! so when the above loop is finished, send a stop signal to the unused
     ! processors so the program can continue
 
-    if( n_GP_individuals < numprocs -1 )then
+    IF ( n_GP_individuals < numprocs -1 ) THEN
 
-        do  i = n_GP_individuals+1, numprocs-1
+        DO  i = n_GP_individuals+1, numprocs-1
 
-            call MPI_SEND( MPI_BOTTOM, 0, MPI_DOUBLE_PRECISION,    &
+            CALL MPI_SEND( MPI_BOTTOM, 0, MPI_DOUBLE_PRECISION,    &
                            i , 0,  MPI_COMM_WORLD, ierr )
-        enddo ! i
+        END DO ! i
 
-    endif ! n_GP_individuals < numprocs -1
+    END IF ! n_GP_individuals < numprocs -1
 
     !----------------------------------------------------------------------
 
 
 
-else  ! not myid == 0
+ELSE  ! not myid == 0
 
 
     ! code for processors 1 - ( numprocs - 1 )
@@ -323,17 +346,17 @@ else  ! not myid == 0
 
 
     recv_loop:&
-    do
+    DO 
 
 
-        call MPI_RECV( i_dummy, 1, MPI_INTEGER,    &
+        CALL MPI_RECV( i_dummy, 1, MPI_INTEGER,    &
                        0, MPI_ANY_TAG,  MPI_COMM_WORLD, MPI_STAT, ierr )
 
         ! was a stop signal received ?
 
         ! if the tag is <= 0, this is a stop signal
 
-        if( MPI_STAT( MPI_TAG ) <= 0 ) exit recv_loop
+        IF ( MPI_STAT( MPI_TAG ) <= 0 ) exit recv_loop
 
         ! process the individual named in the message tag
 
@@ -345,9 +368,9 @@ else  ! not myid == 0
 
 
         n_parms = GP_n_parms( i_2_individual )
-        n_parms_dim = max( 1, n_parms )
+        n_parms_dim = MAX ( 1, n_parms )
 
-        if( Run_GP_Calculate_Fitness(i_2_Individual) )then
+        IF ( Run_GP_Calculate_Fitness(i_2_Individual) ) THEN
 
             ! save the current SSE in temp_SSE
             ! after setup_run_para_lmdif, temp_SSE will have the result of lmdif
@@ -361,7 +384,7 @@ else  ! not myid == 0
             temp_SSE = GP_Child_Population_SSE(i_2_individual)
             save_SSE = GP_Child_Population_SSE(i_2_individual)
 
-            call setup_run_para_lmdif( i_2_individual, &
+            CALL setup_run_para_lmdIF ( i_2_individual, &
                                        max_n_gp_params, &
                                        child_parameters(1,i_2_individual), &
                                        individual_quality(i_2_individual), &
@@ -373,32 +396,32 @@ else  ! not myid == 0
 
             ! don't replace original child SSE if lmdif SSE indicates a bad result
 
-            if( info > 0  )then
+            IF ( info > 0  ) THEN
 
                 GP_Child_Population_SSE(i_2_individual) = temp_SSE
 
-            else
+            ELSE
 
                 GP_child_population_SSE(i_2_individual) = save_SSE
 
-            endif ! abs(temp_SSE)...
+            END IF ! ABS (temp_SSE)...
 
             n_parms = GP_n_parms( i_2_individual )
 
-            do  jj = 1, max_n_gp_params
+            DO  jj = 1, max_n_gp_params
                 buffer2(jj) =  child_parameters(jj,i_2_individual)
-            enddo ! jj
+            END DO ! jj
 
             buffer2(max_n_gp_params+1) = GP_Child_Population_SSE(i_2_individual)
             buffer2(max_n_gp_params+2) = &
-                real( individual_quality(i_2_individual), kind=r8b )
+                REAL ( individual_quality(i_2_individual), KIND=r8b )
             buffer2(max_n_gp_params+3) = GP_Child_Individual_SSE_nolog10(i_2_individual)
 
-        endif ! Run_GP_Calculate_Fitness(i_2_Individual)
+        END IF ! Run_GP_Calculate_Fitness(i_2_Individual)
 
         ! send the R-K integration results for individual i_2_individual to processor 0
 
-        call MPI_SEND( buffer2, max_n_gp_params+3, &
+        CALL MPI_SEND( buffer2, max_n_gp_params+3, &
                        MPI_DOUBLE_PRECISION, 0, i_2_individual, MPI_COMM_WORLD, ierr )
 
 
@@ -408,24 +431,24 @@ else  ! not myid == 0
 
         nsafe = nsafe + 1
 
-        if( nsafe > 100 * n_GP_individuals ) then
-            write(GP_print_unit,'(A,1x,I10)') &
+        IF ( nsafe > 100 * n_GP_individuals ) THEN
+            WRITE (GP_print_unit,'(A,1x,I10)') &
               'gplp: too many iterations  nsafe = ', nsafe
-            call MPI_FINALIZE(ierr)
-            stop 'bad nsafe'
-        endif ! nsafe
+            CALL MPI_FINALIZE(ierr)
+            STOP 'bad nsafe'
+        END IF ! nsafe
 
         !---------------------------------------------------------------
 
-     enddo  recv_loop
+     END DO  recv_loop
 
-endif ! myid == 0
+END IF ! myid == 0
 
 !-------------------------------------------------------------------
 
 ! wait until all n_GP_individuals have been processed
 
-call MPI_BARRIER( MPI_COMM_WORLD, ierr )
+CALL MPI_BARRIER( MPI_COMM_WORLD, ierr )
 
 
 !-------------------------------------------------------------------
@@ -433,67 +456,67 @@ call MPI_BARRIER( MPI_COMM_WORLD, ierr )
 
 ! load the new child parameters into the population node parameters
 
-if( myid == 0 )then
+IF ( myid == 0 ) THEN
 
-    do  i_GP_individual = 1, n_GP_individuals
+    DO  i_GP_individual = 1, n_GP_individuals
 
-        if( Run_GP_Calculate_Fitness(i_GP_Individual) )then
+        IF ( Run_GP_Calculate_Fitness(i_GP_Individual) ) THEN
 
             nn = 0
 
-            do  i_CODE_equation=1,n_CODE_equations
+            DO  i_CODE_equation=1,n_CODE_equations
                 nn = nn + 1
                 GP_Population_Initial_Conditions(i_CODE_Equation, i_GP_Individual) = &
                                             child_parameters( nn, i_GP_individual)
-            enddo  ! i_CODE_equation
+            END DO  ! i_CODE_equation
 
-            do  i_tree=1,n_trees
-                do  i_node=1,n_nodes
+            DO  i_tree=1,n_trees
+                DO  i_node=1,n_nodes
 
-                    if( GP_Adult_population_Node_Type(i_Node,i_Tree,i_GP_individual ) == 0 ) then
+                    IF ( GP_Adult_population_Node_Type(i_Node,i_Tree,i_GP_individual ) == 0 ) THEN
 
                         nn = nn + 1
 
                         GP_population_node_parameters(i_node,i_tree,i_GP_individual) = &
                                               child_parameters( nn, i_GP_individual )
 
-                    endif ! GP_Adult_population_Node_Type(i_Node,i_Tree,i_GP_individual) == 0
+                    END IF ! GP_Adult_population_Node_Type(i_Node,i_Tree,i_GP_individual) == 0
 
-                enddo ! i_node
-            enddo  ! i_tree
+                END DO ! i_node
+            END DO  ! i_tree
 
-        endif !  Run_GP_Calculate_Fitness(i_GP_Individual)
+        END IF !  Run_GP_Calculate_Fitness(i_GP_Individual)
 
-    enddo ! i_GP_individual
+    END DO ! i_GP_individual
 
-endif ! myid == 0
+END IF ! myid == 0
 
 ! broadcast individual_quality
 
 message_len = n_GP_individuals
-call MPI_BCAST( individual_quality, message_len,    &
+CALL MPI_BCAST( individual_quality, message_len,    &
                 MPI_INTEGER, 0, MPI_COMM_WORLD, ierr )
 
 ! broadcast GP_Child_Population_SSE
 
 message_len = n_GP_individuals
-call MPI_BCAST( GP_Child_Population_SSE, message_len,    &
+CALL MPI_BCAST( GP_Child_Population_SSE, message_len,    &
                 MPI_DOUBLE_PRECISION, 0, MPI_COMM_WORLD, ierr )
 
 ! broadcast GP_population_node_parameters
 
 message_len = n_trees * n_nodes * n_GP_individuals
 
-call MPI_BCAST( GP_population_node_parameters, message_len,    &
+CALL MPI_BCAST( GP_population_node_parameters, message_len,    &
                 MPI_DOUBLE_PRECISION, 0, MPI_COMM_WORLD, ierr )
 
 ! broadcast GP_Population_Initial_Conditions
 
 message_len = n_CODE_equations  * n_GP_individuals
 
-call MPI_BCAST( GP_Population_Initial_Conditions, message_len,    &
+CALL MPI_BCAST( GP_Population_Initial_Conditions, message_len,    &
                 MPI_DOUBLE_PRECISION, 0, MPI_COMM_WORLD, ierr )
 
-return
+RETURN
 
-end subroutine GP_para_lmdif_process
+END SUBROUTINE GP_para_lmdif_process

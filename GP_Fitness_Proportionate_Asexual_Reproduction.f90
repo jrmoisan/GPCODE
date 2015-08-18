@@ -1,26 +1,48 @@
-subroutine GP_Fitness_Proportionate_Asexual_Reproduction
+!> @brief
+!>  This subroutine replaces randomly chosen GP individuals with another randomly   
+!!  chosen GP individual which may have a higher fitness          
+!>
+!> @details
+!>  This subroutine replaces randomly chosen GP individuals with another randomly   
+!!  chosen GP individual which may have a higher fitness          
+!>
+!> @author Dr. John R. Moisan [NASA/GSFC]
+!> @date January, 2013 Dr. John R. Moisan
+
+SUBROUTINE GP_Fitness_Proportionate_Asexual_Reproduction
+
+ 
+!---------------------------------------------------------------------------  
+!
+! DESCRIPTION: 
+! Brief description of routine. 
+!
+! REVISION HISTORY:
+! TODO_dd_mmm_yyyy - TODO_describe_appropriate_changes - TODO_name
+!
+!---------------------------------------------------------------------------  
 
 !xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
-use kinds_mod 
-use mpi
-use mpi_module
-use GP_Parameters_module
-use GA_Parameters_module
-use GP_Variables_module
-use GA_Variables_module
+USE kinds_mod 
+USE mpi
+USE mpi_module
+USE GP_Parameters_module
+USE GA_Parameters_module
+USE GP_Variables_module
+USE GA_Variables_module
 
-implicit none
+IMPLICIT none
 
-real(kind=r4b) :: cff
+REAL (KIND=r4b) :: cff
 
-integer(kind=i4b) :: icff
-integer(kind=i4b) :: i_GP_individual
-integer(kind=i4b) :: j_GP_Individual
-integer(kind=i4b) :: i_GP_Asexual_Reproduction
+INTEGER (KIND=i4b) :: icff
+INTEGER (KIND=i4b) :: i_GP_individual
+INTEGER (KIND=i4b) :: j_GP_Individual
+INTEGER (KIND=i4b) :: i_GP_Asexual_Reproduction
 
 
-real(kind=r8b) :: sse_ind
+REAL (KIND=r8b) :: sse_ind
 
 !-----------------------------------------------------------------------------
 
@@ -36,7 +58,7 @@ do  i_GP_Asexual_Reproduction=1,n_GP_Asexual_Reproductions
 
     sse_ind = GP_Child_Population_SSE(i_GP_Individual)
 
-    call Random_Number(cff) ! uniform random number generator
+    CALL RANDOM_NUMBER(cff) ! uniform random number generator
 
     ! the range of cff is [0. to 1.]
 
@@ -45,21 +67,21 @@ do  i_GP_Asexual_Reproduction=1,n_GP_Asexual_Reproductions
 
     icff = -1
 
-    do  j_GP_Individual=1,n_GP_Individuals
+    DO  j_GP_Individual=1,n_GP_Individuals
 
-        if( cff .le. GP_Integrated_Population_Ranked_Fitness(j_GP_Individual)) then
+        IF ( cff .le. GP_Integrated_Population_Ranked_Fitness(j_GP_Individual)) THEN
 
             icff=j_GP_Individual
 
             exit
 
-        endif !   cff .le. GP_Integrated_Population_Ranked_Fitness(j_GP_Individual)
+        END IF !   cff .le. GP_Integrated_Population_Ranked_Fitness(j_GP_Individual)
 
-    enddo ! j_GP_Individual
+    END DO ! j_GP_Individual
 
     ! index to move over both the parent parameters and the individual fitness levels
 
-    if( icff < 1 ) cycle
+    IF ( icff < 1 ) CYCLE
 
     j_GP_Individual=icff
 
@@ -67,10 +89,9 @@ do  i_GP_Asexual_Reproduction=1,n_GP_Asexual_Reproductions
     ! don't replace if sse will increase after replacement
     ! unless L_replace_larger_SSE_only is TRUE 
 
-    if( L_replace_larger_SSE_only )then
-        !if( sse_ind < GP_Child_Population_SSE(j_GP_Individual) ) cycle
-        if( sse_ind < GP_Adult_Population_SSE(j_GP_Individual) ) cycle
-    endif ! L_replace_larger_SSE_only
+    IF ( L_replace_larger_SSE_only ) THEN
+        IF ( sse_ind < GP_Adult_Population_SSE(j_GP_Individual) ) CYCLE
+    END IF ! L_replace_larger_SSE_only
     !----------------------------------------------------------------------------
 
     GP_Child_Population_Node_Type(1:n_Nodes,1:n_Trees,i_GP_Individual) = &
@@ -89,9 +110,9 @@ do  i_GP_Asexual_Reproduction=1,n_GP_Asexual_Reproductions
 
     Run_GP_Calculate_Fitness(i_GP_Individual) = .false.
 
-enddo ! i_GP_Asexual_Reproduction
+END DO ! i_GP_Asexual_Reproduction
 
 
-return
+RETURN
 
-end subroutine GP_Fitness_Proportionate_Asexual_Reproduction
+END SUBROUTINE GP_Fitness_Proportionate_Asexual_Reproduction

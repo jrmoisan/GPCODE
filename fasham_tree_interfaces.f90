@@ -1,7 +1,28 @@
-module Fasham_Tree_Interfaces
+!> @brief
+!>  This module defines interfaces for the Fasham model tree functions.        
+!>
+!> @details
+!>  This module defines interfaces for the Fasham model tree functions.        
+!>
+!> @author Dave ??
+!> @date August 7, 2013  Dave ??
 
-       use kinds_mod
-       use class_Tree_Node
+MODULE Fasham_Tree_Interfaces
+
+ 
+!---------------------------------------------------------------------------  
+!
+! DESCRIPTION: 
+! Brief description of routine. 
+!
+! REVISION HISTORY:
+! TODO_dd_mmm_yyyy - TODO_describe_appropriate_changes - TODO_name
+!
+
+!---------------------------------------------------------------------------  
+
+       USE kinds_mod
+       USE class_Tree_Node
 
 !-------------------------------------------
 ! File:   Interfaces.f03
@@ -11,106 +32,106 @@ module Fasham_Tree_Interfaces
 
 !-------------------------------------------
 
-    interface
+    INTERFACE
 
-        function GetNonMotileDilution(species) result(n1)
-            use class_Tree_Node
-            integer(kind=i4b), intent(in) :: species
-            type(Tree_Node), pointer :: n1
-        end function GetNonMotileDilution
+        FUNCTION GetNonMotileDilution(species) RESULT (n1)
+            USE class_Tree_Node
+            INTEGER (KIND=i4b), INTENT(IN) :: species
+            TYPE(Tree_Node), POINTER :: n1
+        END FUNCTION GetNonMotileDilution
 
-        function GetMotileDilution() result(n1)
-            use class_Tree_Node
-            type(Tree_Node), pointer :: n1
-        end function GetMotileDilution
+        FUNCTION GetMotileDilution() RESULT (n1)
+            USE class_Tree_Node
+            TYPE(Tree_Node), POINTER :: n1
+        END FUNCTION GetMotileDilution
 
-        function GetNonMotileDetritusDilution() result(n1)
-            use class_Tree_Node
-            type(Tree_Node), pointer :: n1
-        end function GetNonMotileDetritusDilution
+        FUNCTION GetNonMotileDetritusDilution() RESULT (n1)
+            USE class_Tree_Node
+            TYPE(Tree_Node), POINTER :: n1
+        END FUNCTION GetNonMotileDetritusDilution
 
-        function GetNitrateInjection() result(n1)
-            use class_Tree_Node
-            type(Tree_Node), pointer :: n1
-        end function GetNitrateInjection
+        FUNCTION GetNitrateInjection() RESULT (n1)
+            USE class_Tree_Node
+            TYPE(Tree_Node), POINTER :: n1
+        END FUNCTION GetNitrateInjection
 
-        function Nitrate_Sink_To_Phytoplankton() result(n1)
-            use class_Tree_Node
-            type(Tree_Node), pointer :: n1
-        end function Nitrate_Sink_To_Phytoplankton
+        FUNCTION Nitrate_Sink_To_Phytoplankton() RESULT (n1)
+            USE class_Tree_Node
+            TYPE(Tree_Node), POINTER :: n1
+        END FUNCTION Nitrate_Sink_To_Phytoplankton
 
-        function Ammonium_Sink_To_Phytoplankton() result(n1)
-            use class_Tree_Node
-            type(Tree_Node), pointer :: n1
-        end function Ammonium_Sink_To_Phytoplankton
+        FUNCTION Ammonium_Sink_To_Phytoplankton() RESULT (n1)
+            USE class_Tree_Node
+            TYPE(Tree_Node), POINTER :: n1
+        END FUNCTION Ammonium_Sink_To_Phytoplankton
 
-        function Phytoplankton_Exudation_To_DON() result(n1)
-            use class_Tree_Node
-            type(Tree_Node), pointer :: n1
-        end function Phytoplankton_Exudation_To_DON
+        FUNCTION Phytoplankton_Exudation_To_DON() RESULT (n1)
+            USE class_Tree_Node
+            TYPE(Tree_Node), POINTER :: n1
+        END FUNCTION Phytoplankton_Exudation_To_DON
 
-        function Phytoplankton_Sink_To_DET() result(n1)
-            use class_Tree_Node
-            type(Tree_Node), pointer :: n1
-        end function Phytoplankton_Sink_To_DET
-
-
-        function Zooplankton_Sink_To_NH4() result(n1)
-            use class_Tree_Node
-            type(Tree_Node), pointer :: n1
-        end function Zooplankton_Sink_To_NH4
+        FUNCTION Phytoplankton_Sink_To_DET() RESULT (n1)
+            USE class_Tree_Node
+            TYPE(Tree_Node), POINTER :: n1
+        END FUNCTION Phytoplankton_Sink_To_DET
 
 
-        function Zooplankton_Excretion_To_DON() result(n1)
-            use class_Tree_Node
-            type(Tree_Node), pointer :: n1
-        end function Zooplankton_Excretion_To_DON
+        FUNCTION Zooplankton_Sink_To_NH4() RESULT (n1)
+            USE class_Tree_Node
+            TYPE(Tree_Node), POINTER :: n1
+        END FUNCTION Zooplankton_Sink_To_NH4
 
-        function Zooplankton_Sink_To_Detritus() result(n1)
-            use class_Tree_Node
-            type(Tree_Node), pointer :: n1
-        end function Zooplankton_Sink_To_Detritus
 
-        function Bacterial_Mortality_To_NH4() result(n1)
-            use class_Tree_Node
-            type(Tree_Node), pointer :: n1
-        end function Bacterial_Mortality_To_NH4
+        FUNCTION Zooplankton_Excretion_To_DON() RESULT (n1)
+            USE class_Tree_Node
+            TYPE(Tree_Node), POINTER :: n1
+        END FUNCTION Zooplankton_Excretion_To_DON
 
-        function DON_Sink_To_Bacteria() result(n1)
-            use class_Tree_Node
-            type(Tree_Node), pointer :: n1
-        end function DON_Sink_To_Bacteria
+        FUNCTION Zooplankton_Sink_To_Detritus() RESULT (n1)
+            USE class_Tree_Node
+            TYPE(Tree_Node), POINTER :: n1
+        END FUNCTION Zooplankton_Sink_To_Detritus
 
-        function NH4_Sink_To_Bacteria() result(n1)
-            use class_Tree_Node
-            type(Tree_Node), pointer :: n1
-        end function NH4_Sink_To_Bacteria
+        FUNCTION Bacterial_Mortality_To_NH4() RESULT (n1)
+            USE class_Tree_Node
+            TYPE(Tree_Node), POINTER :: n1
+        END FUNCTION Bacterial_Mortality_To_NH4
 
-        function Detrital_Sink_To_DON() result(n1)
-            use class_Tree_Node
-            type(Tree_Node), pointer :: n1
-        end function Detrital_Sink_To_DON
+        FUNCTION DON_Sink_To_Bacteria() RESULT (n1)
+            USE class_Tree_Node
+            TYPE(Tree_Node), POINTER :: n1
+        END FUNCTION DON_Sink_To_Bacteria
 
-        function f_G1() result(n1)
-            use class_Tree_Node
-            type(Tree_Node), pointer :: n1
-        end function f_G1
+        FUNCTION NH4_Sink_To_Bacteria() RESULT (n1)
+            USE class_Tree_Node
+            TYPE(Tree_Node), POINTER :: n1
+        END FUNCTION NH4_Sink_To_Bacteria
 
-        function f_G2() result(n1)
-            use class_Tree_Node
-            type(Tree_Node), pointer :: n1
-        end function f_G2
+        FUNCTION Detrital_Sink_To_DON() RESULT (n1)
+            USE class_Tree_Node
+            TYPE(Tree_Node), POINTER :: n1
+        END FUNCTION Detrital_Sink_To_DON
 
-        function f_G3() result(n1)
-            use class_Tree_Node
-            type(Tree_Node), pointer :: n1
-        end function f_G3
+        FUNCTION f_G1() RESULT (n1)
+            USE class_Tree_Node
+            TYPE(Tree_Node), POINTER :: n1
+        END FUNCTION f_G1
 
-        function f_G_Lower() result(n1)
-            use class_Tree_Node
-            type(Tree_Node), pointer :: n1
-        end function f_G_Lower
+        FUNCTION f_G2() RESULT (n1)
+            USE class_Tree_Node
+            TYPE(Tree_Node), POINTER :: n1
+        END FUNCTION f_G2
 
-    end interface
+        FUNCTION f_G3() RESULT (n1)
+            USE class_Tree_Node
+            TYPE(Tree_Node), POINTER :: n1
+        END FUNCTION f_G3
 
-end module Fasham_Tree_Interfaces
+        FUNCTION f_G_Lower() RESULT (n1)
+            USE class_Tree_Node
+            TYPE(Tree_Node), POINTER :: n1
+        END FUNCTION f_G_Lower
+
+    END INTERFACE
+
+END MODULE Fasham_Tree_Interfaces

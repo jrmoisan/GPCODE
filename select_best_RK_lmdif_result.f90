@@ -1,8 +1,38 @@
-subroutine select_best_RK_lmdif_result( &
+!> @brief
+!>  This subroutine stores the parameters of the i_GA_best_parent, i.e. the most fit
+!!  GA individual.
+!>
+!> @details
+!>  This subroutine stores the parameters of the i_GA_best_parent, i.e. the most fit
+!!  GA individual.
+!>
+!> @author Dr. John R. Moisan [NASA/GSFC]
+!> @date January, 2013 Dr. John R. Moisan
+!>
+!> @param[in] i_GP_Generation
+!> @param[in] i_GP_individual
+!> @param[in] new_comm
+!> @param[in] i_GA_best_parent
+!> @param[in] parent_parameters
+!> @param[out] child_parameters
+!> @param[out] L_stop_run
+
+SUBROUTINE select_best_RK_lmdif_RESULT ( &
                 i_GP_Generation,i_GP_individual, &
                 i_GA_best_parent, parent_parameters, &
                 child_parameters, &
-                L_stop_run,            new_comm )
+                L_STOP_run,            new_comm )
+
+ 
+!---------------------------------------------------------------------------  
+!
+! DESCRIPTION: 
+! Brief description of routine. 
+!
+! REVISION HISTORY:
+! TODO_dd_mmm_yyyy - TODO_describe_appropriate_changes - TODO_name
+!
+!---------------------------------------------------------------------------  
 
 ! written by: Dr. John R. Moisan [NASA/GSFC] 5 December, 2012
 !xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
@@ -10,44 +40,44 @@ subroutine select_best_RK_lmdif_result( &
 ! a finding the optimum parameter set for a coupled set of equations
 !xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
-use kinds_mod
+USE kinds_mod
 
-use mpi
-use mpi_module
-use clock_module
+USE mpi
+USE mpi_module
+USE clock_module
 
-use GP_parameters_module
-use GA_parameters_module
-use GP_variables_module
-use GA_variables_module
-use GP_data_module
-
-
-implicit none
+USE GP_parameters_module
+USE GA_parameters_module
+USE GP_variables_module
+USE GA_variables_module
+USE GP_data_module
 
 
-integer(kind=i4b),intent(in) :: i_GP_Generation
-integer(kind=i4b),intent(in) :: i_GP_individual
-integer(kind=i4b),intent(in) :: new_comm 
-
-real(kind=r8b),&
- dimension(n_GP_parameters,n_GA_individuals) ::  parent_parameters
-real(kind=r8b),&
- dimension(n_GP_parameters,n_GA_individuals) ::  child_parameters
+IMPLICIT none
 
 
-real(kind=r8b) :: individual_SSE_best_1
-real(kind=r8b) :: individual_SSE_best_1_nolog10
-real(kind=r8b) :: individual_ranked_fitness_best_1
-real(kind=r8b) :: Individual_Fitness_best_1
+INTEGER (KIND=i4b),INTENT(IN) :: i_GP_Generation
+INTEGER (KIND=i4b),INTENT(IN) :: i_GP_individual
+INTEGER (KIND=i4b),INTENT(IN) :: new_comm 
 
-real(kind=r8b),dimension(n_GP_parameters) :: parent_parameters_best_1
+REAL (KIND=r8b),&
+ DIMENSION(n_GP_parameters,n_GA_individuals) ::  parent_parameters
+REAL (KIND=r8b),&
+ DIMENSION(n_GP_parameters,n_GA_individuals) ::  child_parameters
 
 
-integer(kind=i4b) :: i_GA_Best_Parent
-integer(kind=i4b) :: i_GA_Best_Parent_1
+REAL (KIND=r8b) :: individual_SSE_best_1
+REAL (KIND=r8b) :: individual_SSE_best_1_nolog10
+REAL (KIND=r8b) :: individual_ranked_fitness_best_1
+REAL (KIND=r8b) :: Individual_Fitness_best_1
 
-integer(kind=i4b) :: i_GA_generation_last
+REAL (KIND=r8b),DIMENSION(n_GP_parameters) :: parent_parameters_best_1
+
+
+INTEGER (KIND=i4b) :: i_GA_Best_Parent
+INTEGER (KIND=i4b) :: i_GA_Best_Parent_1
+
+INTEGER (KIND=i4b) :: i_GA_generation_last
 
 
 ! individual_quality contains information on the result of lmdif
@@ -55,23 +85,23 @@ integer(kind=i4b) :: i_GA_generation_last
 ! if < 0 , reject this individual  ! jjm
 
 
-real(kind=r8b), external :: indiv_fitness
+REAL (KIND=r8b), EXTERNAL :: indiv_fitness
 
-logical :: L_stop_run
+LOGICAL :: L_STOP_run
 
 
-integer(kind=i4b) :: i_Tree
-integer(kind=i4b) :: i_Node
+INTEGER (KIND=i4b) :: i_Tree
+INTEGER (KIND=i4b) :: i_Node
 
-integer(kind=i4b) :: jj
-integer(kind=i4b) :: i_parameter
+INTEGER (KIND=i4b) :: jj
+INTEGER (KIND=i4b) :: i_parameter
 
 
 
 !-------------------------------------------------------------------------------
 
                                                                                                                                 
-call mpi_comm_rank( new_comm, new_rank, ierr ) 
+CALL mpi_comm_rank( new_comm, new_rank, ierr ) 
 
 
 ! lmdif is NOT called from this routine
@@ -97,7 +127,7 @@ Individual_Fitness_best_1 = Individual_Fitness
 do  jj = 1, n_parameters
     parent_parameters_best_1(jj) =  &
                         Parent_Parameters(jj, i_GA_Best_Parent)
-enddo ! jj
+END DO ! jj
 
 
 
@@ -108,15 +138,15 @@ enddo ! jj
 !  compute fitness for parameters of the best parent after lmdif has been run
 
 
-if( L_ga_print )then
-    write(GA_print_unit,'(/A,1x,I6,1x,E20.10)') &
+IF ( L_ga_print ) THEN
+    WRITE (GA_print_unit,'(/A,1x,I6,1x,E20.10)') &
           'sbrl: i_GA_best_parent, individual_SSE', &
                  i_GA_best_parent, individual_SSE(i_GA_best_parent)
-endif ! L_ga_print
+END IF ! L_ga_print
 
 
 individual_ranked_fitness(i_GA_best_parent) = &
-                           indiv_fitness( i_GA_best_parent ) ! function
+                           indiv_fitness( i_GA_best_parent ) ! FUNCTION
 
 Individual_Fitness = Individual_Ranked_Fitness(i_GA_Best_Parent)
 
@@ -129,88 +159,88 @@ Individual_Fitness = Individual_Ranked_Fitness(i_GA_Best_Parent)
 !  select the set of parameters with the best fitness
 
 
-if( L_ga_print )then
-    write(GA_print_unit,'(/A, 1x,E15.7)') &
+IF ( L_ga_print ) THEN
+    WRITE (GA_print_unit,'(/A, 1x,E15.7)') &
           'sbrl: fcn   individual_SSE_best_1                       ', &
                        individual_SSE_best_1           
-    write(GA_print_unit,'(A, 1x,E15.7)') &
+    WRITE (GA_print_unit,'(A, 1x,E15.7)') &
           'sbrl: lmdif individual_SSE(i_GA_best_parent)            ', &
                        individual_SSE(i_GA_best_parent)           
 
-    write(GA_print_unit,'(/A, 1x,E15.7)') &
+    WRITE (GA_print_unit,'(/A, 1x,E15.7)') &
           'sbrl: fcn   individual_ranked_fitness_best_1            ', &
                        individual_ranked_fitness_best_1
-    write(GA_print_unit,'(A, 1x,E15.7/)') &
+    WRITE (GA_print_unit,'(A, 1x,E15.7/)') &
           'sbrl: lmdif individual_ranked_fitness(i_GA_best_parent) ', &
                        individual_ranked_fitness(i_GA_best_parent)
-endif ! L_ga_print
+END IF ! L_ga_print
 
-if( individual_ranked_fitness(i_GA_best_parent) <= &
-                        individual_ranked_fitness_best_1 )then
+IF ( individual_ranked_fitness(i_GA_best_parent) <= &
+                        individual_ranked_fitness_best_1 ) THEN
 
 
     ! the fitness of the RK process output is better
 
 
-    if( L_ga_print )then
-        write(GA_print_unit,'(/A/A/A/)')&
+    IF ( L_ga_print ) THEN
+        WRITE (GA_print_unit,'(/A/A/A/)')&
               '=====================================================', &
               'sbrl:  the fitness of the RK process output is better', &
               '====================================================='
-    endif ! L_ga_print
+    END IF ! L_ga_print
 
     individual_fitness         = individual_ranked_fitness_best_1
     Individual_SSE_best_parent = individual_SSE_best_1
     Individual_SSE_best_parent_nolog10 = individual_SSE_best_1_nolog10
 
-    do  jj = 1, n_parameters
+    DO  jj = 1, n_parameters
         child_parameters(jj,i_GA_Best_Parent) =  &
                             parent_parameters_best_1(jj)
-    enddo ! jj
+    END DO ! jj
 
 
     ! choose the parameters of the best parent from the RK fcn integration
 
-    if( L_ga_print )then
-        write(GA_print_unit,'(/A)')&
+    IF ( L_ga_print ) THEN
+        WRITE (GA_print_unit,'(/A)')&
               'sbrl: set the GA-optimized initial condition array '
 
-        write(GA_print_unit,'(/A/1x,I6, 6(1x,E15.7))') &
+        WRITE (GA_print_unit,'(/A/1x,I6, 6(1x,E15.7))') &
               'sbrl: i_GA_best_parent_1, parent_parameters_best_1(1:n_CODE_Equations) ', &
                      i_GA_best_parent_1, &
                      ( parent_parameters_best_1(jj), jj = 1, n_CODE_Equations )
-    endif ! L_ga_print
+    END IF ! L_ga_print
 
 
-    do  jj = 1, n_code_equations
+    DO  jj = 1, n_code_equations
         GP_Individual_Initial_Conditions(jj) = parent_parameters_best_1(jj)
-    enddo ! jj
+    END DO ! jj
 
 
-    if( L_ga_print )then
-        write(GA_print_unit,'(/A/ 6(1x,E15.7))') &
+    IF ( L_ga_print ) THEN
+        WRITE (GA_print_unit,'(/A/ 6(1x,E15.7))') &
               'sbrl: GP_Individual_Initial_Conditions(1:n_CODE_Equations) ', &
                    ( GP_Individual_Initial_Conditions(jj), jj = 1,n_CODE_Equations )
-    endif ! L_ga_print
+    END IF ! L_ga_print
 
 
-    if( L_GA_output_parameters )then
+    IF ( L_GA_output_parameters ) THEN
 
-        if( L_stop_run )then
-            write( GA_output_unit, '(I6,3(1x,I6), 12(1x,E15.7))') &
+        IF ( L_STOP_run ) THEN
+            WRITE ( GA_output_unit, '(I6,3(1x,I6), 12(1x,E15.7))') &
               i_GP_Generation,i_GP_individual, &
               i_GA_Generation_last, i_GA_best_parent_1, &
               individual_ranked_fitness_best_1, &
               (parent_parameters_best_1(jj),jj = 1,n_parameters)
-        else
-            write( GA_output_unit, '(I6,3(1x,I6), 12(1x,E15.7))') &
+        ELSE
+            WRITE ( GA_output_unit, '(I6,3(1x,I6), 12(1x,E15.7))') &
               i_GP_Generation,i_GP_individual, &
               n_GA_Generations, i_GA_best_parent_1, &
               individual_ranked_fitness_best_1, &
               (parent_parameters_best_1(jj),jj = 1,n_parameters)
-        endif ! L_stop_run
+        END IF ! L_STOP_run
 
-    endif ! L_GA_output_parameters
+    END IF ! L_GA_output_parameters
 
 
     !-------------------------------------------------------------------------------
@@ -219,100 +249,100 @@ if( individual_ranked_fitness(i_GA_best_parent) <= &
     ! load the parameters from the RK process into GP_Individual_Node_Parameters
 
 
-    if( L_ga_print )then
-        write(GA_print_unit,'(/a/)') &
+    IF ( L_ga_print ) THEN
+        WRITE (GA_print_unit,'(/a/)') &
               'sbrl: set the GA-optimized CODE parameter array'
-    endif ! L_ga_print
+    END IF ! L_ga_print
 
-    i_parameter = n_CODE_equations ! start at this number because of the
+    i_parameter = n_CODE_equations ! start at this number becaUSE of the
                                    ! initial conditions (n_CODE_Equations of them)
 
-    do  i_tree=1,n_trees
-        do  i_node=1,n_nodes
+    DO  i_tree=1,n_trees
+        DO  i_node=1,n_nodes
 
-            if( GP_individual_node_type(i_node,i_tree) .eq. 0 ) then  ! parameter
+            IF ( GP_individual_node_type(i_node,i_tree) .eq. 0 ) THEN  ! parameter
 
                 i_parameter=i_parameter+1
 
                 GP_Individual_Node_Parameters(i_node,i_tree) = &
                               parent_parameters_best_1( i_parameter )
 
-            endif !   GP_individual_node_type(i_node,i_tree) .eq. 0
+            END IF !   GP_individual_node_type(i_node,i_tree) .eq. 0
 
-        enddo ! i_node
+        END DO ! i_node
 
-    enddo ! i_tree
+    END DO ! i_tree
 
 
 !--------------------------------------------------------------------------------------
 
 
-else  ! lmdif is best
+ELSE  ! lmdif is best
 
 
     ! the fitness of the lmdif output is better
 
 
-    if( L_ga_print )then
-        write(GA_print_unit,'(/A/)')&
+    IF ( L_ga_print ) THEN
+        WRITE (GA_print_unit,'(/A/)')&
               'sbrl:  the fitness of the lmdif output is better '
-        write(GA_print_unit,'(/A/A/A/)')&
+        WRITE (GA_print_unit,'(/A/A/A/)')&
               '================================================', &
               'sbrl:  the fitness of the lmdif output is better' , &
               '================================================'
-    endif ! L_ga_print
+    END IF ! L_ga_print
 
 
     individual_fitness         = individual_ranked_fitness(i_GA_best_parent)
     Individual_SSE_best_parent = individual_SSE(i_GA_best_parent)
     Individual_SSE_best_parent_nolog10 = individual_SSE_nolog10(i_GA_best_parent)
 
-    do  jj = 1, n_parameters
+    DO  jj = 1, n_parameters
         child_parameters(jj,i_GA_Best_Parent) =  &
                             Parent_Parameters(jj, i_GA_Best_Parent)
-    enddo ! jj
+    END DO ! jj
 
 
     ! choose the parameters from the lmdif output for the best parent
 
-    if( L_ga_print )then
-        write(GA_print_unit,'(/A,1x,I6, 12(1x,E15.7))') &
+    IF ( L_ga_print ) THEN
+        WRITE (GA_print_unit,'(/A,1x,I6, 12(1x,E15.7))') &
               'sbrl: i_GA_best_parent, Parent_Parameters ', &
                      i_GA_best_parent, &
                      (Parent_Parameters(jj, i_GA_Best_Parent),jj= 1,n_parameters)
-    endif ! L_ga_print
+    END IF ! L_ga_print
 
 
-    do  jj = 1, n_CODE_Equations
+    DO  jj = 1, n_CODE_Equations
         GP_Individual_Initial_Conditions(jj) = &
                         Parent_Parameters( jj, i_GA_Best_Parent )
-    enddo ! jj
+    END DO ! jj
 
 
-    if( L_ga_print )then
-        write(GA_print_unit,'(/A/ 6(1x,E15.7))') &
+    IF ( L_ga_print ) THEN
+        WRITE (GA_print_unit,'(/A/ 6(1x,E15.7))') &
               'sbrl: GP_Individual_Initial_Conditions(1:n_CODE_Equations) ', &
                     (GP_Individual_Initial_Conditions(jj),jj=1,n_CODE_Equations)
-    endif ! L_ga_print
+    END IF ! L_ga_print
 
 
-    if( L_GA_output_parameters )then
+    IF ( L_GA_output_parameters ) THEN
 
-        if( L_stop_run )then
-            write( GA_output_unit, '(I6,3(1x,I6), 12(1x,E15.7))') &
+        IF ( L_STOP_run ) THEN
+            WRITE ( GA_output_unit, '(I6,3(1x,I6), 12(1x,E15.7))') &
               i_GP_Generation,i_GP_individual, &
               i_GA_Generation_last, i_GA_best_parent, &
               individual_ranked_fitness(i_GA_best_parent), &
               (parent_parameters(jj, i_GA_best_parent), jj=1,n_parameters)
-        else
-            write( GA_output_unit, '(I6,3(1x,I6), 12(1x,E15.7))') &
+        ELSE
+            WRITE ( GA_output_unit, '(I6,3(1x,I6), 12(1x,E15.7))') &
               i_GP_Generation,i_GP_individual, &
               n_GA_Generations, i_GA_best_parent, &
               individual_ranked_fitness(i_GA_best_parent), &
               (parent_parameters(jj, i_GA_best_parent), jj=1,n_parameters)
-        endif ! L_stop_run
+        END IF ! L_STOP_run
 
-    endif ! L_GA_output_parameters
+    END IF ! L_GA_output_parameters
 
 
 
@@ -321,43 +351,43 @@ else  ! lmdif is best
     ! load the parameters output by lmdif into GP_Individual_Node_Parameters
 
 
-    if( L_ga_print )then
-        write(GA_print_unit,'(/a/)')&
+    IF ( L_ga_print ) THEN
+        WRITE (GA_print_unit,'(/a/)')&
               'sbrl: load the GP_Individual_Node_Parameters array'
-    endif ! L_ga_print
+    END IF ! L_ga_print
 
-    i_parameter = n_CODE_equations ! start at this number because of the
+    i_parameter = n_CODE_equations ! start at this number becaUSE of the
                                    ! initial conditions (n_CODE_Equations of them)
 
-    do  i_tree=1,n_trees
+    DO  i_tree=1,n_trees
 
-        do  i_node=1,n_nodes
+        DO  i_node=1,n_nodes
 
-            if( GP_individual_node_type(i_node,i_tree) .eq. 0 ) then  ! parameter
+            IF ( GP_individual_node_type(i_node,i_tree) .eq. 0 ) THEN  ! parameter
 
                 i_parameter=i_parameter+1
 
                 GP_Individual_Node_Parameters(i_node,i_tree) = &
                             Parent_Parameters(i_Parameter, i_GA_Best_Parent)
 
-                if( L_ga_print )then
+                IF ( L_ga_print ) THEN
                 
-                    write(GA_print_unit,'(A,2(1x,I6),1x,E20.10)') &
+                    WRITE (GA_print_unit,'(A,2(1x,I6),1x,E20.10)') &
                           'sbrl:2 i_tree, i_node, GP_indiv_node_params', &
                                   i_tree, i_node, GP_individual_node_parameters(i_node,i_tree)
-                endif ! L_ga_print
+                END IF ! L_ga_print
 
-            endif ! GP_individual_node_type(i_node,i_tree) .eq. 0
+            END IF ! GP_individual_node_type(i_node,i_tree) .eq. 0
 
-        enddo ! i_node
+        END DO ! i_node
 
-    enddo ! i_tree
-
-
-endif ! individual_ranked_fitness...
+    END DO ! i_tree
 
 
-return
+END IF ! individual_ranked_fitness...
 
 
-end subroutine select_best_RK_lmdif_result
+RETURN
+
+
+END SUBROUTINE select_best_RK_lmdif_result

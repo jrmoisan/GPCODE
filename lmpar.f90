@@ -1,4 +1,38 @@
-subroutine lmpar ( n, r, ldr, ipvt, diag, qtb, delta, par, x, sdiag )
+!> @brief
+!>  LMPAR computes a parameter for the Levenberg-Marquardt method.
+!>
+!> @details
+!>  LMPAR computes a parameter for the Levenberg-Marquardt method.
+!>
+!> @author Jorge More, Burton Garbow, Kenneth Hillstrom, and John Burkardt.                                    
+!> @date April 6, 2010 John Burkardt.                                                                          
+!>
+!> @param[in] N   the order of R.
+!> @param[inout] R(LDR,N)   the N by N matrix.
+!> @param[in] LDR    the leading dimension of R.  LDR must be no less than N.
+!> @param[in] IPVT(N)    defines the permutation matrix P such that A*P = Q*R.  
+!!            Column J of P is column IPVT(J) of the identity matrix.
+!> @param[in] DIAG(N)   the diagonal elements of the matrix D.
+!> @param[in] QTB(N)   the first N elements of the vector Q'*B.
+!> @param[in] DELTA   an upper bound on the euclidean norm of D*X.
+!> @param[inout] PAR   On input an initial estimate of the Levenberg-Marquardt parameter.  
+!!                     On output the final estimate.
+!> @param[out] X(N)   the least squares solution of the system A*X = B, 
+!!             sqrt(PAR)*D*X = 0, for the output value of PAR.
+!> @param[out] SDIAG(N)   the diagonal elements of the upper triangular matrix S.
+
+SUBROUTINE lmpar ( n, r, ldr, ipvt, diag, qtb, delta, par, x, sdiag )
+
+ 
+!---------------------------------------------------------------------------  
+!
+! DESCRIPTION: 
+! Brief description of routine. 
+!
+! REVISION HISTORY:
+! TODO_dd_mmm_yyyy - TODO_describe_appropriate_changes - TODO_name
+!
+!---------------------------------------------------------------------------  
 
 !*****************************************************************************80
 !
@@ -96,40 +130,40 @@ subroutine lmpar ( n, r, ldr, ipvt, diag, qtb, delta, par, x, sdiag )
 !    triangular matrix S.
 !
 
-use kinds_mod 
+USE kinds_mod 
 
-  implicit none
+  IMPLICIT none
 
-  integer(kind=i4b) ldr
-  integer(kind=i4b) n
+  INTEGER (KIND=i4b) ldr
+  INTEGER (KIND=i4b) n
 
-  real(kind=r8b) delta
-  real(kind=r8b) diag(n)
-  real(kind=r8b) dwarf
-  real(kind=r8b) dxnorm
-  real(kind=r8b) enorm
-  real(kind=r8b) gnorm
-  real(kind=r8b) fp
-  integer(kind=i4b) i
-  integer(kind=i4b) ipvt(n)
-  integer(kind=i4b) iter
-  integer(kind=i4b) j
-  integer(kind=i4b) k
-  integer(kind=i4b) l
-  integer(kind=i4b) nsing
-  real(kind=r8b) par
-  real(kind=r8b) parc
-  real(kind=r8b) parl
-  real(kind=r8b) paru
-  real(kind=r8b) qnorm
-  real(kind=r8b) qtb(n)
-  real(kind=r8b) r(ldr,n)
-  real(kind=r8b) sdiag(n)
-  real(kind=r8b) sum2
-  real(kind=r8b) temp
-  real(kind=r8b) wa1(n)
-  real(kind=r8b) wa2(n)
-  real(kind=r8b) x(n)
+  REAL (KIND=r8b) delta
+  REAL (KIND=r8b) diag(n)
+  REAL (KIND=r8b) dwarf
+  REAL (KIND=r8b) dxnorm
+  REAL (KIND=r8b) enorm
+  REAL (KIND=r8b) gnorm
+  REAL (KIND=r8b) fp
+  INTEGER (KIND=i4b) i
+  INTEGER (KIND=i4b) ipvt(n)
+  INTEGER (KIND=i4b) iter
+  INTEGER (KIND=i4b) j
+  INTEGER (KIND=i4b) k
+  INTEGER (KIND=i4b) l
+  INTEGER (KIND=i4b) nsing
+  REAL (KIND=r8b) par
+  REAL (KIND=r8b) parc
+  REAL (KIND=r8b) parl
+  REAL (KIND=r8b) paru
+  REAL (KIND=r8b) qnorm
+  REAL (KIND=r8b) qtb(n)
+  REAL (KIND=r8b) r(ldr,n)
+  REAL (KIND=r8b) sdiag(n)
+  REAL (KIND=r8b) sum2
+  REAL (KIND=r8b) temp
+  REAL (KIND=r8b) wa1(n)
+  REAL (KIND=r8b) wa2(n)
+  REAL (KIND=r8b) x(n)
 !
 !  DWARF is the smallest positive magnitude.
 !
@@ -141,27 +175,27 @@ use kinds_mod
 !
   nsing = n
 
-  do j = 1, n
+  DO j = 1, n
     wa1(j) = qtb(j)
-    if ( r(j,j) == 0.0D+00 .and. nsing == n ) then
+    IF ( r(j,j) == 0.0D+00 .and. nsing == n ) THEN
       nsing = j - 1
-    end if
-    if ( nsing < n ) then
+    END IF
+    IF ( nsing < n ) THEN
       wa1(j) = 0.0D+00
-    end if
-  end do
+    END IF
+  END DO
 
-  do k = 1, nsing
+  DO k = 1, nsing
     j = nsing - k + 1
     wa1(j) = wa1(j) / r(j,j)
     temp = wa1(j)
     wa1(1:j-1) = wa1(1:j-1) - r(1:j-1,j) * temp
-  end do
+  END DO
 
-  do j = 1, n
+  DO j = 1, n
     l = ipvt(j)
     x(l) = wa1(j)
-  end do
+  END DO
 !
 !  Initialize the iteration counter.
 !  Evaluate the function at the origin, and test
@@ -172,9 +206,9 @@ use kinds_mod
   dxnorm = enorm ( n, wa2 )
   fp = dxnorm - delta
 
-  if ( fp <= 0.1D+00 * delta ) then
+  IF ( fp <= 0.1D+00 * delta ) THEN
     go to 220
-  end if
+  END IF
 !
 !  If the jacobian is not rank deficient, the Newton
 !  step provides a lower bound, PARL, for the zero of
@@ -184,61 +218,61 @@ use kinds_mod
 !
   parl = 0.0D+00
 
-  if ( nsing >= n ) then
+  IF ( nsing >= n ) THEN
 
-    do j = 1, n
+    DO j = 1, n
       l = ipvt(j)
       wa1(j) = diag(l) * ( wa2(l) / dxnorm )
-    end do
+    END DO
 
-    do j = 1, n
+    DO j = 1, n
       sum2 = dot_product ( wa1(1:j-1), r(1:j-1,j) )
       wa1(j) = ( wa1(j) - sum2 ) / r(j,j)
-    end do
+    END DO
 
     temp = enorm ( n, wa1 )
     parl = ( ( fp / delta ) / temp ) / temp
 
-  end if
+  END IF
 !
 !  Calculate an upper bound, PARU, for the zero of the function.
 !
-  do j = 1, n
+  DO j = 1, n
     sum2 = dot_product ( qtb(1:j), r(1:j,j) )
     l = ipvt(j)
     wa1(j) = sum2 / diag(l)
-  end do
+  END DO
 
   gnorm = enorm ( n, wa1 )
   paru = gnorm / delta
-  if ( paru == 0.0D+00 ) then
-    paru = dwarf / min ( delta, 0.1D+00 )
-  end if
+  IF ( paru == 0.0D+00 ) THEN
+    paru = dwarf / MIN ( delta, 0.1D+00 )
+  END IF
 !
 !  If the input PAR lies outside of the interval (PARL, PARU),
 !  set PAR to the closer endpoint.
 !
-  par = max ( par, parl )
-  par = min ( par, paru )
-  if ( par == 0.0D+00 ) then
+  par = MAX ( par, parl )
+  par = MIN ( par, paru )
+  IF ( par == 0.0D+00 ) THEN
     par = gnorm / dxnorm
-  end if
+  END IF
 !
 !  Beginning of an iteration.
 !
-  150 continue
+  150 CONTINUE
 
      iter = iter + 1
 !
 !  Evaluate the function at the current value of PAR.
 !
-     if ( par == 0.0D+00 ) then
-       par = max ( dwarf, 0.001D+00 * paru )
-     end if
+     IF ( par == 0.0D+00 ) THEN
+       par = MAX ( dwarf, 0.001D+00 * paru )
+     END IF
 
-     wa1(1:n) = sqrt ( par ) * diag(1:n)
+     wa1(1:n) = SQRT ( par ) * diag(1:n)
 
-     call qrsolv ( n, r, ldr, ipvt, wa1, qtb, x, sdiag )
+     CALL qrsolv ( n, r, ldr, ipvt, wa1, qtb, x, sdiag )
 
      wa2(1:n) = diag(1:n) * x(1:n)
      dxnorm = enorm ( n, wa2 )
@@ -247,58 +281,58 @@ use kinds_mod
 !
 !  If the function is small enough, accept the current value of PAR.
 !
-    if ( abs ( fp ) <= 0.1D+00 * delta ) then
+    IF ( ABS ( fp ) <= 0.1D+00 * delta ) THEN
       go to 220
-    end if
+    END IF
 !
 !  Test for the exceptional cases where PARL
 !  is zero or the number of iterations has reached 10.
 !
-    if ( parl == 0.0D+00 .and. fp <= temp .and. temp < 0.0D+00 ) then
+    IF ( parl == 0.0D+00 .and. fp <= temp .and. temp < 0.0D+00 ) THEN
       go to 220
-    else if ( iter == 10 ) then
+    ELSE IF ( iter == 10 ) THEN
       go to 220
-    end if
+    END IF
 !
 !  Compute the Newton correction.
 !
-     do j = 1, n
+     DO j = 1, n
        l = ipvt(j)
        wa1(j) = diag(l) * ( wa2(l) / dxnorm )
-     end do
+     END DO
 
-     do j = 1, n
+     DO j = 1, n
        wa1(j) = wa1(j) / sdiag(j)
        temp = wa1(j)
        wa1(j+1:n) = wa1(j+1:n) - r(j+1:n,j) * temp
-     end do
+     END DO
 
      temp = enorm ( n, wa1 )
      parc = ( ( fp / delta ) / temp ) / temp
 !
 !  Depending on the sign of the function, update PARL or PARU.
 !
-     if ( 0.0D+00 < fp ) then
-       parl = max ( parl, par )
-     else if ( fp < 0.0D+00 ) then
-       paru = min ( paru, par )
-     end if
+     IF ( 0.0D+00 < fp ) THEN
+       parl = MAX ( parl, par )
+     ELSE IF ( fp < 0.0D+00 ) THEN
+       paru = MIN ( paru, par )
+     END IF
 !
 !  Compute an improved estimate for PAR.
 !
-     par = max ( parl, par + parc )
+     par = MAX ( parl, par + parc )
 !
 !  End of an iteration.
 !
      go to 150
 
-220  continue
+220  CONTINUE
 !
 !  Termination.
 !
-  if ( iter == 0 ) then
+  IF ( iter == 0 ) THEN
     par = 0.0D+00
-  end if
+  END IF
 
-  return
-end
+  RETURN
+END 

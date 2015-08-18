@@ -1,5 +1,34 @@
-subroutine GP_Clean_Tree_Nodes
+!> @brief
+!>  This subroutine looks through the GP_Adult_Population_Node_Type array and 
+!>  modifies nodes that have both terminals set to a parameter.  
+!>
+!> @details
+!>  This subroutine looks through the GP_Adult_Population_Node_Type array
+!!  for nodes that have both terminals set to a parameter.  The routine replaces
+!!  these nodes with a parameter setting and re-sets the terminals to that node as -9999
+!!  This helps to maintain simplicity within the tree structures.
+!!  The action of GP_Clean_Tree_Nodes should not change the equations generated
+!!  from the tree, since it just replaces "random const op random const"  
+!!  with "random const"
+!!  So the Run_GP_Calculate_Fitness array is not changed
+!>
+!> @author Dr. John R. Moisan [NASA/GSFC]
+!> @date January, 2013 Dr. John R. Moisan
+
+SUBROUTINE GP_Clean_Tree_Nodes()
 !
+ 
+!---------------------------------------------------------------------------  
+!
+! DESCRIPTION: 
+! Brief description of routine. 
+
+!
+! REVISION HISTORY:
+! TODO_dd_mmm_yyyy - TODO_describe_appropriate_changes - TODO_name
+!
+!---------------------------------------------------------------------------  
+
 ! This subroutine looks through the GP_Adult_Population_Node_Type array
 ! for nodes that have both terminals set to a parameter.  The routine replaces
 ! these nodes with a parameter setting and re-sets the terminals to that node as -9999
@@ -10,33 +39,33 @@ subroutine GP_Clean_Tree_Nodes
 
 ! So the Run_GP_Calculate_Fitness array is not changed
 
-use kinds_mod
-use GP_Parameters_module
-use GA_Parameters_module
-use GP_Variables_module
-use GA_Variables_module
+USE kinds_mod
+USE GP_Parameters_module
+USE GA_Parameters_module
+USE GP_Variables_module
+USE GA_Variables_module
 
-implicit none
+IMPLICIT none
 
-integer(kind=i4b) :: i_GP_individual
-integer(kind=i4b) :: i_Tree
-integer(kind=i4b) :: i_level
-integer(kind=i4b) :: i_function
-integer(kind=i4b) :: i_Node
-integer(kind=i4b) :: i_Node_Left
-integer(kind=i4b) :: i_Node_Right
+INTEGER (KIND=i4b) :: i_GP_individual
+INTEGER (KIND=i4b) :: i_Tree
+INTEGER (KIND=i4b) :: i_level
+INTEGER (KIND=i4b) :: i_function
+INTEGER (KIND=i4b) :: i_Node
+INTEGER (KIND=i4b) :: i_Node_Left
+INTEGER (KIND=i4b) :: i_Node_Right
 
 !---------------------------------------------------------------------------
 
 do  i_GP_Individual=1,n_GP_Individuals
 
 
-    do  i_Tree=1,n_Trees
+    DO  i_Tree=1,n_Trees
 
 
         ! move up the tree structure from level "n_level-1" to level "1"
 
-        do  i_Level = n_Levels-1, 1, -1
+        DO  i_Level = n_Levels-1, 1, -1
 
 
             ! calculated the function number at the right end of the upper level
@@ -47,11 +76,11 @@ do  i_GP_Individual=1,n_GP_Individuals
             ! run through each function at the level
 
 
-            do  i_Node = pow2_table( i_level ) + 1 , pow2_table( i_level+1 ), 2
+            DO  i_Node = pow2_table( i_level ) + 1 , pow2_table( i_level+1 ), 2
 
 
 
-                i_Function=i_Function+1  ! sets the 'function' node's index
+                i_Function=i_Function+1  ! sets the 'FUNCTION' node's index
 
 
                 i_Node_Left=i_Node       ! sets the 'left terminal' node's index;
@@ -61,25 +90,25 @@ do  i_GP_Individual=1,n_GP_Individuals
                                          ! i_node_right=(i_function*2)+1 would also work
 
 
-                if( GP_Adult_Population_Node_Type(i_Function,  i_Tree,i_GP_Individual) .gt. 0 .and. &
+                IF ( GP_Adult_Population_Node_Type(i_Function,  i_Tree,i_GP_Individual) .gt. 0 .and. &
                     GP_Adult_Population_Node_Type(i_Node_Left, i_Tree,i_GP_Individual) .eq. 0 .and. &
-                    GP_Adult_Population_Node_Type(i_Node_Right,i_Tree,i_GP_Individual) .eq. 0 ) then
+                    GP_Adult_Population_Node_Type(i_Node_Right,i_Tree,i_GP_Individual) .eq. 0 ) THEN
 
                     GP_Adult_Population_Node_Type(i_Function,  i_Tree,i_GP_Individual) = 0
                     GP_Adult_Population_Node_Type(i_Node_Left, i_Tree,i_GP_Individual) = -9999
                     GP_Adult_Population_Node_Type(i_Node_Right,i_Tree,i_GP_Individual) = -9999
 
-                endif ! GP_Adult_Population_Node_Type(i_Function,i_Tree,i_GP_Individual) .gt. 0 ...
+                END IF ! GP_Adult_Population_Node_Type(i_Function,i_Tree,i_GP_Individual) .gt. 0 ...
 
-            enddo ! i_node
+            END DO ! i_node
 
-        enddo ! i_level
+        END DO ! i_level
 
-    enddo ! i_tree
+    END DO ! i_tree
 
-enddo !  i_GP_Individual
+END DO !  i_GP_Individual
 
 
-return
+RETURN
 
-end subroutine GP_Clean_Tree_Nodes
+END SUBROUTINE GP_Clean_Tree_Nodes

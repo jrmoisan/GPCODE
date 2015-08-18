@@ -1,51 +1,80 @@
-subroutine fcn(mm,nn,x,fvec,iflag)
+!> @brief
+!>  This subroutine sets the parameters needed for the Runge-Kutta integration into
+!!  the appropriate arrays and calls the routine which does the integration.
+!>
+!> @details
+!>  This subroutine sets the parameters needed for the Runge-Kutta integration into
+!!  the appropriate arrays and calls the routine which does the integration.
+!>
+!> @author Dr. John R. Moisan [NASA/GSFC]
+!> @date January, 2013 Dr. John R. Moisan
+!>
+!> @param[in]  mm
+!> @param[in]  nn
+!> @param[out] x
+!> @param[out] fvec
+!> @param[out] iflag
 
-use kinds_mod 
+SUBROUTINE fcn(mm,nn,x,fvec,iflag)
 
-use mpi
-use mpi_module
+ 
+!---------------------------------------------------------------------------  
+!
+! DESCRIPTION: 
+! Brief description of routine. 
+!
+! REVISION HISTORY:
+! TODO_dd_mmm_yyyy - TODO_describe_appropriate_changes - TODO_name
+!
 
+!---------------------------------------------------------------------------  
 
-use class_Tree_Node
-use class_Serialization_Visitor
-use Tree_Helper_module
-use Tree_Node_Factory_module
+USE kinds_mod 
 
-use GA_parameters_module
-use GP_parameters_module
-use GP_variables_module
-use GP_data_module
-
-implicit none
-
-integer(kind=i4b),intent(in)  :: mm  ! n_tsteps
-integer(kind=i4b),intent(in)  :: nn  ! n_parms
+USE mpi
+USE mpi_module
 
 
-real(kind=r8b),dimension(n_time_steps) :: fvec
-real(kind=r8b),dimension(n_time_steps) :: fvec_nolog10
+USE class_Tree_Node
+USE class_Serialization_Visitor
+USE Tree_Helper_module
+USE Tree_Node_Factory_module
 
-real(kind=r8b) :: x_time_step 
-real(kind=r8b) :: fvec_before 
+USE GA_parameters_module
+USE GP_parameters_module
+USE GP_variables_module
+USE GP_data_module
 
-real(kind=r8b) :: x( nn )
+IMPLICIT none
 
-real(kind=r8b) :: sse_local
+INTEGER (KIND=i4b),INTENT(IN)  :: mm  ! n_tsteps
+INTEGER (KIND=i4b),INTENT(IN)  :: nn  ! n_parms
 
-real(kind=r8b) :: max_x
 
-integer(kind=i4b) :: iflag
+REAL (KIND=r8b),DIMENSION(n_time_steps) :: fvec
+REAL (KIND=r8b),DIMENSION(n_time_steps) :: fvec_nolog10
 
-integer(kind=i4b) :: i_Tree
-integer(kind=i4b) :: i_Node
-integer(kind=i4b) :: i
-integer(kind=i4b) :: tree_node_count
+REAL (KIND=r8b) :: x_time_step 
+REAL (KIND=r8b) :: fvec_before 
 
-integer(kind=i4b) :: i_CODE_equation
-integer(kind=i4b) :: i_time_step
-integer(kind=i4b) :: i_parameter
+REAL (KIND=r8b) :: x( nn )
 
-logical,parameter :: L_GP_print = .TRUE.
+REAL (KIND=r8b) :: sse_local
+
+REAL (KIND=r8b) :: max_x
+
+INTEGER (KIND=i4b) :: iflag
+
+INTEGER (KIND=i4b) :: i_Tree
+INTEGER (KIND=i4b) :: i_Node
+INTEGER (KIND=i4b) :: i
+INTEGER (KIND=i4b) :: tree_node_count
+
+INTEGER (KIND=i4b) :: i_CODE_equation
+INTEGER (KIND=i4b) :: i_time_step
+INTEGER (KIND=i4b) :: i_parameter
+
+LOGICAL,PARAMETER :: L_GP_print = .TRUE.
 
 !---------------------------------------------------------------------
 
@@ -60,19 +89,19 @@ Numerical_CODE_Solution = 0.0d0
 
 do  i_CODE_equation=1,n_CODE_equations
 
-    Numerical_CODE_Solution(0,i_CODE_equation) = dabs( x(i_CODE_equation) )
+    Numerical_CODE_Solution(0,i_CODE_equation) = DABS ( x(i_CODE_equation) )
 
 
-    if( isnan( Numerical_CODE_Solution(0,i_CODE_equation) ) .or. &
-        abs( Numerical_CODE_Solution(0,i_CODE_equation) )  > big_real  )then
+    IF ( ISNAN ( Numerical_CODE_Solution(0,i_CODE_equation) ) .or. &
+        ABS ( Numerical_CODE_Solution(0,i_CODE_equation) )  > big_real  ) THEN
 
         L_bad_result = .TRUE.
         iflag = -1
-        return
+        RETURN
 
-    endif  ! isnan
+    END IF  ! isnan
 
-enddo !  i_CODE_equation
+END DO !  i_CODE_equation
 
 ! set the node_parameters array from the parameter array
 
@@ -81,40 +110,40 @@ i_parameter = n_CODE_equations
 
 tree_loop:&
 do  i_tree=1,n_trees
-    do  i_node=1,n_nodes
+    DO  i_node=1,n_nodes
 
 
 
-        if( GP_Individual_Node_Type(i_node,i_tree) .eq. 0) then  ! set the node_parameter
+        IF ( GP_Individual_Node_Type(i_node,i_tree) .eq. 0) THEN  ! set the node_parameter
 
             i_parameter=i_parameter+1
 
-            if( i_parameter > nn ) then
+            IF ( i_parameter > nn ) THEN
             
                 L_bad_result = .TRUE.
                 iflag = -1
-                return
-            endif ! i_parameter > nn
+                RETURN
+            END IF ! i_parameter > nn
   
-            GP_Individual_Node_Parameters(i_node,i_tree) = dabs(x(i_parameter))
+            GP_Individual_Node_Parameters(i_node,i_tree) = DABS (x(i_parameter))
   
   
   
-            if( isnan( GP_Individual_Node_Parameters(i_node,i_tree) )  .or. &
-                  abs( GP_Individual_Node_Parameters(i_node,i_tree) ) > big_real  ) then
+            IF ( ISNAN ( GP_Individual_Node_Parameters(i_node,i_tree) )  .or. &
+                  ABS ( GP_Individual_Node_Parameters(i_node,i_tree) ) > big_real  ) THEN
   
                 L_bad_result = .TRUE.
                 iflag = -1
-                return
+                RETURN
   
-            endif  ! isnan
+            END IF  ! isnan
   
 
-        endif !  GP_individual_node_type(i_node,i_tree) .eq. 0
+        END IF !  GP_individual_node_type(i_node,i_tree) .eq. 0
 
-    enddo ! i_node
+    END DO ! i_node
 
-enddo tree_loop  ! i_tree
+END DO tree_loop  ! i_tree
 
 !-----------------------------------------------------------------------------------
 
@@ -125,7 +154,7 @@ enddo tree_loop  ! i_tree
 
 ! sets buildtrees = .true. in initialize_model
 
-call Initialize_Model( .true., .true. , 6 )   ! call build_trees
+CALL Initialize_Model( .true., .true. , 6 )   ! CALL build_trees
 
 
 !------------------------------------------------------------------------------
@@ -152,34 +181,34 @@ L_bad_result = .FALSE.
 !----------------------------------------------------------------------
 
 
-if( n_input_vars == 0 )then
+IF ( n_input_vars == 0 ) THEN
 
-    call Runge_Kutta_Box_Model( .FALSE. )
+    CALL Runge_Kutta_Box_Model( .FALSE. )
 
-else
+ELSE
 
-    call Runge_Kutta_Box_Model_data( .FALSE. )
+    CALL Runge_Kutta_Box_Model_DATA( .FALSE. )
 
-endif ! n_input_vars == 0
+END IF ! n_input_vars == 0
 
 
 !----------------------------------------------------------------------
 
 
-if( L_bad_result ) then
+IF ( L_bad_result ) THEN
 
     iflag = -1
 
-    do  i = 1, n_trees
-        if( associated( GP_Trees(i,1)%n )  )then
-            call GP_Trees(i,1)%n%delete()
-            deallocate( GP_Trees(i,1)%n )
-        endif
-    enddo
+    DO  i = 1, n_trees
+        IF ( ASSOCIATED ( GP_Trees(i,1)%n )  ) THEN
+            CALL GP_Trees(i,1)%n%delete()
+            DEALLOCATE ( GP_Trees(i,1)%n )
+        END IF
+    END DO
 
-    return
+    RETURN
 
-endif ! L_bad_result
+END IF ! L_bad_result
 
 !---------------------------------------------------------------------
 
@@ -191,29 +220,29 @@ do  i_CODE_equation=1,n_CODE_equations
 
     !min_x = 0.0d0
     max_x = 0.0d0
-    do  i_time_step=1,n_time_steps
+    DO  i_time_step=1,n_time_steps
 
-        max_x = max( max_x, Numerical_CODE_Solution(i_time_step,i_CODE_equation)  ) 
+        max_x = MAX ( max_x, Numerical_CODE_Solution(i_time_step,i_CODE_equation)  ) 
 
-    enddo ! i_time_step
+    END DO ! i_time_step
 
-    if( max_x < 1.0d-6 )then
+    IF ( max_x < 1.0d-6 ) THEN
 
         L_bad_result = .TRUE.
         iflag = -1
 
-        do  i = 1, n_trees
-            if( associated( GP_Trees(i,1)%n )  )then
-                call GP_Trees(i,1)%n%delete()
-                deallocate( GP_Trees(i,1)%n )
-            endif
-        enddo
+        DO  i = 1, n_trees
+            IF ( ASSOCIATED ( GP_Trees(i,1)%n )  ) THEN
+                CALL GP_Trees(i,1)%n%delete()
+                DEALLOCATE ( GP_Trees(i,1)%n )
+            END IF
+        END DO
 
-        return
+        RETURN
 
-    endif !  max_x < 1.0d-6
+    END IF !  max_x < 1.0d-6
 
-enddo ! i_CODE_equation
+END DO ! i_CODE_equation
 
 !---------------------------------------------------------------------
 
@@ -230,44 +259,45 @@ do  i_time_step=1,n_time_steps
 
     fvec(i_time_step)=0.0D0
 
-    if( index( model, 'data' ) == 0 .and. &
-        index( model, 'DATA' ) == 0         )then
+    IF ( INDEX ( model, 'DATA' ) == 0 .and. &
+        INDEX ( model, 'DATA' ) == 0         ) THEN
 
-        x_time_step = real( i_time_step, kind=r8b ) * dt
+        x_time_step = REAL ( i_time_step, KIND=r8b ) * dt
     
-        if( x_time_step >=  sse_min_time .and. &
-            x_time_step <=  sse_max_time         )then
+        IF ( x_time_step >=  sse_min_time .and. &
+            x_time_step <=  sse_max_time         ) THEN
     
             sse_wt = 1.0d0
-        else
+        ELSE
             sse_wt = sse_low_wt  
-        endif  !   x_time_step >= sse_min_time ...
-
-    endif ! index( model, 'data' ) == 0 .and. ...
+        END IF  !   x_time_step >= sse_min_time ...
 
 
-    do  i_CODE_equation=1,n_CODE_equations
+    END IF ! INDEX ( model, 'DATA' ) == 0 .and. ...
+
+
+    DO  i_CODE_equation=1,n_CODE_equations
   
   
-        if( index( model,'LOG10') > 0 .or. &
-            index( model,'log10') > 0         )then
+        IF ( INDEX ( model,'LOG10') > 0 .or. &
+            INDEX ( model,'log10') > 0         ) THEN
     
             fvec(i_time_step) = fvec(i_time_step)  +                                      &
                 (  Data_Array_log10(i_time_step,i_CODE_equation)  -                       &
                    Numerical_CODE_Solution_log10(i_time_step,i_CODE_equation)    )**2  *  &
                                       Data_Variance_inv(i_CODE_equation)
 
-        else
+        ELSE
     
             fvec(i_time_step) = fvec(i_time_step)  +                                &
                 (   Data_Array(i_time_step,i_CODE_equation) -                       &
                     Numerical_CODE_Solution(i_time_step,i_CODE_equation)   )**2  *  &
                                       Data_Variance_inv(i_CODE_equation)
       
-        endif!  index( model,'LOG10') > 0 ...
+        END IF!  INDEX ( model,'LOG10') > 0 ...
 
   
-    enddo ! i_CODE_equation
+    END DO ! i_CODE_equation
 
 
     fvec_before = fvec(i_time_step)
@@ -277,55 +307,55 @@ do  i_time_step=1,n_time_steps
     sse_local = sse_local + fvec(i_time_step)  ! 20131209
 
 
-enddo ! i_time_step
+END DO ! i_time_step
 
 !---------------------------------------------------------------------------------
 
 ! compute the SSE (not the SSE with log10) for output in the GPSSE*log files
 
-if( index( model,'LOG10') > 0 .or. &
-    index( model,'log10') > 0         )then
+IF ( INDEX ( model,'LOG10') > 0 .or. &
+    INDEX ( model,'log10') > 0         ) THEN
     
 
     sse_local_nolog10 = 0.0D0  ! 20131209
     sse_wt = 1.0d0
     fvec_nolog10 = 0.0D0
     
-    do  i_time_step=1,n_time_steps
+    DO  i_time_step=1,n_time_steps
     
         fvec_nolog10(i_time_step)=0.0D0
       
-        do  i_CODE_equation=1,n_CODE_equations
+        DO  i_CODE_equation=1,n_CODE_equations
     
             fvec_nolog10(i_time_step) = fvec_nolog10(i_time_step)  +                &
                 (   Data_Array(i_time_step,i_CODE_equation) -                       &
                     Numerical_CODE_Solution(i_time_step,i_CODE_equation)   )**2  *  &
                                       Data_Variance_inv(i_CODE_equation)
           
-        enddo ! i_CODE_equation
+        END DO ! i_CODE_equation
     
         sse_local_nolog10 = sse_local_nolog10 + fvec_nolog10(i_time_step)  ! 20150306
     
-    enddo ! i_time_step
+    END DO ! i_time_step
 
 
-endif!  index( model,'LOG10') > 0 ...
+END IF!  INDEX ( model,'LOG10') > 0 ...
 
 !---------------------------------------------------------------------------------
 
 do  i = 1, n_trees
 
-    if( associated( GP_Trees(i,1)%n )  )then
-        call GP_Trees(i,1)%n%delete()
-        deallocate( GP_Trees(i,1)%n )
-    endif
+    IF ( ASSOCIATED ( GP_Trees(i,1)%n )  ) THEN
+        CALL GP_Trees(i,1)%n%delete()
+        DEALLOCATE ( GP_Trees(i,1)%n )
+    END IF
 
-enddo ! i 
+END DO ! i 
 
 !---------------------------------------------------------------------------------
 
 
-return
+RETURN
 
 
-end subroutine fcn
+END SUBROUTINE fcn

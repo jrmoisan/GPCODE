@@ -1,4 +1,28 @@
-function enorm ( n, x )
+!> @brief
+!>  This function computes the Euclidean norm of a vector.
+!>
+!> @details
+!>  This function computes the Euclidean norm of a vector.
+!>
+!> @author Jorge More, Burton Garbow, Kenneth Hillstrom, and   John Burkardt
+!> @date  April 6, 2010 John Burkardt
+!>
+!> @param[in]  N           
+!> @param[in]  X
+!> @return  enorm
+
+FUNCTION enorm ( n, x )
+
+ 
+!---------------------------------------------------------------------------  
+!
+! DESCRIPTION: 
+! Brief description of routine. 
+!
+! REVISION HISTORY:
+! TODO_dd_mmm_yyyy - TODO_describe_appropriate_changes - TODO_name
+!
+!---------------------------------------------------------------------------  
 
 !*****************************************************************************80
 !
@@ -38,15 +62,15 @@ function enorm ( n, x )
 !    Output, real(kind=r8b) ENORM, the Euclidean norm of the vector.
 !
 
-use kinds_mod 
+USE kinds_mod 
 
-  implicit none
+  IMPLICIT none
 
-  integer(kind=i4b) n
-  real(kind=r8b) x(n)
-  real(kind=r8b) enorm
+  INTEGER (KIND=i4b) n
+  REAL (KIND=r8b) x(n)
+  REAL (KIND=r8b) enorm
 
-  enorm = sqrt ( sum ( x(1:n)**2 ))
+  enorm = SQRT ( sum ( x(1:n)**2 ))
 
-  return
-end
+  RETURN
+END 

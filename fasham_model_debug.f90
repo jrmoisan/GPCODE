@@ -1,23 +1,46 @@
-subroutine fasham_model_debug()
+!> @brief
+!>  This subroutine sets the truth values of the Fasham model into the tree arrays
+!>  for use with the fasham_fixed_tree model
+!>
+!> @details
+!>  This subroutine sets the truth values of the Fasham model into the tree arrays
+!>  for use with the fasham_fixed_tree model
+!>
+!> @author Dr. John R. Moisan [NASA/GSFC]
+!> @date January, 2013 Dr. John R. Moisan
+
+SUBROUTINE fasham_model_debug()
                     
-use kinds_mod
-use mpi   
-use mpi_module                      
+ 
+!---------------------------------------------------------------------------  
+!
+! DESCRIPTION: 
+! Brief description of routine. 
+!
+! REVISION HISTORY:
+! TODO_dd_mmm_yyyy - TODO_describe_appropriate_changes - TODO_name
+!
+
+!---------------------------------------------------------------------------  
+
+USE kinds_mod
+USE mpi   
+USE mpi_module                      
                                    
-use GP_Parameters_module          
-use GP_variables_module          
-use GA_Parameters_module        
-use GA_Variables_module        
-use GP_Data_module            
+USE GP_Parameters_module          
+USE GP_variables_module          
+USE GA_Parameters_module        
+USE GA_Variables_module        
+USE GP_Data_module            
                              
-use fasham_variables_module 
-use Tree_Node_Factory_module  
-use class_Tree_Node          
+USE fasham_variables_module 
+USE Tree_Node_Factory_module  
+USE class_Tree_Node          
                             
                            
-implicit none             
+IMPLICIT none             
                          
-integer(kind=i4b) :: i_gp_individual 
+INTEGER (KIND=i4b) :: i_gp_individual 
 
 !-------------------------------------------------------------------------------------------------------
 
@@ -684,10 +707,10 @@ do  i_GP_individual = 1, n_GP_Individuals
           GP_Individual_Node_Type(:,:)
     GP_Population_Node_parameters(:,:,i_GP_individual) = &
           GP_Individual_Node_parameters(:,:)
-enddo
+END DO
 
 ! parameters are set in Init*f90  ??
 
-return
+RETURN
 
-end subroutine fasham_model_debug
+END SUBROUTINE fasham_model_debug

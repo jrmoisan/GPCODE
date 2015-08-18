@@ -1,42 +1,63 @@
-module Tree_Helper_module
-use kinds_mod 
-use class_Tree_Node
+!> @brief
+!>  This module provides functions needed to process tree objects.              
+!>
+!> @details
+!>  This module provides functions needed to process tree objects.              
+!>
+!> @author Dr. John R. Moisan [NASA/GSFC]
+!> @date January, 2013 Dr. John R. Moisan
+
+MODULE Tree_Helper_module
+ 
+!---------------------------------------------------------------------------  
+!
+! DESCRIPTION: 
+! Brief description of routine. 
+!
+! REVISION HISTORY:
+! TODO_dd_mmm_yyyy - TODO_describe_appropriate_changes - TODO_name
+!
+
+!---------------------------------------------------------------------------  
+
+USE kinds_mod 
+USE class_Tree_Node
 
 
-contains
+CONTAINS
 
 !===========================================================================
 
-recursive function GetNodeCount(node) result(count)
+RECURSIVE FUNCTION GetNodeCount(node) RESULT (count)
 
-implicit none
-integer(kind=i4b) :: count
+IMPLICIT none
+INTEGER (KIND=i4b) :: count
 
-type(Tree_Node), pointer :: node
+TYPE(Tree_Node), POINTER :: node
 
 !--------------------------------------------
 
 
-if( node%node_type .eq. 1 ) then
+IF ( node%node_type .eq. 1 ) THEN
 
     node%node_count = 1 + GetNodeCount(node%left) + &
                           GetNodeCount(node%right)
     count = node%node_count
 
-endif
+END IF
 
 count = node%node_count
 
 
-end function
+END FUNCTION
 
 !===========================================================================
 
-function GetMaxHeight(Trees, Tree_count)  result(maxHeight)
+FUNCTION GetMaxHeight(Trees, Tree_count)  RESULT (maxHeight)
 
-implicit none
-integer(kind=i4b) :: Tree_count, currentHeight, maxHeight, i
-type(Tree_Node_Pointer), dimension(Tree_count), intent(in) :: Trees ! The array of trees
+IMPLICIT none
+INTEGER (KIND=i4b) :: Tree_count, currentHeight, maxHeight, i
+TYPE(Tree_Node_Pointer), DIMENSION(Tree_count), INTENT(IN) :: Trees ! The array of trees
 
 !--------------------------------------------
 
@@ -46,32 +67,32 @@ currentHeight = 0
 do  i = 1,Tree_count
 
     currentHeight = GetTreeHeight(Trees(i)%n)
-    if( currentHeight .gt. maxHeight) then
+    IF ( currentHeight .gt. maxHeight) THEN
         maxHeight = currentHeight
-    endif
+    END IF
 
-enddo
+END DO
 
-end function
+END FUNCTION
 
 !===========================================================================
 
-recursive function GetTreeHeight(node) result(height)
+RECURSIVE FUNCTION GetTreeHeight(node) RESULT (height)
 
-implicit none
-type(Tree_Node), pointer :: node
-integer(kind=i4b) :: height
+IMPLICIT none
+TYPE(Tree_Node), POINTER :: node
+INTEGER (KIND=i4b) :: height
 
 !--------------------------------------------
 
 height = 0
 ! Sanity Check
-if( associated(node)) then
-    height = max(GetTreeHeight(node%left), GetTreeHeight(node%right)) + 1
-endif
+IF ( ASSOCIATED (node)) THEN
+    height = MAX (GetTreeHeight(node%left), GetTreeHeight(node%right)) + 1
+END IF
 
-end function
+END FUNCTION
 
 !===========================================================================
 
-end module  Tree_Helper_module
+END MODULE  Tree_Helper_module
