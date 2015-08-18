@@ -83,7 +83,7 @@ USE GP_variables_module
 
 
     th=(ABS (thour-12.D+0)*15.D+0)*(2.D+0*pi/360.D+0)     ! hour angle [15.D+0 ==> degrees per hour]
-    cosz=((SIN (dec)*SIN (alatr))+(COS (dec)*COS (alatr)*cos(th)))
+    cosz=((SIN (dec)*SIN (alatr))+(COS (dec)*COS (alatr)*COS (th)))
     zenith=ACOS (cosz)  ! zenith ==> solar zenith angle in radians
     saltd=90.D+0-((360.D+0*zenith)/(2.D+0*pi))  ! solar altitude in degrees
     albedo=0.04D+0

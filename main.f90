@@ -81,7 +81,7 @@ INTEGER (KIND=i4b) :: comm_world
 
 
 CHARACTER (15),PARAMETER :: program_version   = '201502.004_v16'
-CHARACTER (10),PARAMETER :: modification_date = '20150812'
+CHARACTER (10),PARAMETER :: modification_date = '20150818'
 CHARACTER (50),PARAMETER :: branch  =  'master'
 
 INTEGER (KIND=i4b), parameter ::  zero = 0
@@ -161,15 +161,15 @@ CALL read_cntl_vars( ierror  )
 
 n_inputs = n_input_vars
 
-if( myid == 0 )then
-    if( L_replace_larger_SSE_only )then
-        write(6,'(/A/)') &
+IF ( myid == 0 ) THEN
+    IF ( L_replace_larger_SSE_only ) THEN
+        WRITE (6,'(/A/)') &
          '0: GP_Fit* only  replaces the individual if the SSE decreases after replacement'
-    else
-        write(6,'(/A/)') &
+    ELSE
+        WRITE (6,'(/A/)') &
          '0: GP_Fit* always replaces the individual regardless of the SSE'
-    endif !  L_replace_larger_SSE_only
-endif ! myid == 0
+    END IF !  L_replace_larger_SSE_only
+END IF ! myid == 0
 
 !----------------------------------------------------
 

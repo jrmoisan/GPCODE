@@ -620,8 +620,8 @@ DO
 
 
 
-        if( trim(model) == 'fasham_cdom'   ) model = 'fasham_CDOM' 
-        if( trim(model) == 'fasham_cdom_gp') model = 'fasham_CDOM_GP'
+        IF ( TRIM (model) == 'fasham_cdom'   ) model = 'fasham_CDOM' 
+        IF ( TRIM (model) == 'fasham_cdom_gp') model = 'fasham_CDOM_GP'
 
 
 
@@ -1515,17 +1515,17 @@ DO
 
 
 
-    elseif( Aline(1:len('replace_larger_SSE_only')) == "REPLACE_LARGER_SSE_ONLY" .or.     &
+    ELSE IF ( Aline(1:len('replace_larger_SSE_only')) == "REPLACE_LARGER_SSE_ONLY" .or.     &
             Aline(1:len('replace_larger_SSE_only')) == "replace_larger_SSE_only" .or.     &
-            Aline(1:len('replace_larger_SSE_only')) == "replace_larger_sse_only"     ) then
+            Aline(1:len('replace_larger_SSE_only')) == "replace_larger_sse_only"     ) THEN
 
         
         L_replace_larger_SSE_only = .true.
 
-        if( myid == 0 )then
-            write(GP_print_unit,'(A,4x,L1)') &
+        IF ( myid == 0 ) THEN
+            WRITE (GP_print_unit,'(A,4x,L1)') &
                   'rcntl: L_replace_larger_SSE_only = ', L_replace_larger_SSE_only
-        endif !myid==0
+        END IF !myid==0
 
 
 
