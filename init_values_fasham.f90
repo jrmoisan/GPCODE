@@ -247,18 +247,18 @@ endif ! myid == 0
 
 if( n_levels == 6 )then
 !   n_levels = 6
-    Node_Probability = (/0.8d0,0.7d0,6.d0, &
+    Node_Probability = (/0.8d0,0.7d0,0.6d0, &
                          0.4d0,0.3d0,0.d0/)  ! NOTE: Last value MUST BE 0.0!!!]
 
 
 elseif( n_levels == 7 )then
     !!  n_levels = 7
-    Node_Probability = (/0.8d0,0.7d0,6.d0, &
+    Node_Probability = (/0.8d0,0.7d0,0.6d0, &
                          0.5d0,0.4d0,0.3d0,0.d0/)  ! NOTE: Last value MUST BE 0.0!!!]
 
 elseif( n_levels == 8 )then
     !   n_levels = 8
-    Node_Probability = (/0.9d0,0.8d0,0.7d0,6.d0, &
+    Node_Probability = (/0.9d0,0.8d0,0.7d0,0.6d0, &
                          0.5d0,0.4d0,0.3d0,0.d0/)  ! NOTE: Last value MUST BE 0.0!!!]
 else
 
