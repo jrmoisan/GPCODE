@@ -187,7 +187,7 @@ IF ( n_input_vars == 0 ) THEN
 
 ELSE
 
-    CALL Runge_Kutta_Box_Model_DATA( .FALSE. )
+    CALL Runge_Kutta_Box_Model_data( .FALSE. )
 
 END IF ! n_input_vars == 0
 
@@ -259,7 +259,7 @@ do  i_time_step=1,n_time_steps
 
     fvec(i_time_step)=0.0D0
 
-    IF ( INDEX ( model, 'DATA' ) == 0 .and. &
+    IF ( INDEX ( model, 'data' ) == 0 .and. &
         INDEX ( model, 'DATA' ) == 0         ) THEN
 
         x_time_step = REAL ( i_time_step, KIND=r8b ) * dt
@@ -273,7 +273,7 @@ do  i_time_step=1,n_time_steps
         END IF  !   x_time_step >= sse_min_time ...
 
 
-    END IF ! INDEX ( model, 'DATA' ) == 0 .and. ...
+    END IF ! INDEX ( model, 'data' ) == 0 .and. ...
 
 
     DO  i_CODE_equation=1,n_CODE_equations
