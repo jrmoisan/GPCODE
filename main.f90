@@ -187,7 +187,7 @@ END IF ! myid == 0
 
 !----------------------------------------------------
 
-CALL setup_mathfunctions()
+CALL setup_math_functions()
 
 CALL load_pow2_table()
 
