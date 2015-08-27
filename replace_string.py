@@ -14,6 +14,7 @@ tag_list = []
 tag_list.append( (  'subroutine','SUBROUTINE' )  )
 tag_list.append( (  ' function',' FUNCTION' )  )
 tag_list.append( (  '_FUNCTION','function' )  )
+tag_list.append( (  'mathfunction','math_function' )  )
 tag_list.append( (  'return','RETURN' )  )
 tag_list.append( (  'enddo','END DO' )  )
 tag_list.append( (  'end do','END DO' )  )
