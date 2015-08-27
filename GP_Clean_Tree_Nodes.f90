@@ -50,7 +50,7 @@ IMPLICIT none
 INTEGER (KIND=i4b) :: i_GP_individual
 INTEGER (KIND=i4b) :: i_Tree
 INTEGER (KIND=i4b) :: i_level
-INTEGER (KIND=i4b) :: i_function
+INTEGER (KIND=i4b) :: i_func
 INTEGER (KIND=i4b) :: i_Node
 INTEGER (KIND=i4b) :: i_Node_Left
 INTEGER (KIND=i4b) :: i_Node_Right
@@ -70,7 +70,7 @@ do  i_GP_Individual=1,n_GP_Individuals
 
             ! calculated the function number at the right end of the upper level
 
-            i_Function = pow2_table( i_level - 1 )    ! 2**(i_Level-1) - 1
+            i_func = pow2_table( i_level - 1 )    ! 2**(i_Level-1) - 1
 
 
             ! run through each function at the level
@@ -80,25 +80,25 @@ do  i_GP_Individual=1,n_GP_Individuals
 
 
 
-                i_Function=i_Function+1  ! sets the 'FUNCTION' node's index
+                i_func=i_func+1  ! sets the 'function' node's index
 
 
                 i_Node_Left=i_Node       ! sets the 'left terminal' node's index;
-                                         ! i_node_left=i_function*2 would also work
+                                         ! i_node_left=i_func*2 would also work
 
                 i_Node_Right=i_Node+1    ! sets the 'right terminal' node's index;
-                                         ! i_node_right=(i_function*2)+1 would also work
+                                         ! i_node_right=(i_func*2)+1 would also work
 
 
-                IF ( GP_Adult_Population_Node_Type(i_Function,  i_Tree,i_GP_Individual) .gt. 0 .and. &
+                IF ( GP_Adult_Population_Node_Type(i_func,  i_Tree,i_GP_Individual) .gt. 0 .and. &
                     GP_Adult_Population_Node_Type(i_Node_Left, i_Tree,i_GP_Individual) .eq. 0 .and. &
                     GP_Adult_Population_Node_Type(i_Node_Right,i_Tree,i_GP_Individual) .eq. 0 ) THEN
 
-                    GP_Adult_Population_Node_Type(i_Function,  i_Tree,i_GP_Individual) = 0
+                    GP_Adult_Population_Node_Type(i_func,  i_Tree,i_GP_Individual) = 0
                     GP_Adult_Population_Node_Type(i_Node_Left, i_Tree,i_GP_Individual) = -9999
                     GP_Adult_Population_Node_Type(i_Node_Right,i_Tree,i_GP_Individual) = -9999
 
-                END IF ! GP_Adult_Population_Node_Type(i_Function,i_Tree,i_GP_Individual) .gt. 0 ...
+                END IF ! GP_Adult_Population_Node_Type(i_func,i_Tree,i_GP_Individual) .gt. 0 ...
 
             END DO ! i_node
 
