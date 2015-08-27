@@ -54,7 +54,7 @@ END IF ! myid == 0
 
 IF ( n_input_vars <= 0 ) RETURN
 
-OPEN ( unit = data_unitnum, file = 'GPGACODE_DATA', form = 'formatted',&
+OPEN ( unit = data_unitnum, file = 'GPGACODE_data', form = 'formatted',&
         status = 'old' )
 
 ! count number of data points
