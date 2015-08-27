@@ -1,6 +1,6 @@
 !> @brief
 !>  This subroutine randomly picks a GA individual and replaces a randomly chosen parameter
-!1  with a random number
+!!  with a random number
 
 !> @details
 !>  This subroutine randomly picks a GA individual and replaces a randomly chosen parameter
