@@ -33,7 +33,7 @@ endif ! myid == 0
 
 if( n_input_vars <= 0 ) return
 
-open( unit = data_unitnum, file = 'GPGACODE_data', form = 'formatted',&
+open( unit = data_unitnum, file = 'GPGACODE_dat', form = 'formatted',&
         status = 'old' )
 
 ! count number of data points

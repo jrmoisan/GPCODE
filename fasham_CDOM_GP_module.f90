@@ -75,7 +75,7 @@ contains
 !   read in data from data files
 !
       data_unitnum = 30
-      open( unit = data_unitnum, file = 'CDOM.data', action="read")
+      open( unit = data_unitnum, file = 'CDOM.dat', action="read")
       i_count = 0
       do
          read( data_unitnum, '(A)', iostat = istat ) Aline
@@ -100,7 +100,7 @@ contains
       close(data_unitnum)   
 
 
-      open( unit = data_unitnum, file = 'CDOM.data', action="read")
+      open( unit = data_unitnum, file = 'CDOM.dat', action="read")
 
       ! skip header 
       do i = 1,3
