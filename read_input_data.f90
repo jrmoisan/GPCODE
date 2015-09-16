@@ -1,126 +1,147 @@
-subroutine read_input_data( )
+!> @brief
+!>  This subroutine reads the input data file when data or datalog10 models are used.
+!>
+!> @details
+!>  This subroutine reads the input data file when data or datalog10 models are used.
+!>
+!> @author Dr. John R. Moisan [NASA/GSFC]
+!> @date January, 2013 Dr. John R. Moisan
 
-use kinds_mod
+SUBROUTINE read_input_DATA( )
 
-use mpi
-use mpi_module
-use GP_Parameters_module
-use GP_variables_module
-use GA_Parameters_module
-use GA_Variables_module
-use GP_Data_module
+ 
+!---------------------------------------------------------------------------  
+!
+! DESCRIPTION: 
+! Brief description of routine. 
+!
+! REVISION HISTORY:
+! TODO_dd_mmm_yyyy - TODO_describe_appropriate_changes - TODO_name
+!
+
+!---------------------------------------------------------------------------  
+
+USE kinds_mod
+
+USE mpi
+USE mpi_module
+USE GP_Parameters_module
+USE GP_variables_module
+USE GA_Parameters_module
+USE GA_Variables_module
+USE GP_Data_module
 
 IMPLICIT NONE
 
 
-integer(kind=i4b) :: istat
-integer(kind=i4b), parameter :: line_length   = 250
+INTEGER (KIND=i4b) :: istat
+INTEGER (KIND=i4b), parameter :: line_length   = 250
 
 CHARACTER(line_length) :: Aline
-integer(kind=i4b) ::  ncount               
-integer(kind=i4b) ::  i                    
-integer(kind=i4b) ::  j                    
+INTEGER (KIND=i4b) ::  ncount               
+INTEGER (KIND=i4b) ::  i                    
+INTEGER (KIND=i4b) ::  j                    
 
 
-real(kind=r8b), allocatable, dimension(:) ::  temp_array
+REAL (KIND=r8b), ALLOCATABLE, DIMENSION(:) ::  temp_array
 
 !-------------------------------------------------------------------------------
 
-if( myid == 0 )then
-    write(6,'(//A,1x,I10/)') 'rid:  n_input_vars = ', n_input_vars
-endif ! myid == 0 
+IF ( myid == 0 ) THEN
+    WRITE (6,'(//A,1x,I10/)') 'rid:  n_input_vars = ', n_input_vars
+END IF ! myid == 0 
 
 
-if( n_input_vars <= 0 ) return
+IF ( n_input_vars <= 0 ) RETURN
 
-open( unit = data_unitnum, file = 'GPGACODE_dat', form = 'formatted',&
+OPEN ( unit = data_unitnum, file = 'GPGACODE_dat', form = 'formatted',&
         status = 'old' )
 
 ! count number of data points
 
-rewind(data_unitnum)
+REWIND (data_unitnum)
 
-allocate(input_data_names(0:n_input_vars))
+ALLOCATE (input_data_names(0:n_input_vars))
 
 ncount = 0
-do
-    read( data_unitnum, '(A)', iostat = istat ) Aline
-    if( istat /= 0 ) exit
+DO 
+    READ ( data_unitnum, '(A)', IOSTAT = istat ) Aline
+    IF ( istat /= 0 ) exit
     ncount = ncount + 1
-enddo
+END DO
 
 ! subtract 1 because line 1 contains labels
 
 n_time_steps = ncount - 1
 
 
-if( myid == 0 )then
-    write(6,'(//A,2(1x,I10)/)') 'rid:  ncount, n_time_steps = ',  ncount, n_time_steps
+IF ( myid == 0 ) THEN
+    WRITE (6,'(//A,2(1x,I10)/)') 'rid:  ncount, n_time_steps = ',  ncount, n_time_steps
     flush(6)
-endif ! myid == 0 
+END IF ! myid == 0 
 
 ! read data names and values
 
-rewind(data_unitnum)
+REWIND (data_unitnum)
 
-read( data_unitnum, *, iostat = istat ) input_data_names(0:n_input_vars) 
+READ ( data_unitnum, *, IOSTAT = istat ) input_data_names(0:n_input_vars) 
 
-if( myid == 0 )then
-    write(6, '(A)') 'rid:  input data names '
-    write(6, '(/A,1x,A)') 'rid: dependent variable = ', trim(input_data_names(0))
-    write(6, '(/A)') 'rid: independent variable i, input_data_names(i)  '
-    do  i = 1, n_input_vars
-        write(6, '(I2,1x,A)') i, trim(input_data_names(i))
-    enddo
-endif ! myid == 0 
+IF ( myid == 0 ) THEN
+    WRITE (6, '(A)') 'rid:  input DATA names '
+    WRITE (6, '(/A,1x,A)') 'rid: dependent variable = ', TRIM (input_data_names(0))
+    WRITE (6, '(/A)') 'rid: independent variable i, input_data_names(i)  '
+    DO  i = 1, n_input_vars
+        WRITE (6, '(I2,1x,A)') i, TRIM (input_data_names(i))
+    END DO
+END IF ! myid == 0 
 
 !---------------------------------------------------------------------
 
-allocate( temp_array( 0:n_input_vars ) ) 
-allocate( input_data_array( 0:n_input_vars, n_time_steps) )
+ALLOCATE ( temp_array( 0:n_input_vars ) ) 
+ALLOCATE ( input_data_array( 0:n_input_vars, n_time_steps) )
 
 ncount = 0
-do
+DO 
 
-    read( data_unitnum, *, iostat = istat ) temp_array(0:n_input_vars)
-    if( istat /= 0 )exit
+    READ ( data_unitnum, *, IOSTAT = istat ) temp_array(0:n_input_vars)
+    IF ( istat /= 0 )exit
 
     ncount = ncount + 1
 
     input_data_array(0:n_input_vars, ncount ) = temp_array(0:n_input_vars) 
 
-enddo
+END DO
 
 !---------------------------------------------------------------------
 
 ! echo input data
 
-if( myid == 0 )then
+IF ( myid == 0 ) THEN
 
-    write(6,'(//A/)') 'rid:  input data '
-    write(6,'(10(1x,A20))') ( trim( input_data_names(i) ), i = 0, n_input_vars )
-    do  j = 1, n_time_steps
-        write(6,'(10(1x,E20.10))') &
+    WRITE (6,'(//A/)') 'rid:  input DATA '
+    WRITE (6,'(10(1x,A20))') ( TRIM ( input_data_names(i) ), i = 0, n_input_vars )
+    DO  j = 1, n_time_steps
+        WRITE (6,'(10(1x,E20.10))') &
              ( input_data_array(i,j), i = 0, n_input_vars ) 
-    enddo 
+    END DO 
 
-endif ! myid == 0 
+END IF ! myid == 0 
 
 
-deallocate( temp_array ) 
+DEALLOCATE ( temp_array ) 
 
-close(data_unitnum)
+CLOSE (data_unitnum)
 
 n_input_data_points = n_time_steps  ! jjm
 
 
-if( myid == 0 )then
-    write(6,'(//A,2(1x,I10)/)') &
+IF ( myid == 0 ) THEN
+    WRITE (6,'(//A,2(1x,I10)/)') &
           'rid:  n_input_data_points, n_time_steps = ',  &
                  n_input_data_points, n_time_steps
     flush(6)
-endif ! myid == 0 
+END IF ! myid == 0 
 
-return 
+RETURN 
 
-END subroutine read_input_data
+END SUBROUTINE read_input_data

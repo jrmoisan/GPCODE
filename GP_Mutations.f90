@@ -1,4 +1,28 @@
-subroutine GP_Mutations( i_error )
+!> @brief
+!>  This subroutine randomly modifies GP tree nodes with randomly chosen
+!!  values
+!>
+!> @details
+!>  This subroutine randomly modifies GP tree nodes with randomly chosen
+!!  values
+!>
+!> @author Dr. John R. Moisan [NASA/GSFC]
+!> @date January, 2013 Dr. John R. Moisan
+!>
+!> @param[out] i_error - > 0 if an error occurred in this routine
+
+SUBROUTINE GP_Mutations( i_error )
+
+ 
+!---------------------------------------------------------------------------  
+!
+! DESCRIPTION: 
+! Brief description of routine. 
+
+!
+! REVISION HISTORY:
+! TODO_dd_mmm_yyyy - TODO_describe_appropriate_changes - TODO_name
+!---------------------------------------------------------------------------  
 
 !xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
@@ -9,36 +33,36 @@ subroutine GP_Mutations( i_error )
 
 !xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
-use kinds_mod
-use mpi
-use mpi_module
+USE kinds_mod
+USE mpi
+USE mpi_module
 
-use GP_Parameters_module
-use GA_Parameters_module
-use GP_Variables_module
-use GA_Variables_module
+USE GP_Parameters_module
+USE GA_Parameters_module
+USE GP_Variables_module
+USE GA_Variables_module
 
-implicit none
+IMPLICIT none
 
-real(kind=r4b) :: cff
+REAL (KIND=r4b) :: cff
 
-integer(kind=i4b) :: i_GP_Mutation
-integer(kind=i4b) :: i_GP_Individual_Mutation
-integer(kind=i4b) :: i_Tree_Mutation
-integer(kind=i4b) :: i_Node
-integer(kind=i4b) :: icnt_Nodes
-integer(kind=i4b) :: icnt
+INTEGER (KIND=i4b) :: i_GP_Mutation
+INTEGER (KIND=i4b) :: i_GP_Individual_Mutation
+INTEGER (KIND=i4b) :: i_Tree_Mutation
+INTEGER (KIND=i4b) :: i_Node
+INTEGER (KIND=i4b) :: icnt_Nodes
+INTEGER (KIND=i4b) :: icnt
 
 
-integer(kind=i4b) :: Node_to_Mutate
-integer(kind=i4b) :: Node_Function
-integer(kind=i4b) :: Node_Variable
-integer(kind=i4b) :: node_variable_save
-integer(kind=i4b) :: i_GP_individual
-integer(kind=i4b) :: i_Error
-integer(kind=i4b) :: test_function_index
+INTEGER (KIND=i4b) :: Node_to_Mutate
+INTEGER (KIND=i4b) :: Node_Function
+INTEGER (KIND=i4b) :: Node_Variable
+INTEGER (KIND=i4b) :: node_variable_save
+INTEGER (KIND=i4b) :: i_GP_individual
+INTEGER (KIND=i4b) :: i_Error
+INTEGER (KIND=i4b) :: test_function_index
 
-logical :: Node_Not_Found
+LOGICAL :: Node_Not_Found
 
 
 !-------------------------------------------------------------------------------
@@ -61,20 +85,20 @@ i_GP_Individual = n_GP_Elitists + n_GP_Asexual_Reproductions + n_GP_Crossovers
 ! and not just invidividuals > n_GP_Elitists + n_GP_Asexual_Reproductions + n_GP_Crossovers
 
 
-call Random_Number(cff) ! uniform random number generator
+CALL RANDOM_NUMBER(cff) ! uniform random number generator
 
-if(  cff <  prob_no_elite ) then
+IF (  cff <  prob_no_elite ) THEN
 
      i_GP_Individual =  n_GP_Elitists  ! + n_GP_Asexual_Reproductions + n_GP_Crossovers
 
-endif !  cff <  prob_no_elite
+END IF !  cff <  prob_no_elite
 
 
-if(  cff <  prob_no_elite * 0.5  ) then
+IF (  cff <  prob_no_elite * 0.5  ) THEN
 
      i_GP_Individual =  0   ! n_GP_Elitists  ! + n_GP_Asexual_Reproductions + n_GP_Crossovers
 
-endif !  cff <  prob_no_elite * 0.5
+END IF !  cff <  prob_no_elite * 0.5
 
 
 
@@ -86,14 +110,14 @@ do  i_GP_Mutation = 1,n_GP_Mutations
 
     ! randomly pick one of the n_GP_Individuals to mutate
 
-    call Random_Number(cff) ! uniform random number generator
+    CALL RANDOM_NUMBER(cff) ! uniform random number generator
 
 
     ! randomly choose from the population pool
     ! randomly pick one of the n_GP_Individuals Adults to mutate
 
-    i_GP_Individual_Mutation = 1+int(cff*float(n_GP_Individuals))
-    i_GP_Individual_Mutation = min( i_GP_Individual_Mutation , n_GP_Individuals )
+    i_GP_Individual_Mutation = 1+INT (cff*FLOAT (n_GP_Individuals))
+    i_GP_Individual_Mutation = MIN ( i_GP_Individual_Mutation , n_GP_Individuals )
 
     ! choose sequentially from the best of the population
     !  [SHOWN TO CONVERGE FASTER THAN RANDOMLY CHOSEN]
@@ -107,7 +131,7 @@ do  i_GP_Mutation = 1,n_GP_Mutations
     !----------------------------------------------------------------------------------
 
     !write(6,'(A)') 'gpmut:1 call GP_Check_Terminals in GP_Mutation'
-    call GP_Check_Terminals( &
+    CALL GP_Check_Terminals( &
          GP_Child_Population_Node_Type(1, 1, i_GP_Individual),n_Nodes,n_Trees , i_Error)
 
     !----------------------------------------------------------------------------------
@@ -115,10 +139,10 @@ do  i_GP_Mutation = 1,n_GP_Mutations
 
     ! Randomly choose which tree to mutate
 
-    call random_number(cff) ! uniform random number generator
+    CALL RANDOM_NUMBER(cff) ! uniform random number generator
 
-    i_Tree_Mutation = 1+int(cff*float(n_Trees))    ! randomly pick one of the equation trees
-    i_Tree_Mutation = min( i_Tree_Mutation , n_Trees )
+    i_Tree_Mutation = 1+INT (cff*FLOAT (n_Trees))    ! randomly pick one of the equation trees
+    i_Tree_Mutation = MIN ( i_Tree_Mutation , n_Trees )
 
 
     ! count the number of function nodes and terminals
@@ -128,163 +152,163 @@ do  i_GP_Mutation = 1,n_GP_Mutations
 
     icnt_Nodes = 0
 
-    do  i_Node = 1, n_Nodes
+    DO  i_Node = 1, n_Nodes
 
-        if( GP_Child_Population_Node_Type(i_Node,i_Tree_Mutation,i_GP_Individual) .ne. -9999) then
+        IF ( GP_Child_Population_Node_Type(i_Node,i_Tree_Mutation,i_GP_Individual) .ne. -9999) THEN
             icnt_Nodes = icnt_Nodes+1
-        endif ! GP_Child_Population_Node_Type...
+        END IF ! GP_Child_Population_Node_Type...
 
-    enddo ! i_node
+    END DO ! i_node
 
     ! look to see if there are actually any nodes to mutate
 
     ! if there are nodes to mutate (i.e. icnt_Nodes > 0),
     ! randomly pick one and give it a randomly chosen (mutated) new node
 
-    if( icnt_Nodes .gt. 0) then
+    IF ( icnt_Nodes .gt. 0) THEN
 
         !   randomly choose a node to mutate
 
-        call random_number(cff) ! uniform random number generator
+        CALL RANDOM_NUMBER(cff) ! uniform random number generator
 
-        Node_to_Mutate = 1+int(cff*float(icnt_Nodes))
-        Node_to_Mutate = min( Node_to_Mutate , icnt_Nodes )
+        Node_to_Mutate = 1+INT (cff*FLOAT (icnt_Nodes))
+        Node_to_Mutate = MIN ( Node_to_Mutate , icnt_Nodes )
 
 
         icnt = 0
         Node_Not_Found = .true.
 
-        do  i_Node = 1,n_Nodes
-            if( Node_Not_Found) then
-                if( GP_Child_Population_Node_Type(i_Node,i_Tree_Mutation, i_GP_Individual) &
-                                                                               /= -9999) then
+        DO  i_Node = 1,n_Nodes
+            IF ( Node_Not_Found) THEN
+                IF ( GP_Child_Population_Node_Type(i_Node,i_Tree_Mutation, i_GP_Individual) &
+                                                                               /= -9999) THEN
 
                     ! this is a node with a function value
 
                     icnt = icnt+1
 
-                    if( icnt .eq. Node_to_Mutate) then
+                    IF ( icnt .eq. Node_to_Mutate) THEN
 
                         Node_to_Mutate = i_Node
                         Node_Not_Found=.false.
 
                         exit
-                    endif !   icnt .eq. Node_to_Mutate
+                    END IF !   icnt .eq. Node_to_Mutate
 
-                endif !   GP_Adult_Population_Node_Type...
+                END IF !   GP_Adult_Population_Node_Type...
 
-            endif !  Node_Not_Found
+            END IF !  Node_Not_Found
 
-        enddo ! i_node
+        END DO ! i_node
 
 
         !   fill in the child node with the randomly chosen node function mutation
 
-        call random_number(cff) ! uniform random number generator
+        CALL RANDOM_NUMBER(cff) ! uniform random number generator
 
-        if( GP_Child_Population_Node_Type(Node_to_Mutate,i_Tree_Mutation,i_GP_Individual) <= 0 ) then
+        IF ( GP_Child_Population_Node_Type(Node_to_Mutate,i_Tree_Mutation,i_GP_Individual) <= 0 ) THEN
 
 
 
             ! VARIABLES   [Ranges from: -n_CODE_Equations to -1 ]
 
-            if( n_inputs > 0 )then
+            IF ( n_inputs > 0 ) THEN
 
                 ! data processing option
 
-                Node_Variable =   1 + int( cff*float(n_inputs) )
+                Node_Variable =   1 + INT ( cff*FLOAT (n_inputs) )
 
-                Node_Variable = max( Node_Variable , n_CODE_Equations+1 )  ! original
-                Node_Variable = min( Node_Variable , n_inputs        +1 )  ! original
-
-
-            else
-
-                Node_Variable=1+int(cff*float(n_CODE_Equations))
-
-                Node_Variable = min( Node_Variable, n_CODE_Equations )
+                Node_Variable = MAX ( Node_Variable , n_CODE_Equations+1 )  ! original
+                Node_Variable = MIN ( Node_Variable , n_inputs        +1 )  ! original
 
 
-            endif !  n_inputs > 0
+            ELSE
+
+                Node_Variable=1+INT (cff*FLOAT (n_CODE_Equations))
+
+                Node_Variable = MIN ( Node_Variable, n_CODE_Equations )
+
+
+            END IF !  n_inputs > 0
 
             GP_Child_Population_Node_Type(Node_to_Mutate,i_Tree_Mutation,i_GP_Individual) = &
                                                                                 -Node_Variable
 
             !----------------------------------------------------------------------
 
-            if( model == 'fasham' ) then
+            IF ( model == 'fasham' ) THEN
 
-                call random_number(cff)
+                CALL RANDOM_NUMBER(cff)
 
-                Node_Variable=1+int(cff*float(n_CODE_Equations))
-                Node_Variable = min( Node_Variable, n_CODE_Equations )
-
-                !  set some variables to the forcing functions -5001 -> -5004
-
-                node_variable_save =  Node_Variable
-
-                call set_forcing_node( node_variable )
-
-                if( node_variable == 0 ) node_variable = node_variable_save
-
-                GP_Child_Population_Node_Type(Node_to_Mutate,i_Tree_Mutation,i_GP_Individual) = &
-                                     -Node_Variable
-
-            endif ! model == 'fasham'
-
-            !----------------------------------------------------------------------
-
-            if( model == 'fasham_CDOM_GP') then
-
-
-                call random_number(cff)
-
-                Node_Variable=1+int(cff*float(n_CODE_Equations))
-                Node_Variable = min( Node_Variable, n_CODE_Equations )
+                Node_Variable=1+INT (cff*FLOAT (n_CODE_Equations))
+                Node_Variable = MIN ( Node_Variable, n_CODE_Equations )
 
                 !  set some variables to the forcing functions -5001 -> -5004
 
                 node_variable_save =  Node_Variable
 
-                call set_forcing_node( node_variable )
+                CALL set_forcing_node( node_variable )
 
-                if( node_variable == 0 ) node_variable = node_variable_save
+                IF ( node_variable == 0 ) node_variable = node_variable_save
 
                 GP_Child_Population_Node_Type(Node_to_Mutate,i_Tree_Mutation,i_GP_Individual) = &
                                      -Node_Variable
 
-            endif !  model == 'fasham_CDOM_GP'
+            END IF ! model == 'fasham'
+
+            !----------------------------------------------------------------------
+
+            IF ( model == 'fasham_CDOM_GP') THEN
+
+
+                CALL RANDOM_NUMBER(cff)
+
+                Node_Variable=1+INT (cff*FLOAT (n_CODE_Equations))
+                Node_Variable = MIN ( Node_Variable, n_CODE_Equations )
+
+                !  set some variables to the forcing functions -5001 -> -5004
+
+                node_variable_save =  Node_Variable
+
+                CALL set_forcing_node( node_variable )
+
+                IF ( node_variable == 0 ) node_variable = node_variable_save
+
+                GP_Child_Population_Node_Type(Node_to_Mutate,i_Tree_Mutation,i_GP_Individual) = &
+                                     -Node_Variable
+
+            END IF !  model == 'fasham_CDOM_GP'
 
             !----------------------------------------------------------------------
 
 
 
-        else
+        ELSE
 
 
             ! FUNCTIONS   [Ranges from: 1 to n_Node_Functions]
 
-            if( L_node_functions )then
+            IF ( L_node_functions ) THEN
 
-                node_function=1+int(cff*float(n_Node_Functions))
+                node_function=1+INT (cff*FLOAT (n_Node_Functions))
 
-                Node_Function = min( Node_Function, n_Node_Functions )
+                Node_Function = MIN ( Node_Function, n_Node_Functions )
 
-            else
+            ELSE
 
-                test_function_index = 1+int(cff*float(n_functions_input))
-                test_function_index = max( 1,                 test_function_index  )
-                test_function_index = min( n_functions_input, test_function_index  )
+                test_function_index = 1+INT (cff*FLOAT (n_functions_input))
+                test_function_index = MAX ( 1,                 test_function_index  )
+                test_function_index = MIN ( n_functions_input, test_function_index  )
 
                 node_function = selected_functions( test_function_index )
 
-            endif ! L_node_functions
+            END IF ! L_node_functions
 
             GP_Child_Population_Node_Type(Node_to_Mutate,i_Tree_Mutation,i_GP_Individual) = Node_Function
 
-        endif ! GP_Child_Population_Node_Type(Node_to_Mutate,i_Tree_Mutation,i_GP_Individual) <= 0
+        END IF ! GP_Child_Population_Node_Type(Node_to_Mutate,i_Tree_Mutation,i_GP_Individual) <= 0
 
-    endif !   icnt_Nodes .gt. 0
+    END IF !   icnt_Nodes .gt. 0
 
 
     Run_GP_Calculate_Fitness(i_GP_Individual) = .true.
@@ -292,19 +316,19 @@ do  i_GP_Mutation = 1,n_GP_Mutations
 
 
     !write(6,'(A)') 'gpmut:2 call GP_Check_Terminals in GP_Mutation'
-    call GP_Check_Terminals( &
+    CALL GP_Check_Terminals( &
          GP_Child_Population_Node_Type(1,1, i_GP_Individual),n_Nodes,n_Trees, i_Error)
 
 
-    if( i_Error .eq. 1) then
-        write(6,'(A)') 'gpmut: Post-GP_Check_Error in GP_Mutation'
-        write(6,'(A,2(1x,I6),1x,I2/)') 'gpmut: i_GP_Individual, i_GP_Mutation, i_Error  ', &
-                                               i_GP_Individual, i_GP_Mutation, i_Error
-        return
-    endif
+    IF ( i_Error .eq. 1) THEN
+        WRITE (6,'(A)') 'gpmut: Post-GP_Check_Error in GP_Mutation'
+        WRITE (6,'(A,2(1x,I6),1x,I2/)') 'gpmut: i_GP_Individual, i_GP_Mutation, i_Error  ', &
+                                                i_GP_Individual, i_GP_Mutation, i_Error
+        RETURN
+    END IF
 
-enddo !  i_GP_Mutation
+END DO !  i_GP_Mutation
 
-return
+RETURN
 
-end subroutine GP_Mutations
+END SUBROUTINE GP_Mutations

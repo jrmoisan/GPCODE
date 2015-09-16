@@ -1,4 +1,27 @@
-subroutine setup1( )
+!> @brief
+!>  This subroutine calls various initialization and allocation routines which need
+!!  to be run before the GP generation loop begins.
+!>
+!> @details
+!>  This subroutine calls various initialization and allocation routines which need
+!!  to be run before the GP generation loop begins.
+!>
+!> @author Dr. John R. Moisan [NASA/GSFC]
+!> @date January, 2013 Dr. John R. Moisan
+
+SUBROUTINE setup1( )
+
+ 
+!---------------------------------------------------------------------------  
+!
+! DESCRIPTION: 
+! Brief description of routine. 
+!
+! REVISION HISTORY:
+! TODO_dd_mmm_yyyy - TODO_describe_appropriate_changes - TODO_name
+!
+
+!---------------------------------------------------------------------------  
 
 ! program written by: Dr. John R. Moisan [NASA/GSFC] 31 January, 2013
 
@@ -8,77 +31,77 @@ subroutine setup1( )
 ! coupled ordinary differential equations
 !xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
-use kinds_mod
-use mpi
-use mpi_module
+USE kinds_mod
+USE mpi
+USE mpi_module
 
-use GP_Parameters_module
-use GP_variables_module
-use GA_Parameters_module
-use GA_Variables_module
-use GP_Data_module
+USE GP_Parameters_module
+USE GP_variables_module
+USE GA_Parameters_module
+USE GA_Variables_module
+USE GP_Data_module
 
-use fasham_variables_module
-use fasham_CDOM_module
-use fasham_CDOM_GP_module
-use Tree_Node_Factory_module
-use class_Tree_Node
+USE fasham_variables_module
+USE fasham_CDOM_module
+USE fasham_CDOM_GP_module
+USE Tree_Node_Factory_module
+USE class_Tree_Node
 
 
-implicit none
+IMPLICIT none
 
-integer(kind=i4b) :: i
-integer(kind=i4b) :: message_len
+INTEGER (KIND=i4b) :: i
+INTEGER (KIND=i4b) :: message_len
 
-integer(kind=i4b) :: i_Tree
-integer(kind=i4b) :: i_Node
+INTEGER (KIND=i4b) :: i_Tree
+INTEGER (KIND=i4b) :: i_Node
 
-integer(kind=i4b) :: jj
+INTEGER (KIND=i4b) :: jj
 
-integer(kind=i4b) :: i_CODE_equation
+INTEGER (KIND=i4b) :: i_CODE_equation
 
 
 !---------------------------------------------------------------------------------------
 
 
-if( myid == 0 )then
-    write(6,'(/A,1x,A)') 'set1: model ', trim(model)
-endif ! myid == 0 
+IF ( myid == 0 ) THEN
+    WRITE (6,'(/A,1x,A)') 'set1: model ', TRIM (model)
+END IF ! myid == 0 
 
 
-if( trim(model) == "fasham_CDOM") then
+IF ( TRIM (model) == "fasham_CDOM") THEN
 
 
-    allocate(aCDOM,source=newFasham_CDOM())
+    ALLOCATE (aCDOM,source=newFasham_CDOM())
 
-    call aCDOM%init()
+    CALL aCDOM%init()
 
-    call aCDOM%setTruth()
+    CALL aCDOM%setTruth()
 
-    call aCDOM%setModel()
-
-
-    return
-
-endif
-
-if( trim(model) == "fasham_CDOM_GP") then
+    CALL aCDOM%setModel()
 
 
-    allocate(aCDOM,source=newFasham_CDOM_GP())
+    RETURN
+
+END IF
+
+IF ( TRIM (model) == "fasham_CDOM_GP") THEN
 
 
-    call aCDOM%init()
+    ALLOCATE (aCDOM,source=newFasham_CDOM_GP())
 
 
-    call aCDOM%setTruth()
+    CALL aCDOM%init()
+
+
+    CALL aCDOM%setTruth()
 
     !call cdom%setModel()
 
 
-    return
+    RETURN
 
-endif ! trim(model) == "fasham_CDOM_GP"
+END IF ! TRIM (model) == "fasham_CDOM_GP"
 
 ! set the scalar values for the model
 
@@ -90,16 +113,16 @@ endif ! trim(model) == "fasham_CDOM_GP"
 ! n_nodes
 
 
-call init_values( 0 )
+CALL init_values( 0 )
 
 
 n_Variables = n_CODE_equations
 
-if( myid == 0 )then
-    write(6,'(A,1x,I3,1x,I12, 1x, I6)') &
+IF ( myid == 0 ) THEN
+    WRITE (6,'(A,1x,I3,1x,I12, 1x, I6)') &
        'set1: myid, n_seed, n_code_equations ', &
               myid, n_seed, n_code_equations
-endif ! myid == 0
+END IF ! myid == 0
 
 !---------------------------------------------------------------------
 
@@ -111,28 +134,28 @@ n_inputs = n_input_vars
 !------------------------------------------------------------------
 
 
-if( myid == 0 )then
+IF ( myid == 0 ) THEN
 
-    write(6,'(/A,1x,I6)')    'set1: n_code_equations ', n_code_equations
-    write(6,'(A,1x,I6)')     'set1: n_variables      ', n_variables
-    write(6,'(A,2(1x,I6))')  'set1: n_input_vars     ', n_input_vars
-    write(6,'(A,2(1x,I6)/)') 'set1: n_inputs         ', n_inputs
+    WRITE (6,'(/A,1x,I6)')    'set1: n_code_equations ', n_code_equations
+    WRITE (6,'(A,1x,I6)')     'set1: n_variables      ', n_variables
+    WRITE (6,'(A,2(1x,I6))')  'set1: n_input_vars     ', n_input_vars
+    WRITE (6,'(A,2(1x,I6)/)') 'set1: n_inputs         ', n_inputs
 
-endif ! myid == 0
+END IF ! myid == 0
 
-call print_values1()
+CALL print_values1()
 
 !------------------------------------------------------------------
 
 ! allocate variable dimension arrays
 
 
-if( myid == 0 )then
-    write(6,'(/A,1x,I6)') 'set1: call allocate_arrays1'
+IF ( myid == 0 ) THEN
+    WRITE (6,'(/A,1x,I6)') 'set1: CALL allocate_arrays1'
     flush(6)
-endif ! myid == 0
+END IF ! myid == 0
 
-call allocate_arrays1( )
+CALL allocate_arrays1( )
 
 
 
@@ -167,7 +190,7 @@ GP_minSSE_Individual_SSE = 1.0d99
 !      Node_Probability
 
 
-call init_values( 1 )
+CALL init_values( 1 )
 
 
 !------------------------------------------------------------------
@@ -179,7 +202,7 @@ call init_values( 1 )
 
 ! create_tree_node_string makes it long enough for n_nodes
 
-call create_tree_node_string()
+CALL create_tree_node_string()
 
 !------------------------------------------------------------------
 
@@ -199,11 +222,11 @@ call create_tree_node_string()
 ! GP_Node_Type_for_Plotting (if L_unit50_output true)
 
 
-if( myid == 0 )then
+IF ( myid == 0 ) THEN
 
-    call set_answer_arrays( )
+    CALL set_answer_arrays( )
 
-endif ! myid == 0
+END IF ! myid == 0
 
 
 !------------------------------------------------------------------------
@@ -211,33 +234,33 @@ endif ! myid == 0
 ! then broadcast the R-K result: Runge_Kutta_Solution
 
 
-if( myid == 0 )then    ! 20131209
+IF ( myid == 0 ) THEN    ! 20131209
 
-    if( n_input_vars == 0 )then
+    IF ( n_input_vars == 0 ) THEN
 
-        write(GP_print_unit,'(/A/)') &
+        WRITE (GP_print_unit,'(/A/)') &
               'set1: time_step   Numerical_Code_Solution(time_step,1:n_CODE_equations)'
-        do  i = 0, n_time_steps
-            write(GP_print_unit,'(I6,2x,10(1x,E14.7))') &
+        DO  i = 0, n_time_steps
+            WRITE (GP_print_unit,'(I6,2x,10(1x,E14.7))') &
                   i, (Numerical_Code_Solution(i,jj), jj = 1,n_CODE_equations )
-        enddo ! i
+        END DO ! i
 
-    else
+    ELSE
 
-        write(6, '(/A,2(1x,I6))') 'set1: n_input_data_points ', n_input_data_points
+        WRITE (6, '(/A,2(1x,I6))') 'set1: n_input_data_points ', n_input_data_points
 
-        write(GP_print_unit,'(/A/)') &
+        WRITE (GP_print_unit,'(/A/)') &
               'set1: i, Numerical_CODE_Solution(i,1:n_CODE_equations)'
-        do  i = 0, n_input_data_points
-            write(GP_print_unit,'(I6,2x,10(1x,E14.7))') &
+        DO  i = 0, n_input_data_points
+            WRITE (GP_print_unit,'(I6,2x,10(1x,E14.7))') &
                   i, (Numerical_CODE_Solution(i,jj), jj = 1,n_CODE_equations )
-        enddo ! i
+        END DO ! i
 
 
-    endif ! n_input_vars == 0
+    END IF ! n_input_vars == 0
 
 
-endif ! myid == 0
+END IF ! myid == 0
 
 
 !--------------------------------------------------------------------------------
@@ -247,30 +270,30 @@ endif ! myid == 0
 
 ! set message length if data processing option is on
 
-if( n_input_vars == 0 )then
+IF ( n_input_vars == 0 ) THEN
     message_len = ( n_time_steps + 1 ) * n_CODE_equations
-else
+ELSE
     message_len = ( n_input_data_points + 1 ) * n_CODE_equations
-endif ! n_input_vars == 0
+END IF ! n_input_vars == 0
 
 
-call MPI_BCAST( Numerical_CODE_Solution, message_len,    &
+CALL MPI_BCAST( Numerical_CODE_Solution, message_len,    &
                 MPI_DOUBLE_PRECISION, 0, MPI_COMM_WORLD, ierr )
 
 
 Data_Array=Numerical_CODE_Solution        ! Matrix Operation
 
-if( index( model,'LOG10') > 0 .or. &
-    index( model,'log10') > 0         )then
+IF ( INDEX ( model,'LOG10') > 0 .or. &
+    INDEX ( model,'log10') > 0         ) THEN
 
     message_len = ( n_input_data_points + 1 ) * n_CODE_equations
 
-    call MPI_BCAST( Numerical_CODE_Solution_log10, message_len,    &
+    CALL MPI_BCAST( Numerical_CODE_Solution_log10, message_len,    &
                     MPI_DOUBLE_PRECISION, 0, MPI_COMM_WORLD, ierr )
 
     Data_Array_log10 = Numerical_CODE_Solution_log10        ! Matrix Operation
 
-endif!  index( model,'LOG10') > 0 ...
+END IF!  INDEX ( model,'LOG10') > 0 ...
 
 !--------------------------------------------------------------------------------
 
@@ -280,40 +303,40 @@ endif!  index( model,'LOG10') > 0 ...
 
 Numerical_CODE_Solution(1:n_time_steps, 1:n_code_equations) = 0.0d0
 
-if( index( model,'LOG10') > 0 .or. &
-    index( model,'log10') > 0         )then
+IF ( INDEX ( model,'LOG10') > 0 .or. &
+    INDEX ( model,'log10') > 0         ) THEN
 
     Numerical_CODE_Solution_log10(1:n_time_steps, 1:n_code_equations) = 0.0d0
 
-endif!  index( model,'LOG10') > 0 ...
+END IF!  INDEX ( model,'LOG10') > 0 ...
 
-if( myid == 0 )then 
-    write(6, '(/A,2(1x,I6))') 'set1: n_input_data_points ', n_input_data_points
-    write(6, '(A,2(1x,I6))')  'set1: n_input_vars ', n_input_vars
-    write(6, '(A,2(1x,I6)/)') 'set1: n_time_steps ', n_time_steps
-endif ! myid == 0
+IF ( myid == 0 ) THEN 
+    WRITE (6, '(/A,2(1x,I6))') 'set1: n_input_data_points ', n_input_data_points
+    WRITE (6, '(A,2(1x,I6))')  'set1: n_input_vars ', n_input_vars
+    WRITE (6, '(A,2(1x,I6)/)') 'set1: n_time_steps ', n_time_steps
+END IF ! myid == 0
 
 
 
-if( n_input_vars == 0 )then
+IF ( n_input_vars == 0 ) THEN
     message_len = ( n_time_steps + 1 ) * n_CODE_equations
-else
+ELSE
     message_len = ( n_input_data_points + 1 ) * n_CODE_equations
-endif ! n_input_vars == 0
+END IF ! n_input_vars == 0
 
 
-call MPI_BCAST( Numerical_CODE_Solution, message_len,    &
+CALL MPI_BCAST( Numerical_CODE_Solution, message_len,    &
                 MPI_DOUBLE_PRECISION, 0, MPI_COMM_WORLD, ierr )
 
 
 
-if( index( model,'LOG10') > 0 .or. &
-    index( model,'log10') > 0         )then
+IF ( INDEX ( model,'LOG10') > 0 .or. &
+    INDEX ( model,'log10') > 0         ) THEN
 
-    call MPI_BCAST( Numerical_CODE_Solution_log10, message_len,    &
+    CALL MPI_BCAST( Numerical_CODE_Solution_log10, message_len,    &
                 MPI_DOUBLE_PRECISION, 0, MPI_COMM_WORLD, ierr )
 
-endif!  index( model,'LOG10') > 0 ...
+END IF!  INDEX ( model,'LOG10') > 0 ...
 
 
 
@@ -328,14 +351,14 @@ endif!  index( model,'LOG10') > 0 ...
 ! Data_Variance_inv
 
 
-if( myid == 0 )then    ! 20131209
-    call comp_data_variance( )
-endif ! myid == 0
+IF ( myid == 0 ) THEN    ! 20131209
+    CALL comp_data_variance( )
+END IF ! myid == 0
 
 
 message_len =  n_CODE_equations
 
-call MPI_BCAST( Data_Variance_inv, message_len,    &
+CALL MPI_BCAST( Data_Variance_inv, message_len,    &
                 MPI_DOUBLE_PRECISION, 0, MPI_COMM_WORLD, ierr )
 
 !--------------------------------------------------------------------------------
@@ -349,7 +372,7 @@ n_parameters = 0
 do  i_CODE_equation=1,n_CODE_equations
     n_parameters=n_parameters+1
     answer(n_parameters)=Numerical_CODE_Initial_Conditions(i_CODE_equation)
-enddo ! i_CODE_equation
+END DO ! i_CODE_equation
 
 !--------------------------------------------------------------------------------
 
@@ -357,15 +380,15 @@ enddo ! i_CODE_equation
 ! calculate how many parameters total to fit for the specific individual CODE
 
 do  i_tree=1,n_trees
-    do  i_node=1,n_nodes
+    DO  i_node=1,n_nodes
 
-        if( GP_individual_node_type(i_node,i_tree) .eq. 0) then
+        IF ( GP_individual_node_type(i_node,i_tree) .eq. 0) THEN
             n_parameters=n_parameters+1
             answer(n_parameters)=GP_Individual_Node_Parameters(i_node,i_tree)
-        endif ! GP_individual_node_type(i_node,i_tree) .eq. 0
+        END IF ! GP_individual_node_type(i_node,i_tree) .eq. 0
 
-    enddo ! i_node
-enddo ! i_tree
+    END DO ! i_node
+END DO ! i_tree
 
 
 
@@ -378,24 +401,24 @@ enddo ! i_tree
 
 GA_child_print_interval = n_GA_generations /  number_GA_child_prints
 
-if( GA_child_print_interval == 0 ) then
-    GA_child_print_interval = max( 1, n_GA_generations / 2 )
-endif
+IF ( GA_child_print_interval == 0 ) THEN
+    GA_child_print_interval = MAX ( 1, n_GA_generations / 2 )
+END IF
 
 
 GP_child_print_interval = n_GP_generations /  number_GP_child_prints
 
-if( GP_child_print_interval == 0 ) then
-    GP_child_print_interval = max( 1, n_GP_generations / 2 )
-endif
+IF ( GP_child_print_interval == 0 ) THEN
+    GP_child_print_interval = MAX ( 1, n_GP_generations / 2 )
+END IF
 
 
 message_len = 1
-call MPI_BCAST( GA_child_print_interval, message_len,    &
+CALL MPI_BCAST( GA_child_print_interval, message_len,    &
                 MPI_INTEGER,  0, MPI_COMM_WORLD, ierr )
 
 message_len = 1
-call MPI_BCAST( GP_child_print_interval, message_len,    &
+CALL MPI_BCAST( GP_child_print_interval, message_len,    &
                 MPI_INTEGER,  0, MPI_COMM_WORLD, ierr )
 
 
@@ -403,9 +426,9 @@ call MPI_BCAST( GP_child_print_interval, message_len,    &
 !--------------------------------------------------------------------------------
 
 
-if( myid == 0 )then
+IF ( myid == 0 ) THEN
 
-    call print_values2( )
+    CALL print_values2( )
 
     !-----------------------------------------------------------------------------
 
@@ -414,19 +437,19 @@ if( myid == 0 )then
 
     ! note:  sse0 is only used by cpu 0 which does all fitness calculations
 
-    if( index( model,'LOG10') > 0 .or. &
-        index( model,'log10') > 0         )then
+    IF ( INDEX ( model,'LOG10') > 0 .or. &
+        INDEX ( model,'log10') > 0         ) THEN
 
-        call sse0_calc_log10( )
-        call sse0_calc( )
+        CALL sse0_calc_log10( )
+        CALL sse0_calc( )
 
-    else
+    ELSE
 
-        call sse0_calc( )
+        CALL sse0_calc( )
 
         SSE0 = SSE0_nolog10
 
-    endif!  index( model,'LOG10') > 0 ...
+    END IF!  INDEX ( model,'LOG10') > 0 ...
 
 
 
@@ -435,20 +458,20 @@ if( myid == 0 )then
 
     ! open more output files
 
-    if( L_GA_output_parameters )then
-        open( GA_output_unit, file='GA_output_parameters', &
+    IF ( L_GA_output_parameters ) THEN
+        OPEN ( GA_output_unit, file='GA_output_parameters', &
               form = 'formatted', access = 'sequential', &
               status = 'unknown' )
-    endif ! L_GA_output_parameters
+    END IF ! L_GA_output_parameters
 
-    if( L_GP_output_parameters )then
-        open( GP_output_unit, file='GP_output_parameters', &
+    IF ( L_GP_output_parameters ) THEN
+        OPEN ( GP_output_unit, file='GP_output_parameters', &
               form = 'formatted', access = 'sequential', &
               status = 'unknown' )
-    endif ! L_GP_output_parameters
+    END IF ! L_GP_output_parameters
 
 
-endif ! myid == 0
+END IF ! myid == 0
 
 
 !---------------------------------------------------------------------------
@@ -456,17 +479,17 @@ endif ! myid == 0
 ! broadcast SSE0
 
 message_len = 1
-call MPI_BCAST( SSE0, message_len,    &
+CALL MPI_BCAST( SSE0, message_len,    &
                 MPI_DOUBLE_PRECISION, 0, MPI_COMM_WORLD, ierr )
 
-if( index( model,'LOG10') > 0 .or. &
-    index( model,'log10') > 0         )then
+IF ( INDEX ( model,'LOG10') > 0 .or. &
+    INDEX ( model,'log10') > 0         ) THEN
 
     message_len = 1
-    call MPI_BCAST( SSE0_nolog10, message_len,    &
+    CALL MPI_BCAST( SSE0_nolog10, message_len,    &
                     MPI_DOUBLE_PRECISION, 0, MPI_COMM_WORLD, ierr )
 
-endif!  index( model,'LOG10') > 0 ...
+END IF!  INDEX ( model,'LOG10') > 0 ...
 
 
 !---------------------------------------------------------------------------
@@ -476,7 +499,7 @@ endif!  index( model,'LOG10') > 0 ...
 ! GP_Asexual_Reproduction_Probability, GP_Crossover_Probability, etc.
 
 
-call set_modified_indiv( )
+CALL set_modified_indiv( )
 
 !---------------------------------------------------------------------------
 
@@ -485,24 +508,24 @@ call set_modified_indiv( )
 
 L_minSSE = n_GP_Elitists ==  0 .or.   prob_no_elite > 0.0D0
 
-if( myid == 0 )then
-    write(6, '(/A,1x,I6,1x,E15.7,5x,L1/)') 'set1: n_GP_Elitists, prob_no_elite, L_minSSE ', &
+IF ( myid == 0 ) THEN
+    WRITE (6, '(/A,1x,I6,1x,E15.7,5x,L1/)') 'set1: n_GP_Elitists, prob_no_elite, L_minSSE ', &
                                                   n_GP_Elitists, prob_no_elite, L_minSSE 
-endif ! myid == 0
+END IF ! myid == 0
 
-if( myid == 0 .and. L_minSSE )then
+IF ( myid == 0 .and. L_minSSE ) THEN
 
-    open( GP_minSSE_summary_output_unit, file='GP_minSSE_summary_file', &
+    OPEN ( GP_minSSE_summary_output_unit, file='GP_minSSE_summary_file', &
           form = 'formatted', access = 'sequential', &
           status = 'unknown' )
 
-endif ! myid == 0
+END IF ! myid == 0
 
 
 !---------------------------------------------------------------------------
 
 
 
-return
+RETURN
 
-end subroutine setup1
+END SUBROUTINE setup1

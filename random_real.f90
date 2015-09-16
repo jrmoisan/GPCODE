@@ -1,4 +1,29 @@
-subroutine random_real(bff8)
+!> @brief
+!>  This subroutine generates random numbers uniformly distributed over [0,1] and scaled.
+!>
+!> @details
+!>  This subroutine generates random numbers uniformly distributed over [0,1] and scaled.
+!!  The scaling is chosen randomly:
+!!  A random number is chosen. If it is less than the random_scale_fraction, the scaling
+!!  used is the random_scale_small.  Otherwise the scaling is the random_scale_large
+!>
+!> @author Dr. John R. Moisan [NASA/GSFC]
+!> @date January, 2013 Dr. John R. Moisan
+!>
+!> @param[out] bff8 - 8-byte real random number
+
+SUBROUTINE random_REAL (bff8)
+
+ 
+!---------------------------------------------------------------------------  
+!
+! DESCRIPTION: 
+! Brief description of routine. 
+!
+! REVISION HISTORY:
+! TODO_dd_mmm_yyyy - TODO_describe_appropriate_changes - TODO_name
+!
+!---------------------------------------------------------------------------  
 
 !xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 ! This code generates a random number ranging between the full range of
@@ -6,15 +31,15 @@ subroutine random_real(bff8)
 ! are generated "uniformly over a log10 scale"
 !xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
-use kinds_mod
+USE kinds_mod
 
-use GP_parameters_module
+USE GP_parameters_module
 
-implicit none
+IMPLICIT none
 
-real(kind=r4b) ::     bff,cff
+REAL (KIND=r4b) ::     bff,cff
 
-real(kind=r8b) ::     bff8, cff8
+REAL (KIND=r8b) ::     bff8, cff8
 
 !xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
@@ -22,9 +47,9 @@ real(kind=r8b) ::     bff8, cff8
 
 !-----------------------------------------------------------------
 
-call random_number(cff) ! uniform random number generator
+CALL RANDOM_NUMBER(cff) ! uniform random number generator
 
-cff8 = real( cff, kind=r8b )
+cff8 = REAL ( cff, KIND=r8b )
 
 !--------------------------------------
 ! defaults
@@ -35,23 +60,23 @@ cff8 = real( cff, kind=r8b )
 
 !--------------------------------------
 
-if( cff8 <= random_scale_fraction  )then
+IF ( cff8 <= random_scale_fraction  ) THEN
 
-    call random_number(bff) ! uniform random number generator
+    CALL RANDOM_NUMBER(bff) ! uniform random number generator
 
-    bff8 = random_scale_small  * real( bff, kind=r8b )
-
-
-else
-
-    call random_number(bff) ! uniform random number generator
-
-    bff8 = random_scale_large  * real( bff, kind=r8b )
+    bff8 = random_scale_small  * REAL ( bff, KIND=r8b )
 
 
-endif
+ELSE
+
+    CALL RANDOM_NUMBER(bff) ! uniform random number generator
+
+    bff8 = random_scale_large  * REAL ( bff, KIND=r8b )
 
 
-return
+END IF
 
-end
+
+RETURN
+
+END 

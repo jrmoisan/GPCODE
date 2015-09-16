@@ -1,26 +1,53 @@
-subroutine Build_Trees( treeSlice, buildtrees ) 
+!> @brief
+!>  This subroutine creates the tree objects from the GP arrays containing
+!!  node types and node parameter values.
+!>
+!> @details
+!>  This subroutine creates the tree objects from the GP arrays containing
+!!  node types and node parameter values.
+!>
+!> @author Dr. John R. Moisan [NASA/GSFC]
+!> @date January, 2013 Dr. John R. Moisan
+!>
+!> @param[in]  buildtrees - if  true, construct tree objects from arrays of node values
+!!                        - if false, construct tree objects from hard-coded Fasham routines          
 
-use kinds_mod 
-use mpi
-use mpi_module
+!> @param[out] treeSlice - computed tree object
 
-use class_Tree_Node
+SUBROUTINE Build_Trees( treeSlice, buildtrees ) 
 
-use Tree_Node_Factory_module
-use GP_variables_module
-use fasham_variables_module
-use Fasham_Tree_Interfaces
+ 
+!---------------------------------------------------------------------------  
+!
+! DESCRIPTION: 
+! Brief description of routine. 
+!
+! REVISION HISTORY:
+! TODO_dd_mmm_yyyy - TODO_describe_appropriate_changes - TODO_name
+!
+!---------------------------------------------------------------------------  
+
+USE kinds_mod 
+USE mpi
+USE mpi_module
+
+USE class_Tree_Node
+
+USE Tree_Node_Factory_module
+USE GP_variables_module
+USE fasham_variables_module
+USE Fasham_Tree_Interfaces
 
 
-type(Tree_Node_Pointer), dimension(n_Trees) :: treeSlice
+TYPE(Tree_Node_Pointer), DIMENSION(n_Trees) :: treeSlice
     
-logical, intent(in) :: buildtrees
+LOGICAL, INTENT(IN) :: buildtrees
 
 
 !------------------------------------------------------------------------------------------------
 
 
-if( buildtrees )then
+IF ( buildtrees ) THEN
 
     !  create trees from the GP_Individual_Node_Type which was read in
     
@@ -29,18 +56,18 @@ if( buildtrees )then
     ! from the GP_Individual_Node_Type and GP_Individual_Node_parameter arrays
     ! modified version of  deserialize_trees
     
-    call deserialize_trees2( treeSlice, n_Tracked_resources, n_trees    )
+    CALL deserialize_trees2( treeSlice, n_Tracked_resources, n_trees    )
     
     
 
-else 
+ELSE 
 
 
     ! build trees using the fasham functions 
 
 
-    if( trim(model) == 'fasham'    .or.     &
-        trim(model) == 'fasham_fixed_tree' )then
+    IF ( TRIM (model) == 'fasham'    .or.     &
+        TRIM (model) == 'fasham_fixed_tree' ) THEN
     
     
         !  Fasham specific trees
@@ -51,7 +78,7 @@ else
         ! Created on June 24, 2013, 11:52 AM
         !-----------------------------------------
 
-        write(6,'(/A/)') 'build_trees:  set Fasham tree pointers '
+        WRITE (6,'(/A/)') 'build_trees:  set Fasham tree POINTERs '
         
         !-----------------------------------------------------------------------------
 
@@ -132,12 +159,12 @@ else
 
         !-----------------------------------------------------------------------------
         
-    endif ! model == 'fasham'   .or. model == 'fasham_fixed_tree'
+    END IF ! model == 'fasham'   .or. model == 'fasham_fixed_tree'
 
-endif !  buildtrees 
+END IF !  buildtrees 
 
 
 
-return
+RETURN
 
-end subroutine Build_Trees
+END SUBROUTINE Build_Trees

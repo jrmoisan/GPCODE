@@ -1,4 +1,26 @@
-module Math_Node_Functions
+!> @brief
+!>  This subroutine defines the mathematical functions invoked by the tree nodes
+!!  with values (function indices) > 0.
+!>
+!> @details
+!>  This subroutine defines the mathematical functions invoked by the tree nodes
+!!  with values (function indices) > 0.
+!>
+!> @author Dave Coulter [NASA Summer Intern under Dr. John R. Moisan [NASA/GSFC] ]
+!> @date August 2, 2013 Dave Coulter 
+
+MODULE Math_Node_Functions
+
+ 
+!---------------------------------------------------------------------------  
+!
+! DESCRIPTION: 
+! Brief description of routine. 
+!
+! REVISION HISTORY:
+! TODO_dd_mmm_yyyy - TODO_describe_appropriate_changes - TODO_name
+!
+!---------------------------------------------------------------------------  
 
 
 ! File:   Math_Node_Functions.f03
@@ -7,23 +29,23 @@ module Math_Node_Functions
 ! Created on August 2, 2013, 4:00 PM
 
 
-use kinds_mod 
+USE kinds_mod 
 
-    interface
-        function Compute(a,b)
-            use kinds_mod 
-            real(kind=r8b) :: Compute
-            real(kind=r8b), intent(in) :: a,b
-        end function
-    end interface
+    INTERFACE
+        FUNCTION Compute(a,b)
+            USE kinds_mod 
+            REAL (KIND=r8b) :: Compute
+            REAL (KIND=r8b), INTENT(IN) :: a,b
+        END FUNCTION
+    END INTERFACE
 
-    type function_pointer
-        procedure(Compute), pointer, nopass :: f
-    end type
+    TYPE FUNCTION_POINTER
+        PROCEDURE(Compute), POINTER, NOPASS :: f
+    END TYPE
 
-    integer, parameter :: n_math_funcs = 20
+    INTEGER, parameter :: n_math_funcs = 20
 
-    type(function_pointer), dimension(n_math_funcs):: math_funcs
+    TYPE(FUNCTION_POINTER), DIMENSION(n_math_funcs):: math_funcs
 
 
 
@@ -32,7 +54,7 @@ use kinds_mod
     ! Tree_Math_Node type. Above each function is the array position that it will
     ! occupy.
 
-    contains
+    CONTAINS
 
     !-------------------------------------------------------
 
@@ -40,13 +62,13 @@ use kinds_mod
 
     ! Addition: a + b
 
-    real(kind=r8b) function f_Add(a, b)
-        use kinds_mod
-        implicit none
-        real(kind=r8b), intent(in) :: a,b
+    REAL (KIND=r8b) FUNCTION f_Add(a, b)
+        USE kinds_mod
+        IMPLICIT none
+        REAL (KIND=r8b), INTENT(IN) :: a,b
 
         f_Add = a + b
-    end function
+    END FUNCTION
 
 
     !-------------------------------------------------------
@@ -55,13 +77,13 @@ use kinds_mod
 
     ! Subtraction: a - b
 
-    real(kind=r8b) function f_Subtract(a, b)
-        use kinds_mod
-        implicit none
-        real(kind=r8b), intent(in) :: a,b
+    REAL (KIND=r8b) FUNCTION f_Subtract(a, b)
+        USE kinds_mod
+        IMPLICIT none
+        REAL (KIND=r8b), INTENT(IN) :: a,b
 
         f_Subtract = a - b
-    end function
+    END FUNCTION
 
 
     !-------------------------------------------------------
@@ -70,20 +92,20 @@ use kinds_mod
 
     ! Multiply: a * b
 
-    real(kind=r8b) function f_Multiply(a, b)
-        use kinds_mod
-        implicit none
-        real(kind=r8b), intent(in) :: a,b
+    REAL (KIND=r8b) FUNCTION f_Multiply(a, b)
+        USE kinds_mod
+        IMPLICIT none
+        REAL (KIND=r8b), INTENT(IN) :: a,b
 
         !write(*,*)'f3:  a, b ', a, b                                                                           
-        if( isnan(a) .or. isnan(b) ) then                                                                           
+        IF ( ISNAN (a) .or. ISNAN (b) ) THEN                                                                           
             f_Multiply = 0.0D0  
-            return                                                                                                  
-        endif                           
+            RETURN                                                                                                  
+        END IF                           
 
         f_Multiply = a * b
 
-    end function
+    END FUNCTION
 
 
     !-------------------------------------------------------
@@ -92,18 +114,18 @@ use kinds_mod
 
     ! Protected Divide (only if b not equal to zero): a / b
 
-    real(kind=r8b) function f_ProtectedDivide(a, b)
-        use kinds_mod
-        implicit none
-        real(kind=r8b), intent(in) :: a,b
+    REAL (KIND=r8b) FUNCTION f_ProtectedDivide(a, b)
+        USE kinds_mod
+        IMPLICIT none
+        REAL (KIND=r8b), INTENT(IN) :: a,b
 
         !if( b .ne. 0.0D+0) then
-        if( abs(b) >  0.0D+0) then
+        IF ( ABS (b) >  0.0D+0) THEN
             f_ProtectedDivide = a / b
-        else
+        ELSE
             f_ProtectedDivide = 0.0D+0
-        endif
-    end function
+        END IF
+    END FUNCTION
 
 
     !-------------------------------------------------------
@@ -112,19 +134,19 @@ use kinds_mod
 
     ! Ivlev Grazing Function: (1 - e^-abs(a*b))
 
-    real(kind=r8b) function f_IvlevGrazingFunction(a, b)
-        use kinds_mod
-        implicit none
-        real(kind=r8b), intent(in) :: a,b
-        real(kind=r8b) :: cff
+    REAL (KIND=r8b) FUNCTION f_IvlevGrazingFunction(a, b)
+        USE kinds_mod
+        IMPLICIT none
+        REAL (KIND=r8b), INTENT(IN) :: a,b
+        REAL (KIND=r8b) :: cff
 
-        cff=abs(a*b)
-        if( cff < 100.0d0 ) then
-            f_IvlevGrazingFunction = 1.0D+0 - exp(-1.0D+0*cff)
-        else
+        cff=ABS (a*b)
+        IF ( cff < 100.0d0 ) THEN
+            f_IvlevGrazingFunction = 1.0D+0 - EXP (-1.0D+0*cff)
+        ELSE
             f_IvlevGrazingFunction = 1.0D+0
-        endif 
-    end function
+        END IF 
+    END FUNCTION
 
 
     !-------------------------------------------------------
@@ -134,19 +156,19 @@ use kinds_mod
     !orig  Michaelis-Menton Term (modified for Forward-Backward): (1 / (abs(a) + abs(b)))
     ! Michaelis-Menton Term (modified for Forward-Backward): (abs(b) / (abs(a) + abs(b)))
 
-    real(kind=r8b) function f_MichealisMenton(a, b)
-        use kinds_mod
-        implicit none
-        real(kind=r8b), intent(in) :: a,b
-        real(kind=r8b) :: cff
+    REAL (KIND=r8b) FUNCTION f_MichealisMenton(a, b)
+        USE kinds_mod
+        IMPLICIT none
+        REAL (KIND=r8b), INTENT(IN) :: a,b
+        REAL (KIND=r8b) :: cff
 
-        cff=abs(a)+abs(b)
-        if( cff .gt. 0.0D+0) then
-            f_MichealisMenton=abs(b)/cff
-        else
+        cff=ABS (a)+ABS (b)
+        IF ( cff .gt. 0.0D+0) THEN
+            f_MichealisMenton=ABS (b)/cff
+        ELSE
             f_MichealisMenton=0.0D+0
-        endif
-    end function
+        END IF
+    END FUNCTION
 
 
     !-------------------------------------------------------
@@ -155,19 +177,19 @@ use kinds_mod
 
     ! Mayzaud-Poulet Grazing Function:  abs(a*b)*(1 - e^-abs(a*b))
 
-    real(kind=r8b) function f_MayzaudPouletGrazingFunction(a, b)
-        use kinds_mod
-        implicit none
-        real(kind=r8b), intent(in) :: a,b
-        real(kind=r8b) :: cff
+    REAL (KIND=r8b) FUNCTION f_MayzaudPouletGrazingFunction(a, b)
+        USE kinds_mod
+        IMPLICIT none
+        REAL (KIND=r8b), INTENT(IN) :: a,b
+        REAL (KIND=r8b) :: cff
 
-        cff=abs(a*b)
-        if( cff < 100.0d0 ) then
-            f_MayzaudPouletGrazingFunction = cff*( 1.0D+0 - exp(-1.0D+0*cff) )
-        else
+        cff=ABS (a*b)
+        IF ( cff < 100.0d0 ) THEN
+            f_MayzaudPouletGrazingFunction = cff*( 1.0D+0 - EXP (-1.0D+0*cff) )
+        ELSE
             f_MayzaudPouletGrazingFunction = cff
-        endif 
-    end function
+        END IF 
+    END FUNCTION
 
 
     !-------------------------------------------------------
@@ -176,44 +198,44 @@ use kinds_mod
 
     ! Power: a ^ b
 
-    real(kind=r8b) function f_Power(a, b)
-        use kinds_mod
-        implicit none
-        real(kind=r8b), intent(in) :: a,b
+    REAL (KIND=r8b) FUNCTION f_Power(a, b)
+        USE kinds_mod
+        IMPLICIT none
+        REAL (KIND=r8b), INTENT(IN) :: a,b
 
-        if( isnan(a) .or. isnan(b) ) then
+        IF ( ISNAN (a) .or. ISNAN (b) ) THEN
             f_Power = 0.0D0
-            return
-        endif 
+            RETURN
+        END IF 
 
-        if( abs(a) <= 1.0D-99 ) then
+        IF ( ABS (a) <= 1.0D-99 ) THEN
             f_Power = 0.0d0
-            return
-        endif
+            RETURN
+        END IF
 
-        if( abs(b) <= 1.0D-99 ) then
+        IF ( ABS (b) <= 1.0D-99 ) THEN
             f_Power = 1.0d0
-            return
-        endif
+            RETURN
+        END IF
 
         !-------------------------------------
 
         ! try to eliminate a**a functions
 
-        if( abs( a - b ) <= 1.0D-99 )then
+        IF ( ABS ( a - b ) <= 1.0D-99 ) THEN
             f_Power = 0.0d0 
-            return
-        endif 
+            RETURN
+        END IF 
 
         !-------------------------------------
 
-        f_Power = abs(a)**b
+        f_Power = ABS (a)**b
 
-        f_Power = min( f_Power, 1.0D+19 )
-        f_Power = max( f_Power, 1.0D-19 )
+        f_Power = MIN ( f_Power, 1.0D+19 )
+        f_Power = MAX ( f_Power, 1.0D-19 )
 
 
-    end function
+    END FUNCTION
 
 
     !-------------------------------------------------------
@@ -222,25 +244,25 @@ use kinds_mod
 
     ! EXP: exp(-abs(a*b))
 
-    real(kind=r8b) function f_ExponentialDecay(a, b)
-        use kinds_mod
-        implicit none
-        real(kind=r8b), intent(in) :: a,b
-        real(kind=r8b) :: cff
+    REAL (KIND=r8b) FUNCTION f_ExponentialDecay(a, b)
+        USE kinds_mod
+        IMPLICIT none
+        REAL (KIND=r8b), INTENT(IN) :: a,b
+        REAL (KIND=r8b) :: cff
 
-        if( isnan(a) .or. isnan(b) ) then
+        IF ( ISNAN (a) .or. ISNAN (b) ) THEN
             f_ExponentialDecay = 0.0D0
-            return
-        endif 
+            RETURN
+        END IF 
 
-        cff=abs(a*b)
-        if( cff < 100.0d0 ) then
-            f_ExponentialDecay = exp(-1.0D+0*cff)
-        else
+        cff=ABS (a*b)
+        IF ( cff < 100.0d0 ) THEN
+            f_ExponentialDecay = EXP (-1.0D+0*cff)
+        ELSE
             f_ExponentialDecay = 0.0D0
-        endif 
+        END IF 
 
-    end function
+    END FUNCTION
 
 
     !-------------------------------------------------------
@@ -249,13 +271,13 @@ use kinds_mod
 
     ! Minimum: a or b, whichever is lower
 
-    real(kind=r8b) function f_Minimize(a, b)
-        use kinds_mod
-        implicit none
-        real(kind=r8b), intent(in) :: a,b
+    REAL (KIND=r8b) FUNCTION f_Minimize(a, b)
+        USE kinds_mod
+        IMPLICIT none
+        REAL (KIND=r8b), INTENT(IN) :: a,b
 
-        f_Minimize = min(a,b)
-    end function
+        f_Minimize = MIN (a,b)
+    END FUNCTION
 
 
     !-------------------------------------------------------
@@ -264,13 +286,13 @@ use kinds_mod
 
     ! Maximum: a or b, whichever is greater
 
-    real(kind=r8b) function f_Maximize(a, b)
-        use kinds_mod
-        implicit none
-        real(kind=r8b), intent(in) :: a,b
+    REAL (KIND=r8b) FUNCTION f_Maximize(a, b)
+        USE kinds_mod
+        IMPLICIT none
+        REAL (KIND=r8b), INTENT(IN) :: a,b
 
-        f_Maximize = max(a,b)
-    end function
+        f_Maximize = MAX (a,b)
+    END FUNCTION
 
 
     !-------------------------------------------------------
@@ -279,17 +301,17 @@ use kinds_mod
 
     ! IF a .ne. 0 THEN b ELSE 0
 
-    real(kind=r8b) function f_IfThen(a, b)
-        use kinds_mod
-        implicit none
-        real(kind=r8b), intent(in) :: a,b
+    REAL (KIND=r8b) FUNCTION f_IfThen(a, b)
+        USE kinds_mod
+        IMPLICIT none
+        REAL (KIND=r8b), INTENT(IN) :: a,b
 
-        if( a .ne. 0.D+0) then
+        IF ( a .ne. 0.D+0) THEN
             f_IfThen = b
-        else
+        ELSE
             f_IfThen = 0.D+0
-        endif
-    end function
+        END IF
+    END FUNCTION
 
 
     !-------------------------------------------------------
@@ -298,17 +320,17 @@ use kinds_mod
 
     ! IF a .GT. b THEN 1 ELSE 0
 
-    real(kind=r8b) function f_IfGt(a, b)
-        use kinds_mod
-        implicit none
-        real(kind=r8b), intent(in) :: a,b
+    REAL (KIND=r8b) FUNCTION f_IfGt(a, b)
+        USE kinds_mod
+        IMPLICIT none
+        REAL (KIND=r8b), INTENT(IN) :: a,b
 
-        if( a .GT. b) then
+        IF ( a .GT. b) THEN
             f_IfGt = 1.D+0
-        else
+        ELSE
             f_IfGt = 0.D+0
-        endif
-    end function
+        END IF
+    END FUNCTION
 
     !-------------------------------------------------------
 
@@ -316,17 +338,17 @@ use kinds_mod
 
     ! IF a .GE. b THEN 1 ELSE 0
 
-    real(kind=r8b) function f_IfGte(a, b)
-        use kinds_mod
-        implicit none
-        real(kind=r8b), intent(in) :: a,b
+    REAL (KIND=r8b) FUNCTION f_IfGte(a, b)
+        USE kinds_mod
+        IMPLICIT none
+        REAL (KIND=r8b), INTENT(IN) :: a,b
 
-        if( a .GE. b) then
+        IF ( a .GE. b) THEN
             f_IfGte = 1.D+0
-        else
+        ELSE
             f_IfGte = 0.D+0
-        endif
-    end function
+        END IF
+    END FUNCTION
 
 
     !-------------------------------------------------------
@@ -335,17 +357,17 @@ use kinds_mod
 
     ! IF a .LT. b THEN 1 ELSE 0
 
-    real(kind=r8b) function f_IfLt(a, b)
-        use kinds_mod
-        implicit none
-        real(kind=r8b), intent(in) :: a,b
+    REAL (KIND=r8b) FUNCTION f_IfLt(a, b)
+        USE kinds_mod
+        IMPLICIT none
+        REAL (KIND=r8b), INTENT(IN) :: a,b
 
-        if( a .LT. b) then
+        IF ( a .LT. b) THEN
             f_IfLt = 1.D+0
-        else
+        ELSE
             f_IfLt = 0.D+0
-        endif
-    end function
+        END IF
+    END FUNCTION
 
 
     !-------------------------------------------------------
@@ -354,17 +376,17 @@ use kinds_mod
 
     ! IF a .LE. b THEN 1 ELSE 0
 
-    real(kind=r8b) function f_IfLte(a, b)
-        use kinds_mod
-        implicit none
-        real(kind=r8b), intent(in) :: a,b
+    REAL (KIND=r8b) FUNCTION f_IfLte(a, b)
+        USE kinds_mod
+        IMPLICIT none
+        REAL (KIND=r8b), INTENT(IN) :: a,b
 
-        if( a .LE. b) then
+        IF ( a .LE. b) THEN
             f_IfLte = 1.D+0
-        else
+        ELSE
             f_IfLte = 0.D+0
-        endif
-    end function
+        END IF
+    END FUNCTION
 
     !-------------------------------------------------------
 
@@ -372,17 +394,17 @@ use kinds_mod
 
     ! EXP_LP: exp(a)
 
-    real(kind=r8b) function f_ExponentialLeftPlus(a, b)
-        use kinds_mod
-        implicit none
-        real(kind=r8b), intent(in) :: a,b
+    REAL (KIND=r8b) FUNCTION f_ExponentialLeftPlus(a, b)
+        USE kinds_mod
+        IMPLICIT none
+        REAL (KIND=r8b), INTENT(IN) :: a,b
 
-        f_ExponentialLeftPlus = exp( a )
+        f_ExponentialLeftPlus = EXP ( a )
 
-        f_ExponentialLeftPlus = min( f_ExponentialLeftPlus, 1.0D+19 )
-        f_ExponentialLeftPlus = max( f_ExponentialLeftPlus, 1.0D-19 )
+        f_ExponentialLeftPlus = MIN ( f_ExponentialLeftPlus, 1.0D+19 )
+        f_ExponentialLeftPlus = MAX ( f_ExponentialLeftPlus, 1.0D-19 )
 
-    end function
+    END FUNCTION
 
 
     !-------------------------------------------------------
@@ -391,17 +413,17 @@ use kinds_mod
 
     ! EXP_RP: exp(b)
 
-    real(kind=r8b) function f_ExponentialRightPlus(a, b)
-        use kinds_mod
-        implicit none
-        real(kind=r8b), intent(in) :: a,b
+    REAL (KIND=r8b) FUNCTION f_ExponentialRightPlus(a, b)
+        USE kinds_mod
+        IMPLICIT none
+        REAL (KIND=r8b), INTENT(IN) :: a,b
 
-        f_ExponentialRightPlus = exp( b )
+        f_ExponentialRightPlus = EXP ( b )
 
-        f_ExponentialRightPlus = min( f_ExponentialRightPlus, 1.0D+19 )
-        f_ExponentialRightPlus = max( f_ExponentialRightPlus, 1.0D-19 )
+        f_ExponentialRightPlus = MIN ( f_ExponentialRightPlus, 1.0D+19 )
+        f_ExponentialRightPlus = MAX ( f_ExponentialRightPlus, 1.0D-19 )
 
-    end function
+    END FUNCTION
 
 
     !-------------------------------------------------------
@@ -411,17 +433,17 @@ use kinds_mod
 
     ! EXP_LM: exp(-a)
 
-    real(kind=r8b) function f_ExponentialLeftMinus(a, b)
-        use kinds_mod
-        implicit none
-        real(kind=r8b), intent(in) :: a,b
+    REAL (KIND=r8b) FUNCTION f_ExponentialLeftMinus(a, b)
+        USE kinds_mod
+        IMPLICIT none
+        REAL (KIND=r8b), INTENT(IN) :: a,b
 
-        f_ExponentialLeftMinus = exp( -1.0d0 * a )
+        f_ExponentialLeftMinus = EXP ( -1.0d0 * a )
 
-        f_ExponentialLeftMinus = min( f_ExponentialLeftMinus, 1.0D+19 )
-        f_ExponentialLeftMinus = max( f_ExponentialLeftMinus, 1.0D-19 )
+        f_ExponentialLeftMinus = MIN ( f_ExponentialLeftMinus, 1.0D+19 )
+        f_ExponentialLeftMinus = MAX ( f_ExponentialLeftMinus, 1.0D-19 )
 
-    end function
+    END FUNCTION
 
 
     !-------------------------------------------------------
@@ -430,21 +452,21 @@ use kinds_mod
 
     ! EXP_RM: exp(-b)
 
-    real(kind=r8b) function f_ExponentialRightMinus(a, b)
-        use kinds_mod
-        implicit none
-        real(kind=r8b), intent(in) :: a,b
+    REAL (KIND=r8b) FUNCTION f_ExponentialRightMinus(a, b)
+        USE kinds_mod
+        IMPLICIT none
+        REAL (KIND=r8b), INTENT(IN) :: a,b
 
-        f_ExponentialRightMinus = exp( -1.0d0 * b )
+        f_ExponentialRightMinus = EXP ( -1.0d0 * b )
 
-        f_ExponentialRightMinus = min( f_ExponentialRightMinus, 1.0D+19 )
-        f_ExponentialRightMinus = max( f_ExponentialRightMinus, 1.0D-19 )
+        f_ExponentialRightMinus = MIN ( f_ExponentialRightMinus, 1.0D+19 )
+        f_ExponentialRightMinus = MAX ( f_ExponentialRightMinus, 1.0D-19 )
 
-    end function
+    END FUNCTION
 
 
     !-------------------------------------------------------
 
 
 
-end module Math_Node_Functions
+END MODULE Math_Node_Functions

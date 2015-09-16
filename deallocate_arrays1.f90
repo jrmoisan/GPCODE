@@ -1,4 +1,25 @@
-subroutine deallocate_arrays1( )
+!> @brief
+!>  This subroutine deallocates the arrays which were opened by subroutine allocate_arrays1
+!>
+!> @details
+!>  This subroutine deallocates the arrays which were opened by subroutine allocate_arrays1
+!>
+!> @author Dr. John R. Moisan [NASA/GSFC]
+!> @date January, 2013 Dr. John R. Moisan
+
+SUBROUTINE deallocate_arrays1( )
+
+ 
+!---------------------------------------------------------------------------  
+!
+! DESCRIPTION: 
+! Brief description of routine. 
+!
+! REVISION HISTORY:
+! TODO_dd_mmm_yyyy - TODO_describe_appropriate_changes - TODO_name
+!
+
+!---------------------------------------------------------------------------  
 
 ! program written by: Dr. John R. Moisan [NASA/GSFC] 31 January, 2013
 
@@ -9,21 +30,21 @@ subroutine deallocate_arrays1( )
 !xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
 
-use kinds_mod 
+USE kinds_mod 
 
-use mpi
-use mpi_module
-
-
-
-use GP_Parameters_module
-use GP_variables_module
-use GA_Parameters_module
-use GA_Variables_module
-use GP_Data_module
+USE mpi
+USE mpi_module
 
 
-implicit none
+
+USE GP_Parameters_module
+USE GP_variables_module
+USE GA_Parameters_module
+USE GA_Variables_module
+USE GP_Data_module
+
+
+IMPLICIT none
 
 
 !----------------------------------------------------------------------------------------
@@ -32,117 +53,117 @@ implicit none
 
 ! deallocate variable dimension arrays
 
-deallocate( ga_individual_elites )
-deallocate( individual_SSE )
-deallocate( individual_SSE_nolog10 )
-deallocate( integrated_SSE )
+DEALLOCATE ( ga_individual_elites )
+DEALLOCATE ( individual_SSE )
+DEALLOCATE ( individual_SSE_nolog10 )
+DEALLOCATE ( integrated_SSE )
 
-deallocate( GP_N_parms )
+DEALLOCATE ( GP_N_parms )
 
-deallocate( individual_ranked_fitness )
-deallocate( integrated_ranked_fitness )
+DEALLOCATE ( individual_ranked_fitness )
+DEALLOCATE ( integrated_ranked_fitness )
 
-deallocate( Run_GA_lmdif )
-deallocate( Data_Array  )
+DEALLOCATE ( Run_GA_lmdif )
+DEALLOCATE ( Data_Array  )
 
-deallocate( Data_Variance_inv )
-deallocate( ratio_Data_Variance_inv )
+DEALLOCATE ( Data_Variance_inv )
+DEALLOCATE ( ratio_Data_Variance_inv )
 
-deallocate( GP_Population_Node_Parameters )
-deallocate( GP_Individual_Node_Parameters )
-
-
-deallocate( GP_Node_Parameters_Answer )
-deallocate( GP_Node_Type_Answer )
-deallocate( GP_Node_Type_for_Plotting )
-
-deallocate( GP_Adult_Population_Node_Type )
-deallocate( GP_Child_Population_Node_Type )
-deallocate( Parent_Tree_Swap_Node_Type )
-
-deallocate( GP_Child_Individual_SSE_nolog10 )
-
-deallocate( GP_Child_Population_SSE )
-
-deallocate( GP_Individual_Ranked_Fitness )
-deallocate( GP_Integrated_Ranked_Fitness )
-deallocate( GP_Population_Ranked_Fitness )
-deallocate( Run_GP_Calculate_Fitness )
-
-deallocate( GA_Integrated_SSE )
-deallocate( GA_Individual_Ranked_Fitness )
-deallocate( GA_Integrated_Ranked_Fitness )
+DEALLOCATE ( GP_Population_Node_Parameters )
+DEALLOCATE ( GP_Individual_Node_Parameters )
 
 
+DEALLOCATE ( GP_Node_Parameters_Answer )
+DEALLOCATE ( GP_Node_Type_Answer )
+DEALLOCATE ( GP_Node_Type_for_Plotting )
 
-deallocate( GP_Individual_N_GP_param )  ! jjm 20130409
+DEALLOCATE ( GP_Adult_Population_Node_Type )
+DEALLOCATE ( GP_Child_Population_Node_Type )
+DEALLOCATE ( Parent_Tree_Swap_Node_Type )
 
-deallocate( GP_minSSE_Individual_Initial_Conditions )
-deallocate( GP_minSSE_Individual_Node_Type ) 
-deallocate( GP_minSSE_Individual_Node_Parameters )
+DEALLOCATE ( GP_Child_Individual_SSE_nolog10 )
+
+DEALLOCATE ( GP_Child_Population_SSE )
+
+DEALLOCATE ( GP_Individual_Ranked_Fitness )
+DEALLOCATE ( GP_Integrated_Ranked_Fitness )
+DEALLOCATE ( GP_Population_Ranked_Fitness )
+DEALLOCATE ( Run_GP_Calculate_Fitness )
+
+DEALLOCATE ( GA_Integrated_SSE )
+DEALLOCATE ( GA_Individual_Ranked_Fitness )
+DEALLOCATE ( GA_Integrated_Ranked_Fitness )
+
+
+
+DEALLOCATE ( GP_Individual_N_GP_param )  ! jjm 20130409
+
+DEALLOCATE ( GP_minSSE_Individual_Initial_Conditions )
+DEALLOCATE ( GP_minSSE_Individual_Node_Type ) 
+DEALLOCATE ( GP_minSSE_Individual_Node_Parameters )
       
 
-deallocate( GP_Population_Initial_Conditions )
-deallocate( GP_Individual_Initial_Conditions )
+DEALLOCATE ( GP_Population_Initial_Conditions )
+DEALLOCATE ( GP_Individual_Initial_Conditions )
 
-deallocate( GP_Population_Fitness )
-deallocate( GP_Integrated_Population_Ranked_Fitness )
+DEALLOCATE ( GP_Population_Fitness )
+DEALLOCATE ( GP_Integrated_Population_Ranked_Fitness )
 
-deallocate( GP_diversity_index )
+DEALLOCATE ( GP_diversity_index )
 
-deallocate( GP_Individual_Node_Type )
+DEALLOCATE ( GP_Individual_Node_Type )
 
-deallocate( RK_Node_Type )
-deallocate( RK_Node_Parameters )
-deallocate( RK_Initial_Conditions )
-deallocate( RK_Solution )
+DEALLOCATE ( RK_Node_Type )
+DEALLOCATE ( RK_Node_Parameters )
+DEALLOCATE ( RK_Initial_Conditions )
+DEALLOCATE ( RK_Solution )
 
-if( n_input_vars > 0 )then     
-    deallocate( RK_data_array ) 
-endif 
+IF ( n_input_vars > 0 ) THEN     
+    DEALLOCATE ( RK_data_array ) 
+END IF 
 
-deallocate( Node_Values )
-deallocate( Tree_Evaluation )
+DEALLOCATE ( Node_Values )
+DEALLOCATE ( Tree_Evaluation )
 
-deallocate( GP_Trees )
-deallocate( Tree_Value )
+DEALLOCATE ( GP_Trees )
+DEALLOCATE ( Tree_Value )
 
-deallocate( Node_Eval_Type )
+DEALLOCATE ( Node_Eval_Type )
 
-deallocate( bioflo )
-deallocate( bioflo_map )
-deallocate( b_tmp )
+DEALLOCATE ( bioflo )
+DEALLOCATE ( bioflo_map )
+DEALLOCATE ( b_tmp )
 
-deallocate( Numerical_CODE_Initial_Conditions )
-deallocate( Numerical_CODE_Forcing_Functions  )
-deallocate( Numerical_CODE_Solution  )
+DEALLOCATE ( Numerical_CODE_Initial_Conditions )
+DEALLOCATE ( Numerical_CODE_Forcing_Functions  )
+DEALLOCATE ( Numerical_CODE_Solution  )
 
 !---------------------------------------------------------------                                        
     
-if( L_truth_model )then                                                                                                        
-    deallocate( Truth_Initial_Conditions )
-    deallocate( Truth_Node_Type          )
-    deallocate( Truth_Node_Parameters    )
-endif !  L_truth_model                                                                                                         
+IF ( L_truth_model ) THEN                                                                                                        
+    DEALLOCATE ( Truth_Initial_Conditions )
+    DEALLOCATE ( Truth_Node_Type          )
+    DEALLOCATE ( Truth_Node_Parameters    )
+END IF !  L_truth_model                                                                                                         
                                                                                                         
 !---------------------------------------------------------------                                        
 
 
 
 
-deallocate( kval )
-deallocate( btmp )
-deallocate( fbio )
+DEALLOCATE ( kval )
+DEALLOCATE ( btmp )
+DEALLOCATE ( fbio )
 
 
-deallocate( Node_Probability )
+DEALLOCATE ( Node_Probability )
 
-deallocate( GP_Adult_Population_SSE )
+DEALLOCATE ( GP_Adult_Population_SSE )
 
-deallocate( answer       )
-deallocate( output_array ) 
+DEALLOCATE ( answer       )
+DEALLOCATE ( output_array ) 
  
 
-return
+RETURN
 
-end subroutine deallocate_arrays1
+END SUBROUTINE deallocate_arrays1

@@ -1,4 +1,28 @@
-subroutine setup_run_para_lmdif( i_G_indiv,  &
+!> @brief
+!>  This subroutine loads arrays needed for the lmdif process, and stores the 
+!!  outputs of the lmdif process.
+!>
+!> @details
+!>  This subroutine loads arrays needed for the lmdif process, and stores the 
+!!  outputs of the lmdif process.
+!>
+!> @author Dr. John R. Moisan [NASA/GSFC]
+!> @date January, 2013 Dr. John R. Moisan
+!>
+!> @param[in]    i_G_indiv           - individual being integrated
+!> @param[in]    max_n_gp_params     - maximum number of parameters over all individuals
+!> @param[inout] child_parameters    - parameter values for the current individual
+!> @param[in]    individual_quality  - = 1 if individual is valid, -1 if not
+!> @param[in]    n_indiv             - not used
+!> @param[out]   my_indiv_SSE        - calculated SSE value for this individual
+!> @param[in]    n_parms             - number of variables being used
+!> @param[in]    n_parms_dim         - maximum number of variables 
+!> @param[out]   info                - information on result of lmdif. if < 0, an error occurred
+!> @param[in]    i_GP_gen            - current GP generation
+!> @param[in]    L_myprint           - switch controlling printout to "myprint_unit"
+!> @param[in]    myprint_unit        - unit for printout
+
+SUBROUTINE setup_run_para_lmdif ( i_G_indiv,  &
                                  max_n_gp_params, &
                                  child_parameters, &
                                  individual_quality, &
@@ -8,94 +32,105 @@ subroutine setup_run_para_lmdif( i_G_indiv,  &
                                  i_GP_gen, &
                                  L_myprint, myprint_unit  )
 
+ 
+!---------------------------------------------------------------------------  
+!
+! DESCRIPTION: 
+! Brief description of routine. 
+!
+! REVISION HISTORY:
+! TODO_dd_mmm_yyyy - TODO_describe_appropriate_changes - TODO_name
+!
+!---------------------------------------------------------------------------  
+
 ! written by: Dr. John R. Moisan [NASA/GSFC] 5 December, 2012
 !xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 ! program to use a twin experiment to test the effectiveness of
 ! a finding the optimum parameter set for a coupled set of equations
 !xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
-use kinds_mod
+USE kinds_mod
 
-use mpi
-use mpi_module
-
-
-use GP_parameters_module
-use GA_parameters_module
-use GP_variables_module
-use GA_variables_module
-use GP_data_module
+USE mpi
+USE mpi_module
 
 
-implicit none
+USE GP_parameters_module
+USE GA_parameters_module
+USE GP_variables_module
+USE GA_variables_module
+USE GP_data_module
 
 
-integer, intent(in)  ::  i_G_indiv
-integer, intent(in)  ::  n_indiv
-integer, intent(in)  ::  n_parms
-integer, intent(in)  ::  n_parms_dim
-integer, intent(in)  ::  i_GP_gen
+IMPLICIT none
 
-integer(kind=i4b) ::  iunit
 
-real(kind=r8b)  ::  my_indiv_SSE
+INTEGER, INTENT(IN)  ::  i_G_indiv
+INTEGER, INTENT(IN)  ::  n_indiv
+INTEGER, INTENT(IN)  ::  n_parms
+INTEGER, INTENT(IN)  ::  n_parms_dim
+INTEGER, INTENT(IN)  ::  i_GP_gen
 
-logical, intent(in)  ::  L_myprint
-integer, intent(in)  ::  myprint_unit
-integer, intent(in)  ::  max_n_gp_params
+INTEGER (KIND=i4b) ::  iunit
+
+REAL (KIND=r8b)  ::  my_indiv_SSE
+
+LOGICAL, INTENT(IN)  ::  L_myprint
+INTEGER, INTENT(IN)  ::  myprint_unit
+INTEGER, INTENT(IN)  ::  max_n_gp_params
 
 ! lmdif arrays and variables
 
-real(kind=r8b) :: x_LMDIF(n_parms_dim)                        
+REAL (KIND=r8b) :: x_lmdif(n_parms_dim)                        
 
 
-real(kind=r8b) :: fvec(n_time_steps)
-real(kind=r8b) :: ftol,xtol,gtol
+REAL (KIND=r8b) :: fvec(n_time_steps)
+REAL (KIND=r8b) :: ftol,xtol,gtol
 
 
-real(kind=r8b), parameter :: epsfcn = 1.0d-9  
-real(kind=r8b), parameter :: factor=1.0D+0
-real(kind=r8b), parameter :: zero = 0.0d0
+REAL (KIND=r8b), parameter :: epsfcn = 1.0d-9  
+REAL (KIND=r8b), parameter :: factor=1.0D+0
+REAL (KIND=r8b), parameter :: zero = 0.0d0
 
-real(kind=r8b) :: diag(n_parms_dim)
-real(kind=r8b) :: fjac( n_time_steps , n_parms_dim )
-real(kind=r8b) :: qtf(n_parms_dim)
+REAL (KIND=r8b) :: diag(n_parms_dim)
+REAL (KIND=r8b) :: fjac( n_time_steps , n_parms_dim )
+REAL (KIND=r8b) :: qtf(n_parms_dim)
 
-integer(kind=i4b) :: maxfev, ldfjac, mode, nprint, nfev
-integer(kind=i4b) :: info
+INTEGER (KIND=i4b) :: maxfev, ldfjac, mode, nprint, nfev
+INTEGER (KIND=i4b) :: info
 
-integer(kind=i4b) :: ipvt(n_parms_dim)
+INTEGER (KIND=i4b) :: ipvt(n_parms_dim)
 
 
 ! individual_quality contains information on the result of lmdif
 ! if lmdif encounters an error, set individual_quality to -1
 ! if < 0 , reject this individual  ! jjm
 
-integer(kind=i4b) :: individual_quality
+INTEGER (KIND=i4b) :: individual_quality
 
-integer(kind=i4b) :: i_time_step
-integer(kind=i4b) :: i_parameter
+INTEGER (KIND=i4b) :: i_time_step
+INTEGER (KIND=i4b) :: i_parameter
 
-integer(kind=i4b) :: i_tree
-integer(kind=i4b) :: i_node
+INTEGER (KIND=i4b) :: i_tree
+INTEGER (KIND=i4b) :: i_node
 
-real(kind=r8b) :: child_parameters( n_parms_dim )
+REAL (KIND=r8b) :: child_parameters( n_parms_dim )
 
-external :: fcn
+EXTERNAL :: fcn
 
 
 !--------------------------------------------------------------------------------------------
 
 
 
-if( n_parms <= n_code_equations ) then
+IF ( n_parms <= n_code_equations ) THEN
 
     individual_quality = -1
     my_indiv_SSE =  big_real 
 
-    return   ! 20131016 jjm
+    RETURN   ! 20131016 jjm
 
-endif ! n_parms <= 0
+END IF ! n_parms <= 0
 
 
 
@@ -105,20 +140,20 @@ endif ! n_parms <= 0
 ! and passed to RK subroutine as RK_node_type
 
 do  i_tree=1,n_trees
-    do  i_node=1,n_nodes
+    DO  i_node=1,n_nodes
         GP_Individual_Node_Type(i_node,i_tree) = &
                        GP_Adult_Population_Node_Type(i_node,i_tree,i_G_indiv)
-    enddo ! i_node
-enddo  ! i_tree
+    END DO ! i_node
+END DO  ! i_tree
 
 !-------------------------------------------------------------------------------
 
 
 do  i_parameter = 1, n_parms
 
-    X_LMDIF(i_parameter) = child_parameters(i_parameter)
+    X_lmdif(i_parameter) = child_parameters(i_parameter)
 
-enddo ! i_parameter
+END DO ! i_parameter
 
 
 ! for each of these individuals, optimize the variables using lmdif.f
@@ -160,7 +195,7 @@ iunit = 0
 fvec = 0.0D0
 
 
-call lmdif( fcn, n_time_steps, n_parms, x_LMDIF, fvec, &
+CALL lmdif ( fcn, n_time_steps, n_parms, x_lmdif, fvec, &
             ftol, xtol, gtol, maxfev, epsfcn, &
             diag, mode, factor, nprint, info, nfev, fjac, ldfjac, ipvt, qtf ) 
 
@@ -174,16 +209,16 @@ call lmdif( fcn, n_time_steps, n_parms, x_LMDIF, fvec, &
 
 ! if info < 0 , delete this individual
 
-if( info <= 0 ) then
+IF ( info <= 0 ) THEN
 
     individual_quality  = -1
     my_indiv_SSE =  big_real
 
     GP_Child_Individual_SSE_nolog10(i_G_indiv) = big_real
 
-    return
+    RETURN
 
-endif ! info < 0
+END IF ! info < 0
 
 
 
@@ -196,9 +231,9 @@ if (info .eq. 8) info = 4
 do  i_parameter = 1, n_parms
 
     child_parameters(i_parameter) = &
-                           dabs( x_LMDIF(i_parameter) )
+                           DABS ( x_lmdif(i_parameter) )
 
-enddo ! i_parameter
+END DO ! i_parameter
 
 
 !-----------------------------------------------------------------------------------
@@ -214,34 +249,34 @@ enddo ! i_parameter
 
 my_indiv_SSE = big_real 
 
-if( individual_quality > 0 ) then
+IF ( individual_quality > 0 ) THEN
 
 
     my_indiv_SSE = 0.0D+0
 
-    do i_time_step = 1, n_time_steps
+    DO i_time_step = 1, n_time_steps
 
-       if( isnan(fvec(i_time_step)) )         fvec(i_time_step) = 0.0d0
-       if( abs(fvec(i_time_step)) >  big_real ) fvec(i_time_step) = big_real 
+       IF ( ISNAN (fvec(i_time_step)) )         fvec(i_time_step) = 0.0d0
+       IF ( ABS (fvec(i_time_step)) >  big_real ) fvec(i_time_step) = big_real 
 
        my_indiv_SSE = my_indiv_SSE + fvec(i_time_step)
 
-    enddo ! i_time_step
+    END DO ! i_time_step
 
-endif !  individual_quality > 0
+END IF !  individual_quality > 0
 
 
 
-if( index( model,'LOG10') > 0 .or. &                                                                            
-    index( model,'log10') > 0         )then                                                                     
+IF ( INDEX ( model,'LOG10') > 0 .or. &                                                                            
+    INDEX ( model,'log10') > 0         ) THEN                                                                     
 
     GP_Child_Individual_SSE_nolog10(i_G_indiv) = sse_local_nolog10
 
-endif ! index( model,'LOG10') > 0 .or. ...                                                                          
+END IF ! INDEX ( model,'LOG10') > 0 .or. ...                                                                          
 
 
 
-return
+RETURN
 
 
-end subroutine setup_run_para_lmdif
+END SUBROUTINE setup_run_para_lmdif

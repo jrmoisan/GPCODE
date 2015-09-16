@@ -1,25 +1,53 @@
-subroutine Initialize_Model( buildTrees, L_myprint, myprint_unit )
+!> @brief
+!>  This subroutine calls routine build_trees to make tree objects, and contains
+!!  some Fasham model forcing subroutines.
+!>
+!> @details
+!>  This subroutine calls routine build_trees to make tree objects, and contains
+!!  some Fasham model forcing subroutines.
+!>
+!> @author Dr. John R. Moisan [NASA/GSFC]
+!> @date January, 2013 Dr. John R. Moisan
+!>
+!> @param[in]  L_myprint    - if true, print some information on unit "myprint_unit"
+!> @param[in]  myprint_unit - unit for printout
 
-use kinds_mod 
+!> @param[inout] buildTrees - if buildtrees is TRUE,  you get the GP_individual node_type and parameter arrays
+!!                            if buildtrees is FALSE, you get the Fasham functions tree
 
-use mpi
-use mpi_module
+SUBROUTINE Initialize_Model( buildTrees, L_myprint, myprint_unit )
 
-use fasham_variables_module
+ 
+!---------------------------------------------------------------------------  
+!
+! DESCRIPTION: 
+! Brief description of routine. 
+!
+! REVISION HISTORY:
+! TODO_dd_mmm_yyyy - TODO_describe_appropriate_changes - TODO_name
+!
+!---------------------------------------------------------------------------  
+
+USE kinds_mod 
+
+USE mpi
+USE mpi_module
+
+USE fasham_variables_module
 
 
-use GP_parameters_module
-use GA_parameters_module
-use GP_variables_module
+USE GP_parameters_module
+USE GA_parameters_module
+USE GP_variables_module
 
-implicit none
+IMPLICIT none
 
-logical :: buildTrees
+LOGICAL :: buildTrees
 
-integer(kind=i4b) :: i
+INTEGER (KIND=i4b) :: i
 
-logical, intent(in)  ::  L_myprint
-integer, intent(in)  ::  myprint_unit
+LOGICAL, INTENT(IN)  ::  L_myprint
+INTEGER, INTENT(IN)  ::  myprint_unit
 
 
 !------------------------------------------------------------------------------------------------
@@ -30,12 +58,12 @@ integer, intent(in)  ::  myprint_unit
 
 do  i = 1, n_CODE_equations
     bioflo_map(i,1) = -i
-enddo ! i
+END DO ! i
 
 
 ! Since indexes are all negative, take the absolute value
 
-bioflo_map = abs(bioflo_map)
+bioflo_map = ABS (bioflo_map)
 
 Numerical_CODE_Forcing_Functions = 0.0D+0
 
@@ -46,7 +74,7 @@ btmp(1:n_code_equations) = 0.0D0
 ! if buildtrees is TRUE,  you get the GP_individual node_type and parameter arrays
 
 
-call Build_Trees( GP_Trees(:, 1) ,  buildTrees )
+CALL Build_Trees( GP_Trees(:, 1) ,  buildTrees )
 
 
 !-------------------------------------------------------------------------------
@@ -60,71 +88,71 @@ call Build_Trees( GP_Trees(:, 1) ,  buildTrees )
 !-------------------------------------------------------------------------------
 
 
-end subroutine Initialize_Model
+END SUBROUTINE Initialize_Model
 
 
 
 
-subroutine DoForcing(b_tmp_local, time_step_fraction, i_Time_Step, L_bad )
+SUBROUTINE DoForcing(b_tmp_local, time_step_fraction, i_Time_Step, L_bad )
 
-use fasham_variables_module
-use GP_variables_module
+USE fasham_variables_module
+USE GP_variables_module
 
-implicit none
+IMPLICIT none
 
-real(kind=r8b) :: b_tmp_local(n_CODE_Equations)
-real(kind=r8b) :: time_step_fraction, day, h, hplus, aMLD, aJ
-integer(kind=i4b) :: i_Time_Step
+REAL (KIND=r8b) :: b_tmp_local(n_CODE_Equations)
+REAL (KIND=r8b) :: time_step_fraction, day, h, hplus, aMLD, aJ
+INTEGER (KIND=i4b) :: i_Time_Step
 
-logical :: L_bad
+LOGICAL :: L_bad
 
 !------------------------------------------------------------------------------------
 
 L_bad = .FALSE. 
 
 date=(i_Time_Step+time_step_fraction)* dt /(365.D+0)  ! number of years
-thour=mod(((i_Time_Step+time_step_fraction)* dt *24),24.D+0) ! time of day in hours
+thour=MOD (((i_Time_Step+time_step_fraction)* dt *24),24.D+0) ! time of day in hours
 dayn=(i_Time_Step+time_step_fraction)* dt ! day number
-day=mod(dayn,365.D+0) ! year day [0.D+0 to 365.D+0]
+day=MOD (dayn,365.D+0) ! year day [0.D+0 to 365.D+0]
 
 
 
-call mldforce(day, h, aMLD, L_bad )
-if( L_bad ) return
+CALL mldforce(day, h, aMLD, L_bad )
+IF ( L_bad ) RETURN
 
 
-call JQforce(b_tmp_local, day, aMLD, aJ, L_bad)
-if( L_bad ) return
+CALL JQforce(b_tmp_local, day, aMLD, aJ, L_bad)
+IF ( L_bad ) RETURN
 
 
-if( h .ge. 0.D+0) then
+IF ( h .ge. 0.D+0) THEN
     hplus=h
-else
+ELSE
     hplus=0.D+0
-endif
+END IF
 
-Numerical_CODE_Forcing_Functions(abs(5000 + FORCING_MLD_CHANGE_MOTILE))         = h
-Numerical_CODE_Forcing_Functions(abs(5000 + FORCING_MLD_CHANGE_NON_MOTILE))     = hplus
-Numerical_CODE_Forcing_Functions(abs(5000 + FORCING_MIXED_LAYER_DEPTH))         = aMLD
-Numerical_CODE_Forcing_Functions(abs(5000 + FORCING_LIGHT_LIMITED_GROWTH_RATE)) = aJ
+Numerical_CODE_Forcing_Functions(ABS (5000 + FORCING_MLD_CHANGE_MOTILE))         = h
+Numerical_CODE_Forcing_Functions(ABS (5000 + FORCING_MLD_CHANGE_NON_MOTILE))     = hplus
+Numerical_CODE_Forcing_Functions(ABS (5000 + FORCING_MIXED_LAYER_DEPTH))         = aMLD
+Numerical_CODE_Forcing_Functions(ABS (5000 + FORCING_LIGHT_LIMITED_GROWTH_RATE)) = aJ
 
 
-if( isnan(aJ) .or. isnan(aMLD) )then
+IF ( ISNAN (aJ) .or. ISNAN (aMLD) ) THEN
     L_bad = .true.
-endif ! isnan(aJ) ...
+END IF ! ISNAN (aJ) ...
 
-return
+RETURN
 
-end subroutine
+END SUBROUTINE
 
 
 
-subroutine SecondaryForcing()
+SUBROUTINE SecondaryForcing()
     ! Do nothing - no secondary forcing
-end subroutine
+END SUBROUTINE
 
 
 
-subroutine Model_Diagnostics()
+SUBROUTINE Model_Diagnostics()
     !   TODO: Create this routine if need be
-end subroutine
+END SUBROUTINE

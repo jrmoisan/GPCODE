@@ -1,28 +1,54 @@
-subroutine GP_produce_next(i_GP_generation, i_GP_best_parent, L_nextloop)
+!> @brief
+!>  This subroutine does the processing for GP generations after the first.   
+!>
+!> @details
+!>  This subroutine does the processing for GP generations after the first.   
+!>
+!> @author Dr. John R. Moisan [NASA/GSFC]
+!> @date January, 2013 Dr. John R. Moisan
+!>
+!> @param[in] i_GP_generation  - GP generation - return if < 2 
+!> @param[in] i_GP_best_parent - GP individual with the best fitness (lowest SSE)
 
-use kinds_mod
-use mpi
-use mpi_module
+!> @param[out] L_nextloop - true if an error occurred in this routine 
+!!                        - main program ignores L_nextloop
 
-use GP_Parameters_module
-use GP_variables_module
-use GA_Parameters_module
-use GA_Variables_module
-use GP_Data_module
+SUBROUTINE GP_produce_next(i_GP_generation, i_GP_best_parent, L_nextloop)
 
-use fasham_variables_module
-use Tree_Node_Factory_module
-use class_Tree_Node
+ 
+!---------------------------------------------------------------------------  
+!
+! DESCRIPTION: 
+! Brief description of routine. 
+!
+! REVISION HISTORY:
+! TODO_dd_mmm_yyyy - TODO_describe_appropriate_changes - TODO_name
+!
+!---------------------------------------------------------------------------  
 
-implicit none
-integer(kind=i4b),intent(in) :: i_GP_generation
-integer(kind=i4b),intent(in) :: i_GP_best_parent
-logical,intent(inout) :: L_nextloop
-integer(kind=i4b) :: i_GP_individual
-integer :: message_len
-integer :: ierror_t
-integer :: ierror_m
-integer :: ierror_rr
+USE kinds_mod
+USE mpi
+USE mpi_module
+
+USE GP_Parameters_module
+USE GP_variables_module
+USE GA_Parameters_module
+USE GA_Variables_module
+USE GP_Data_module
+
+USE fasham_variables_module
+USE Tree_Node_Factory_module
+USE class_Tree_Node
+
+IMPLICIT none
+INTEGER (KIND=i4b),INTENT(IN) :: i_GP_generation
+INTEGER (KIND=i4b),INTENT(IN) :: i_GP_best_parent
+LOGICAL,INTENT(INOUT) :: L_nextloop
+INTEGER (KIND=i4b) :: i_GP_individual
+INTEGER :: message_len
+INTEGER :: ierror_t
+INTEGER :: ierror_m
+INTEGER :: ierror_rr
 
 
 !----------------------------------------------------------------------------------
@@ -35,14 +61,14 @@ integer :: ierror_rr
 
 L_nextloop = .false.
 
-if( i_GP_generation < 2 ) return
+IF ( i_GP_generation < 2 ) RETURN
 
 ierror_t  = 0
 ierror_m  = 0
 ierror_rr = 0
 
 
-if( myid == 0 )then
+IF ( myid == 0 ) THEN
 
     ! fill child sse for individuals not  modified in this generation
 
@@ -71,16 +97,16 @@ if( myid == 0 )then
 
 
 
-    if( n_GP_Asexual_Reproductions .gt. 0 )then
+    IF ( n_GP_Asexual_Reproductions .gt. 0 ) THEN
 
         !write(GP_print_unit,'(A,1x,I6)') &
         !      'gpn: call GP_Fit_Prop_Asexual_Repro &
         !      &n_GP_Asexual_Reproductions =', n_GP_Asexual_Reproductions
         !flush(GP_print_unit)
 
-        call GP_Fitness_Proportionate_Asexual_Reproduction
+        CALL GP_Fitness_Proportionate_Asexual_Reproduction
 
-    endif !  n_GP_Asexual_Reproductions .gt. 0
+    END IF !  n_GP_Asexual_Reproductions .gt. 0
 
 
 
@@ -100,9 +126,9 @@ if( myid == 0 )then
     !    Run_GP_Calculate_Fitness ( to true for modified individuals )
 
 
-    if( trim(model) /= 'fasham_fixed_tree' )then
+    IF ( TRIM (model) /= 'fasham_fixed_tree' ) THEN
 
-        if( n_GP_Crossovers .gt. 0 )then
+        IF ( n_GP_Crossovers .gt. 0 ) THEN
 
             !write(GP_print_unit,'(A,1x,I6)') &
             !         'gpn: call GP_Tour_Style_Sexual_Repro n_GP_Crossovers =', &
@@ -110,12 +136,12 @@ if( myid == 0 )then
             !flush( GP_print_unit )
 
             ierror_t = 0
-            call GP_Tournament_Style_Sexual_Reproduction( ierror_t )
+            CALL GP_Tournament_Style_Sexual_Reproduction( ierror_t )
 
 
-        endif !  n_GP_Crossovers .gt. 0
+        END IF !  n_GP_Crossovers .gt. 0
 
-    endif ! trim(model) /= 'fasham_fixed_tree'
+    END IF ! TRIM (model) /= 'fasham_fixed_tree'
 
     !----------------------------------------------------------------------------------
 
@@ -129,9 +155,9 @@ if( myid == 0 )then
     !  Run_GP_Calculate_Fitness  ( to true for modified individuals )
 
 
-    if( trim(model) /= 'fasham_fixed_tree' )then
+    IF ( TRIM (model) /= 'fasham_fixed_tree' ) THEN
 
-        if( n_GP_Mutations .gt. 0 )then
+        IF ( n_GP_Mutations .gt. 0 ) THEN
 
             !write(GP_print_unit,'(A,1x,I6)') &
             !         'gpn: call GP_Mutations   n_GP_Mutations  =', &
@@ -139,11 +165,11 @@ if( myid == 0 )then
             !flush(GP_print_unit)
 
             ierror_m = 0
-            call GP_Mutations( ierror_m )
+            CALL GP_Mutations( ierror_m )
 
-        endif !  n_GP_Mutations .gt. 0
+        END IF !  n_GP_Mutations .gt. 0
 
-    endif ! trim(model) /= 'fasham_fixed_tree'
+    END IF ! TRIM (model) /= 'fasham_fixed_tree'
 
 
     !----------------------------------------------------------------------------------
@@ -159,9 +185,9 @@ if( myid == 0 )then
     !  Run_GP_Calculate_Fitness  ( to true for modified individuals )
 
 
-    if( trim(model) /= 'fasham_fixed_tree' )then
+    IF ( TRIM (model) /= 'fasham_fixed_tree' ) THEN
 
-        if( n_GP_rand_recruits .gt. 0 )then
+        IF ( n_GP_rand_recruits .gt. 0 ) THEN
 
             !write(GP_print_unit,'(A,1x,I6)') &
             !         'gpn: call GP_random_recruit   n_GP_rand_recruits  =', &
@@ -169,11 +195,11 @@ if( myid == 0 )then
             !flush(GP_print_unit)
 
             ierror_rr = 0
-            call GP_random_recruit( ierror_rr )
+            CALL GP_random_recruit( ierror_rr )
 
-        endif !  n_GP_rand_recruits .gt. 0
+        END IF !  n_GP_rand_recruits .gt. 0
 
-    endif ! trim(model) /= 'fasham_fixed_tree'
+    END IF ! TRIM (model) /= 'fasham_fixed_tree'
 
 
     !----------------------------------------------------------------------------------
@@ -187,7 +213,7 @@ if( myid == 0 )then
 
 
 
-endif ! myid == 0
+END IF ! myid == 0
 
 !---------------------------------------------------------------------------
 
@@ -198,22 +224,22 @@ GP_Adult_Population_SSE       = GP_Child_Population_SSE         ! keep jjm 20150
 
 
 message_len =  1
-call MPI_BCAST( ierror_t, message_len,    &
+CALL MPI_BCAST( ierror_t, message_len,    &
                 MPI_INTEGER,  0, MPI_COMM_WORLD, ierr )
-call MPI_BCAST( ierror_m, message_len,    &
+CALL MPI_BCAST( ierror_m, message_len,    &
                 MPI_INTEGER,  0, MPI_COMM_WORLD, ierr )
-call MPI_BCAST( ierror_rr, message_len,    &
+CALL MPI_BCAST( ierror_rr, message_len,    &
                 MPI_INTEGER,  0, MPI_COMM_WORLD, ierr )
 
 
-if( ierror_t > 0 .or. ierror_m > 0 .or. ierror_rr > 0 )then
-    write(6,'(A,2(1x,I6))') &
+IF ( ierror_t > 0 .or. ierror_m > 0 .or. ierror_rr > 0 ) THEN
+    WRITE (6,'(A,2(1x,I6))') &
           'gpn: error found in GP_Tour or GP_Mut in generation ', &
                                                i_GP_generation, myid
-    write(6,'(A,2(1x,I6))') 'gpn: ierror_t,  myid ', ierror_t,  myid
-    write(6,'(A,2(1x,I6))') 'gpn: ierror_m,  myid ', ierror_m,  myid
-    write(6,'(A,2(1x,I6))') 'gpn: ierror_rr, myid ', ierror_rr, myid
-    write(6,'(A,1x,I6)') 'gpn: cycle generation_loop myid =', myid
+    WRITE (6,'(A,2(1x,I6))') 'gpn: ierror_t,  myid ', ierror_t,  myid
+    WRITE (6,'(A,2(1x,I6))') 'gpn: ierror_m,  myid ', ierror_m,  myid
+    WRITE (6,'(A,2(1x,I6))') 'gpn: ierror_rr, myid ', ierror_rr, myid
+    WRITE (6,'(A,1x,I6)') 'gpn: CYCLE generation_loop myid =', myid
     flush(6)
 
     ierror_t  = 0
@@ -221,9 +247,9 @@ if( ierror_t > 0 .or. ierror_m > 0 .or. ierror_rr > 0 )then
     ierror_rr = 0
     L_nextloop = .true.
 
-    return
+    RETURN
 
-endif ! ierror....
+END IF ! ierror....
 
 
 !------------------------------------------------------------------------------------
@@ -236,19 +262,19 @@ endif ! ierror....
 ! new GA individuals, without regard to what the best GP individuals of the last
 ! generation were
 
-if( trim(model) == 'fasham_fixed_tree' )then
+IF ( TRIM (model) == 'fasham_fixed_tree' ) THEN
 
-    if( myid == 0 )then
+    IF ( myid == 0 ) THEN
 
-        write(6,'(/A,2(1x,I6))') &
+        WRITE (6,'(/A,2(1x,I6))') &
               'gpn: generation,i_GP_best_parent  ', &
               i_GP_generation, i_GP_best_parent
         flush(6)
 
         Run_GP_Calculate_Fitness(i_GP_best_parent) = .false.
 
-    endif ! myid == 0
-endif ! trim(model) == 'fasham_fixed_tree'
+    END IF ! myid == 0
+END IF ! TRIM (model) == 'fasham_fixed_tree'
 
 !------------------------------------------------------------------------------------
 
@@ -262,9 +288,9 @@ endif ! trim(model) == 'fasham_fixed_tree'
 
 
 
-call bcast2()
+CALL bcast2()
 
 
-return
+RETURN
 
-end subroutine GP_produce_next
+END SUBROUTINE GP_produce_next

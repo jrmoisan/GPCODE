@@ -1,21 +1,44 @@
-subroutine GA_save_elites( )
+!> @brief
+!>  This subroutine marks the most fit GA individuals as "elite" so that they 
+!!  will not be modified by the mutation, tournament, etc. subroutines
+!>
+!> @details
+!>  This subroutine marks the most fit GA individuals as "elite" so that they 
+!!  will not be modified by the mutation, tournament, etc. subroutines
+!>
+!> @author Dr. John R. Moisan [NASA/GSFC]
+!> @date January, 2013 Dr. John R. Moisan
 
-use kinds_mod 
-use GP_Parameters_module
-use GA_Parameters_module
-use GP_Variables_module
-use GA_Variables_module
-use GP_Data_module
+SUBROUTINE GA_save_elites( )
 
-implicit none
+ 
+!---------------------------------------------------------------------------  
+!
+! DESCRIPTION: 
+! Brief description of routine. 
+
+!
+! REVISION HISTORY:
+! TODO_dd_mmm_yyyy - TODO_describe_appropriate_changes - TODO_name
+!
+!---------------------------------------------------------------------------  
+
+USE kinds_mod 
+USE GP_Parameters_module
+USE GA_Parameters_module
+USE GP_Variables_module
+USE GA_Variables_module
+USE GP_Data_module
+
+IMPLICIT none
 
 
-integer(kind=i4b) :: i
-integer(kind=i4b) :: j
+INTEGER (KIND=i4b) :: i
+INTEGER (KIND=i4b) :: j
 
-real(kind=r8b), allocatable, dimension(:)  :: temp_fitness
+REAL (KIND=r8b), ALLOCATABLE, DIMENSION(:)  :: temp_fitness
 
-real(kind=r8b) :: min_fit
+REAL (KIND=r8b) :: min_fit
 
 
 !----------------------------------------------------------------------
@@ -26,18 +49,18 @@ real(kind=r8b) :: min_fit
 
 ! cycle through all individuals until one, j,  is found such that:
 
-!  the integrated_ranked_fitness(j) > random number
+!    the integrated_ranked_fitness(j) > random number
 
 ! then replace child parameters of i with child parameters of j
 
 
 
-if( n_GA_save_elites < 1 ) return
+IF ( n_GA_save_elites < 1 ) RETURN
 
 
 !-----------------------------------------------------------------------
 
-allocate( temp_fitness( n_GA_individuals ) )
+ALLOCATE ( temp_fitness( n_GA_individuals ) )
 
 temp_fitness = individual_ranked_fitness
 
@@ -45,7 +68,7 @@ temp_fitness = individual_ranked_fitness
 
 ! sort the individual ranked fitness ( highest to lowest )
 
-call sort( n_GA_individuals, temp_fitness )
+CALL sort( n_GA_individuals, temp_fitness )
 
 
 !-----------------------------------------------------------------------
@@ -64,13 +87,13 @@ min_fit = 1.0D20
 
 do  i = n_GA_individuals, n_GA_individuals - n_GA_save_elites + 1,   -1
 
-    if( temp_fitness(i) < min_fit ) then
+    IF ( temp_fitness(i) < min_fit ) THEN
         min_fit = temp_fitness(i)
-    endif !   individual_ranked_fitness(i) < min_fit
+    END IF !   individual_ranked_fitness(i) < min_fit
 
-enddo ! i
+END DO ! i
 
-deallocate( temp_fitness )
+DEALLOCATE ( temp_fitness )
 
 
 !-----------------------------------------------------------------------
@@ -91,21 +114,21 @@ ga_individual_elites = 0
 j = 0
 do  i = 1, n_GA_individuals
 
-    if( individual_ranked_fitness(i) >= min_fit ) then
+    IF ( individual_ranked_fitness(i) >= min_fit ) THEN
 
         j = j + 1
         ga_individual_elites(j) = i
 
-    endif ! individual_ranked_fitness(i) > min_fit
+    END IF ! individual_ranked_fitness(i) > min_fit
 
-    if( j > n_GA_save_elites ) exit
+    IF ( j > n_GA_save_elites ) exit
 
-enddo ! i
+END DO ! i
 
 
 !-----------------------------------------------------------------------
 
 
-return
+RETURN
 
-end subroutine GA_save_elites
+END SUBROUTINE GA_save_elites
