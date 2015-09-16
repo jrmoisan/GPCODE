@@ -144,4 +144,4 @@ END IF ! myid == 0
 
 RETURN 
 
-END SUBROUTINE read_input_DATA
+END SUBROUTINE read_input_data

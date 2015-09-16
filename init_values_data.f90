@@ -195,4 +195,4 @@ END IF ! myid == 0
 
 RETURN
 
-END SUBROUTINE init_values_DATA
+END SUBROUTINE init_values_data

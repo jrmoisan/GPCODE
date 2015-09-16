@@ -358,8 +358,8 @@ IF ( myid == 0 ) THEN
             temp_data_array(i) = Numerical_CODE_Solution(i,j)
         END DO ! i
 
-        RK_min (j) =  minval( temp_data_array )
-        RK_max (j) =  maxval( temp_data_array )
+        rk_min (j) =  minval( temp_data_array )
+        rk_max (j) =  maxval( temp_data_array )
 
 
         temp_data_array = 0.0d0
