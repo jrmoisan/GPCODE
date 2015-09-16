@@ -9,7 +9,7 @@
 !> @author Dr. John R. Moisan [NASA/GSFC]
 !> @date January, 2013 Dr. John R. Moisan
 !>
-!> @param[out] node_variable
+!> @param[out] node_variable - node value of a forcing node which is selected in this routine
 
 SUBROUTINE set_forcing_node( node_variable )
 

@@ -4,14 +4,14 @@
 !> @details
 !>  This module has routine which calculate the truth model tree for the Fasham model.
 !>
-!> @author Dave ??
-!> @date August 5, 2013 Dave ??
+!> @author Dave Coulter
+!> @date August 5, 2013 Dave Coulter
 
 !---------------------------------------------------------------------------  
 
 !---------------------------------------
 ! File:   Bacteria_Trees.f03
-! Author: Dave
+! Author: Dave Coulter
 
 ! Created on August 5, 2013, 1:44 PM
 !---------------------------------------
@@ -130,7 +130,7 @@ END FUNCTION DON_Sink_To_Bacteria
 
 !---------------------------------------
 ! File:   Detritus_Trees.f03
-! Author: Dave
+! Author: Dave Coulter
 !
 ! Created on August 5, 2013, 2:21 PM
 !
@@ -164,7 +164,7 @@ END FUNCTION Detrital_Sink_To_DON
 
 !---------------------------------------
 ! File:   DilutionTrees.f03
-! Author: Dave
+! Author: Dave Coulter
 
 ! Created on August 5, 2013, 11:23 AM
 

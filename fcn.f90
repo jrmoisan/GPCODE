@@ -9,11 +9,12 @@
 !> @author Dr. John R. Moisan [NASA/GSFC]
 !> @date January, 2013 Dr. John R. Moisan
 !>
-!> @param[in]  mm
-!> @param[in]  nn
-!> @param[out] x
-!> @param[out] fvec
-!> @param[out] iflag
+!> @param[in]  mm  - number of integration steps
+!> @param[in]  nn  - number of variables being integrated
+
+!> @param[out] x     - initial values of the variables
+!> @param[out] fvec  - sum over all variables of the squares of the weighted residuals  at each time step
+!> @param[out] iflag - set to -1 if there is a problem with the integration
 
 SUBROUTINE fcn(mm,nn,x,fvec,iflag)
 

@@ -9,8 +9,9 @@
 !> @author Dr. John R. Moisan [NASA/GSFC]
 !> @date January, 2013 Dr. John R. Moisan
 !>
-!> @param[in] GP_minSSE_generation
-!> @param[in] GP_minSSE_indiv
+!> @param[in] GP_minSSE_generation - current GP generation for minSSE calculation
+!> @param[in] GP_minSSE_indiv      - current GP individual for minSSE calculation
+
 
 SUBROUTINE summary_GP_minSSE_indiv( GP_minSSE_generation, GP_minSSE_indiv )
 
@@ -33,8 +34,8 @@ SUBROUTINE summary_GP_minSSE_indiv( GP_minSSE_generation, GP_minSSE_indiv )
 ! for the  best individual  found in the GA process
 
 !  GP_Population_Initial_Conditions( 1:n_CODE_Equations, i_GP_indiv )
-!  GP_Population_Node_Parameters(    1:n_Nodes,1:n_Trees,i_GP_indiv  )
-!  GP_Adult_Population_Node_Type(    1:n_Nodes,1:n_Trees,i_GP_indiv  )
+!  GP_Population_Node_Parameters(    1:n_Nodes,1:n_Trees,i_GP_indiv )
+!  GP_Adult_Population_Node_Type(    1:n_Nodes,1:n_Trees,i_GP_indiv )
 
 
 !xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx

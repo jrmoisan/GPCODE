@@ -9,10 +9,11 @@
 !> @author Dr. John R. Moisan [NASA/GSFC]
 !> @date January, 2013 Dr. John R. Moisan
 !>
-!> @param[in] temp_Node_Type
-!> @param[in] nn_Nodes
-!> @param[in] nn_Trees 
-!> @param[out] i_Error
+!> @param[in] temp_Node_Type  - array of node types to be checked in this routine
+!> @param[in] nn_Nodes        - number of nodes in each tree
+!> @param[in] nn_Trees        - number of trees
+
+!> @param[out] i_Error        - > 0 if there is an error in the temp_Node_Type array
 
 SUBROUTINE GP_Check_Terminals( temp_Node_Type, nn_Nodes, nn_Trees, i_Error)
 

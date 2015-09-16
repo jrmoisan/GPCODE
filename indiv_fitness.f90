@@ -7,8 +7,8 @@
 !> @author Dr. John R. Moisan [NASA/GSFC]
 !> @date January, 2013 Dr. John R. Moisan
 !>
-!> @param[in] individual 
-!> @return  indiv_fitness
+!> @param[in] individual  - the GA individual whose fitness is being computed
+!> @return  indiv_fitness - fitness of the GA individual
 
 double precision FUNCTION indiv_fitness( individual  )
 

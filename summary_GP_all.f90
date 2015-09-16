@@ -11,8 +11,8 @@
 !> @author Dr. John R. Moisan [NASA/GSFC]
 !> @date January, 2013 Dr. John R. Moisan
 !>
-!> @param[in] GP_unit      
-!> @param[in] i_GP_generation
+!> @param[in] GP_unit          - unit number for output file "GP_last_gen_summary_file"
+!> @param[in] i_GP_generation  - current GP generation
 
 SUBROUTINE summary_GP_all( GP_unit, i_GP_generation )
 

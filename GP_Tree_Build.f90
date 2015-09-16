@@ -10,7 +10,7 @@
 !> @author Dr. John R. Moisan [NASA/GSFC]
 !> @date January, 2013 Dr. John R. Moisan
 !>
-!> @param[out] i_Error 
+!> @param[out] i_Error  - > 0 if an error occurred in this routine
 
 SUBROUTINE GP_Tree_Build( i_Error )
 

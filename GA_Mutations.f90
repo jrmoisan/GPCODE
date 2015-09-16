@@ -9,9 +9,11 @@
 !> @author Dr. John R. Moisan [NASA/GSFC]
 !> @date January, 2013 Dr. John R. Moisan
 !>
-!> @param[in] Child_Parameters
-!> @param[in] individual_quality 
-!> @param[out] Child_Parameters
+!> @param[in] Parent_Parameters  - model parameters for all GA individuals                                                   
+!> @param[in] individual_quality - 1 if GA individual is good, -1 otherwise                                                  
+
+!> @param[out] Child_Parameters  - updated model parameters for all GA individuals                                           
+
 
 SUBROUTINE GA_Mutations(Child_Parameters, individual_quality )
 

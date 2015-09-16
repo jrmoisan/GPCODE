@@ -7,7 +7,8 @@
 !> @author Dr. John R. Moisan [NASA/GSFC]
 !> @date November 14, 2012 Dr. John R. Moisan
 !>
-!> @param[in] icall
+!> @param[in] icall        - if = 0, set some parameters and return.  if = 1, fill arrays                                    
+
 
 SUBROUTINE init_values_DATA( icall  )
 

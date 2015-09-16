@@ -9,10 +9,11 @@
 !> @author Dr. John R. Moisan [NASA/GSFC]
 !> @date January, 2013 Dr. John R. Moisan
 !>
-!> @param[in] Parent_Parameters
-!> @param[in] individual_quality
-!> @param[out] Child_Parameters
-!> @param[out] ierror_tou
+!> @param[in] Parent_Parameters  - model parameters for all GA individuals                                                   
+!> @param[in] individual_quality - 1 if GA individual is good, -1 otherwise                                                  
+                                                                                                                             
+!> @param[out] Child_Parameters  - updated model parameters for all GA individuals    
+!> @param[out] ierror_tou        - non-zero if error in routine
 
 SUBROUTINE GA_Tournament_Style_Sexual_Reproduction(&
               Parent_Parameters, Child_Parameters, &

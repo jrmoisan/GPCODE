@@ -7,8 +7,8 @@
 !> @author Dr. John R. Moisan [NASA/GSFC]
 !> @date January, 2013 Dr. John R. Moisan
 !>
-!> @param[in]  n
-!> @param[inout] arr
+!> @param[in]  n       - dimension of array "arr"
+!> @param[inout] arr   - array to be sorted
 
 SUBROUTINE sort(n, arr)
 

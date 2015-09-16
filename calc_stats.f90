@@ -7,15 +7,16 @@
 !> @author Dr. John R. Moisan [NASA/GSFC]
 !> @date January, 2013 Dr. John R. Moisan
 !>
-!> @param[in] n_array
-!> @param[in] array
-!> @param[in] dt
-!> @param[in] sse_min_time
-!> @param[in] sse_max_time
-!> @param[in] sse_low_wt
-!> @param[out] mean
-!> @param[out] rms
-!> @param[out] std_dev
+!> @param[in] n_array       - dimension of array
+!> @param[in] array         - array of number to use to compute mean, etc.
+!> @param[in] dt            - step time interval in days
+!> @param[in] sse_min_time  - minimum time for weighting step values with 1
+!> @param[in] sse_max_time  - maximum time for weighting step values with 1
+!> @param[in] sse_low_wt    - weight of step values for steps outside the range [sse_min_time, sse_max_time]
+
+!> @param[out] mean         - mean of weighted array values
+!> @param[out] rms          - RMS  of weighted array values
+!> @param[out] std_dev      - standard deviation  of weighted array values
 
 SUBROUTINE calc_stats( n_array, array, mean, rms, std_dev, &
                        dt, sse_min_time, sse_max_time, sse_low_wt  )

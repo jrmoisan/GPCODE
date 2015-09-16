@@ -9,10 +9,12 @@
 !> @author Dr. John R. Moisan [NASA/GSFC]
 !> @date January, 2013 Dr. John R. Moisan
 !>
-!> @param[in]  Trees
-!> @param[in]  num_Tracked_resources
-!> @param[in]  Tree_count
-!> @param[out] Trees
+!> @param[in]  Trees                  - tree objects before node values have been set
+!> @param[in]  num_Tracked_resources  - always = 1 (not used )
+!> @param[in]  Tree_count             - number of tree objects
+
+!> @param[out] Trees                  - tree objects after node values have been set from the 
+!!                                      node_type arrays and node parameter arrays
 
 SUBROUTINE deserialize_trees2( Trees, num_Tracked_resources, Tree_count )
 

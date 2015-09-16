@@ -4,20 +4,20 @@
 !> @details
 !>  Computes some forcing functions for the Fasham model.
 
-!> @author  Dave ??
-!> @date June 26, 2013     Dave  ??            
+!> @author  Dave Coulter
+!> @date June 26, 2013     Dave Coulter        
 
-!> @param[in] species
+!> @param[in] species - current values of the Fasham variables
 !> @param[in] day
 !> @param[in] aMLD
-!> @param[out] L_bad
 !> @param[out] aJ
+!> @param[out] L_bad  - true if error computing aJ
 
 SUBROUTINE JQforce(species, day, aMLD, aJ, L_bad)
 !---------------------------------------------------------------------------  
 !
 ! File:   Fasham_Forcing.f90
-! Author: Dave
+! Author: Dave Coulter
 !
 ! Created on June 26, 2013, 1:37 PM
 !
@@ -182,11 +182,8 @@ SUBROUTINE mldforce(day, h, aMLD, L_bad )
 
  
 !---------------------------------------------------------------------------  
-!> @author  Dave ??
-!> @date June 26, 2013     Dave  ??            
-!
-! DESCRIPTION: 
-! Brief description of routine. 
+!> @author  Dave Coulter
+!> @date June 26, 2013     Dave  Coulter       
 
 !> @brief
 !>  Computes the aMLD and h(t) terms of forcing functions for the Fasham model.
@@ -194,17 +191,21 @@ SUBROUTINE mldforce(day, h, aMLD, L_bad )
 !> @details
 !>  Computes the aMLD and h(t) terms of forcing functions for the Fasham model.
 
-!
-! REVISION HISTORY:
-! TODO_dd_mmm_yyyy - TODO_describe_appropriate_changes - TODO_name
-!
 !> @param[in] day
 !>
 !> @param[out] h 
 !> @param[out] aMLD
-!> @param[out] L_bad
+!> @param[out] L_bad = true if error in computation
 
 !---------------------------------------------------------------------------  
+!
+! DESCRIPTION: 
+! Brief description of routine. 
+
+!
+! REVISION HISTORY:
+! TODO_dd_mmm_yyyy - TODO_describe_appropriate_changes - TODO_name
+!
 
 !xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 ! subroutine to determine the aMLD and h(t) terms

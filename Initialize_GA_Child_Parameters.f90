@@ -9,7 +9,7 @@
 !> @author Dr. John R. Moisan [NASA/GSFC]
 !> @date January, 2013 Dr. John R. Moisan
 !>
-!> @param[out] Child_Parameters
+!> @param[out] Child_Parameters - randomly set values for the initial model parameters for each GA individual
 
 SUBROUTINE Initialize_GA_Child_Parameters(Child_Parameters)
 

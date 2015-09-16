@@ -9,8 +9,8 @@
 !> @author Dr. John R. Moisan [NASA/GSFC]
 !> @date January, 2013 Dr. John R. Moisan
 !>
-!> @param[in] new_comm 
-!> @param[in] i_GP_generation
+!> @param[in] new_comm        - MPI communicator
+!> @param[in] i_GP_generation - GP generation
 
 SUBROUTINE GP_individual_loop(new_comm, i_GP_generation)
 

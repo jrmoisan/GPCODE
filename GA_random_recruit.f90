@@ -9,8 +9,8 @@
 !> @author Dr. John R. Moisan [NASA/GSFC]
 !> @date January, 2013 Dr. John R. Moisan
 !>
-!> @param[out] Child_Parameters 
-!> @param[out] individual_quality
+!> @param[out] Child_Parameters - model parameters for all GA individuals 
+!> @param[out] individual_quality - 1 if individual is valid, -1 otherwise
 
 SUBROUTINE GA_random_recruit(Child_Parameters, individual_quality )
 

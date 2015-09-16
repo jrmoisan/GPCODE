@@ -9,9 +9,9 @@
 !> @author Dr. John R. Moisan [NASA/GSFC]
 !> @date January, 2013 Dr. John R. Moisan
 !>
-!> @param[in]  i_GP_best_parent
-!> @param[in]  i_GP_generation
-!> @param[out] nop
+!> @param[in]  i_GP_best_parent - GP individual with the best fitness (lowest SSE)
+!> @param[in]  i_GP_generation  - current GP generation
+!> @param[out] nop              - number of parameters for i_GP_best_parent
 
 SUBROUTINE print_time_series( i_GP_best_parent,  nop, i_GP_generation )
 

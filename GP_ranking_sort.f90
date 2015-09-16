@@ -9,8 +9,8 @@
 !> @author Dr. John R. Moisan [NASA/GSFC]
 !> @date January, 2013 Dr. John R. Moisan
 !>
-!> @param[in]  i_GP_best_parent
-!> @param[out] i_GP_best_parent
+!> @param[in]  i_GP_best_parent - GP individual with best fitness before sorting individuals
+!> @param[out] i_GP_best_parent - GP individual with best fitness after  sorting individuals
 
 SUBROUTINE GP_ranking_sort( i_GP_best_parent ) 
 

@@ -9,20 +9,20 @@
 !> @author Dr. John R. Moisan [NASA/GSFC]
 !> @date January, 2013 Dr. John R. Moisan
 !>
-!> @param[in]    i_G_indiv
-!> @param[in]    max_n_gp_params
-!> @param[inout] child_parameters
-!> @param[in]    individual_quality
-!> @param[in]    n_indiv
-!> @param[out]   my_indiv_SSE
-!> @param[in]    n_parms
-!> @param[in]    n_parms_dim
-!> @param[out]   info
-!> @param[in]    i_GP_gen
-!> @param[in]    L_myprint
-!> @param[in]    myprint_unit
+!> @param[in]    i_G_indiv           - individual being integrated
+!> @param[in]    max_n_gp_params     - maximum number of parameters over all individuals
+!> @param[inout] child_parameters    - parameter values for the current individual
+!> @param[in]    individual_quality  - = 1 if individual is valid, -1 if not
+!> @param[in]    n_indiv             - not used
+!> @param[out]   my_indiv_SSE        - calculated SSE value for this individual
+!> @param[in]    n_parms             - number of variables being used
+!> @param[in]    n_parms_dim         - maximum number of variables 
+!> @param[out]   info                - information on result of lmdif. if < 0, an error occurred
+!> @param[in]    i_GP_gen            - current GP generation
+!> @param[in]    L_myprint           - switch controlling printout to "myprint_unit"
+!> @param[in]    myprint_unit        - unit for printout
 
-SUBROUTINE setup_run_para_lmdIF ( i_G_indiv,  &
+SUBROUTINE setup_run_para_lmdif ( i_G_indiv,  &
                                  max_n_gp_params, &
                                  child_parameters, &
                                  individual_quality, &
@@ -81,7 +81,7 @@ INTEGER, INTENT(IN)  ::  max_n_gp_params
 
 ! lmdif arrays and variables
 
-REAL (KIND=r8b) :: x_LMDIF(n_parms_dim)                        
+REAL (KIND=r8b) :: x_lmdif(n_parms_dim)                        
 
 
 REAL (KIND=r8b) :: fvec(n_time_steps)
@@ -151,7 +151,7 @@ END DO  ! i_tree
 
 do  i_parameter = 1, n_parms
 
-    X_LMDIF(i_parameter) = child_parameters(i_parameter)
+    X_lmdif(i_parameter) = child_parameters(i_parameter)
 
 END DO ! i_parameter
 
@@ -195,7 +195,7 @@ iunit = 0
 fvec = 0.0D0
 
 
-CALL lmdIF ( fcn, n_time_steps, n_parms, x_LMDIF, fvec, &
+CALL lmdif ( fcn, n_time_steps, n_parms, x_lmdif, fvec, &
             ftol, xtol, gtol, maxfev, epsfcn, &
             diag, mode, factor, nprint, info, nfev, fjac, ldfjac, ipvt, qtf ) 
 
@@ -231,7 +231,7 @@ if (info .eq. 8) info = 4
 do  i_parameter = 1, n_parms
 
     child_parameters(i_parameter) = &
-                           DABS ( x_LMDIF(i_parameter) )
+                           DABS ( x_lmdif(i_parameter) )
 
 END DO ! i_parameter
 

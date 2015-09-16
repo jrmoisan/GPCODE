@@ -9,7 +9,7 @@
 !> @author Dr. John R. Moisan [NASA/GSFC]
 !> @date January, 2013 Dr. John R. Moisan
 !>
-!> @param[out] i_error
+!> @param[out] i_error - > 0 if an error occurred in this routine
 
 SUBROUTINE GP_Mutations( i_error )
 

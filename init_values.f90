@@ -7,7 +7,7 @@
 !> @author Dr. John R. Moisan [NASA/GSFC]
 !> @date January, 2013 Dr. John R. Moisan
 !>
-!> @param[in] icall        
+!> @param[in] icall - if = 0, return after calling other init subroutines
 
 SUBROUTINE init_values( icall  )
 

@@ -9,13 +9,14 @@
 !> @author Dr. John R. Moisan [NASA/GSFC]
 !> @date January, 2013 Dr. John R. Moisan
 !>
-!> @param[in] i_GP_Generation
-!> @param[in] i_GP_individual
-!> @param[in] new_comm
-!> @param[in] i_GA_best_parent
-!> @param[in] parent_parameters
-!> @param[out] child_parameters
-!> @param[out] L_stop_run
+!> @param[in] i_GP_Generation  - current GP generation
+!> @param[in] i_GP_individual  - curreng GP individual
+!> @param[in] new_comm         - MPI communicator
+!> @param[in] i_GA_best_parent - GA individual with best fitness (smallest SSE)
+!> @param[in] parent_parameters - parameters for the i_GA_best_parent individual
+
+!> @param[out] child_parameters - parameters for the i_GA_best_parent individual (possibly modified here)
+!> @param[out] L_stop_run       - logical to stop run if a minimum SSE is obtained (not used)
 
 SUBROUTINE select_best_RK_lmdif_RESULT ( &
                 i_GP_Generation,i_GP_individual, &

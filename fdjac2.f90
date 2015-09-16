@@ -11,16 +11,17 @@
 !> @author Jorge More, Burton Garbow, Kenneth Hillstrom, and John Burkardt.
 !> @date April 6, 2010 John Burkardt.
 !>
-!> @param[in] FCN - the name of the user-supplied subroutine which calculates the functions.  
+!> @param[in]  FCN - the name of the user-supplied subroutine which calculates the functions.  
 !> @param[in]  M - is the number of functions.
-!> @param[in] N - is the number of variables.  N must not exceed M.
+!> @param[in]  N - is the number of variables.  N must not exceed M.
 !> @param[in]  X(N) -  the point where the jacobian is evaluated.
-!> @param[in] FVEC(M) - the functions evaluated at X.
+!> @param[in]  FVEC(M) - the functions evaluated at X.
 !> @param[in]  LDFJAC - the leading dimension of FJAC, which must not be less than M.
-!> @param[in] EPSFCN - used in determining a suitable step length for the 
+!> @param[in]  EPSFCN - used in determining a suitable step length for the 
 !>                     forward-difference approximation. 
-!> @param[out]  FJAC(LDFJAC,N) - the M by N approximate jacobian matrix.
-!> @param[out]  IFLAG - an error flag returned by FCN. 
+
+!> @param[out] FJAC(LDFJAC,N) - the M by N approximate jacobian matrix.
+!> @param[out] IFLAG - an error flag returned by FCN. 
 
 SUBROUTINE fdjac2 ( fcn, m, n, x, fvec, fjac, ldfjac, iflag, epsfcn )
 

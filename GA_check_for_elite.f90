@@ -10,7 +10,7 @@
 !> @author Dr. John R. Moisan [NASA/GSFC]
 !> @date January, 2013 Dr. John R. Moisan
 !>
-!> @param[out] index0
+!> @param[out] index0 - new index for random individual which is not an elite individual
 
 SUBROUTINE GA_check_for_elite( index0  )
 

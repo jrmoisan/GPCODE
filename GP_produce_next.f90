@@ -7,9 +7,11 @@
 !> @author Dr. John R. Moisan [NASA/GSFC]
 !> @date January, 2013 Dr. John R. Moisan
 !>
-!> @param[in] i_GP_generation 
-!> @param[in] i_GP_best_parent
-!> @param[out] L_nextloop
+!> @param[in] i_GP_generation  - GP generation - return if < 2 
+!> @param[in] i_GP_best_parent - GP individual with the best fitness (lowest SSE)
+
+!> @param[out] L_nextloop - true if an error occurred in this routine 
+!!                        - main program ignores L_nextloop
 
 SUBROUTINE GP_produce_next(i_GP_generation, i_GP_best_parent, L_nextloop)
 

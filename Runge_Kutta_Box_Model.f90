@@ -9,7 +9,7 @@
 !> @author Dr. John R. Moisan [NASA/GSFC]
 !> @date January, 2013 Dr. John R. Moisan
 !>
-!> @param[out] L_print_RK 
+!> @param[out] L_print_RK - if true, print some messages
 
 SUBROUTINE Runge_Kutta_Box_Model( L_print_RK )
 

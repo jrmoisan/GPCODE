@@ -7,7 +7,7 @@
 !> @author Dr. John R. Moisan [NASA/GSFC]
 !> @date January, 2013 Dr. John R. Moisan
 !>
-!> @param[out] ierror_r      
+!> @param[out] ierror_r -  > 0 if an error occurred in this routine
 
 SUBROUTINE GP_random_recruit( ierror_r )
 

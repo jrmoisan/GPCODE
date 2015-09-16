@@ -9,8 +9,8 @@
 !> @author Dr. John R. Moisan [NASA/GSFC]
 !> @date January, 2013 Dr. John R. Moisan
 !>
-!> @param[in] i_GP_generation
-!> @param[in] i_GP_indiv
+!> @param[in] i_GP_generation  - current GP generation
+!> @param[in] i_GP_indiv       - current GP individual (probably the best fitness individual)
 
 SUBROUTINE summary_GP_indiv( i_GP_generation, i_GP_indiv ) 
 
@@ -33,8 +33,8 @@ SUBROUTINE summary_GP_indiv( i_GP_generation, i_GP_indiv )
 ! for the  best individual  found in the GA process
 
 !  GP_Population_Initial_Conditions( 1:n_CODE_Equations, i_GP_indiv )
-!  GP_Population_Node_Parameters(    1:n_Nodes,1:n_Trees,i_GP_indiv  )
-!  GP_Adult_Population_Node_Type(    1:n_Nodes,1:n_Trees,i_GP_indiv  )
+!  GP_Population_Node_Parameters(    1:n_Nodes,1:n_Trees,i_GP_indiv )
+!  GP_Adult_Population_Node_Type(    1:n_Nodes,1:n_Trees,i_GP_indiv )
 
 
 !xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
