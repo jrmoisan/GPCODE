@@ -1,4 +1,4 @@
-Description of the unit 5 input control file                        20150828
+Description of the unit 5 input control file                        20150917
                                                                     J. McCarthy
 
 
@@ -329,6 +329,9 @@ Example:
 model  LV
 
 Note:	default value = LV
+
+Input file for "data" and "datalog10"             is "GPGACODE.dat"
+Input file for "fasham_cdom" and "fasham_cdom_GP" is "CDOM.dat"
 
 
 !--------------------------------------------------------------------
