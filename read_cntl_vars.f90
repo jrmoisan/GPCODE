@@ -953,15 +953,16 @@ DO
 
         IF ( myid == 0 ) THEN
             WRITE (GP_print_unit,'(A,1x,I12)') 'rcntl: fort333_output_flag =', &
-                                                      fort333_output_flag
+                                                       fort333_output_flag
             WRITE (GP_print_unit,'(A,4x,L1 )') 'rcntl: L_fort333_output =', &
-                                                      L_fort333_output
+                                                       L_fort333_output
         END IF !myid==0
 
 
 !--------------------------------------------------------------------
 
 ! fort444_output
+! <<  NOT USED CURRENTLY >>
 
 ! if fort444_output_flag >  0 - write printout to fort444_output_unit
 ! if fort444_output_flag <= 0 - do not write printout to fort444_output_unit
@@ -984,9 +985,9 @@ DO
 
         IF ( myid == 0 ) THEN
             WRITE (GP_print_unit,'(A,1x,I12)') 'rcntl: fort444_output_flag =', &
-                                                      fort444_output_flag
+                                                       fort444_output_flag
             WRITE (GP_print_unit,'(A,4x,L1 )') 'rcntl: L_fort444_output =', &
-                                                      L_fort444_output
+                                                       L_fort444_output
         END IF !myid==0
 
 !--------------------------------------------------------------------

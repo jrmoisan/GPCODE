@@ -1084,12 +1084,58 @@ replace_larger_SSE_only
 --------------------------------------------------------------------------------
 --------------------------------------------------------------------------------
 
-File formats:
+Input File formats:
+
+
+---------------------------------------------------------------
+Filename:  GP_restart_file
+Unit:      GP_restart_file_input_unit
+
+Format: see read_all_summary_file.f90
+
+Contents:
+
+
+---------------------------------------------------------------
+Filename:  GPGACODE_dat
+Unit:      data_unitnum
+
+Format: see read_input_data.f90
+
+Contents:
+
+---------------------------------------------------------------
+Filename:  CDOM.dat
+Unit:      data_unitnum
+
+Format: see fasham_CDOM_GP_module.f90
+
+Contents:
+
+---------------------------------------------------------------
+Filename:  GPGA_cntl_vars.in
+Unit:      cntl_unitnum
+
+Format:  see read_cntl_vars.f90
+
+Contents:
 
 ---------------------------------------------------------------
 
-output_parameters -
+--------------------------------------------------------------------------------
+--------------------------------------------------------------------------------
+--------------------------------------------------------------------------------
 
+Output File formats:
+
+---------------------------------------------------------------
+
+Filename:  GA_output_parameters
+Unit:      GA_output_unit
+
+Format: (I6,3(1x,I6), 20(1x,E15.7))
+
+Contents:
      i_GP_Generation
      i_GP_individual
      i_GA_Generation_last
@@ -1101,8 +1147,12 @@ output_parameters -
 ---------------------------------------------------------------
 
 
-GP_output_parameters -
+Filename:  GP_output_parameters
+Unit:      GP_output_unit
 
+Format: (I6,1x,I6,1x,E15.7,1x,I6, 12(1x,E15.7))
+
+Contents:
        i_GP_Generation
        i_GP_best_parent
        GP_Population_Ranked_Fitness(i_GP_Best_Parent)
@@ -1112,16 +1162,29 @@ GP_output_parameters -
 
 
 ---------------------------------------------------------------
+Filename:  fort333                   
+Unit:      GA_333_unit
 
-fort333 - binary
+Format: binary
 
-i_GP_Generation
-i_GP_individual
-i_GA_generation
-individual_SSE(1:n_GA_individuals)
+Contents:
+
+Record 1:  
+	n_GP_individuals
+	n_GA_individuals
+
+
+Record 2-N: 
+	i_GP_Generation
+	i_GP_individual
+	i_GA_generation
+	individual_SSE(1:n_GA_individuals)
+
 
 
 ---------------------------------------------------------------
+
+<< NOT USED CURRENTLY >>
 
 fort444 - binary
 
@@ -1135,31 +1198,137 @@ fort444 - binary
 
 ---------------------------------------------------------------
 
-GA_log - binary
+Filename:  GA_log  
+Unit:      GA_log_unit
 
-n_GA_individuals
-i_GP_Generation
-i_GP_individual
-i_GA_generation
-individual_SSE(1:n_GA_individuals)
-individual_ranked_fitness(1:n_GA_individuals)
+Format: binary
 
-
----------------------------------------------------------------
-
-GP_log - binary
-
-i_GP_generation
-i_GP_Individual
-GP_Adult_Population_SSE(i_GP_Individual)
-GP_Population_Ranked_Fitness(i_GP_Individual)
+Contents:
+	n_GA_individuals
+	i_GP_Generation
+	i_GP_individual
+	i_GA_generation
+	individual_SSE(1:n_GA_individuals)
+	individual_ranked_fitness(1:n_GA_individuals)
 
 
 ---------------------------------------------------------------
 
-unit50.txt
+
+Filename:  GP_log 
+Unit:      GP_log_unit
+
+Format: binary
+
+Contents:
+	i_GP_generation
+	i_GP_Individual
+	GP_Adult_Population_SSE(i_GP_Individual)
+	GP_Population_Ranked_Fitness(i_GP_Individual)
 
 
+---------------------------------------------------------------
+
+Filename:  unit50.txt
+Unit:      unit_gp_out 
+
+Format: binary
+
+Contents:
+GP_Node_Type_for_Plotting
+
+
+---------------------------------------------------------------
+
+Filename:  GPSSE_log
+Unit:      GPSSE_log_unit
+
+Format: (I0, 1x,I0,2(1x,E12.5))
+
+Contents:
+	i_GP_generation
+	i_GP_Individual
+	GP_Child_Individual_SSE_nolog10(i_GP_Individual)
+	GP_Child_Individual_SSE_nolog10(i_GP_Individual)/ SSE0_nolog10    
+
+
+---------------------------------------------------------------
+
+Filename:  GPSSE_best_log
+Unit:      GPSSE_best_log_unit
+
+Format: (I0,1x,I0,2(1x,E12.5))
+
+Contents:
+
+  For model datalog10
+
+	i_GP_generation
+	i_GP_Best_Parent
+	GP_Child_Individual_SSE_nolog10(i_GP_best_parent)
+	GP_Child_Individual_SSE_nolog10(i_GP_best_parent)/ SSE0_nolog10
+ 
+  For all other models:
+
+	i_GP_Generation
+	i_GP_Best_Parent
+	GP_Child_Population_SSE(i_GP_Best_Parent)
+	GP_Child_Population_SSE(i_GP_Best_Parent)/ SSE0
+
+
+---------------------------------------------------------------
+Filename:  GA_555
+Unit:      GA_555_unit
+
+Format: binary
+
+Contents:
+	i_GP_Generation
+	GP_Child_Population_SSE(1:n_GP_individuals)
+
+---------------------------------------------------------------
+Filename:  GP_last_gen_summary_file
+Unit:      GP_summary_output_unit_lgen
+
+Format: see summary_GP_all.f90
+
+Contents:
+
+
+---------------------------------------------------------------
+
+Filename:  plot.txt
+Unit:      plot_unit
+
+Format:  see routine print_time_series.f90
+
+Contents:
+
+---------------------------------------------------------------
+Filename:  GP_ALL_summary_file
+Unit:      GP_summary_output_unit_all
+
+Format: see summary_GP_all.f90
+
+Contents:
+
+
+---------------------------------------------------------------
+Filename:  *.dot
+Unit:      gFile
+
+Format: see Generate_Dot_Graph.f90
+
+Contents:
+
+
+---------------------------------------------------------------
+Filename:  GP_summary_file
+Unit:      GP_best_summary_output_unit
+
+Format: see summary_GP_indiv.f90
+
+Contents:
 
 
 
