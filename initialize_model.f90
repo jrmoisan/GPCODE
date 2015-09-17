@@ -9,9 +9,11 @@
 !> @author Dr. John R. Moisan [NASA/GSFC]
 !> @date January, 2013 Dr. John R. Moisan
 !>
-!> @param[in]  L_myprint
-!> @param[in]  myprint_unit
-!> @param[out] buildTrees 
+!> @param[in]  L_myprint    - if true, print some information on unit "myprint_unit"
+!> @param[in]  myprint_unit - unit for printout
+
+!> @param[inout] buildTrees - if buildtrees is TRUE,  you get the GP_individual node_type and parameter arrays
+!!                            if buildtrees is FALSE, you get the Fasham functions tree
 
 SUBROUTINE Initialize_Model( buildTrees, L_myprint, myprint_unit )
 

@@ -9,15 +9,16 @@
 !> @date September, 1975 James J. Filliben                                     
 !> @date November,  1975 James J. Filliben                                     
 !>
-!> @param[in] X
-!> @param[in] Y
-!> @param[in] N
-!> @param[in] IWRITE
-!> @param[in] dt
-!> @param[in] sse_min_time
-!> @param[in] sse_max_time
-!> @param[in] sse_low_wt
-!> @param[out] C
+!> @param[in] X            - x array
+!> @param[in] Y            - y array
+!> @param[in] N            - dimension of x and y arrays
+!> @param[in] IWRITE       - if = 0, no printout.  if not zero, print correlation coefficient
+!> @param[in] dt           - step time interval in days
+!> @param[in] sse_min_time - minimum step time for the value of a step to be weighted = 1
+!> @param[in] sse_max_time - maximum step time for the value of a step to be weighted = 1
+!> @param[in] sse_low_wt   - weight of step values for steps outside the range [sse_min_time, sse_max_time]
+
+!> @param[out] C           - correlation coefficient
 
 SUBROUTINE CORR( X,Y,N,IWRITE,C , &
                  dt, sse_min_time, sse_max_time, sse_low_wt  ) 

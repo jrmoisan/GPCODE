@@ -7,7 +7,8 @@
 !> @author Dr. John R. Moisan [NASA/GSFC]
 !> @date November 14, 2012 Dr. John R. Moisan
 !>
-!> @param[in] icall        
+!> @param[in] icall        - if = 0, set some parameters and return.  if = 1, fill arrays                                    
+
 
 SUBROUTINE init_values_fasham( icall  )
 
@@ -269,18 +270,18 @@ END IF ! myid == 0
 
 IF ( n_levels == 6 ) THEN
 !   n_levels = 6
-    Node_Probability = (/0.8d0,0.7d0,6.d0, &
+    Node_Probability = (/0.8d0,0.7d0,0.6d0, &
                          0.4d0,0.3d0,0.d0/)  ! NOTE: Last value MUST BE 0.0!!!]
 
 
 ELSE IF ( n_levels == 7 ) THEN
     !!  n_levels = 7
-    Node_Probability = (/0.8d0,0.7d0,6.d0, &
+    Node_Probability = (/0.8d0,0.7d0,0.6d0, &
                          0.5d0,0.4d0,0.3d0,0.d0/)  ! NOTE: Last value MUST BE 0.0!!!]
 
 ELSE IF ( n_levels == 8 ) THEN
     !   n_levels = 8
-    Node_Probability = (/0.9d0,0.8d0,0.7d0,6.d0, &
+    Node_Probability = (/0.9d0,0.8d0,0.7d0,0.6d0, &
                          0.5d0,0.4d0,0.3d0,0.d0/)  ! NOTE: Last value MUST BE 0.0!!!]
 ELSE
 

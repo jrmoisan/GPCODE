@@ -7,7 +7,7 @@
 !> @author Dr. John R. Moisan [NASA/GSFC]
 !> @date January, 2013 Dr. John R. Moisan
 !>
-!> @param[in] icall        
+!> @param[in] icall - if = 0, return after calling other init subroutines
 
 SUBROUTINE init_values( icall  )
 
@@ -58,16 +58,16 @@ ELSE IF ( TRIM (model) == 'LV' ) THEN
     IF ( icall == 0 ) RETURN
 
 
-ELSE IF ( ( INDEX ( model, 'DATA') > 0 .or. &
-          INDEX ( model, 'DATA') > 0  )       .and. &
-        n_input_vars > 0               ) THEN
+ELSE IF ( ( INDEX ( model, 'data') > 0 .or. &
+            INDEX ( model, 'DATA') > 0  )       .and. &
+            n_input_vars > 0               ) THEN
 
-    CALL init_values_DATA( icall )
+    CALL init_values_data( icall )
     IF ( icall == 0 ) RETURN
 
 
 ELSE IF ( TRIM (model) == 'fasham'            .or. &
-        TRIM (model) == 'fasham_fixed_tree'       ) THEN
+          TRIM (model) == 'fasham_fixed_tree'       ) THEN
 
     CALL init_values_fasham( icall )
     IF ( icall == 0 ) RETURN

@@ -10,7 +10,7 @@
 !> @author Dr. John R. Moisan [NASA/GSFC]
 !> @date January, 2013 Dr. John R. Moisan
 !>
-!> @param[out] bff8          
+!> @param[out] bff8 - 8-byte real random number
 
 SUBROUTINE random_REAL (bff8)
 

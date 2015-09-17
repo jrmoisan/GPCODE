@@ -7,7 +7,7 @@
 !> @author Dr. John R. Moisan [NASA/GSFC]
 !> @date January, 2013 Dr. John R. Moisan
 !>
-!> @param[out] ierror        
+!> @param[out] ierror - if not zero, an error occurred in this routine
 
 SUBROUTINE read_cntl_vars( ierror )
 

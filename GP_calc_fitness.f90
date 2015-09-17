@@ -9,9 +9,10 @@
 !> @author Dr. John R. Moisan [NASA/GSFC]
 !> @date January, 2013 Dr. John R. Moisan
 !>
-!> @param[in] i_GP_generation
-!> @param[inout] i_GP_best_parent 
-!> @param[inout] nop
+!> @param[in]    i_GP_generation  - current GP generation
+
+!> @param[inout] i_GP_best_parent - GP individual with the best fitness (lowest SSE) 
+!> @param[inout] nop              - number of parameters of the i_GP_best_parent individual
 
 SUBROUTINE GP_calc_fitness( i_GP_generation, &
                             i_GP_best_parent, nop )

@@ -7,8 +7,8 @@
 !> @author Dr. John R. Moisan [NASA/GSFC]
 !> @date January, 2013 Dr. John R. Moisan
 !>
-!> @param[in] i_GP_Generation
-!> @param[in] max_n_gp_params 
+!> @param[in] i_GP_Generation - GP generation
+!> @param[in] max_n_gp_params - maximum number of parameters over all GP individuals
 
 SUBROUTINE GP_para_lmdif_process( i_GP_Generation, max_n_gp_params  )
 

@@ -7,7 +7,7 @@
 !> @author Dr. John R. Moisan [NASA/GSFC]
 !> @date January, 2013 Dr. John R. Moisan
 
-SUBROUTINE setup_mathfunctions()
+SUBROUTINE setup_math_functions()
 
  
 !---------------------------------------------------------------------------  
@@ -71,4 +71,4 @@ SUBROUTINE setup_mathfunctions()
 
     math_funcs(ExponentialRightMinus)%f => f_ExponentialRightMinus 
 
-END SUBROUTINE setup_mathfunctions
+END SUBROUTINE setup_math_functions

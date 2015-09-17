@@ -10,7 +10,7 @@
 !> @author Dr. John R. Moisan [NASA/GSFC]                                                                      
 !> @date January, 2013 Dr. John R. Moisan                                                                      
 !>
-!> @param[in] i_GP_individual                                                                                 
+!> @param[in] i_GP_individual - GP individual to construct a new tree for
 
 SUBROUTINE GP_Tree_Build_single( i_GP_individual )
 

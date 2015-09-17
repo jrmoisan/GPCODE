@@ -7,11 +7,11 @@
 !> @author Dr. John R. Moisan [NASA/GSFC]
 !> @date January, 2013 Dr. John R. Moisan
 !>
-!> @param[in] i_gen
-!> @param[in] n_indiv_start
-!> @param[in] n_indiv_stop
-!> @param[in] tree_type 
-!> @param[in] tree_descrip 
+!> @param[in] i_gen         - current GP generation
+!> @param[in] n_indiv_start - first GP individual for which a tree is printed
+!> @param[in] n_indiv_stop  - last  GP individual for which a tree is printed
+!> @param[in] tree_type     - array defining the trees for all GP individuals
+!> @param[in] tree_descrip  - string with comments about current tree(s)
 
 SUBROUTINE print_trees( i_gen, n_indiv_start, n_indiv_STOP, &
                         tree_type, tree_descrip )

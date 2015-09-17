@@ -241,10 +241,10 @@ IF ( myid == 0 ) THEN
 
     title_string = '#ptsMS: pt'
     title_string = TRIM ( title_string ) // &
-                       '   RK_Soln      input_DATA  resid'
+                       '   RK_Soln      input_data  resid'
     DO  j = 2, n_code_equations
         title_string = TRIM ( title_string ) // &
-                       '         RK_Soln      input_DATA  resid'
+                       '         RK_Soln      input_data  resid'
     END DO 
 
 
@@ -315,7 +315,7 @@ IF ( myid == 0 ) THEN
 
 
         CALL calc_stats( n_time_steps, Data_Array(1,j), &
-                         data_mean(j), data_rms(j), DATA_stddev(j), &
+                         data_mean(j), data_rms(j), data_stddev(j), &
                          dt,    0.0d0, 1.0d9, 1.0d0 ) 
        
 
@@ -331,15 +331,15 @@ IF ( myid == 0 ) THEN
                    !dt, sse_min_time, sse_max_time, sse_low_wt  )
 
 
-        RK_MIN (j) = minval( Numerical_CODE_Solution(:,j) )
-        RK_MAX (j) = maxval( Numerical_CODE_Solution(:,j) )
+        RK_min (j) = minval( Numerical_CODE_Solution(:,j) )
+        RK_max (j) = maxval( Numerical_CODE_Solution(:,j) )
 
 
-        data_MIN (j) = minval( Data_Array(:,j) )
-        data_MAX (j) = maxval( Data_Array(:,j) )
+        data_min (j) = minval( Data_Array(:,j) )
+        data_max (j) = maxval( Data_Array(:,j) )
 
-        resid_MIN (j) = minval( resid(:,j) )
-        resid_MAX (j) = maxval( resid(:,j) )
+        resid_min (j) = minval( resid(:,j) )
+        resid_max (j) = maxval( resid(:,j) )
 
     END DO ! j 
 
@@ -352,11 +352,11 @@ IF ( myid == 0 ) THEN
 
     DO  j = 1, n_code_equations 
 
-        y_min = MIN ( y_min, RK_MIN (j) )
-        y_max = MAX ( y_max, RK_MAX (j) )
+        y_min = MIN ( y_min, RK_min (j) )
+        y_max = MAX ( y_max, RK_max (j) )
     
-        y_min = MIN ( y_min, data_MIN (j) )
-        y_max = MAX ( y_max, data_MAX (j) )
+        y_min = MIN ( y_min, data_min (j) )
+        y_max = MAX ( y_max, data_max (j) )
 
     END DO ! j 
 
@@ -380,13 +380,13 @@ IF ( myid == 0 ) THEN
               &stddev            min            max'
         WRITE (GP_print_unit, '(A,1x,I2, 5(1x,E15.7))') &
               'ptsMS: RK_Soln', &
-              j, RKmean(j), RKrms(j), RKstddev(j), RK_MIN (j), RK_MAX (j)
+              j, RKmean(j), RKrms(j), RKstddev(j), RK_min (j), RK_max (j)
         WRITE (GP_print_unit, '(A,1x,I2, 5(1x,E15.7))') &
               'ptsMS: DATA   ', &
-              j, data_mean(j), data_rms(j), DATA_stddev(j), DATA_MIN (j), data_MAX (j)
+              j, data_mean(j), data_rms(j), data_stddev(j), data_min (j), data_max (j)
         WRITE (GP_print_unit, '(A,1x,I2, 5(1x,E15.7)/)') &
               'ptsMS: resid  ', &
-              j, resid_mean(j), resid_rms(j), resid_stddev(j), resid_MIN (j), resid_MAX (j)
+              j, resid_mean(j), resid_rms(j), resid_stddev(j), resid_min (j), resid_max (j)
         WRITE (GP_print_unit, '(A,1x,I2, 5(1x,E15.7))') &
               'ptsMS: corr coef. ', j, r_corr(j)
 
@@ -408,13 +408,13 @@ IF ( myid == 0 ) THEN
               &stddev            min            max'
         WRITE (plotMS_unit, '(A,1x,I2,5(1x,E15.7))') &
               '#ptsMS: RK_Soln', &
-              j, RKmean(j), RKrms(j), RKstddev(j), RK_MIN (j), RK_MAX (j)
+              j, RKmean(j), RKrms(j), RKstddev(j), RK_min (j), RK_max (j)
         WRITE (plotMS_unit, '(A,1x,I2,5(1x,E15.7))') &
               '#ptsMS: DATA   ', &
-              j, data_mean(j), data_rms(j), DATA_stddev(j), DATA_MIN (j), data_MAX (j)
+              j, data_mean(j), data_rms(j), data_stddev(j), data_min (j), data_max (j)
         WRITE (plotMS_unit, '(A,1x,I2,5(1x,E15.7))') &
               '#ptsMS: resid  ', &
-              j, resid_mean(j), resid_rms(j), resid_stddev(j), resid_MIN (j), resid_MAX (j)
+              j, resid_mean(j), resid_rms(j), resid_stddev(j), resid_min (j), resid_max (j)
         WRITE (plotMS_unit, '(A,1x,I2,5(1x,E15.7))') &
               '#ptsMS: correlation coef. ', j, r_corr(j)
 

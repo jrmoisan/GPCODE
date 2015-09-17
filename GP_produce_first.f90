@@ -7,7 +7,7 @@
 !> @author Dr. John R. Moisan [NASA/GSFC]
 !> @date January, 2013 Dr. John R. Moisan
 !>
-!> @param[in] i_GP_generation
+!> @param[in] i_GP_generation  - GP generation - if not = 1, return
 
 SUBROUTINE GP_produce_first(i_GP_generation)
 

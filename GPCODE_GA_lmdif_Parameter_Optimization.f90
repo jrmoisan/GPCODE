@@ -9,9 +9,9 @@
 !> @author Dr. John R. Moisan [NASA/GSFC]
 !> @date January, 2013 Dr. John R. Moisan
 !>
-!> @param[in] i_GP_Generation
-!> @param[in] i_GP_individual
-!> @param[in] new_comm 
+!> @param[in] i_GP_Generation  - GP generation 
+!> @param[in] i_GP_individual  - GP individual 
+!> @param[in] new_comm         - MPI communicator
 
 SUBROUTINE GPCODE_GA_lmdif_Parameter_Optimization( &
                   i_GP_Generation,i_GP_individual, &

@@ -91,7 +91,7 @@ CONTAINS
 !   read in data from data files
 !
       data_unitnum = 30
-      OPEN ( unit = data_unitnum, file = 'CDOM.DATA', action="read")
+      OPEN ( unit = data_unitnum, file = 'CDOM.dat', action="read")
       i_count = 0
       DO 
          READ ( data_unitnum, '(A)', IOSTAT = istat ) Aline
@@ -114,7 +114,7 @@ CONTAINS
       CLOSE (data_unitnum)   
 
 
-      OPEN ( unit = data_unitnum, file = 'CDOM.DATA', action="read")
+      OPEN ( unit = data_unitnum, file = 'CDOM.dat', action="read")
 
       ! skip header 
       DO i = 1,3

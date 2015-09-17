@@ -9,10 +9,10 @@
 !> @author Dr. John R. Moisan [NASA/GSFC]
 !> @date January, 2013 Dr. John R. Moisan
 !>
-!> @param[in] i_GA_indiv
-!> @param[inout] child_parameters
-!> @param[in] individual_quality
-!> @param[in] new_comm
+!> @param[in] i_GA_indiv           - GA individual being integrated
+!> @param[inout] child_parameters  - parameters of the i_GA_indiv individual
+!> @param[in] individual_quality   - =1 if the individual is valid, -1 if not
+!> @param[in] new_comm             - MPI communicator
 
 SUBROUTINE setup_run_fcn( i_GA_indiv,  &
                           child_parameters, individual_quality, &

@@ -9,14 +9,19 @@
 !> @author Dr. John R. Moisan [NASA/GSFC]
 !> @date January, 2013 Dr. John R. Moisan
 !>
-!> @param[in] i_GP_Generation
-!> @param[in] i_GP_individual
-!> @param[in] new_comm 
-!> @param[in] parent_parameters
-!> @param[in] individual_quality
-!> @param[out] child_parameters
-!> @param[out] i_GA_Best_Parent
-!> @param[out] L_stop_run
+!> @param[in] i_GP_Generation  - GP generation
+!> @param[in] i_GP_individual  - GP individual
+!> @param[in] new_comm         - MPI communicator
+!> @param[in] Parent_Parameters  - model parameters for all GA individuals                                                   
+!> @param[in] individual_quality - 1 if GA individual is good, -1 otherwise                                                  
+
+!> @param[out] Child_Parameters  - updated model parameters for all GA individuals                                           
+!> @param[out] i_GA_Best_Parent  - GA individual with best fitness (lowest SSE)
+!> @param[out] L_stop_run        - switch to stop run if a user-input SSE minimum is reached 
+!!                                 (not implemented)
+
+                                                                                                                             
+
 
 SUBROUTINE GA_calc_fitness( child_parameters, individual_quality, &
                          i_GA_Best_Parent, parent_parameters,  &

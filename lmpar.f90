@@ -7,19 +7,19 @@
 !> @author Jorge More, Burton Garbow, Kenneth Hillstrom, and John Burkardt.                                    
 !> @date April 6, 2010 John Burkardt.                                                                          
 !>
-!> @param[in] N   the order of R.
+!> @param[in]    N   the order of R.
 !> @param[inout] R(LDR,N)   the N by N matrix.
-!> @param[in] LDR    the leading dimension of R.  LDR must be no less than N.
-!> @param[in] IPVT(N)    defines the permutation matrix P such that A*P = Q*R.  
-!!            Column J of P is column IPVT(J) of the identity matrix.
-!> @param[in] DIAG(N)   the diagonal elements of the matrix D.
-!> @param[in] QTB(N)   the first N elements of the vector Q'*B.
-!> @param[in] DELTA   an upper bound on the euclidean norm of D*X.
+!> @param[in]    LDR    the leading dimension of R.  LDR must be no less than N.
+!> @param[in]    IPVT(N)    defines the permutation matrix P such that A*P = Q*R.  
+!!               Column J of P is column IPVT(J) of the identity matrix.
+!> @param[in]    DIAG(N)   the diagonal elements of the matrix D.
+!> @param[in]    QTB(N)   the first N elements of the vector Q'*B.
+!> @param[in]    DELTA   an upper bound on the euclidean norm of D*X.
 !> @param[inout] PAR   On input an initial estimate of the Levenberg-Marquardt parameter.  
 !!                     On output the final estimate.
-!> @param[out] X(N)   the least squares solution of the system A*X = B, 
-!!             sqrt(PAR)*D*X = 0, for the output value of PAR.
-!> @param[out] SDIAG(N)   the diagonal elements of the upper triangular matrix S.
+!> @param[out]   X(N)   the least squares solution of the system A*X = B, 
+!!               sqrt(PAR)*D*X = 0, for the output value of PAR.
+!> @param[out]   SDIAG(N)   the diagonal elements of the upper triangular matrix S.
 
 SUBROUTINE lmpar ( n, r, ldr, ipvt, diag, qtb, delta, par, x, sdiag )
 

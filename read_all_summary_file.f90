@@ -10,7 +10,7 @@
 !> @author Dr. John R. Moisan [NASA/GSFC]
 !> @date January, 2013 Dr. John R. Moisan
 !>
-!> @param[in] i_GP_generation
+!> @param[in] i_GP_generation  - current GP generation
 
 SUBROUTINE read_all_summary_file( i_GP_generation )
 

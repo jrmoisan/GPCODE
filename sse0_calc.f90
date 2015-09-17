@@ -78,8 +78,8 @@ do  i_time_step = 1, n_time_steps
     fvec(i_time_step)=0.0d0
 
 
-    IF ( INDEX ( model, 'DATA') == 0 .and. &
-        INDEX ( model, 'DATA') == 0             ) THEN
+    IF ( INDEX ( model, 'data') == 0 .and. &
+         INDEX ( model, 'DATA') == 0             ) THEN
 
         x_time_step = REAL ( i_time_step, KIND=r8b ) * dt
 
@@ -94,7 +94,7 @@ do  i_time_step = 1, n_time_steps
 
         END IF ! x_time_step >= sse_min_time ...
 
-    END IF ! INDEX ( model, 'DATA') == 0 .and. ,,,
+    END IF ! INDEX ( model, 'data') == 0 .and. ,,,
 
 
     DO  i_CODE_equation=1,n_CODE_equations

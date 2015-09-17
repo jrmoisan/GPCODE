@@ -19,8 +19,8 @@
 !> @author Jorge More, Burton Garbow, Kenneth Hillstrom, John Burkardt.
 !> @date April 6, 2010 John Burkardt
 !>
-!> @param[in] M  the number of rows of A.
-!> @param[in] N  the number of columns of A.
+!> @param[in]    M  the number of rows of A.
+!> @param[in]    N  the number of columns of A.
 !> @param[inout] A(LDA,N)  the M by N array.
 !!    On input, A contains the matrix for which the QR factorization is to
 !!    be computed.  
@@ -28,14 +28,14 @@
 !!    the strict upper trapezoidal part of R, and the lower trapezoidal
 !!    part of A contains a factored form of Q (the non-trivial elements of
 !!    the U vectors described above).
-!> @param[in] LDA  the leading dimension of A, which must be no less than M.
-!> @param[in] PIVOT  is TRUE if column pivoting is to be carried out.
-!> @param[in] LIPVT  the dimension of IPVT, which should be N if pivoting is used.
-!> @param[out] IPVT(LIPVT)  defines the permutation matrix P such
+!> @param[in]    LDA  the leading dimension of A, which must be no less than M.
+!> @param[in]    PIVOT  is TRUE if column pivoting is to be carried out.
+!> @param[in]    LIPVT  the dimension of IPVT, which should be N if pivoting is used.
+!> @param[out]   IPVT(LIPVT)  defines the permutation matrix P such
 !!    that A*P = Q*R.  Column J of P is column IPVT(J) of the identity matrix.
 !!    If PIVOT is false, IPVT is not referenced.
-!> @param[out] RDIAG(N)  contains the diagonal elements of R.
-!> @param[out] ACNORM(N)  the norms of the corresponding
+!> @param[out]   RDIAG(N)  contains the diagonal elements of R.
+!> @param[out]   ACNORM(N)  the norms of the corresponding
 !!    columns of the input matrix A.  If this information is not needed,
 !!    then ACNORM can coincide with RDIAG.
 

@@ -80,8 +80,8 @@ INTEGER (KIND=i4b),ALLOCATABLE :: tmprank0(:)
 INTEGER (KIND=i4b) :: comm_world
 
 
-CHARACTER (15),PARAMETER :: program_version   = '201502.004_v16'
-CHARACTER (10),PARAMETER :: modification_date = '20150818'
+CHARACTER (15),PARAMETER :: program_version   = '201502.005_v16'
+CHARACTER (10),PARAMETER :: modification_date = '20150916'
 CHARACTER (50),PARAMETER :: branch  =  'master'
 
 INTEGER (KIND=i4b), parameter ::  zero = 0
@@ -187,7 +187,7 @@ END IF ! myid == 0
 
 !----------------------------------------------------
 
-CALL setup_mathfunctions()
+CALL setup_math_functions()
 
 CALL load_pow2_table()
 

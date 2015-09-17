@@ -9,8 +9,10 @@
 !> @author Dr. John R. Moisan [NASA/GSFC]
 !> @date January, 2013 Dr. John R. Moisan
 !>
-!> @param[in]  buildtrees
-!> @param[out] treeSlice 
+!> @param[in]  buildtrees - if  true, construct tree objects from arrays of node values
+!!                        - if false, construct tree objects from hard-coded Fasham routines          
+
+!> @param[out] treeSlice - computed tree object
 
 SUBROUTINE Build_Trees( treeSlice, buildtrees ) 
 

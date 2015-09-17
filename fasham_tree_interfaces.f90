@@ -4,8 +4,8 @@
 !> @details
 !>  This module defines interfaces for the Fasham model tree functions.        
 !>
-!> @author Dave ??
-!> @date August 7, 2013  Dave ??
+!> @author Dave Coulter
+!> @date August 7, 2013  Dave Coulter
 
 MODULE Fasham_Tree_Interfaces
 
@@ -26,7 +26,7 @@ MODULE Fasham_Tree_Interfaces
 
 !-------------------------------------------
 ! File:   Interfaces.f03
-! Author: Dave
+! Author: Dave Coulter
 
 ! Created on August 7, 2013, 7:59 AM
 

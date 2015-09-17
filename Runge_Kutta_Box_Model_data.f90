@@ -9,9 +9,9 @@
 !> @author Dr. John R. Moisan [NASA/GSFC]
 !> @date January, 2013 Dr. John R. Moisan
 !>
-!> @param[out] L_print_RK
+!> @param[out] L_print_RK - if true, print some messages
 
-SUBROUTINE Runge_Kutta_Box_Model_DATA( L_print_RK ) 
+SUBROUTINE Runge_Kutta_Box_Model_data( L_print_RK ) 
 
  
 !---------------------------------------------------------------------------  
@@ -153,11 +153,11 @@ do  i_data_point = 1, n_input_data_points
 
 
     IF ( INDEX ( model, 'LOG10') > 0 .or. &
-        INDEX ( model, 'log10') > 0        ) THEN
+         INDEX ( model, 'log10') > 0        ) THEN
 
         Numerical_CODE_Solution_log10(i_data_point,1) = log10( ABS ( Tree_Value(i_Tree) ) ) 
 
-    END IF ! INDEX ( model, 'DATA') > 0 ...
+    END IF ! INDEX ( model, 'log10') > 0 ...
 
     IF ( L_print_RK ) THEN
         WRITE (6,'(A,2(1x,I6),12(1x,E24.16))') &
@@ -173,4 +173,4 @@ END DO ! End DATA point loop
 RETURN
 
 
-END SUBROUTINE Runge_Kutta_Box_Model_DATA
+END SUBROUTINE Runge_Kutta_Box_Model_data

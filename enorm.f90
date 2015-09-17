@@ -7,9 +7,10 @@
 !> @author Jorge More, Burton Garbow, Kenneth Hillstrom, and   John Burkardt
 !> @date  April 6, 2010 John Burkardt
 !>
-!> @param[in]  N           
-!> @param[in]  X
-!> @return  enorm
+!> @param[in]  N   - number of values in vector x
+!> @param[in]  X   - array of values of vector x
+
+!> @return  enorm  - Euclidean norm of vector x
 
 FUNCTION enorm ( n, x )
 

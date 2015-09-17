@@ -9,11 +9,12 @@
 !> @author Dr. John R. Moisan [NASA/GSFC]
 !> @date January, 2013 Dr. John R. Moisan
 !>
-!> @param[in]  mm
-!> @param[in]  nn
-!> @param[out] x
-!> @param[out] fvec
-!> @param[out] iflag
+!> @param[in]  mm  - number of integration steps
+!> @param[in]  nn  - number of variables being integrated
+
+!> @param[out] x     - initial values of the variables
+!> @param[out] fvec  - sum over all variables of the squares of the weighted residuals  at each time step
+!> @param[out] iflag - set to -1 if there is a problem with the integration
 
 SUBROUTINE fcn(mm,nn,x,fvec,iflag)
 
@@ -187,7 +188,7 @@ IF ( n_input_vars == 0 ) THEN
 
 ELSE
 
-    CALL Runge_Kutta_Box_Model_DATA( .FALSE. )
+    CALL Runge_Kutta_Box_Model_data( .FALSE. )
 
 END IF ! n_input_vars == 0
 
@@ -259,7 +260,7 @@ do  i_time_step=1,n_time_steps
 
     fvec(i_time_step)=0.0D0
 
-    IF ( INDEX ( model, 'DATA' ) == 0 .and. &
+    IF ( INDEX ( model, 'data' ) == 0 .and. &
         INDEX ( model, 'DATA' ) == 0         ) THEN
 
         x_time_step = REAL ( i_time_step, KIND=r8b ) * dt
@@ -273,7 +274,7 @@ do  i_time_step=1,n_time_steps
         END IF  !   x_time_step >= sse_min_time ...
 
 
-    END IF ! INDEX ( model, 'DATA' ) == 0 .and. ...
+    END IF ! INDEX ( model, 'data' ) == 0 .and. ...
 
 
     DO  i_CODE_equation=1,n_CODE_equations
