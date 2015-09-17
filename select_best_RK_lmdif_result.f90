@@ -228,13 +228,14 @@ IF ( individual_ranked_fitness(i_GA_best_parent) <= &
     IF ( L_GA_output_parameters ) THEN
 
         IF ( L_STOP_run ) THEN
-            WRITE ( GA_output_unit, '(I6,3(1x,I6), 12(1x,E15.7))') &
+            !orig WRITE ( GA_output_unit, '(I6,3(1x,I6), 12(1x,E15.7))') &
+            WRITE ( GA_output_unit, '(I6,3(1x,I6), 20(1x,E15.7))') &
               i_GP_Generation,i_GP_individual, &
               i_GA_Generation_last, i_GA_best_parent_1, &
               individual_ranked_fitness_best_1, &
               (parent_parameters_best_1(jj),jj = 1,n_parameters)
         ELSE
-            WRITE ( GA_output_unit, '(I6,3(1x,I6), 12(1x,E15.7))') &
+            WRITE ( GA_output_unit, '(I6,3(1x,I6), 20(1x,E15.7))') &
               i_GP_Generation,i_GP_individual, &
               n_GA_Generations, i_GA_best_parent_1, &
               individual_ranked_fitness_best_1, &
