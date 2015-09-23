@@ -72,7 +72,7 @@ INTEGER (KIND=i4b) :: i
 IF ( TRIM (model)  == 'fasham' .or.  &
     TRIM (model)  == 'fasham_fixed_tree' ) THEN
 
-    CALL Initialize_Model( .false., .true., 6 )    ! for built-in Fasham FUNCTION model
+    CALL Initialize_Model( .false., .true., 6 )    ! for built-in Fasham function model
 
 ELSE IF ( INDEX (model, 'CDOM' ) == 0 ) THEN
 
