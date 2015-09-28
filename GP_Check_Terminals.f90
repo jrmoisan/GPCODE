@@ -146,7 +146,6 @@ do  i_Tree=1,nn_Trees
                                     i_Node_Left, i_tree, &
                                temp_Node_Type(i_Node_Left,i_Tree)
 
-                        !call print_entire_tree( )
 
                     END IF ! myid == 0
 
@@ -191,7 +190,6 @@ do  i_Tree=1,nn_Trees
                                 i_Node_Right, i_tree, &
                             temp_Node_Type(i_Node_Right,i_Tree)
 
-                        !call print_entire_tree( )
 
                     END IF ! myid == 0
 

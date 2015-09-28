@@ -35,7 +35,9 @@ USE GP_Data_module
 USE fasham_variables_module
 USE Tree_Node_Factory_module
 USE class_Tree_Node
+
 IMPLICIT none
+
 INTEGER (KIND=i4b),INTENT(IN) :: i_GP_generation
 INTEGER :: message_len,ierror_tb
 
@@ -68,7 +70,7 @@ IF ( L_restart) THEN
 
 ELSE
 
-    ! do this section if not restarting the run
+    ! do this section if NOT restarting the run
 
 
     IF ( TRIM (model) == 'fasham_fixed_tree' ) THEN
@@ -135,7 +137,7 @@ ierror_tb = 0
 ! determines if the new GP child
 ! has to be sent to GA_lmdif for parameter optimization
 
-Run_GP_Calculate_Fitness=.true.   ! jjm 20150607
+Run_GP_Calculate_Fitness=.true.   
 
 IF ( TRIM (model) == 'fasham_CDOM' ) THEN
 
@@ -154,12 +156,6 @@ IF ( TRIM (model) == 'fasham_CDOM' ) THEN
 END IF !   TRIM (model) == 'fasham_CDOM' 
 
 !---------------------------------------------------------------------------
-
-!if( myid == 0 ) then
-!    write(GP_print_unit,'(/A,1x,I6)') &
-!      'gpf: return'
-!    flush(GP_print_unit)
-!endif
 
 
 RETURN

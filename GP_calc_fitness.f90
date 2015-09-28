@@ -194,7 +194,6 @@ do  i_GP_Individual=1,n_GP_Individuals
         GP_Population_Ranked_Fitness(i_GP_Individual) = &
              sse0  /  GP_Child_Population_SSE(i_GP_Individual)
 
-             !1.0d0 /  GP_Child_Population_SSE(i_GP_Individual)
     ELSE
 
         GP_Population_Ranked_Fitness(i_GP_Individual) = 0.0D0
