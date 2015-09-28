@@ -26,6 +26,7 @@ MODULE GA_parameters_module
 ! set the GA related parameters
 
 USE kinds_mod
+
 IMPLICIT none
 
 ! set the integer parameters

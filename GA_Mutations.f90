@@ -15,7 +15,7 @@
 !> @param[out] Child_Parameters  - updated model parameters for all GA individuals                                           
 
 
-SUBROUTINE GA_Mutations(Child_Parameters, individual_quality )
+SUBROUTINE GA_Mutations( Child_Parameters, individual_quality )
 
  
 !---------------------------------------------------------------------------  
@@ -83,7 +83,6 @@ do  i_GA_Mutation=1,n_GA_Mutations
   
     i_Parameter_Mutation=1+INT ( dff * REAL (n_parameters-1,KIND=r8b) )
     i_Parameter_Mutation = MIN ( i_Parameter_Mutation , n_parameters )
-    !i_Parameter_Mutation = max( i_Parameter_Mutation , 2  ) ! debug only
   
     !--------------------------------------------------------------------
   

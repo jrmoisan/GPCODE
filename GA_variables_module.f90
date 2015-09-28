@@ -23,6 +23,7 @@ MODULE GA_variables_module
 
 USE kinds_mod 
 USE GA_parameters_module
+
 IMPLICIT none
 
 INTEGER (KIND=i4b) :: n_GA_Elitists
