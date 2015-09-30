@@ -94,7 +94,8 @@ do  i_GA_Individual=1,n_GA_individuals
     !                  Child_Parameters(1:7,i_GA_Individual) ! debug only
     !debug only <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 
-    !debug only >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+
+
 
     IF ( TRIM (model) == 'fasham_fixed_tree' ) THEN 
         ! fasham model
@@ -114,6 +115,7 @@ do  i_GA_Individual=1,n_GA_individuals
         Child_Parameters(i_parameter,i_GA_Individual) = 0.1D+0 ! Zooplankton       [mmol N m-3] 
     END IF !  TRIM (model) == 'fasham_fixed_tree' 
 
+!!    !debug only >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 !!
 !!    do  ii = 1, 7                                                                           ! debug only
 !!        Child_Parameters(ii,i_GA_Individual) = &                                            ! debug only
@@ -162,7 +164,7 @@ do  i_GA_Individual=1,n_GA_individuals
 !!        endif !  i_GA_individual == 1                                                       ! debug only
 !!    endif ! new_rank == 0                                                                   ! debug only
 !!
-!!    !debug only <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+!!    !debug only <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 
 
 

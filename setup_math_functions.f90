@@ -48,7 +48,6 @@ SUBROUTINE setup_math_functions()
 
     math_funcs(ExponentialDecay)%f => f_ExponentialDecay
 
-
     math_funcs(Minimize)%f => f_Minimize
 
     math_funcs(Maximize)%f => f_Maximize

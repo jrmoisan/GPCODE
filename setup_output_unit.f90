@@ -58,17 +58,21 @@ IF ( myid == 0 ) THEN
 
 
     IF ( L_GP_log ) THEN
+
         OPEN ( GP_log_unit, file = 'GP_log', &
               form = 'unformatted', access='sequential', &
               status = 'unknown' )
+
     END IF ! L_GP_log
 
 
 
     IF ( L_GA_log ) THEN
+
         OPEN ( GA_log_unit, file = 'GA_log', &
               form = 'unformatted', access='sequential', &
               status = 'unknown' )
+
     END IF ! L_GA_log
 
 
@@ -86,6 +90,7 @@ IF ( myid == 0 ) THEN
 
 
     IF ( L_fort555_output ) THEN
+
         OPEN ( GA_555_unit, file = 'GA_555', &
               form = 'unformatted', access='sequential', &
               status = 'unknown' )
@@ -107,13 +112,13 @@ END IF !   myid == 0
 GA_child_print_interval = n_GA_generations /  number_GA_child_prints
 
 IF ( GA_child_print_interval == 0) THEN
-    GA_child_print_interval = MAX ( 1, n_GA_generations / 2 )
+     GA_child_print_interval = MAX ( 1, n_GA_generations / 2 )
 END IF
 
 GP_child_print_interval = n_GP_generations /  number_GP_child_prints
 
 IF ( GP_child_print_interval == 0) THEN
-    GP_child_print_interval = MAX ( 1, n_GP_generations / 2 )
+     GP_child_print_interval = MAX ( 1, n_GP_generations / 2 )
 END IF
 
 

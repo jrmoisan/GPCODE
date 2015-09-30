@@ -11,17 +11,17 @@
 
 SUBROUTINE setup1( )
 
- 
-!---------------------------------------------------------------------------  
+
+!---------------------------------------------------------------------------
 !
-! DESCRIPTION: 
-! Brief description of routine. 
+! DESCRIPTION:
+! Brief description of routine.
 !
 ! REVISION HISTORY:
 ! TODO_dd_mmm_yyyy - TODO_describe_appropriate_changes - TODO_name
 !
 
-!---------------------------------------------------------------------------  
+!---------------------------------------------------------------------------
 
 ! program written by: Dr. John R. Moisan [NASA/GSFC] 31 January, 2013
 
@@ -66,7 +66,7 @@ INTEGER (KIND=i4b) :: i_CODE_equation
 
 IF ( myid == 0 ) THEN
     WRITE (6,'(/A,1x,A)') 'set1: model ', TRIM (model)
-END IF ! myid == 0 
+END IF ! myid == 0
 
 
 IF ( TRIM (model) == "fasham_CDOM") THEN
@@ -93,7 +93,6 @@ IF ( TRIM (model) == "fasham_CDOM_GP") THEN
 
     CALL aCDOM%init()
 
-
     CALL aCDOM%setTruth()
 
     !call cdom%setModel()
@@ -102,6 +101,9 @@ IF ( TRIM (model) == "fasham_CDOM_GP") THEN
     RETURN
 
 END IF ! TRIM (model) == "fasham_CDOM_GP"
+
+
+!---------------------------------------------------------------------
 
 ! set the scalar values for the model
 
@@ -126,7 +128,7 @@ END IF ! myid == 0
 
 !---------------------------------------------------------------------
 
-! for data processing 
+! for data processing
 ! n_inputs is used in deser*2 to point to input values in rk_data_array
 
 n_inputs = n_input_vars
@@ -152,7 +154,6 @@ CALL print_values1()
 
 IF ( myid == 0 ) THEN
     WRITE (6,'(/A,1x,I6)') 'set1: CALL allocate_arrays1'
-    flush(6)
 END IF ! myid == 0
 
 CALL allocate_arrays1( )
@@ -265,7 +266,7 @@ END IF ! myid == 0
 
 !--------------------------------------------------------------------------------
 
-!  broadcast the Numerical_CODE_Solution array 
+!  broadcast the Numerical_CODE_Solution array
 
 
 ! set message length if data processing option is on
@@ -280,11 +281,12 @@ END IF ! n_input_vars == 0
 CALL MPI_BCAST( Numerical_CODE_Solution, message_len,    &
                 MPI_DOUBLE_PRECISION, 0, MPI_COMM_WORLD, ierr )
 
-
 Data_Array=Numerical_CODE_Solution        ! Matrix Operation
 
+
+
 IF ( INDEX ( model,'LOG10') > 0 .or. &
-    INDEX ( model,'log10') > 0         ) THEN
+     INDEX ( model,'log10') > 0         ) THEN
 
     message_len = ( n_input_data_points + 1 ) * n_CODE_equations
 
@@ -297,20 +299,20 @@ END IF!  INDEX ( model,'LOG10') > 0 ...
 
 !--------------------------------------------------------------------------------
 
-! zero out Numerical_CODE_Solution array 
+! zero out Numerical_CODE_Solution array
 !  so that later solutions don't have answer results in array
 
 
 Numerical_CODE_Solution(1:n_time_steps, 1:n_code_equations) = 0.0d0
 
 IF ( INDEX ( model,'LOG10') > 0 .or. &
-    INDEX ( model,'log10') > 0         ) THEN
+     INDEX ( model,'log10') > 0         ) THEN
 
     Numerical_CODE_Solution_log10(1:n_time_steps, 1:n_code_equations) = 0.0d0
 
 END IF!  INDEX ( model,'LOG10') > 0 ...
 
-IF ( myid == 0 ) THEN 
+IF ( myid == 0 ) THEN
     WRITE (6, '(/A,2(1x,I6))') 'set1: n_input_data_points ', n_input_data_points
     WRITE (6, '(A,2(1x,I6))')  'set1: n_input_vars ', n_input_vars
     WRITE (6, '(A,2(1x,I6)/)') 'set1: n_time_steps ', n_time_steps
@@ -331,7 +333,7 @@ CALL MPI_BCAST( Numerical_CODE_Solution, message_len,    &
 
 
 IF ( INDEX ( model,'LOG10') > 0 .or. &
-    INDEX ( model,'log10') > 0         ) THEN
+     INDEX ( model,'log10') > 0         ) THEN
 
     CALL MPI_BCAST( Numerical_CODE_Solution_log10, message_len,    &
                 MPI_DOUBLE_PRECISION, 0, MPI_COMM_WORLD, ierr )
@@ -438,7 +440,7 @@ IF ( myid == 0 ) THEN
     ! note:  sse0 is only used by cpu 0 which does all fitness calculations
 
     IF ( INDEX ( model,'LOG10') > 0 .or. &
-        INDEX ( model,'log10') > 0         ) THEN
+         INDEX ( model,'log10') > 0         ) THEN
 
         CALL sse0_calc_log10( )
         CALL sse0_calc( )
@@ -483,7 +485,7 @@ CALL MPI_BCAST( SSE0, message_len,    &
                 MPI_DOUBLE_PRECISION, 0, MPI_COMM_WORLD, ierr )
 
 IF ( INDEX ( model,'LOG10') > 0 .or. &
-    INDEX ( model,'log10') > 0         ) THEN
+     INDEX ( model,'log10') > 0         ) THEN
 
     message_len = 1
     CALL MPI_BCAST( SSE0_nolog10, message_len,    &
@@ -510,7 +512,7 @@ L_minSSE = n_GP_Elitists ==  0 .or.   prob_no_elite > 0.0D0
 
 IF ( myid == 0 ) THEN
     WRITE (6, '(/A,1x,I6,1x,E15.7,5x,L1/)') 'set1: n_GP_Elitists, prob_no_elite, L_minSSE ', &
-                                                  n_GP_Elitists, prob_no_elite, L_minSSE 
+                                                  n_GP_Elitists, prob_no_elite, L_minSSE
 END IF ! myid == 0
 
 IF ( myid == 0 .and. L_minSSE ) THEN

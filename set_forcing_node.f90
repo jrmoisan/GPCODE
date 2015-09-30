@@ -74,12 +74,12 @@ IF ( cff < prob_forcing ) THEN
 
 
     IF ( cff >  frac_forcing_type(1, 3) .and.  &
-        cff <= frac_forcing_type(2, 3)         ) THEN
+         cff <= frac_forcing_type(2, 3)         ) THEN
 
         node_variable = 5003
 
     ELSE IF ( cff >  frac_forcing_type(1, 4) .and.  &
-            cff <= frac_forcing_type(2, 4)         ) THEN
+              cff <= frac_forcing_type(2, 4)         ) THEN
 
         node_variable = 5004
 
@@ -89,12 +89,12 @@ IF ( cff < prob_forcing ) THEN
         END IF ! L_no_forcing 
 
     ELSE IF ( cff >  frac_forcing_type(1, 2) .and.  &
-            cff <= frac_forcing_type(2, 2)         ) THEN
+              cff <= frac_forcing_type(2, 2)         ) THEN
 
         node_variable = 5002
 
     ELSE IF ( cff >  frac_forcing_type(1, 1) .and.  &
-            cff <= frac_forcing_type(2, 1)         ) THEN
+              cff <= frac_forcing_type(2, 1)         ) THEN
 
         node_variable = 5001
 
