@@ -14,15 +14,15 @@
 
 program main
 
- 
-!---------------------------------------------------------------------------  
+
+!---------------------------------------------------------------------------
 !
-! DESCRIPTION: 
-! Brief description of routine. 
+! DESCRIPTION:
+! Brief description of routine.
 ! REVISION HISTORY:
 ! TODO_dd_mmm_yyyy - TODO_describe_appropriate_changes - TODO_name
 !
-!---------------------------------------------------------------------------  
+!---------------------------------------------------------------------------
 
 ! program written by: Dr. John R. Moisan [NASA/GSFC] 31 January, 2013
 
@@ -158,7 +158,12 @@ CALL RANDOM_SEED(size = n_seed)
 
 CALL read_cntl_vars( ierror  )
 
+!WRITE (6,'(A,1x,I6)') '0: aft read_cntl n_CODE_equations  ', n_CODE_equations
+!flush(6)
 
+!----------------------------------------------------
+
+!----------------------------------------------------
 n_inputs = n_input_vars
 
 IF ( myid == 0 ) THEN
@@ -193,14 +198,42 @@ CALL load_pow2_table()
 
 CALL setup_output_unit()
 
-
 !----------------------------------------------------
 
 
-! for reading input files for the "DATA" model
+n_trees=((n_CODE_equations+1)**2)-(n_CODE_equations+1)
 
-CALL read_input_data()
+n_nodes = pow2_table( n_levels )  ! n_nodes = INT (2**n_levels)-1
 
+n_maximum_number_parameters = n_CODE_equations * n_nodes
+
+
+IF ( myid == 0 ) THEN
+    WRITE (GP_print_unit,'(A,1x,I6)') '0: n_levels          ', n_levels
+    !WRITE (GP_print_unit,'(A,1x,I6)') '0: n_functions       ', n_functions
+    WRITE (GP_print_unit,'(A,1x,I6)') '0: n_CODE_equations  ', n_CODE_equations
+    WRITE (GP_print_unit,'(A,1x,I6)') '0: n_trees           ', n_trees
+    WRITE (GP_print_unit,'(A,1x,I6)') '0: n_nodes           ', n_nodes
+    WRITE (GP_print_unit,'(A,1x,I6/)')'0: n_maximum_number_parameters  ', &
+                                          n_maximum_number_parameters
+END IF ! myid == 0
+
+
+
+!----------------------------------------------------
+
+if(  index( model, 'data' ) > 0 .or. &
+     index( model, 'DATA' ) > 0      )then
+
+    ! for reading input files for the "DATA" model
+
+    CALL read_input_data()
+
+else
+
+    CALL read_generic_input_data()
+
+endif !   index( model, 'data' ) > 0 )then
 
 !----------------------------------------------------
 
@@ -237,6 +270,7 @@ END IF ! myid == 0
 
 
 CALL setup1( )
+
 
 !----------------------------------------------------
 

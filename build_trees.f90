@@ -67,7 +67,7 @@ ELSE
 
 
     IF ( TRIM (model) == 'fasham'    .or.     &
-        TRIM (model) == 'fasham_fixed_tree' ) THEN
+         TRIM (model) == 'fasham_fixed_tree' ) THEN
     
     
         !  Fasham specific trees

@@ -75,45 +75,45 @@ REAL (KIND=r8b) :: increment
 IF (  icall  == 0  ) THEN
 
 
-    n_CODE_equations =   1
-
-    n_trees= 1 ! ((n_CODE_equations+1)**2)-(n_CODE_equations+1)
-
-
-    n_nodes = pow2_table( n_levels )  ! n_nodes = INT (2**n_levels)-1
-
-
-    !orig n_maximum_number_parameters = n_CODE_equations +  n_nodes
-
-    n_maximum_number_parameters = n_CODE_equations * n_nodes    
-
-
-    IF ( myid == 0 ) THEN
-
-        IF ( INDEX ( model, 'LOG10') > 0 .or. &
-            INDEX ( model, 'log10') > 0       ) THEN
-            WRITE (GP_print_unit,'(/A)') 'ivDA: LOG10 DATA option'
-        END IF ! INDEX ( model, 'LOG10') > 0 ...
-
-        WRITE (GP_print_unit,'(A,1x,I6)') 'ivDA: n_levels          ', n_levels
-        WRITE (GP_print_unit,'(A,2(1x,I6))')&
-              'ivDA: INT (2**n_levels)-1 , pow2_table( n_levels )', &
-                     INT (2**n_levels)-1 , pow2_table( n_levels )
-
-        WRITE (GP_print_unit,'(A,1x,I6)') 'ivDA: n_CODE_equations  ', n_CODE_equations
-        WRITE (GP_print_unit,'(A,1x,I6)') 'ivDA: n_input_vars      ', n_input_vars    
-        WRITE (GP_print_unit,'(A,1x,I6)') 'ivDA: n_trees           ', n_trees
-        WRITE (GP_print_unit,'(A,1x,I6)') 'ivDA: n_nodes           ', n_nodes
-        WRITE (GP_print_unit,'(A,1x,I6/)')'ivDA: n_maximum_number_parameters  ', &
-                                                n_maximum_number_parameters
-    END IF ! myid == 0
+!    n_CODE_equations =   1
+!
+!    n_trees= 1 ! ((n_CODE_equations+1)**2)-(n_CODE_equations+1)
+!
+!
+!    n_nodes = pow2_table( n_levels )  ! n_nodes = INT (2**n_levels)-1
+!
+!
+!    !orig n_maximum_number_parameters = n_CODE_equations +  n_nodes
+!
+!    n_maximum_number_parameters = n_CODE_equations * n_nodes    
+!
+!
+!    IF ( myid == 0 ) THEN
+!
+!        IF ( INDEX ( model, 'LOG10') > 0 .or. &
+!            INDEX ( model, 'log10') > 0       ) THEN
+!            WRITE (GP_print_unit,'(/A)') 'ivDA: LOG10 DATA option'
+!        END IF ! INDEX ( model, 'LOG10') > 0 ...
+!
+!        WRITE (GP_print_unit,'(A,1x,I6)') 'ivDA: n_levels          ', n_levels
+!        WRITE (GP_print_unit,'(A,2(1x,I6))')&
+!              'ivDA: INT (2**n_levels)-1 , pow2_table( n_levels )', &
+!                     INT (2**n_levels)-1 , pow2_table( n_levels )
+!
+!        WRITE (GP_print_unit,'(A,1x,I6)') 'ivDA: n_CODE_equations  ', n_CODE_equations
+!        WRITE (GP_print_unit,'(A,1x,I6)') 'ivDA: n_input_vars      ', n_input_vars    
+!        WRITE (GP_print_unit,'(A,1x,I6)') 'ivDA: n_trees           ', n_trees
+!        WRITE (GP_print_unit,'(A,1x,I6)') 'ivDA: n_nodes           ', n_nodes
+!        WRITE (GP_print_unit,'(A,1x,I6/)')'ivDA: n_maximum_number_parameters  ', &
+!                                                n_maximum_number_parameters
+!    END IF ! myid == 0
 
     RETURN
 
 END IF ! icall == 0
 
 
-
+RETURN
 
 ! load the arrays
 

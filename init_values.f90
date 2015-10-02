@@ -11,19 +11,19 @@
 
 SUBROUTINE init_values( icall  )
 
- 
-!---------------------------------------------------------------------------  
+
+!---------------------------------------------------------------------------
 !
-! DESCRIPTION: 
-! Brief description of routine. 
+! DESCRIPTION:
+! Brief description of routine.
 
 !
 ! REVISION HISTORY:
 ! TODO_dd_mmm_yyyy - TODO_describe_appropriate_changes - TODO_name
 !
-!---------------------------------------------------------------------------  
+!---------------------------------------------------------------------------
 
-USE kinds_mod 
+USE kinds_mod
 
 USE mpi
 USE mpi_module
@@ -37,6 +37,10 @@ IMPLICIT none
 
 INTEGER,INTENT(IN)  :: icall
 
+INTEGER (KIND=i4b) :: i_Tree
+INTEGER (KIND=i4b) :: i_Node
+REAL (KIND=r8b) :: increment
+INTEGER (KIND=i4b) :: i
 
 
 !-------------------------------------------------------------------------
@@ -47,34 +51,93 @@ IF ( myid == 0 ) THEN
 END IF ! myid == 0
 
 
-IF ( TRIM (model) == 'NPZ' ) THEN
+!IF ( TRIM (model) == 'NPZ' ) THEN
+!
+!    CALL init_values_NPZ( icall )
+!    IF ( icall == 0 ) RETURN
+!
+!ELSE IF ( TRIM (model) == 'LV' ) THEN
+!
+!    CALL init_values_LV( icall )
+!    IF ( icall == 0 ) RETURN
+!
+!
+!ELSE IF ( ( INDEX ( model, 'data') > 0 .or. &
+!            INDEX ( model, 'DATA') > 0  )       .and. &
+!            n_input_vars > 0               ) THEN
+!
+!    CALL init_values_data( icall )
+!    IF ( icall == 0 ) RETURN
+!
+!
+!ELSE IF ( TRIM (model) == 'fasham'            .or. &
+!          TRIM (model) == 'fasham_fixed_tree'       ) THEN
+!
+!    CALL init_values_fasham( icall )
+!    IF ( icall == 0 ) RETURN
+!
+!
+!END IF ! TRIM (model) == 'NPZ'
 
-    CALL init_values_NPZ( icall )
-    IF ( icall == 0 ) RETURN
+if( icall > 0 )then
 
-ELSE IF ( TRIM (model) == 'LV' ) THEN
+    do  i_tree = 1,n_trees
 
-    CALL init_values_LV( icall )
-    IF ( icall == 0 ) RETURN
+        DO  i_node = 1,n_nodes
+            GP_Individual_Node_Parameters(i_node,i_tree) = 0.0d0
+            tree_evaluation(i_node,i_tree) = 0.0d0
+            GP_Individual_Node_Type(i_node,i_tree)       = -9999
+        END DO ! i_node
 
-
-ELSE IF ( ( INDEX ( model, 'data') > 0 .or. &
-            INDEX ( model, 'DATA') > 0  )       .and. &
-            n_input_vars > 0               ) THEN
-
-    CALL init_values_data( icall )
-    IF ( icall == 0 ) RETURN
+    END DO ! i_tree
 
 
-ELSE IF ( TRIM (model) == 'fasham'            .or. &
-          TRIM (model) == 'fasham_fixed_tree'       ) THEN
 
-    CALL init_values_fasham( icall )
-    IF ( icall == 0 ) RETURN
+    !Node_Probability = (/0.8d0,0.6d0,0.4d0,0.d0/)  ! NOTE: Last value MUST BE 0.0!!!]  !original LV
 
 
-END IF ! TRIM (model) == 'NPZ'
+    IF ( n_levels == 4 ) THEN
 
+        Node_Probability = (/0.8d0,0.6d0,0.4d0,0.d0/)  ! NOTE: Last value MUST BE 0.0!!!]
+
+    ELSE IF ( n_levels == 6 ) THEN
+
+       !   n_levels = 6
+
+
+        Node_Probability = (/0.8d0,0.7d0,6.d0, &
+                             0.4d0,0.3d0,0.d0/)  ! NOTE: Last value MUST BE 0.0!!!]
+
+
+    ELSE IF ( n_levels == 7 ) THEN
+        !!  n_levels = 7
+        Node_Probability = (/0.8d0,0.7d0,6.d0, &
+                             0.5d0,0.4d0,0.3d0,0.d0/)  ! NOTE: Last value MUST BE 0.0!!!]
+
+    ELSE IF ( n_levels == 8 ) THEN
+        !   n_levels = 8
+        Node_Probability = (/0.9d0,0.8d0,0.7d0,6.d0, &
+                             0.5d0,0.4d0,0.3d0,0.d0/)  ! NOTE: Last value MUST BE 0.0!!!]
+    ELSE
+
+        increment = 1.0d0 / REAL ( n_levels, KIND=r8b )
+
+        DO  i = 1, n_levels-1
+            Node_Probability(i) = 1.0d0 - increment * REAL (i,KIND=r8b)
+        END DO
+        Node_Probability(n_levels) = 0.0d0
+
+    END IF ! n_levels == 6
+
+    IF ( myid == 0 ) THEN
+        WRITE (GP_print_unit,'(/A,1x,I6)')   'iv: n_levels ', n_levels
+        WRITE (GP_print_unit,'(A/(10(1x,E12.5)))') 'iv: Node_Probability', &
+                                                        Node_Probability
+        WRITE (GP_print_unit,'(A)') ' '
+    END IF ! myid == 0
+
+
+endif !  icall > 0
 
 !----------------------------------------------------------------------------------
 
