@@ -135,6 +135,9 @@ END IF ! L_unit50_output
 
 ! initialize the biological data fields
 
+Numerical_CODE_Initial_Conditions(1:n_code_equations) = &
+                 input_data_array(1:n_code_equations, 1)
+
 
 Numerical_CODE_Solution(0,1:n_CODE_equations) = &
                  Numerical_CODE_Initial_Conditions

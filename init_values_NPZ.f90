@@ -117,7 +117,7 @@ IF (  icall  == 0  ) THEN
 
 END IF ! icall == 0
 
-
+RETURN
 
 
 ! load the arrays

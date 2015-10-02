@@ -1,8 +1,8 @@
 !> @brief
-!>  This subroutine reads the control input provided by the user.               
+!>  This subroutine reads the control input provided by the user.
 !>
 !> @details
-!>  This subroutine reads the control input provided by the user.               
+!>  This subroutine reads the control input provided by the user.
 !>
 !> @author Dr. John R. Moisan [NASA/GSFC]
 !> @date January, 2013 Dr. John R. Moisan
@@ -11,16 +11,16 @@
 
 SUBROUTINE read_cntl_vars( ierror )
 
- 
-!---------------------------------------------------------------------------  
+
+!---------------------------------------------------------------------------
 !
-! DESCRIPTION: 
-! Brief description of routine. 
+! DESCRIPTION:
+! Brief description of routine.
 !
 ! REVISION HISTORY:
 ! TODO_dd_mmm_yyyy - TODO_describe_appropriate_changes - TODO_name
 !
-!---------------------------------------------------------------------------  
+!---------------------------------------------------------------------------
 
 
 USE kinds_mod
@@ -68,7 +68,7 @@ INTEGER (KIND=i4b) :: ierror
 INTEGER (KIND=i4b) :: hash_index
 
 REAL (KIND=r8b) :: dt_min
-LOGICAL ::  L_op_cntl 
+LOGICAL ::  L_op_cntl
 
 !----------------------------------------------------------------------
 
@@ -85,7 +85,7 @@ IF ( .not. L_op_cntl ) THEN
           form = 'formatted',&
           status = 'old' )
 
-END IF ! .not. L_op_cntl 
+END IF ! .not. L_op_cntl
 
 REWIND (cntl_unitnum)
 
@@ -100,7 +100,7 @@ IF ( myid == 0 ) THEN
     'Input Echo Listing------------------------------------------------'
 
     echoloop: &
-    DO 
+    DO
 
         Aline(1:) = ' '
 
@@ -243,14 +243,14 @@ GP_Set_Terminal_to_Parameter_Probability = 0.6d0
 
 n_partitions = 2
 
-truth_model = 0 
+truth_model = 0
 L_truth_model = .FALSE.
 
 
 gp_para_lmdif_start_gen  = 1
 gp_para_lmdif_modulus = 10
-L_gp_para_lmdif = .FALSE. 
- 
+L_gp_para_lmdif = .FALSE.
+
 L_replace_larger_SSE_only = .FALSE.
 
 !---------------------------------------------------------------------
@@ -263,7 +263,7 @@ REWIND (cntl_unitnum)
 
 
 cntlloop: &
-DO 
+DO
 
     Aline = ' '
 
@@ -284,10 +284,10 @@ DO
 
 !------------------------------------------------------------------------------
 
-    !  this allows comments 
+    !  this allows comments
     !  all text following a '#' is ignored
 
-    hash_index = INDEX ( Aline, '#' ) 
+    hash_index = INDEX ( Aline, '#' )
     IF ( hash_index > 0 ) Aline( hash_index: ) = ' '
 
 !------------------------------------------------------------------------------
@@ -466,7 +466,7 @@ DO
 
 
 
-    ELSE IF ( Aline(1:len('n_code_equations')) == "n_code_equations" .or.     &
+    ELSE IF ( Aline(1:len('n_code_equations')) == "N_CODE_EQUATIONS" .or.     &
               Aline(1:len('n_code_equations')) == "n_code_equations" ) THEN
 
         READ(Aline(len('n_code_equations')+1:), * ) n_code_equations
@@ -632,13 +632,13 @@ DO
         IF ( TRIM (model) == 'fasham_fixed_tree' ) model = 'fasham_fixed_tree'
 
 
-        IF ( TRIM (model) == 'fasham_cdom'   ) model = 'fasham_CDOM' 
+        IF ( TRIM (model) == 'fasham_cdom'   ) model = 'fasham_CDOM'
         IF ( TRIM (model) == 'fasham_cdom_gp') model = 'fasham_CDOM_GP'
 
 
 
 
-        IF ( TRIM (model) == 'fasham_cdom'   ) model = 'fasham_CDOM' 
+        IF ( TRIM (model) == 'fasham_cdom'   ) model = 'fasham_CDOM'
         IF ( TRIM (model) == 'fasham_cdom_gp') model = 'fasham_CDOM_GP'
 
 
@@ -1295,7 +1295,6 @@ DO
                   'rcntl: n_input_vars = ', n_input_vars
         END IF !myid==0
 
-        n_code_equations  = n_input_vars
 
 !--------------------------------------------------------------------
 
@@ -1375,7 +1374,7 @@ DO
         IF ( myid == 0 ) THEN
             WRITE (GP_print_unit,'(A,5x,L1)') &
                   'rcntl: L_restart = ', L_restart
-    
+
             WRITE (GP_print_unit,'(A,1x,i6)') &
                   'rcntl: n_seed    = ', n_seed
         END IF !myid==0
@@ -1455,7 +1454,7 @@ DO
 !--------------------------------------------------------------------
 
 
-! truth_model       = turn on comparisons of the current tree with the 
+! truth_model       = turn on comparisons of the current tree with the
 !                     truth model tree and print results
 
 
@@ -1478,7 +1477,7 @@ DO
 !--------------------------------------------------------------------
 
 
-! gp_para_lmdif   = turn on call to GP_para_lmdif_process 
+! gp_para_lmdif   = turn on call to GP_para_lmdif_process
 !                   set first GP generation to call GP_para_lmdif_process
 !                   set modulus for GP generations  to call GP_para_lmdif_process
 
@@ -1518,7 +1517,7 @@ DO
             Aline(1:len('replace_larger_SSE_only')) == "replace_larger_SSE_only" .or.     &
             Aline(1:len('replace_larger_SSE_only')) == "replace_larger_sse_only"     ) THEN
 
-        
+
         L_replace_larger_SSE_only = .true.
 
         IF ( myid == 0 ) THEN
@@ -1539,7 +1538,7 @@ DO
             Aline(1:len('replace_larger_SSE_only')) == "replace_larger_SSE_only" .or.     &
             Aline(1:len('replace_larger_SSE_only')) == "replace_larger_sse_only"     ) THEN
 
-        
+
         L_replace_larger_SSE_only = .true.
 
         IF ( myid == 0 ) THEN
@@ -1615,7 +1614,7 @@ IF ( L_gp_para_lmdif               .and. &
 
     gp_para_lmdif_start_gen  = n_GP_generations / 2
 
-END IF ! gp_para_lmdif_start_gen  == 0 
+END IF ! gp_para_lmdif_start_gen  == 0
 
 
 
@@ -1623,10 +1622,12 @@ END IF ! gp_para_lmdif_start_gen  == 0
 
 IF ( myid == 0) THEN
 
+    WRITE (GP_print_unit,'(A,1x,I6)') 'rcntl: n_code_equations = ', &
+                                              n_code_equations
     WRITE (GP_print_unit,'(A,1x,F10.4)') 'rcntl: GA_Crossover_Probability   = ', &
-                                                GA_Crossover_Probability
+                                                 GA_Crossover_Probability
     WRITE (GP_print_unit,'(A,1x,F10.4)') 'rcntl: GA_Mutation_Probability    = ', &
-                                                GA_Mutation_Probability
+                                                 GA_Mutation_Probability
     WRITE (GP_print_unit,'(A,1x,F10.4)') 'rcntl: GA_rand_recruit_Probability = ', &
                                                 GA_rand_recruit_Probability
     WRITE (GP_print_unit,'(A,1x,F10.4)') 'rcntl: GA_save_elites_Probability = ', &
@@ -1756,7 +1757,7 @@ IF ( myid == 0) THEN
                                                L_truth_model
 
     WRITE (GP_print_unit,'(A,4x,L1 )') 'rcntl: L_replace_larger_SSE_only =', &
-                                               L_replace_larger_SSE_only 
+                                               L_replace_larger_SSE_only
 
     WRITE (GP_print_unit,'(A,4x,L1 )') 'rcntl: L_gp_para_lmdif =', &
                                                L_gp_para_lmdif
