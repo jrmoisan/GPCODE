@@ -237,7 +237,8 @@ END IF ! myid == 0
 
 IF ( myid == 0 ) THEN    ! 20131209
 
-    IF (  index( model, 'data' ) > 0 ) then
+    IF (  index( model, 'data' ) > 0 .or.   &
+          index( model, 'DATA' ) > 0        ) then
 
         WRITE (6, '(/A,2(1x,I6))') 'set1: n_input_data_points ', n_input_data_points
 
@@ -271,7 +272,8 @@ END IF ! myid == 0
 
 ! set message length if data processing option is on
 
-IF (  index( model, 'data' ) > 0 ) then
+IF (  index( model, 'data' ) > 0 .or.   &
+      index( model, 'DATA' ) > 0 ) then
     message_len = ( n_input_data_points + 1 ) * n_CODE_equations
 ELSE
     message_len = ( n_time_steps + 1 ) * n_CODE_equations
@@ -280,6 +282,7 @@ END IF ! n_input_vars == 0
 
 CALL MPI_BCAST( Numerical_CODE_Solution, message_len,    &
                 MPI_DOUBLE_PRECISION, 0, MPI_COMM_WORLD, ierr )
+
 
 Data_Array=Numerical_CODE_Solution        ! Matrix Operation
 
