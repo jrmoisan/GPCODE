@@ -77,7 +77,9 @@ IF ( myid == 0 ) THEN
                    dt, sse_min_time, sse_max_time, sse_low_wt
 END IF ! myid == 0 
 
-IF ( n_code_equations > 1 ) THEN
+!IF ( n_code_equations > 1 ) THEN
+IF ( index( model, 'data' ) == 0  .and. &
+     index( model, 'DATA' ) == 0        ) then 
 
     ! not the data processing code
 

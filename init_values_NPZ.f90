@@ -92,24 +92,24 @@ INTEGER (KIND=i4b) :: i
 IF (  icall  == 0  ) THEN
 
 
-    n_CODE_equations=3
-
-    n_trees=((n_CODE_equations+1)**2)-(n_CODE_equations+1)
-
-    n_nodes =  pow2_table( n_levels ) !  n_nodes = INT (2**n_levels)-1
-
-
-    n_maximum_number_parameters = n_CODE_equations * n_nodes    
-
-    IF ( myid == 0 ) THEN
-        WRITE (GP_print_unit,'(A,1x,I6)') 'ivNPZ: n_levels           ', n_levels
-        WRITE (GP_print_unit,'(A,1x,I6)') 'ivNPZ: n_functions        ', n_functions
-        WRITE (GP_print_unit,'(A,1x,I6)') 'ivNPZ: n_CODE_equations   ', n_CODE_equations
-        WRITE (GP_print_unit,'(A,1x,I6)') 'ivNPZ: n_trees            ', n_trees
-        WRITE (GP_print_unit,'(A,1x,I6)') 'ivNPZ: n_nodes            ', n_nodes
-        WRITE (GP_print_unit,'(/A,1x,I6/)') 'ivNPZ: n_maximum_number_parameters ', &
-                                                    n_maximum_number_parameters
-    END IF ! myid == 0
+!    n_CODE_equations=3
+!
+!    n_trees=((n_CODE_equations+1)**2)-(n_CODE_equations+1)
+!
+!    n_nodes =  pow2_table( n_levels ) !  n_nodes = INT (2**n_levels)-1
+!
+!
+!    n_maximum_number_parameters = n_CODE_equations * n_nodes    
+!
+!    IF ( myid == 0 ) THEN
+!        WRITE (GP_print_unit,'(A,1x,I6)') 'ivNPZ: n_levels           ', n_levels
+!        WRITE (GP_print_unit,'(A,1x,I6)') 'ivNPZ: n_functions        ', n_functions
+!        WRITE (GP_print_unit,'(A,1x,I6)') 'ivNPZ: n_CODE_equations   ', n_CODE_equations
+!        WRITE (GP_print_unit,'(A,1x,I6)') 'ivNPZ: n_trees            ', n_trees
+!        WRITE (GP_print_unit,'(A,1x,I6)') 'ivNPZ: n_nodes            ', n_nodes
+!        WRITE (GP_print_unit,'(/A,1x,I6/)') 'ivNPZ: n_maximum_number_parameters ', &
+!                                                    n_maximum_number_parameters
+!    END IF ! myid == 0
 
 
 

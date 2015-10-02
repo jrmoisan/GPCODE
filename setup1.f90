@@ -237,16 +237,7 @@ END IF ! myid == 0
 
 IF ( myid == 0 ) THEN    ! 20131209
 
-    IF ( n_input_vars == 0 ) THEN
-
-        WRITE (GP_print_unit,'(/A/)') &
-              'set1: time_step   Numerical_Code_Solution(time_step,1:n_CODE_equations)'
-        DO  i = 0, n_time_steps
-            WRITE (GP_print_unit,'(I6,2x,10(1x,E14.7))') &
-                  i, (Numerical_Code_Solution(i,jj), jj = 1,n_CODE_equations )
-        END DO ! i
-
-    ELSE
+    IF (  index( model, 'data' ) > 0 ) then
 
         WRITE (6, '(/A,2(1x,I6))') 'set1: n_input_data_points ', n_input_data_points
 
@@ -257,8 +248,17 @@ IF ( myid == 0 ) THEN    ! 20131209
                   i, (Numerical_CODE_Solution(i,jj), jj = 1,n_CODE_equations )
         END DO ! i
 
+     else 
 
-    END IF ! n_input_vars == 0
+        WRITE (GP_print_unit,'(/A/)') &
+              'set1: time_step   Numerical_Code_Solution(time_step,1:n_CODE_equations)'
+        DO  i = 0, n_time_steps
+            WRITE (GP_print_unit,'(I6,2x,10(1x,E14.7))') &
+                  i, (Numerical_Code_Solution(i,jj), jj = 1,n_CODE_equations )
+        END DO ! i
+
+
+    END IF ! index( model, 'data' ) > 0
 
 
 END IF ! myid == 0
@@ -271,10 +271,10 @@ END IF ! myid == 0
 
 ! set message length if data processing option is on
 
-IF ( n_input_vars == 0 ) THEN
-    message_len = ( n_time_steps + 1 ) * n_CODE_equations
-ELSE
+IF (  index( model, 'data' ) > 0 ) then
     message_len = ( n_input_data_points + 1 ) * n_CODE_equations
+ELSE
+    message_len = ( n_time_steps + 1 ) * n_CODE_equations
 END IF ! n_input_vars == 0
 
 
@@ -320,10 +320,10 @@ END IF ! myid == 0
 
 
 
-IF ( n_input_vars == 0 ) THEN
-    message_len = ( n_time_steps + 1 ) * n_CODE_equations
-ELSE
+IF (  index( model, 'data' ) > 0 ) then
     message_len = ( n_input_data_points + 1 ) * n_CODE_equations
+ELSE
+    message_len = ( n_time_steps + 1 ) * n_CODE_equations
 END IF ! n_input_vars == 0
 
 

@@ -148,6 +148,7 @@ random_scale_fraction =  0.6d0
 selected_functions = 0
 n_functions_input =  0
 
+n_code_equations = 0
 
 n_Node_Functions = 0
 L_node_functions = .FALSE.
@@ -457,6 +458,23 @@ DO
         END IF !myid==0
 
 
+
+
+!--------------------------------------------------------------------
+
+!n_code_equations  - tell the data input reader how many equations to read
+
+
+
+    ELSE IF ( Aline(1:len('n_code_equations')) == "n_code_equations" .or.     &
+              Aline(1:len('n_code_equations')) == "n_code_equations" ) THEN
+
+        READ(Aline(len('n_code_equations')+1:), * ) n_code_equations
+
+        IF ( myid == 0 ) THEN
+            WRITE (GP_print_unit,'(A,1x,I6)') 'rcntl: n_code_equations = ', &
+                                                      n_code_equations
+        END IF !myid==0
 
 !--------------------------------------------------------------------
 
@@ -1268,7 +1286,7 @@ DO
 
 
     ELSE IF ( Aline(1:len('n_input_vars')) == "N_INPUT_VARS" .or.     &
-            Aline(1:len('n_input_vars')) == "n_input_vars" ) THEN
+              Aline(1:len('n_input_vars')) == "n_input_vars" ) THEN
 
         READ(Aline(len('n_input_vars')+1:), * )  n_input_vars
 
@@ -1277,6 +1295,7 @@ DO
                   'rcntl: n_input_vars = ', n_input_vars
         END IF !myid==0
 
+        n_code_equations  = n_input_vars
 
 !--------------------------------------------------------------------
 
