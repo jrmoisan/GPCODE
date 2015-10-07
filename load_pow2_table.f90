@@ -37,7 +37,7 @@ INTEGER (KIND=i4b) ::  i_level
 
 !---------------------------------------------------------------------------
 
-do  i_level = 0, max_level
+DO  i_level = 0, max_level
 
     pow2_table( i_level ) =  2**(i_level) - 1
 

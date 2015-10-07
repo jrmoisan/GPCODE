@@ -71,7 +71,6 @@ END IF ! myid == 0
 
 IF ( TRIM (model) == "fasham_CDOM") THEN
 
-
     ALLOCATE (aCDOM,source=newFasham_CDOM())
 
     CALL aCDOM%init()
@@ -87,16 +86,13 @@ END IF
 
 IF ( TRIM (model) == "fasham_CDOM_GP") THEN
 
-
     ALLOCATE (aCDOM,source=newFasham_CDOM_GP())
-
 
     CALL aCDOM%init()
 
     CALL aCDOM%setTruth()
 
     !call cdom%setModel()
-
 
     RETURN
 
@@ -184,7 +180,6 @@ GP_minSSE_Individual_SSE = 1.0d99
 ! fill the model arrays
 
 ! sets:
-!      Runge_Kutta_Initial_Conditions
 !      GP_Individual_Node_Type
 !      GP_Individual_Node_Parameters
 !      tree_evaluation
@@ -351,7 +346,7 @@ END IF !  INDEX ( model,'log10') > 0 ...
 ! Data_Variance_inv
 
 
-IF ( myid == 0 ) THEN    ! 20131209
+IF ( myid == 0 ) THEN
     CALL comp_data_variance( )
 END IF ! myid == 0
 
@@ -369,7 +364,7 @@ answer = 0.0d0 ! set all to zero
 
 n_parameters = 0
 
-do  i_CODE_equation=1,n_CODE_equations
+DO  i_CODE_equation=1,n_CODE_equations
     n_parameters=n_parameters+1
     answer(n_parameters)=Numerical_CODE_Initial_Conditions(i_CODE_equation)
 END DO ! i_CODE_equation
@@ -379,7 +374,7 @@ END DO ! i_CODE_equation
 
 ! calculate how many parameters total to fit for the specific individual CODE
 
-do  i_tree=1,n_trees
+DO  i_tree=1,n_trees
     DO  i_node=1,n_nodes
 
         IF ( GP_individual_node_type(i_node,i_tree) .eq. 0) THEN

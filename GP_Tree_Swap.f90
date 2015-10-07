@@ -98,7 +98,7 @@ MALE_CROSS = .true.
 
 i_Node_Count = 0
 
-do  i_Node = 1,n_Nodes
+DO  i_Node = 1,n_Nodes
     IF ( Parent_Tree_Swap_Node_Type(i_Node,1) .ne. -9999) THEN
         i_Node_Count = i_Node_Count+1
     END IF ! Parent_Tree_Swap_Node_Type(i_Node,1) .ne. -9999
@@ -114,7 +114,7 @@ END IF
 FEMALE_CROSS = .true.
 
 i_Node_Count = 0
-do  i_Node = 1,n_Nodes
+DO  i_Node = 1,n_Nodes
     IF ( Parent_Tree_Swap_Node_Type(i_Node,2) .ne. -9999) THEN
         i_Node_Count = i_Node_Count+1
     END IF ! Parent_Tree_Swap_Node_Type(i_Node,2) .ne. -9999

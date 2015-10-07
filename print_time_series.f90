@@ -520,7 +520,7 @@ END IF ! myid == 0
 
 !--------------------------------------------------------------------------------
 
-do  i = 1, n_trees
+DO  i = 1, n_trees
     IF ( ASSOCIATED ( GP_Trees(i,1)%n ) ) THEN
         CALL GP_Trees(i,1)%n%delete()
         DEALLOCATE ( GP_Trees(i,1)%n )

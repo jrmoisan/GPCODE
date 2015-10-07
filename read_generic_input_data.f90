@@ -141,12 +141,12 @@ IF ( myid == 0 ) THEN
 
     WRITE (GP_print_unit,'(/A,1x,I6)')   'rgid: n_CODE_equations  ', n_CODE_equations
 
-    do  i = 1, n_code_equations
+    DO  i = 1, n_code_equations
         WRITE (GP_print_unit,'(A,1x,E15.7)') 'rgid: input_data_array(i,1)', &
                                                     input_data_array(i,1)
         !!WRITE (GP_print_unit,'(A,1x,E15.7/)')'rgid: Numerical_CODE_Initial_Conditions(i)', &
         !!                                            Numerical_CODE_Initial_Conditions(i)
-    enddo ! i
+    END DO ! i
 
 END IF ! myid == 0
 

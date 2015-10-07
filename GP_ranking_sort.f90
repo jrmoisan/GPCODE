@@ -82,7 +82,7 @@ GP_Population_Initial_Conditions_temp(1:n_CODE_equations, 1:n_GP_individuals ) =
 
 ! Set up a simple 'index' array
 
-do  i_GP_Individual=1,n_GP_Individuals
+DO  i_GP_Individual=1,n_GP_Individuals
     Ranked_Fitness_Index(i_GP_Individual)=i_GP_Individual
 END DO
 
@@ -92,12 +92,12 @@ END DO
 ! Now, rank the Individual SSE so that
 ! the Individual with the lowest (highest) SSE is First (Last)
 
-do  i_GP_Individual=1,n_GP_Individuals
+DO  i_GP_Individual=1,n_GP_Individuals
 
     DO  j_GP_Individual=1,n_GP_Individuals-1
 
         IF ( GP_Child_Population_SSE(j_GP_Individual+1) .lt. &
-              GP_Child_Population_SSE(j_GP_Individual)) THEN
+             GP_Child_Population_SSE(j_GP_Individual)      ) THEN
 
             !     Swap the two ranked fitness and index array values around
 
@@ -127,7 +127,7 @@ END DO  ! i_GP_Individual
 
 ! reset the best individual index after sorting
 
-do  i_GP_Individual=1,n_GP_Individuals
+DO  i_GP_Individual=1,n_GP_Individuals
 
     IF ( i_GP_best_parent == Ranked_Fitness_Index(i_GP_Individual) ) THEN
 
@@ -144,7 +144,7 @@ i_GP_best_parent =  new_GP_best_parent ! should be 1?
 !-------------------------------------------------------------------------------
 
 
-do  jj = 1, n_GP_Individuals   ! 20131209
+DO  jj = 1, n_GP_Individuals   ! 20131209
     GP_Adult_Population_SSE(jj) = GP_Child_Population_SSE(jj)
 END DO
 
@@ -164,7 +164,7 @@ IF ( INDEX ( model, 'log10') > 0     ) THEN
     
     DO  i_GP_individual = 1, n_GP_individuals
     
-            GP_Child_Individual_SSE_nolog10_temp(i_GP_individual ) = &
+        GP_Child_Individual_SSE_nolog10_temp(i_GP_individual ) = &
                  GP_Child_Individual_SSE_nolog10(  &
                                  Ranked_Fitness_Index(i_GP_individual) )
     
@@ -173,7 +173,7 @@ IF ( INDEX ( model, 'log10') > 0     ) THEN
     
     DO  i_GP_individual = 1, n_GP_individuals
     
-            GP_Child_Individual_SSE_nolog10(i_GP_individual ) = &
+        GP_Child_Individual_SSE_nolog10(i_GP_individual ) = &
               GP_Child_Individual_SSE_nolog10_temp(i_GP_individual )
     
     END DO ! i_GP_individual
@@ -186,7 +186,7 @@ END IF ! INDEX ( model, 'log10') > 0 .or. ...
 ! to allow the Elite codes to propagate along in the next generations
 
 
-do  i_GP_individual = 1, n_GP_individuals          ! 20131209
+DO  i_GP_individual = 1, n_GP_individuals          ! 20131209
     DO  i_tree = 1, n_trees
         DO  i_node = 1, n_nodes
             GP_Adult_Population_Node_Type(i_Node,i_Tree,  i_GP_Individual) = &
@@ -198,7 +198,7 @@ do  i_GP_individual = 1, n_GP_individuals          ! 20131209
 END DO ! i_GP_individual
 
 
-do  i_GP_individual = 1, n_GP_individuals          ! 20131209
+DO  i_GP_individual = 1, n_GP_individuals          ! 20131209
     DO  i_tree = 1, n_trees
         DO  i_node = 1, n_nodes
             GP_Child_Population_Node_Type(i_Node,i_Tree, i_GP_Individual) =  &
@@ -215,7 +215,7 @@ END DO ! i_GP_individual
 ! sort the GP_population_initial_conditions
 
 
-do  i_GP_individual = 1, n_GP_individuals
+DO  i_GP_individual = 1, n_GP_individuals
 
     DO  jj = 1, n_CODE_Equations
         GP_Population_Initial_Conditions_temp(jj, i_GP_individual ) = &
@@ -226,7 +226,7 @@ do  i_GP_individual = 1, n_GP_individuals
 END DO ! i_GP_individual
 
 
-do  i_GP_individual = 1, n_GP_individuals
+DO  i_GP_individual = 1, n_GP_individuals
 
     DO  jj = 1, n_CODE_Equations
         GP_Population_Initial_Conditions(jj, i_GP_individual ) = &
@@ -243,7 +243,7 @@ END DO ! i_GP_individual
 ! sort the GP_population_node_parameters
 
 
-do  i_GP_individual = 1, n_GP_individuals
+DO  i_GP_individual = 1, n_GP_individuals
     DO  i_tree = 1, n_trees
         DO  i_node = 1, n_nodes
             GP_population_node_parameters_temp(i_Node,i_Tree, i_GP_individual ) = &
@@ -255,7 +255,7 @@ do  i_GP_individual = 1, n_GP_individuals
 END DO ! i_GP_individual
 
 
-do  i_GP_individual = 1, n_GP_individuals
+DO  i_GP_individual = 1, n_GP_individuals
     DO  i_tree = 1, n_trees
         DO  i_node = 1, n_nodes
             GP_population_node_parameters(i_Node,i_Tree, i_GP_Individual) = &
@@ -272,7 +272,7 @@ END DO ! i_GP_individual
 
 cff=0.0d0
 
-do  i_GP_Individual=1,n_GP_Individuals
+DO  i_GP_Individual=1,n_GP_Individuals
     IF ( GP_Child_Population_SSE(i_GP_Individual) < big_real ) THEN
         cff=cff+GP_Child_Population_SSE(i_GP_Individual)
     END IF
@@ -289,7 +289,7 @@ END DO
 
 GP_Population_Ranked_Fitness = 0.0D0
 
-do  i_GP_Individual=1,n_GP_Individuals
+DO  i_GP_Individual=1,n_GP_Individuals
 
 
     IF ( cff > 0.0D0 .and. &
@@ -319,7 +319,7 @@ GP_Integrated_Population_Ranked_Fitness = 0.0D0
 
 cff=0.0d0
 
-do  i_GP_Individual=1,n_GP_Individuals
+DO  i_GP_Individual=1,n_GP_Individuals
     cff = cff + GP_Population_Ranked_Fitness(i_GP_individual)
     GP_Integrated_Population_Ranked_Fitness(i_GP_Individual) = cff
 END DO ! i_GP_Individual

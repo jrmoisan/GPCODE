@@ -116,7 +116,7 @@ CALL MPI_COMM_SIZE(MPI_COMM_WORLD, numprocs, ierr)
 IF ( myid == 0 ) THEN
 
 
-    WRITE (6,'(/A)') '0: version 16_new_data  '
+    WRITE (6,'(/A)') '0: version 16_new_data  -- new data input option '
     WRITE (6,'(A)')  '0: new compiler options  -assume realloc_lhs -mkl -heap-arrays '
 
     !------------------------------------------------------
@@ -162,6 +162,13 @@ CALL read_cntl_vars( ierror  )
 !flush(6)
 
 !----------------------------------------------------
+
+! for the data input option, the control input MUST include a line
+! with keyword "n_code_equations" and the value of the n_code_equations 
+! appropriate for the input data set
+
+! if no such keyword is found, n_code_equations = 0, and the data input 
+! option cannot run correctly
 
 IF ( n_code_equations < 1 ) THEN
 
@@ -251,8 +258,8 @@ endif !   index( model, 'data' ) > 0 )then
 
 !----------------------------------------------------
 
-ALLOCATE(seed(n_seed))
-ALLOCATE(current_seed(n_seed))
+ALLOCATE ( seed(n_seed) )
+ALLOCATE ( current_seed(n_seed) )
 
 IF ( user_input_random_seed > 0 ) THEN
    clock = user_input_random_seed
@@ -343,7 +350,7 @@ IF ( myid == 0 ) THEN
 
     IF ( L_GP_all_summary .and. GP_all_summary_flag > 1 ) THEN
 
-        inquire( GP_summary_output_unit_all, opened = op )
+        INQUIRE ( GP_summary_output_unit_all, opened = op )
         IF ( op ) CLOSE ( GP_summary_output_unit_all )
 
         OPEN ( GP_summary_output_unit_all, file='GP_ALL_summary_file', &
@@ -360,8 +367,8 @@ IF ( myid == 0 ) THEN
     WRITE (6,'(/A,1x,I5)')     '0: start generation loop  myid = ', myid
 END IF ! myid == 0
 
-   generation_loop:&
-   DO  i_GP_Generation= 1, n_GP_Generations
+generation_loop:&
+DO  i_GP_Generation= 1, n_GP_Generations
 
     IF ( myid == 0 ) THEN
 
@@ -378,7 +385,7 @@ END IF ! myid == 0
 
         IF ( L_GP_all_summary ) THEN
 
-            inquire( GP_summary_output_unit_lgen, opened = op )
+            INQUIRE ( GP_summary_output_unit_lgen, opened = op )
             IF ( op ) CLOSE ( GP_summary_output_unit_lgen )
 
 
@@ -433,6 +440,7 @@ END IF ! myid == 0
          Run_GP_Calculate_Fitness= .false.
     END IF !  TRIM (model) == 'fasham_fixed_tree'
 
+
     ! randomly create the initial tree arrays for each individual and
     ! send them all to GA_lmdif for parameter optimization on generation 1
 
@@ -451,7 +459,7 @@ END IF ! myid == 0
 
 
     IF ( TRIM (model) /= 'fasham_fixed_tree' .and. &
-        TRIM (model) /= 'fasham_CDOM'              ) THEN
+         TRIM (model) /= 'fasham_CDOM'              ) THEN
         IF ( myid == 0 ) THEN
 
             CALL GP_Clean_Tree_Nodes
@@ -589,9 +597,9 @@ END IF ! myid == 0
 
     IF ( myid == 0 ) THEN
 
-        IF ( i_GP_generation == 1                                  .or. &
-            MOD ( i_GP_generation, GP_child_print_interval ) == 0  .or. &
-            i_GP_generation == n_GP_generations                          ) THEN
+        IF ( i_GP_generation == 1                                   .or. &
+             MOD ( i_GP_generation, GP_child_print_interval ) == 0  .or. &
+             i_GP_generation == n_GP_generations                          ) THEN
 
             WRITE (GP_print_unit,'(/A)') &
             '================================================================================='
@@ -653,9 +661,9 @@ END IF ! myid == 0
 
         !-----------------------------------------------------------------------
 
-        IF ( i_GP_generation == 1                                  .or. &
-            MOD ( i_GP_generation, GP_child_print_interval ) == 0  .or. &
-            i_GP_generation == n_GP_generations                          ) THEN
+        IF ( i_GP_generation == 1                                   .or. &
+             MOD ( i_GP_generation, GP_child_print_interval ) == 0  .or. &
+             i_GP_generation == n_GP_generations                          ) THEN
 
             WRITE (GP_print_unit,'(A)')&
             '0:################################################################'
@@ -749,7 +757,7 @@ END IF ! myid == 0
 
         IF ( L_GP_all_summary ) THEN
 
-            inquire( GP_summary_output_unit_lgen, opened = op )
+            INQUIRE ( GP_summary_output_unit_lgen, opened = op )
 
             IF ( op ) CLOSE ( GP_summary_output_unit_lgen )
 
@@ -850,10 +858,10 @@ IF ( myid == 0 ) THEN
 
     IF ( L_GP_all_summary ) THEN
 
-        inquire( GP_summary_output_unit_all, opened = op )
+        INQUIRE ( GP_summary_output_unit_all, opened = op )
         IF ( op ) CLOSE ( GP_summary_output_unit_all )
 
-        inquire( GP_summary_output_unit_lgen, opened = op )
+        INQUIRE ( GP_summary_output_unit_lgen, opened = op )
         IF ( op ) CLOSE ( GP_summary_output_unit_lgen )
 
     END IF ! L_GP_all_summary

@@ -72,7 +72,7 @@ SSE0_nolog10 = 0.0D+0
 fvec = 0.0d0
 sse_wt = 1.0d0
 
-do  i_time_step = 1, n_time_steps
+DO  i_time_step = 1, n_time_steps
 
 
     fvec(i_time_step)=0.0d0

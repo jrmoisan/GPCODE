@@ -369,7 +369,7 @@ INTEGER (KIND=i4b) :: n_procs
                 individual_SSE_nolog10(i_individual) =   buffer_recv( n_GP_parameters+3)
 
                 IF ( individual_quality(i_individual) < 0 .or.  &                      
-                    individual_SSE(i_individual) < 1.0D-20         ) THEN               
+                     individual_SSE(i_individual) < 1.0D-20         ) THEN               
 
                     individual_SSE(i_individual) = big_real                              
                     individual_SSE_nolog10(i_individual) =   big_real

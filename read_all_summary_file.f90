@@ -132,9 +132,9 @@ DO
     END IF ! myid == 0
 
     IF ( in_n_code_equations == n_code_equations  .and.  &
-        in_n_trees          == n_trees           .and.  &
-        in_n_nodes          == n_nodes           .and.  &
-        in_n_levels         == n_levels                   ) THEN
+         in_n_trees          == n_trees           .and.  &
+         in_n_nodes          == n_nodes           .and.  &
+         in_n_levels         == n_levels                   ) THEN
 
         CONTINUE
     ELSE

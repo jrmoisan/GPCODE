@@ -88,13 +88,13 @@ LOGICAL,PARAMETER :: L_GP_print = .TRUE.
 
 Numerical_CODE_Solution = 0.0d0
 
-do  i_CODE_equation=1,n_CODE_equations
+DO  i_CODE_equation=1,n_CODE_equations
 
     Numerical_CODE_Solution(0,i_CODE_equation) = DABS ( x(i_CODE_equation) )
 
 
     IF ( ISNAN ( Numerical_CODE_Solution(0,i_CODE_equation) ) .or. &
-        ABS ( Numerical_CODE_Solution(0,i_CODE_equation) )  > big_real  ) THEN
+           ABS ( Numerical_CODE_Solution(0,i_CODE_equation) )  > big_real  ) THEN
 
         L_bad_result = .TRUE.
         iflag = -1
@@ -110,7 +110,7 @@ i_parameter = n_CODE_equations
 
 
 tree_loop:&
-do  i_tree=1,n_trees
+DO  i_tree=1,n_trees
     DO  i_node=1,n_nodes
 
 
@@ -131,7 +131,7 @@ do  i_tree=1,n_trees
   
   
             IF ( ISNAN ( GP_Individual_Node_Parameters(i_node,i_tree) )  .or. &
-                  ABS ( GP_Individual_Node_Parameters(i_node,i_tree) ) > big_real  ) THEN
+                   ABS ( GP_Individual_Node_Parameters(i_node,i_tree) ) > big_real  ) THEN
   
                 L_bad_result = .TRUE.
                 iflag = -1
@@ -217,7 +217,7 @@ END IF ! L_bad_result
 ! if max of function is zero for any function, flag this as a bad
 ! result and exit 
 
-do  i_CODE_equation=1,n_CODE_equations
+DO  i_CODE_equation=1,n_CODE_equations
 
     !min_x = 0.0d0
     max_x = 0.0d0
@@ -256,7 +256,7 @@ sse_local_nolog10 = 0.0D0  ! 20131209
 sse_wt = 1.0d0
 fvec = 0.0D0
 
-do  i_time_step=1,n_time_steps
+DO  i_time_step=1,n_time_steps
 
     fvec(i_time_step)=0.0D0
 
@@ -341,7 +341,7 @@ END IF!  INDEX ( model,'LOG10') > 0 ...
 
 !---------------------------------------------------------------------------------
 
-do  i = 1, n_trees
+DO  i = 1, n_trees
 
     IF ( ASSOCIATED ( GP_Trees(i,1)%n )  ) THEN
         CALL GP_Trees(i,1)%n%delete()

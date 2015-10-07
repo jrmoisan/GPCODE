@@ -120,7 +120,7 @@ L_STOP_run = .FALSE.
 
 
 
-do  i_parameter=1,n_parameters
+DO  i_parameter=1,n_parameters
     DO  i_GA_individual=1,n_GA_individuals
 
         parent_parameters(i_parameter,i_GA_individual) = &
@@ -153,7 +153,7 @@ edit_level = REAL (n_time_steps,KIND=r8b) * max_err2
 ! edit the individual_SSE by removing values > edit_level
 ! also remove values with sse >= sse0 since these functions are not good either
 
-do  i_GA_individual=1,n_GA_individuals  ! calculate the total populations SSE
+DO  i_GA_individual=1,n_GA_individuals  ! calculate the total populations SSE
 
     IF ( individual_SSE(i_GA_individual) <= 1.0d-20 ) THEN
         individual_quality( i_GA_individual ) = -1
@@ -184,7 +184,7 @@ END DO ! i_GA_individual
 ! calculate the individual fitness
 
 
-do  i_GA_individual=1,n_GA_individuals
+DO  i_GA_individual=1,n_GA_individuals
 
     IF ( individual_quality( i_GA_individual ) > 0 ) THEN
 
@@ -215,7 +215,7 @@ index_min_sse = 0
 sum_individual_SSE = 0.0D0
 
 
-do  i_GA_individual=1,n_GA_individuals
+DO  i_GA_individual=1,n_GA_individuals
 
     IF ( individual_quality( i_GA_individual ) > 0 ) THEN
 
@@ -271,7 +271,7 @@ sigma_fitness = 0.0d0
 var_fitness = 0.0d0
 icount = 0
 
-do  i_GA_individual=1,n_GA_individuals
+DO  i_GA_individual=1,n_GA_individuals
 
 
     IF ( individual_quality( i_GA_individual ) > 0 ) THEN
@@ -305,7 +305,7 @@ END IF
 
 
 dble_cff=0.0D+0
-do  i_GA_individual=1,n_GA_individuals  ! calculate the sum of the rankings
+DO  i_GA_individual=1,n_GA_individuals  ! calculate the sum of the rankings
 
 
     dble_cff = dble_cff + individual_ranked_fitness(i_GA_individual)
@@ -321,7 +321,7 @@ END DO ! i_GA_individual
 ! the ranking integration ranges from [0. to 1.]
 
 
-do  i_GA_individual=1,n_GA_individuals
+DO  i_GA_individual=1,n_GA_individuals
 
     IF ( ABS ( integrated_ranked_fitness(n_GA_individuals) ) > 1.0D-20 ) THEN
 
@@ -366,7 +366,7 @@ IF ( new_rank == 0 ) THEN
     IF ( L_fort333_output  ) THEN
 
 
-        inquire( unit = GA_333_unit, opened = op )
+        INQUIRE ( unit = GA_333_unit, opened = op )
 
 
         IF ( .not. op ) THEN
@@ -398,7 +398,7 @@ i_GA_Best_Parent=1
 
 dble_cff=individual_ranked_fitness(1)
 
-do  i_GA_individual=2,n_GA_individuals
+DO  i_GA_individual=2,n_GA_individuals
 
     IF ( individual_ranked_fitness(i_GA_individual) .gt. dble_cff) THEN
 

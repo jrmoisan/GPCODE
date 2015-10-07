@@ -78,7 +78,7 @@ ierror = 0
 
 ! open the control input file
 
-inquire( unit = cntl_unitnum, opened = L_op_cntl )
+INQUIRE ( unit = cntl_unitnum, opened = L_op_cntl )
 
 IF ( .not. L_op_cntl ) THEN
     OPEN ( unit = cntl_unitnum, file = 'GPGA_cntl_vars.in', &
@@ -132,7 +132,6 @@ IF ( myid == 0 ) THEN
 
 END IF !myid==0
 
-flush( GP_print_unit )
 
 
 !---------------------------------------------------------------------
@@ -1629,38 +1628,38 @@ IF ( myid == 0) THEN
     WRITE (GP_print_unit,'(A,1x,F10.4)') 'rcntl: GA_Mutation_Probability    = ', &
                                                  GA_Mutation_Probability
     WRITE (GP_print_unit,'(A,1x,F10.4)') 'rcntl: GA_rand_recruit_Probability = ', &
-                                                GA_rand_recruit_Probability
+                                                 GA_rand_recruit_Probability
     WRITE (GP_print_unit,'(A,1x,F10.4)') 'rcntl: GA_save_elites_Probability = ', &
-                                                GA_save_elites_Probability
+                                                 GA_save_elites_Probability
     WRITE (GP_print_unit,'(A,1x,F10.4)') 'rcntl: GP_Tree_Probability = ', &
-                                                GP_Tree_Probability
+                                                 GP_Tree_Probability
     WRITE (GP_print_unit,'(A,1x,F10.4)') 'rcntl: GP_Elitist_Probability = ', &
-                                                GP_Elitist_Probability
+                                                 GP_Elitist_Probability
     WRITE (GP_print_unit,'(A,1x,F10.4)') &
                'rcntl: GP_Asexual_Reproduction_Probability = ', &
                        GP_Asexual_Reproduction_Probability
     WRITE (GP_print_unit,'(A,1x,F10.4)') 'rcntl: GP_Crossover_Probability = ', &
-                                                GP_Crossover_Probability
+                                                 GP_Crossover_Probability
     WRITE (GP_print_unit,'(A,1x,F10.4)') 'rcntl: GP_Mutation_Probability = ', &
-                                                GP_Mutation_Probability
+                                                 GP_Mutation_Probability
     WRITE (GP_print_unit,'(A,1x,F10.4)') 'rcntl: GP_rand_recruit_Probability = ', &
-                                                GP_rand_recruit_Probability
+                                                 GP_rand_recruit_Probability
     WRITE (GP_print_unit,'(A,1x,I6)') 'rcntl: n_GA_Generations = ', &
-                                             n_GA_Generations
+                                              n_GA_Generations
     WRITE (GP_print_unit,'(A,1x,I6)') 'rcntl: n_GA_Individuals = ', &
-                                             n_GA_Individuals
+                                              n_GA_Individuals
     WRITE (GP_print_unit,'(A,1x,I6)') 'rcntl: n_time_steps     = ', &
-                                             n_time_steps
+                                              n_time_steps
     WRITE (GP_print_unit,'(A,1x,F10.4)') 'rcntl: dt (minutes) = ', dt_min
     WRITE (6,'(/A,2(1x,E15.7))') 'rcntl: dt, Delta_Time_in_Days ',  &
-                                        dt, Delta_Time_in_Days
+                                         dt, Delta_Time_in_Days
     WRITE (GP_print_unit,'(A,1x,F10.4)') 'rcntl: dt (days)    = ', dt
     WRITE (6,'(/A,1x,E15.7)') 'rcntl: sse_low_wt',  &
-                                     sse_low_wt
+                                      sse_low_wt
     WRITE (6,'(/A,1x,E15.7)') 'rcntl: sse_min_time',  &
-                                     sse_min_time
+                                      sse_min_time
     WRITE (6,'(/A,1x,E15.7)') 'rcntl: sse_max_time',  &
-                                     sse_max_time
+                                      sse_max_time
     WRITE (GP_print_unit,'(A,1x,A)') 'rcntl: model = ', TRIM ( model )
     WRITE (GP_print_unit,'(A,1x,I6)') 'rcntl: n_gp_individuals = ', n_gp_individuals
     WRITE (GP_print_unit,'(A,1x,I6)') 'rcntl: n_gp_generations = ', n_gp_generations
@@ -1700,7 +1699,7 @@ IF ( myid == 0) THEN
     WRITE (GP_print_unit,'(A,1x,I12)') 'rcntl: fort555_output_flag =', &
                                                fort555_output_flag
     WRITE (GP_print_unit,'(A,4x,L1 )') 'rcntl: L_fort555_output =', &
-                                              L_fort555_output
+                                               L_fort555_output
     WRITE (GP_print_unit,'(A,1x,I12)') 'rcntl: GA_log_flag =', &
                                                GA_log_flag
     WRITE (GP_print_unit,'(A,4x,L1 )') 'rcntl: L_GA_log =', &

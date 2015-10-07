@@ -54,7 +54,7 @@ WRITE (GP_print_unit,'(/A/)') &
 
 
 
-do  i_Tree=1,n_Trees
+DO  i_Tree=1,n_Trees
 
     DO  i_Level=1,n_Levels-1
 
@@ -70,7 +70,7 @@ do  i_Tree=1,n_Trees
 
 
             IF ( .not. ( GP_Individual_Node_Type(i_Function, i_Tree) == -9999 .and. &
-                        GP_Individual_Node_Type(i_Node, i_Tree) == -9999)      ) THEN
+                         GP_Individual_Node_Type(i_Node, i_Tree)     == -9999)      ) THEN
                 WRITE (GP_print_unit,'(5(1x,I10),4x,I10)') &
                       i_Tree, i_Level, i_Function, i_Node, &
                       GP_Individual_Node_Type(i_Function, i_Tree), &

@@ -130,7 +130,7 @@ IF ( Lprint ) THEN
 END IF ! Lprint
 
 
-do  i_code_eq = 1, n_CODE_Equations
+DO  i_code_eq = 1, n_CODE_Equations
 
     IF ( Lprint ) THEN
         WRITE (GP_print_unit,'(3(1x,I10), 7x, E24.16)')&
@@ -158,7 +158,7 @@ WRITE (GP_minSSE_summary_output_unit, '(A,2(1x,I6))') '> ', GP_minSSE_generation
 
 !  write node types to summary file
 
-do  i_Tree=1,n_Trees
+DO  i_Tree=1,n_Trees
     DO  i_Node=1,n_Nodes
 
         IF ( GP_minSSE_individual_Node_Type(i_Node,i_Tree) .ne. -9999 ) THEN
@@ -213,7 +213,7 @@ END IF ! Lprint
 ! write all non-zero parameters to output file
 
 
-do  i_tree=1,n_trees
+DO  i_tree=1,n_trees
     DO  i_node=1,n_nodes
 
         IF ( GP_minSSE_individual_Node_Type(i_Node,i_Tree) == 0        ) THEN

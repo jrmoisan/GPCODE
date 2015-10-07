@@ -106,8 +106,8 @@ L_GP_print = .FALSE.
 !!L_GP_print = .TRUE. 
 
 IF ( i_GP_generation == 1 .or. &
-    MOD ( i_GP_generation, GP_child_print_interval ) == 0 .or. &
-    i_GP_generation == n_GP_generations ) THEN
+     MOD ( i_GP_generation, GP_child_print_interval ) == 0 .or. &
+     i_GP_generation == n_GP_generations ) THEN
 
     L_GP_print = .TRUE.
 
@@ -116,7 +116,7 @@ END IF ! i_GP_generation...
 i_dummy = 0
 
 
-do  jj = 1, max_n_gp_params+3
+DO  jj = 1, max_n_gp_params+3
     buffer2(jj)      = 0.0D0
     buffer2_recv(jj) = 0.0D0
 END DO ! jj
@@ -127,7 +127,7 @@ END DO ! jj
 
 ! load the population node parameters into the child parameters
 
-do  i_GP_individual = 1, n_GP_individuals
+DO  i_GP_individual = 1, n_GP_individuals
     DO  jj = 1, max_n_gp_params
         child_parameters(jj, i_GP_individual) = 0.0d0
     END DO ! jj

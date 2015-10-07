@@ -65,11 +65,11 @@ sum1     = 0.0d0
 sum2     = 0.0d0
 
 icount = 0
-do  i = 1, n_array
+DO  i = 1, n_array
 
     xi = REAL ( i, KIND=r8b) * dt
     IF ( xi >= sse_min_time .and. &
-        xi <= sse_max_time        ) THEN
+         xi <= sse_max_time        ) THEN
 
         arr = array(i) 
 
