@@ -80,9 +80,9 @@ INTEGER (KIND=i4b),ALLOCATABLE :: tmprank0(:)
 INTEGER (KIND=i4b) :: comm_world
 
 
-CHARACTER (15),PARAMETER :: program_version   = '201502.005_v16'
-CHARACTER (10),PARAMETER :: modification_date = '20150916'
-CHARACTER (50),PARAMETER :: branch  =  'master'
+CHARACTER (35),PARAMETER :: program_version   = '201503.001_v16_new_data'
+CHARACTER (10),PARAMETER :: modification_date = '20151007'
+CHARACTER (50),PARAMETER :: branch  =  'data_input'
 
 INTEGER (KIND=i4b), parameter ::  zero = 0
 
@@ -116,7 +116,7 @@ CALL MPI_COMM_SIZE(MPI_COMM_WORLD, numprocs, ierr)
 IF ( myid == 0 ) THEN
 
 
-    WRITE (6,'(/A)') '0: version 16 derived from version 15 '
+    WRITE (6,'(/A)') '0: version 16_new_data  '
     WRITE (6,'(A)')  '0: new compiler options  -assume realloc_lhs -mkl -heap-arrays '
 
     !------------------------------------------------------
@@ -162,6 +162,21 @@ CALL read_cntl_vars( ierror  )
 !flush(6)
 
 !----------------------------------------------------
+
+IF ( n_code_equations < 1 ) THEN
+
+    IF ( myid == 0 ) THEN
+          WRITE (GP_print_unit,'(//A)')        &
+                 '0: stopping because n_code_equations < 1'
+          WRITE (GP_print_unit,'(A,1x,I0//)')  &
+                 '0: n_code_equations', n_code_equations
+    END IF ! myid == 0
+
+    CALL MPI_FINALIZE(ierr)
+
+    STOP 'bad n_code_equations'
+
+END IF ! n_code_equations < 1
 
 !----------------------------------------------------
 n_inputs = n_input_vars

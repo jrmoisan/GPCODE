@@ -7,7 +7,7 @@
 !> @author Dave Coulter
 !> @date August 5, 2013 Dave Coulter
 
-!---------------------------------------------------------------------------  
+!---------------------------------------------------------------------------
 
 !---------------------------------------
 ! File:   Bacteria_Trees.f03
@@ -16,8 +16,8 @@
 ! Created on August 5, 2013, 1:44 PM
 !---------------------------------------
 !
-! DESCRIPTION: 
-!  Brief description of routine. 
+! DESCRIPTION:
+!  Brief description of routine.
 !
 ! REVISION HISTORY:
 ! TODO_dd_mmm_yyyy - TODO_describe_appropriate_changes - TODO_name
@@ -32,10 +32,10 @@ FUNCTION Bacterial_Mortality_To_NH4() RESULT (n1)
     USE GP_variables_module
     USE Fasham_Variables_module
     USE Tree_Node_Factory_module
-    
+
     IMPLICIT none
     TYPE(Tree_Node), POINTER :: n1, n2, n3
-    
+
 
     n3 => GetVariableNode(btmp(ABS (SPECIES_BACTERIA)),SPECIES_BACTERIA) ! Bacteria - [mmol N m-3]
     n2 => GetParameterNode(amu3) ! bacteria specific excretion rate [d-1]
@@ -54,11 +54,11 @@ FUNCTION NH4_Sink_To_Bacteria() RESULT (n1)
     USE GP_variables_module
     USE Fasham_Variables_module
     USE Tree_Node_Factory_module
-    
+
     IMPLICIT none
     TYPE(Tree_Node), POINTER :: n1, n2, n3, n4, n5, n6, n7, n8, n9, n10, n11, &
                                n12, n13, n14, n15, n16, n17, n24, n25
-                     
+
 
     n25 => GetVariableNode(btmp( ABS (SPECIES_DISSOLVED_ORGANIC_NITROGEN)  ), &
                                      SPECIES_DISSOLVED_ORGANIC_NITROGEN   ) ! DON - [mmol N m-3]
@@ -97,11 +97,11 @@ FUNCTION DON_Sink_To_Bacteria() RESULT (n1)
     USE GP_variables_module
     USE Fasham_Variables_module
     USE Tree_Node_Factory_module
-    
+
     IMPLICIT none
     TYPE(Tree_Node), POINTER :: n1, n2, n3, n4, n5, n6, n7, n8, n9, &
                                n12, n13, n24, n25, n48, n49
-                   
+
 
     n49 => GetVariableNode(btmp(ABS (SPECIES_DISSOLVED_ORGANIC_NITROGEN)), &
                                     SPECIES_DISSOLVED_ORGANIC_NITROGEN) ! DON - [mmol N m-3]
@@ -147,7 +147,7 @@ FUNCTION Detrital_Sink_To_DON() RESULT (n1)
     USE GP_variables_module
     USE Fasham_Variables_module
     USE Tree_Node_Factory_module
-    
+
     IMPLICIT none
     TYPE(Tree_Node), POINTER :: n1, n2, n3
 
@@ -179,7 +179,7 @@ FUNCTION GetNonMotileDilution(species) RESULT (n1)
     USE GP_variables_module
     USE Fasham_Variables_module
     USE Tree_Node_Factory_module
-    
+
     IMPLICIT none
     INTEGER (KIND=i4b), INTENT(IN) :: species
     TYPE(Tree_Node), POINTER :: n1, n2, n3, n4, n5, n8, n9
@@ -211,11 +211,11 @@ FUNCTION GetNonMotileDetritusDilution() RESULT (n1)
     USE GP_variables_module
     USE Fasham_Variables_module
     USE Tree_Node_Factory_module
-    
+
     IMPLICIT none
     TYPE(Tree_Node), POINTER :: n1, n2, n3, n4, n5, n8, n9, n16, n17
 
-    
+
     n17 => GetVariableNode( &
                Numerical_CODE_Forcing_Functions( &
                    ABS (5000+FORCING_MLD_CHANGE_NON_MOTILE)), &
@@ -243,7 +243,7 @@ FUNCTION GetNitrateInjection() RESULT (n1)
     USE GP_variables_module
     USE Fasham_Variables_module
     USE Tree_Node_Factory_module
-    
+
     IMPLICIT none
     TYPE(Tree_Node), POINTER :: n1, n2, n3, n4, n5, n8, n9
 
@@ -275,7 +275,7 @@ FUNCTION GetMotileDilution() RESULT (n1)
     USE GP_variables_module
     USE Fasham_Variables_module
     USE Tree_Node_Factory_module
-    
+
     IMPLICIT none
     TYPE(Tree_Node), POINTER :: n1, n2, n3, n4, n5, n6, n7, n8, n9, n12, n13
 
@@ -310,10 +310,10 @@ FUNCTION Nitrate_Sink_To_Phytoplankton() RESULT (n1)
     USE Tree_Node_Factory_module
     USE Fasham_Variables_module
     USE GP_variables_module
-    
+
     IMPLICIT none
     TYPE(Tree_Node), POINTER :: n1, n2, n3, n4, n5, n8, n9, n16, n17, n18, n19
-    
+
 
     n19 => GetVariableNode(btmp(ABS (SPECIES_NITRATE)),SPECIES_NITRATE)
     n18 => GetParameterNode(aK1)
@@ -341,10 +341,10 @@ FUNCTION Ammonium_Sink_To_Phytoplankton() RESULT (n1)
     USE Tree_Node_Factory_module
     USE Fasham_Variables_module
     USE GP_variables_module
-    
+
     IMPLICIT none
     TYPE(Tree_Node), POINTER :: n1, n2, n3, n4, n5, n8, n9
-    
+
 
     n9 => GetVariableNode(btmp(ABS (SPECIES_AMMONIUM)),SPECIES_AMMONIUM)
     n8 => GetParameterNode(aK2)
@@ -367,29 +367,29 @@ FUNCTION Phytoplankton_Exudation_To_DON() RESULT (n1)
     USE Tree_Node_Factory_module
     USE Fasham_Variables_module
     USE GP_variables_module
-    
+
     IMPLICIT none
     TYPE(Tree_Node), POINTER :: n1, n2, n3, n4, n5, n8, n9, n16, n17, n32, n33, n34, n35, &
         n64, n65, n66, n67
 
 
 
-!    SPECIES_NITRATE                    = -1                                                                   
-!    SPECIES_AMMONIUM                   = -2                                                                   
-!    SPECIES_DISSOLVED_ORGANIC_NITROGEN = -3                                                                   
-!    SPECIES_DETRITUS                   = -4                                                                   
-!    SPECIES_BACTERIA                   = -5                                                                   
-!    SPECIES_PHYTOPLANKTON              = -6                                                                   
-!    SPECIES_ZOOPLANKTON                = -7                                                                   
+!    SPECIES_NITRATE                    = -1
+!    SPECIES_AMMONIUM                   = -2
+!    SPECIES_DISSOLVED_ORGANIC_NITROGEN = -3
+!    SPECIES_DETRITUS                   = -4
+!    SPECIES_BACTERIA                   = -5
+!    SPECIES_PHYTOPLANKTON              = -6
+!    SPECIES_ZOOPLANKTON                = -7
 
-!    FORCING_MIXED_LAYER_DEPTH         = -5001                                                                
-!    FORCING_MLD_CHANGE_NON_MOTILE     = -5002                                                                
-!    FORCING_MLD_CHANGE_MOTILE         = -5003                                                                
-!    FORCING_LIGHT_LIMITED_GROWTH_RATE = -5004                                                                
-                                                                                                              
+!    FORCING_MIXED_LAYER_DEPTH         = -5001
+!    FORCING_MLD_CHANGE_NON_MOTILE     = -5002
+!    FORCING_MLD_CHANGE_MOTILE         = -5003
+!    FORCING_LIGHT_LIMITED_GROWTH_RATE = -5004
 
 
-    
+
+
 
     n67 => GetVariableNode(btmp(ABS (SPECIES_NITRATE)),SPECIES_NITRATE)
     n66 => GetParameterNode(aK1)
@@ -423,10 +423,10 @@ FUNCTION Phytoplankton_Sink_To_DET() RESULT (n1)
     USE Tree_Node_Factory_module
     USE Fasham_Variables_module
     USE GP_variables_module
-    
+
     IMPLICIT none
     TYPE(Tree_Node), POINTER :: n1, n2, n3
-    
+
 
     n3 => GetVariableNode(btmp(ABS (SPECIES_PHYTOPLANKTON)),SPECIES_PHYTOPLANKTON)
     n2 => GetParameterNode(amu1)
@@ -442,10 +442,10 @@ FUNCTION Zooplankton_Sink_To_NH4() RESULT (n1)
     USE Tree_Node_Factory_module
     USE Fasham_Variables_module
     USE GP_variables_module
-    
+
     IMPLICIT none
     TYPE(Tree_Node), POINTER :: n1, n2, n3, n4, n5, n6, n7, n8, n9, n12, n13, n16, n17
-    
+
 
     n17 => GetParameterNode(omega)
     n16 => GetParameterNode(1.D+0)
@@ -460,9 +460,9 @@ FUNCTION Zooplankton_Sink_To_NH4() RESULT (n1)
     n3 => GetMathNode(Multiply, n6, n7)
     n2 => GetMathNode(Multiply, n4, n5)
     n1 => GetMathNode(Add, n2, n3)
-    
+
 END FUNCTION Zooplankton_Sink_To_NH4
-      
+
 
 !-------------------------------------------------------------------------------------------
 
@@ -472,10 +472,10 @@ FUNCTION Zooplankton_Excretion_To_DON() RESULT (n1)
     USE Tree_Node_Factory_module
     USE Fasham_Variables_module
     USE GP_variables_module
-    
+
     IMPLICIT none
     TYPE(Tree_Node), POINTER :: n1, n2, n3, n4, n5, n8, n9
-    
+
 
     n9 => GetParameterNode(epsilon)
     n8 => GetParameterNode(1.D+0)
@@ -484,9 +484,9 @@ FUNCTION Zooplankton_Excretion_To_DON() RESULT (n1)
     n3 => GetVariableNode(btmp(ABS (SPECIES_ZOOPLANKTON)),SPECIES_ZOOPLANKTON)
     n2 => GetMathNode(Multiply, n4, n5)
     n1 => GetMathNode(Multiply, n2, n3)
-    
+
 END FUNCTION Zooplankton_Excretion_To_DON
-      
+
 
 !-------------------------------------------------------------------------------------------
 
@@ -497,11 +497,11 @@ FUNCTION Zooplankton_Sink_To_Detritus() RESULT (n1)
     USE Fasham_Variables_module
     USE GP_variables_module
     USE Fasham_Tree_Interfaces, only : f_G1, f_G2, f_G3
-    
+
     IMPLICIT none
     TYPE(Tree_Node), POINTER :: n1, n2, n3, n4, n5, n6, n7, n8, n9, n10, n11, n14, n15, &
         n18, n19, n22, n23
-    
+
 
     n23 => GetParameterNode(beta2)
     n22 => GetParameterNode(1.D+0)
@@ -520,9 +520,9 @@ FUNCTION Zooplankton_Sink_To_Detritus() RESULT (n1)
     n3 => GetMathNode(Multiply, n6, n7)
     n2 => GetMathNode(Add, n4, n5)
     n1 => GetMathNode(Add, n2, n3)
-    
+
 END FUNCTION Zooplankton_Sink_To_Detritus
-      
+
 
 
 
@@ -530,18 +530,18 @@ END FUNCTION Zooplankton_Sink_To_Detritus
 
 
 FUNCTION f_G_Lower() RESULT (n1)
-    
+
     USE kinds_mod
         USE Tree_Node_Factory_module
         USE Fasham_Variables_module
         USE GP_variables_module
-        
+
         IMPLICIT none
         TYPE(Tree_Node), POINTER :: n1, n2, n3, n4, n5, n6, n7, n8, n9, &
                                     n12, n13, n14, n15, n16, n17, n18, n19, &
                                     n24, n25, n28, n29, n30, n31, n32, n33, &
                                     n34, n35, n56, n57, n60, n61
-        
+
 
         n61 => GetParameterNode(2.D+0)
         n60 => GetVariableNode(btmp(ABS (SPECIES_DETRITUS)),SPECIES_DETRITUS)
@@ -574,25 +574,25 @@ FUNCTION f_G_Lower() RESULT (n1)
         n3 => GetMathNode(Add, n6, n7)
         n2 => GetMathNode(Multiply, n4, n5)
         n1 => GetMathNode(Add, n2, n3)
-        
+
 END FUNCTION f_G_Lower
 
 
 
 !-------------------------------------------------------------------------------------------
-    
+
 
 FUNCTION f_G1() RESULT (n1)
-    
+
     USE kinds_mod
         USE Tree_Node_Factory_module
         USE Fasham_Variables_module
         USE GP_variables_module
         USE Fasham_Tree_Interfaces, only : f_G_Lower
-        
+
         IMPLICIT none
         TYPE (Tree_Node), POINTER :: n1, n2, n3, n4, n5, n8, n9, n10, n11, n16, n17
-        
+
 
         n17 => GetVariableNode(btmp(ABS (SPECIES_ZOOPLANKTON)),SPECIES_ZOOPLANKTON)
         n16 => GetParameterNode(g)
@@ -605,22 +605,22 @@ FUNCTION f_G1() RESULT (n1)
         n3 => f_G_Lower()
         n2 => GetMathNode(Multiply, n4, n5)
         n1 => GetMathNode(ProtectedDivide, n2, n3)
-        
+
 END FUNCTION f_G1
-    
+
 !-------------------------------------------------------------------------------------------
-    
+
 FUNCTION f_G2() RESULT (n1)
-    
+
     USE kinds_mod
         USE Tree_Node_Factory_module
         USE Fasham_Variables_module
         USE GP_variables_module
         USE Fasham_Tree_Interfaces, only : f_G_Lower
-        
+
         IMPLICIT none
         TYPE (Tree_Node), POINTER :: n1, n2, n3, n4, n5, n8, n9, n10, n11, n16, n17
-        
+
 
         n17 => GetVariableNode(btmp(ABS (SPECIES_ZOOPLANKTON)),SPECIES_ZOOPLANKTON)
         n16 => GetParameterNode(g)
@@ -633,24 +633,24 @@ FUNCTION f_G2() RESULT (n1)
         n3 => f_G_Lower()
         n2 => GetMathNode(Multiply, n4, n5)
         n1 => GetMathNode(ProtectedDivide, n2, n3)
-        
+
 END FUNCTION f_G2
-    
-    
+
+
 !-------------------------------------------------------------------------------------------
-    
-    
+
+
 FUNCTION f_G3() RESULT (n1)
-    
+
     USE kinds_mod
         USE Tree_Node_Factory_module
         USE Fasham_Variables_module
         USE GP_variables_module
         USE Fasham_Tree_Interfaces, only : f_G_Lower
-        
+
         IMPLICIT none
         TYPE (Tree_Node), POINTER :: n1, n2, n3, n4, n5, n8, n9, n10, n11, n16, n17
-        
+
 
         n17 => GetVariableNode(btmp(ABS (SPECIES_ZOOPLANKTON)),SPECIES_ZOOPLANKTON)
         n16 => GetParameterNode(g)
@@ -663,5 +663,5 @@ FUNCTION f_G3() RESULT (n1)
         n3 => f_G_Lower()
         n2 => GetMathNode(Multiply, n4, n5)
         n1 => GetMathNode(ProtectedDivide, n2, n3)
-        
+
 END FUNCTION f_G3
