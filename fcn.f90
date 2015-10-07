@@ -260,8 +260,7 @@ do  i_time_step=1,n_time_steps
 
     fvec(i_time_step)=0.0D0
 
-    IF ( INDEX ( model, 'data' ) == 0 .and. &
-        INDEX ( model, 'DATA' ) == 0         ) THEN
+    IF ( INDEX ( model, 'data' ) == 0 ) THEN
 
         x_time_step = REAL ( i_time_step, KIND=r8b ) * dt
     
@@ -280,8 +279,7 @@ do  i_time_step=1,n_time_steps
     DO  i_CODE_equation=1,n_CODE_equations
   
   
-        IF ( INDEX ( model,'LOG10') > 0 .or. &
-            INDEX ( model,'log10') > 0         ) THEN
+        IF ( INDEX ( model,'log10') > 0         ) THEN
     
             fvec(i_time_step) = fvec(i_time_step)  +                                      &
                 (  Data_Array_log10(i_time_step,i_CODE_equation)  -                       &
@@ -314,8 +312,7 @@ END DO ! i_time_step
 
 ! compute the SSE (not the SSE with log10) for output in the GPSSE*log files
 
-IF ( INDEX ( model,'LOG10') > 0 .or. &
-    INDEX ( model,'log10') > 0         ) THEN
+IF ( INDEX ( model,'log10') > 0         ) THEN
     
 
     sse_local_nolog10 = 0.0D0  ! 20131209

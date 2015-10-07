@@ -152,8 +152,7 @@ do  i_data_point = 1, n_input_data_points
     Numerical_CODE_Solution(i_data_point,1) = ABS ( Tree_Value(i_Tree) )
 
 
-    IF ( INDEX ( model, 'LOG10') > 0 .or. &
-         INDEX ( model, 'log10') > 0        ) THEN
+    IF ( INDEX ( model, 'log10') > 0        ) THEN
 
         Numerical_CODE_Solution_log10(i_data_point,1) = log10( ABS ( Tree_Value(i_Tree) ) ) 
 

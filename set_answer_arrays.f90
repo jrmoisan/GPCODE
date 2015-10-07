@@ -219,8 +219,7 @@ IF ( myid == 0 ) THEN
     WRITE (GP_print_unit,'(A,1x,I6)') &
           'saa: CALL Runge_Kutta_Box_Model  n_input_vars ',  n_input_vars
 
-    IF ( index( model, 'data' ) == 0 .and. &
-         index( model, 'DATA' ) == 0       ) then
+    IF ( index( model, 'data' ) == 0   ) THEN
 
         !CALL Runge_Kutta_Box_Model( .FALSE. )
         DO  i = 1, n_input_data_points
@@ -251,8 +250,7 @@ IF ( myid == 0 ) THEN
         
         END DO ! i 
 
-        IF ( INDEX ( model, 'LOG10') > 0 .or. &
-             INDEX ( model, 'log10') > 0        ) THEN
+        IF ( INDEX ( model, 'log10') > 0        ) THEN
 
             WRITE (6,'(A/)') ' '
 

@@ -78,8 +78,7 @@ do  i_time_step = 1, n_time_steps
     fvec(i_time_step)=0.0d0
 
 
-    IF ( INDEX ( model, 'data') == 0 .and. &
-         INDEX ( model, 'DATA') == 0             ) THEN
+    IF ( INDEX ( model, 'data') == 0     ) THEN
 
         x_time_step = REAL ( i_time_step, KIND=r8b ) * dt
 
@@ -114,8 +113,7 @@ do  i_time_step = 1, n_time_steps
 END DO ! i_time_step
 
 
-IF ( INDEX ( model,'LOG10') > 0 .or. &
-    INDEX ( model,'log10') > 0         ) THEN
+IF ( INDEX ( model,'log10') > 0         ) THEN
 
     IF ( myid == 0 ) THEN
         WRITE (GP_print_unit,'(/A,1x,I6,2x,E15.7/)') &
@@ -131,7 +129,7 @@ ELSE
           'ssec: myid, SSE0 =  ',myid, SSE0
     END IF ! myid == 0 
 
-END IF !   INDEX ( model,'LOG10') > 0 .or. ...
+END IF !   INDEX ( model,'log10') > 0 .or. ...
 
 
 

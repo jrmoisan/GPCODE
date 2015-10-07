@@ -66,8 +66,7 @@ REAL (KIND=r8b),ALLOCATABLE,DIMENSION(:) :: &
 ALLOCATE (GP_population_node_parameters_temp(1:n_Nodes,1:n_Trees, 1:n_GP_individuals ))
 ALLOCATE (GP_Population_Initial_Conditions_temp(1:n_CODE_equations, 1:n_GP_individuals ))
 
-IF ( INDEX ( model, 'log10') > 0 .or. &                                                                                   
-    INDEX ( model, 'LOG10') > 0        ) THEN                                                                             
+IF ( INDEX ( model, 'log10') > 0     ) THEN                                                                             
  
     ALLOCATE (GP_Child_Individual_SSE_nolog10_temp( 1:n_GP_individuals ) )
 
@@ -159,8 +158,7 @@ END DO
 
 !-------------------------------------------------------------------------------
 
-IF ( INDEX ( model, 'log10') > 0 .or. &                                                                                   
-    INDEX ( model, 'LOG10') > 0        ) THEN                                                                             
+IF ( INDEX ( model, 'log10') > 0     ) THEN                                                                             
  
     ! sort the GP_Child_Individual_SSE_nolog10
     
@@ -350,8 +348,7 @@ END IF ! GP_Integrated_Population_Ranked_Fitness(n_GP_Individuals) > 0.0d0
 DEALLOCATE (GP_population_node_parameters_temp)
 DEALLOCATE (GP_Population_Initial_Conditions_temp)
 
-IF ( INDEX ( model, 'log10') > 0 .or. &                                                                                   
-    INDEX ( model, 'LOG10') > 0        ) THEN                                                                             
+IF ( INDEX ( model, 'log10') > 0   ) THEN                                                                             
  
     DEALLOCATE (GP_Child_Individual_SSE_nolog10_temp)
 

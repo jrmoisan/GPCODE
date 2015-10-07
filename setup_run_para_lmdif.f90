@@ -267,8 +267,7 @@ END IF !  individual_quality > 0
 
 
 
-IF ( INDEX ( model,'LOG10') > 0 .or. &                                                                            
-     INDEX ( model,'log10') > 0         ) THEN                                                                     
+IF ( INDEX ( model,'log10') > 0         ) THEN                                                                     
 
     GP_Child_Individual_SSE_nolog10(i_G_indiv) = sse_local_nolog10
 

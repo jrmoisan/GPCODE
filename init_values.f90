@@ -51,37 +51,9 @@ IF ( myid == 0 ) THEN
 END IF ! myid == 0
 
 
-!IF ( TRIM (model) == 'NPZ' ) THEN
-!
-!    CALL init_values_NPZ( icall )
-!    IF ( icall == 0 ) RETURN
-!
-!ELSE IF ( TRIM (model) == 'LV' ) THEN
-!
-!    CALL init_values_LV( icall )
-!    IF ( icall == 0 ) RETURN
-!
-!
-!ELSE IF ( ( INDEX ( model, 'data') > 0 .or. &
-!            INDEX ( model, 'DATA') > 0  )       .and. &
-!            n_input_vars > 0               ) THEN
-!
-!    CALL init_values_data( icall )
-!    IF ( icall == 0 ) RETURN
-!
-!
-!ELSE IF ( TRIM (model) == 'fasham'            .or. &
-!          TRIM (model) == 'fasham_fixed_tree'       ) THEN
-!
-!    CALL init_values_fasham( icall )
-!    IF ( icall == 0 ) RETURN
-!
-!
-!END IF ! TRIM (model) == 'NPZ'
+IF ( icall > 0 ) THEN
 
-if( icall > 0 )then
-
-    do  i_tree = 1,n_trees
+    DO  i_tree = 1,n_trees
 
         DO  i_node = 1,n_nodes
             GP_Individual_Node_Parameters(i_node,i_tree) = 0.0d0
@@ -137,7 +109,7 @@ if( icall > 0 )then
     END IF ! myid == 0
 
 
-endif !  icall > 0
+END IF !  icall > 0
 
 !----------------------------------------------------------------------------------
 

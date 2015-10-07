@@ -65,8 +65,7 @@ do  i_time_step = 1, n_time_steps
     fvec(i_time_step)=0.0d0
 
 
-    IF ( INDEX ( model, 'data') == 0 .and. &
-         INDEX ( model, 'DATA') == 0             ) THEN
+    IF ( INDEX ( model, 'data') == 0    ) THEN
 
         x_time_step = REAL ( i_time_step, KIND=r8b ) * dt
 

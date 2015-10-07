@@ -222,8 +222,7 @@ END IF ! myid == 0
 
 !----------------------------------------------------
 
-if(  index( model, 'data' ) > 0 .or. &
-     index( model, 'DATA' ) > 0      )then
+if(  index( model, 'data' ) > 0  )then
 
     ! for reading input files for the "DATA" model
 
@@ -602,7 +601,7 @@ END IF ! myid == 0
 
 
 
-            IF ( INDEX ( model, 'log10') > 0 .or. INDEX ( model, 'LOG10') > 0 ) THEN
+            IF ( INDEX ( model, 'log10') > 0  ) THEN
 
                 WRITE (GP_print_unit, '(/A )') &
                      '0:i_GP_Indiv  GP_Indiv_N_param   &
@@ -615,7 +614,7 @@ END IF ! myid == 0
                     GP_Child_Individual_SSE_nolog10(i_GP_Individual)/SSE0_nolog10
                 END DO
 
-            END IF ! INDEX ( model, 'log10') > 0 .or. INDEX ( model, 'LOG10') > 0 ) THEN
+            END IF ! INDEX ( model, 'log10') > 0  ) THEN
 
         END IF ! i_GP_generation == 1 .or. ...
 

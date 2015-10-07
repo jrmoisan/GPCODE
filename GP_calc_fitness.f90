@@ -141,8 +141,7 @@ IF ( L_GPSSE_log ) THEN
         WRITE (GPSSE_log_unit,'(A)') '#gpcf: gen  indiv      SSE     SSE/SSE0'
     END IF  ! i_GP_generation == 1
 
-    IF ( INDEX ( model, 'LOG10') > 0 .or. &
-        INDEX ( model, 'log10') > 0        ) THEN
+    IF ( INDEX ( model, 'log10') > 0        ) THEN
 
 
         DO  i_GP_Individual=1,n_GP_Individuals
@@ -320,8 +319,7 @@ IF ( L_GPSSE_log ) THEN
     END IF !  i_GP_generation == 1
 
 
-    IF ( INDEX ( model, 'LOG10') > 0 .or. &
-        INDEX ( model, 'log10') > 0        ) THEN
+    IF ( INDEX ( model, 'log10') > 0        ) THEN
 
 
         WRITE (6,'(/A,1x, I6, 1x,E12.5)') &
