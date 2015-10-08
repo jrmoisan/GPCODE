@@ -512,7 +512,7 @@ L_minSSE = n_GP_Elitists ==  0 .or.   prob_no_elite > 0.0D0
 
 IF ( myid == 0 ) THEN
     WRITE (6, '(/A,1x,I6,1x,E15.7,5x,L1/)') 'set1: n_GP_Elitists, prob_no_elite, L_minSSE ', &
-                                                  n_GP_Elitists, prob_no_elite, L_minSSE
+                                                   n_GP_Elitists, prob_no_elite, L_minSSE
 END IF ! myid == 0
 
 IF ( myid == 0 .and. L_minSSE ) THEN

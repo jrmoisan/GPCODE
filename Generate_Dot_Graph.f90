@@ -249,6 +249,10 @@ SUBROUTINE Dot_Graph_Function( File, Function_Index)
             WRITE (File,'(A)',advance='no') 'expLM'
         CASE (20)
             WRITE (File,'(A)',advance='no') 'expRM'
+        CASE (21)
+            WRITE (File,'(A)',advance='no') 'Mul_1'
+        CASE (22)
+            WRITE (File,'(A)',advance='no') 'Square'
     END SELECT
 
 END SUBROUTINE Dot_Graph_Function

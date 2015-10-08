@@ -70,4 +70,8 @@ SUBROUTINE setup_math_functions()
 
     math_funcs(ExponentialRightMinus)%f => f_ExponentialRightMinus 
 
+    math_funcs( Mult_1 )%f => f_Mult_1                        
+
+    math_funcs( Square )%f => f_Square                    
+
 END SUBROUTINE setup_math_functions
