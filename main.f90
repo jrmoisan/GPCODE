@@ -81,7 +81,7 @@ INTEGER (KIND=i4b) :: comm_world
 
 
 CHARACTER (15),PARAMETER :: program_version   = '201502.005_v16'
-CHARACTER (10),PARAMETER :: modification_date = '20150916'
+CHARACTER (10),PARAMETER :: modification_date = '20151018'
 CHARACTER (50),PARAMETER :: branch  =  'pretty_src_Doxygen'
 
 INTEGER (KIND=i4b), parameter ::  zero = 0
