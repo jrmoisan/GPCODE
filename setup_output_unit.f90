@@ -58,17 +58,21 @@ IF ( myid == 0 ) THEN
 
 
     IF ( L_GP_log ) THEN
+
         OPEN ( GP_log_unit, file = 'GP_log', &
               form = 'unformatted', access='sequential', &
               status = 'unknown' )
+
     END IF ! L_GP_log
 
 
 
     IF ( L_GA_log ) THEN
+
         OPEN ( GA_log_unit, file = 'GA_log', &
               form = 'unformatted', access='sequential', &
               status = 'unknown' )
+
     END IF ! L_GA_log
 
 
@@ -86,6 +90,7 @@ IF ( myid == 0 ) THEN
 
 
     IF ( L_fort555_output ) THEN
+
         OPEN ( GA_555_unit, file = 'GA_555', &
               form = 'unformatted', access='sequential', &
               status = 'unknown' )

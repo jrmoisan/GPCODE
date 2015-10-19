@@ -120,7 +120,7 @@ do  i_Time_Step = 1, n_Time_Steps
         ! Call forcing functions for the Fasham box model
 
         IF ( TRIM (model) == 'fasham' .or. &
-            TRIM (model) == 'fasham_fixed_tree'      ) THEN
+             TRIM (model) == 'fasham_fixed_tree'      ) THEN
 
             CALL DoForcing( btmp, Runge_Kutta_Time_Step(iter), i_Time_Step-1, L_bad_result )
 
@@ -132,7 +132,7 @@ do  i_Time_Step = 1, n_Time_Steps
         END IF ! TRIM (model) == 'fasham'
 
         IF ( TRIM (model) == 'fasham_CDOM'     .or. &
-            TRIM (model) == 'fasham_CDOM_GP'        ) THEN
+             TRIM (model) == 'fasham_CDOM_GP'        ) THEN
 
             CALL aCDOM%getForcing( btmp, &
                                    Runge_Kutta_Time_Step(iter), &

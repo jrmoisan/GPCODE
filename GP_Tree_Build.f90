@@ -77,7 +77,7 @@ do  i_GP_Individual=1,n_GP_Individuals  ! for each GP individual
 
             i_Node=0
             level_loop:&
-            DO  i_Level=1,n_Levels-1                    !original
+            DO  i_Level=1,n_Levels-1                    
 
                 n_Nodes_at_Level= pow2_table( i_level-1 ) + 1 ! INT (2**(i_Level-1))
 
@@ -212,6 +212,7 @@ do  i_GP_Individual=1,n_GP_Individuals
 
                         ! One of the OBSERVATIONS, one for each equations N, P, Z, etc.
 
+                        !----------------------------------------------------------------------
 
                         IF ( n_inputs <= n_code_equations ) THEN
 
@@ -245,6 +246,8 @@ do  i_GP_Individual=1,n_GP_Individuals
                                                                           -Node_Variable
                         END IF ! model == 'fasham'
 
+                        !----------------------------------------------------------------------
+
                         IF (model == 'fasham_CDOM_GP' ) THEN
 
                             !  set some variables to the forcing functions -5001 -> -5004
@@ -260,7 +263,7 @@ do  i_GP_Individual=1,n_GP_Individuals
                             GP_Child_Population_Node_Type(i_Node,i_Tree,i_GP_Individual) = &
                                                                           -Node_Variable
 
-                        END IF ! model == 'fasham_CDOM_GP
+                        END IF ! model == 'fasham_CDOM_GP'
 
 
 

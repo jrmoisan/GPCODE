@@ -15,8 +15,8 @@
 !> @param[out] Child_Parameters  - updated model parameters for all GA individuals    
 !> @param[out] ierror_tou        - non-zero if error in routine
 
-SUBROUTINE GA_Tournament_Style_Sexual_Reproduction(&
-              Parent_Parameters, Child_Parameters, &
+SUBROUTINE GA_Tournament_Style_Sexual_Reproduction( &
+              Parent_Parameters, Child_Parameters,  &
               individual_quality, ierror_tou  )
 
  

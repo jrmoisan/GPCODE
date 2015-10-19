@@ -256,7 +256,7 @@ IF ( individual_quality > 0 ) THEN
 
     DO i_time_step = 1, n_time_steps
 
-       IF ( ISNAN (fvec(i_time_step)) )         fvec(i_time_step) = 0.0d0
+       IF ( ISNAN (fvec(i_time_step)) )           fvec(i_time_step) = 0.0d0
        IF ( ABS (fvec(i_time_step)) >  big_real ) fvec(i_time_step) = big_real 
 
        my_indiv_SSE = my_indiv_SSE + fvec(i_time_step)
@@ -268,7 +268,7 @@ END IF !  individual_quality > 0
 
 
 IF ( INDEX ( model,'LOG10') > 0 .or. &                                                                            
-    INDEX ( model,'log10') > 0         ) THEN                                                                     
+     INDEX ( model,'log10') > 0         ) THEN                                                                     
 
     GP_Child_Individual_SSE_nolog10(i_G_indiv) = sse_local_nolog10
 

@@ -9,8 +9,8 @@
 !> @author Dr. John R. Moisan [NASA/GSFC]
 !> @date January, 2013 Dr. John R. Moisan
 !>
-!> @param[in] i_GP_Generation  - GP generation 
-!> @param[in] i_GP_individual  - GP individual 
+!> @param[in] i_GP_Generation  - GP generation
+!> @param[in] i_GP_individual  - GP individual
 !> @param[in] new_comm         - MPI communicator
 
 SUBROUTINE GPCODE_GA_lmdif_Parameter_Optimization( &
@@ -166,20 +166,6 @@ INTEGER (KIND=i4b) :: n_procs
 
             CALL Initialize_GA_Child_Parameters( Child_Parameters )
 
-            ! debug 
-            !if( L_ga_print )then
-            !    !write(GA_print_unit,'(/A,1x,I6)') &
-            !    write(6,'(A,1x,I3,1x,I10)') &
-            !    'GP_GA_opt:0 aft Init new_rank, child parameters generation= ', &
-            !                                        new_rank, i_GA_generation
-            !    do  i_ga_ind = 1, n_GA_individuals
-            !        write(6,'(I3,1x,I6,9(1x,E15.7)/(9(1x,E15.7)))') &
-            !              new_rank, i_ga_ind, &
-            !              ( child_parameters(jj,i_ga_ind), jj = 1,n_parameters )
-            !    enddo ! i_ga_ind
-            !endif ! L_ga_print
-            ! debug 
-
             Run_GA_lmdif=.true.
 
         ELSE  ! i_GA_generation > 1
@@ -247,21 +233,6 @@ INTEGER (KIND=i4b) :: n_procs
 
             END IF !   n_GA_Crossovers .gt. 0
 
-            ! debug 
-            !if( L_ga_print )then
-            !    !write(GA_print_unit,'(/A,1x,I6)') &
-            !    write(6,'(A,1x,I3,1x,I10)') &
-            !    'GP_GA_opt:2 aft GA_Tou new_rank, child parameters generation= ', &
-            !                                        new_rank, i_GA_generation
-            !    do  i_ga_ind = 1, n_GA_individuals
-            !        write(6,'(I3,1x,I6,9(1x,E15.7)/(9(1x,E15.7)))') &
-            !              new_rank, i_ga_ind, &
-            !              ( child_parameters(jj,i_ga_ind), jj = 1,n_parameters )
-            !    enddo ! i_ga_ind
-            !endif ! L_ga_print
-            ! debug 
-
-
 
             !   do "GA Parameter Mutation" Operations
             !   select a random individual and put a new random number into one of
@@ -280,19 +251,6 @@ INTEGER (KIND=i4b) :: n_procs
 
             END IF !   n_GA_Mutations .gt. 0
 
-            ! debug 
-            !if( L_ga_print )then
-            !    !write(GA_print_unit,'(/A,1x,I6)') &
-            !    write(6,'(A,1x,I3,1x,I10)') &
-            !    'GP_GA_opt:3 aft GA_Mut new_rank, child parameters generation= ', &
-            !                                        new_rank, i_GA_generation
-            !    do  i_ga_ind = 1, n_GA_individuals
-            !        write(6,'(I3,1x,I6,9(1x,E15.7)/(9(1x,E15.7)))') &
-            !              new_rank, i_ga_ind, &
-            !              ( child_parameters(jj,i_ga_ind), jj = 1,n_parameters )
-            !    enddo ! i_ga_ind
-            !endif ! L_ga_print
-            ! debug 
 
             !-------------------------------------------------------------------------------
 
@@ -410,13 +368,13 @@ INTEGER (KIND=i4b) :: n_procs
                 individual_quality(i_individual) = NINT ( buffer_recv( n_GP_parameters+2) )
                 individual_SSE_nolog10(i_individual) =   buffer_recv( n_GP_parameters+3)
 
-                IF ( individual_quality(i_individual) < 0 .or.  &                         ! jjm 20150108
-                    individual_SSE(i_individual) < 1.0D-20         ) THEN                 ! jjm 20150108
+                IF ( individual_quality(i_individual) < 0 .or.  &                      
+                     individual_SSE(i_individual) < 1.0D-20         ) THEN               
 
-                    individual_SSE(i_individual) = big_real                              ! jjm 20150108
+                    individual_SSE(i_individual) = big_real                              
                     individual_SSE_nolog10(i_individual) =   big_real
 
-                END IF ! individual_quality(i_individual) < 0                             ! jjm 20150108
+                END IF ! individual_quality(i_individual) < 0                             
 
             END IF ! Run_GA_lmdIF (i_individual)
 
@@ -491,7 +449,7 @@ INTEGER (KIND=i4b) :: n_procs
     ELSE  ! not new_rank == 0   ! new_rank == 0
 
 
-        ! code for processors 1 - ( n_GA_individuals )  ! - 1 )
+        ! code below is for processors 1 - ( n_GA_individuals ) 
 
 
         ! these processors wait until a message is received from
@@ -499,7 +457,7 @@ INTEGER (KIND=i4b) :: n_procs
         ! the individual named in the message tag = MPI_STAT( MPI_TAG )
 
         recv_loop:&
-        DO 
+        DO
 
 
             CALL MPI_RECV( i_dummy, 1, MPI_INTEGER,    &
@@ -551,7 +509,7 @@ INTEGER (KIND=i4b) :: n_procs
             ! send the R-K integration results
             ! for individual i_2_individual to processor 0
 
-            itag7 = i_2_individual ! + itag4
+            itag7 = i_2_individual 
 
             CALL MPI_SEND( buffer, n_GP_parameters+3,  &
                            MPI_DOUBLE_PRECISION, 0, &
@@ -566,12 +524,10 @@ INTEGER (KIND=i4b) :: n_procs
                 IF ( L_GA_print ) THEN
                     WRITE (GA_print_unit,'(A,1x,I10)') &
                       'GP_GA_opt: too many iterations  nsafe =', nsafe
-                    !flush(GA_print_unit)
                 END IF ! L_GA_print
 
                 WRITE (6,'(A,1x,I10)') &
                   'GP_GA_opt: too many iterations  nsafe =', nsafe
-                !flush(6)
 
                 L_too_many_iters = .TRUE.
                 exit recv_loop

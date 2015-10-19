@@ -79,7 +79,7 @@ do  i_Tree=1,n_Trees                ! for each GPCODE tree
 
         i_Node=0
         level_loop:&
-        DO  i_Level=1,n_Levels-1                    !original
+        DO  i_Level=1,n_Levels-1
 
             n_Nodes_at_Level= pow2_table( i_level-1 ) + 1 ! INT (2**(i_Level-1))
 

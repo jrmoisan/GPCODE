@@ -43,7 +43,7 @@ USE kinds_mod
         PROCEDURE(Compute), POINTER, NOPASS :: f
     END TYPE
 
-    INTEGER, parameter :: n_math_funcs = 20
+    INTEGER, parameter :: n_math_funcs = 22
 
     TYPE(FUNCTION_POINTER), DIMENSION(n_math_funcs):: math_funcs
 
@@ -466,6 +466,64 @@ USE kinds_mod
 
 
     !-------------------------------------------------------
+
+
+
+    ! math_funcs(21)          Mult_1  : a * 1.0
+
+    ! Mult_1  : a * 1.0
+
+    REAL (KIND=r8b) FUNCTION f_Mult_1 (a, b)
+        USE kinds_mod
+        IMPLICIT none
+        REAL (KIND=r8b), INTENT(IN) :: a,b
+
+        !write(*,*)'f3:  a, b ', a, b                                                                           
+        IF ( ISNAN (a)  ) THEN                                                                           
+            f_Mult_1   = 0.0D0  
+            RETURN                                                                                                  
+        END IF                           
+
+        f_Mult_1   = a 
+
+    END FUNCTION
+
+
+    !-------------------------------------------------------
+
+    ! math_funcs(22)          Square: a ^ 2
+
+    ! Square: a ^ 2
+
+    REAL (KIND=r8b) FUNCTION f_Square(a, b)
+        USE kinds_mod
+        IMPLICIT none
+        REAL (KIND=r8b), INTENT(IN) :: a,b
+
+        IF ( ISNAN (a) ) THEN
+            f_Square = 0.0D0
+            RETURN
+        END IF 
+
+        IF ( ABS (a) <= 1.0D-99 ) THEN
+            f_Square = 0.0d0
+            RETURN
+        END IF
+
+
+        !-------------------------------------
+
+        f_Square = ABS (a)**2
+
+        f_Square = MIN ( f_Square, 1.0D+19 )
+        f_Square = MAX ( f_Square, 1.0D-19 )
+
+
+    END FUNCTION
+
+
+    !-------------------------------------------------------
+
 
 
 

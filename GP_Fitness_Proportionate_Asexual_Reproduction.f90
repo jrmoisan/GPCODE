@@ -98,11 +98,11 @@ do  i_GP_Asexual_Reproduction=1,n_GP_Asexual_Reproductions
        GP_Adult_Population_Node_Type(1:n_Nodes,1:n_Trees,j_GP_Individual)
 
 
-    GP_Population_Node_Parameters(1:n_Nodes,1:n_Trees, i_GP_Individual) = &        ! 20131030
-            GP_Population_Node_Parameters(1:n_Nodes,1:n_Trees, j_GP_Individual)    ! 20131030
+    GP_Population_Node_Parameters(1:n_Nodes,1:n_Trees, i_GP_Individual) = &        
+            GP_Population_Node_Parameters(1:n_Nodes,1:n_Trees, j_GP_Individual)    
 
-    GP_Population_Initial_Conditions(1:n_CODE_Equations, i_GP_Individual) = &      ! 20131030
-            GP_Population_Initial_Conditions(1:n_CODE_Equations, j_GP_Individual)  ! 20131030
+    GP_Population_Initial_Conditions(1:n_CODE_Equations, i_GP_Individual) = &      
+            GP_Population_Initial_Conditions(1:n_CODE_Equations, j_GP_Individual)  
 
     ! give the child the adult's SSE value
 

@@ -70,9 +70,9 @@ INTEGER (KIND=i4b) :: i
 !write(6,'(/A/)') 'saa: call Initialize_Model  '
 
 IF ( TRIM (model)  == 'fasham' .or.  &
-    TRIM (model)  == 'fasham_fixed_tree' ) THEN
+     TRIM (model)  == 'fasham_fixed_tree' ) THEN
 
-    CALL Initialize_Model( .false., .true., 6 )    ! for built-in Fasham FUNCTION model
+    CALL Initialize_Model( .false., .true., 6 )    ! for built-in Fasham function model
 
 ELSE IF ( INDEX (model, 'CDOM' ) == 0 ) THEN
 

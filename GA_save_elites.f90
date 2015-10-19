@@ -44,10 +44,10 @@ REAL (KIND=r8b) :: min_fit
 !----------------------------------------------------------------------
 
 
-! for each individual,i,  choose a random number in  [0.0, 1.0]
+! for each individual, i,  choose a random number in  [0.0, 1.0]
 ! the range of the integrated_ranked_fitness is also [0.0, 1.0]
 
-! cycle through all individuals until one, j,  is found such that:
+! cycle through all individuals, until one, j,  is found such that:
 
 !    the integrated_ranked_fitness(j) > random number
 

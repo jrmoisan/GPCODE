@@ -62,7 +62,7 @@ do  i_GP_recruit = n_GP_Elitists+1 , n_GP_individuals
 
         n_GP_recruited = n_GP_recruited + 1
 
-        ! recruit all entire tree for this individual
+        ! build the entire tree for this recruited individual
 
         CALL GP_Tree_Build_single( i_GP_recruit, ierror_r )
 

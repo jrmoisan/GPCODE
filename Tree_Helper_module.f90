@@ -30,6 +30,9 @@ CONTAINS
 
 RECURSIVE FUNCTION GetNodeCount(node) RESULT (count)
 
+!> @param  node 
+!> @return count
+
 IMPLICIT none
 INTEGER (KIND=i4b) :: count
 
@@ -55,6 +58,9 @@ END FUNCTION
 
 FUNCTION GetMaxHeight(Trees, Tree_count)  RESULT (maxHeight)
 
+!> @param  Trees 
+!> @return maxHeight
+
 IMPLICIT none
 INTEGER (KIND=i4b) :: Tree_count, currentHeight, maxHeight, i
 TYPE(Tree_Node_Pointer), DIMENSION(Tree_count), INTENT(IN) :: Trees ! The array of trees
@@ -78,6 +84,9 @@ END FUNCTION
 !===========================================================================
 
 RECURSIVE FUNCTION GetTreeHeight(node) RESULT (height)
+
+!> @param  node  
+!> @return height
 
 IMPLICIT none
 TYPE(Tree_Node), POINTER :: node

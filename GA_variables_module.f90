@@ -23,6 +23,7 @@ MODULE GA_variables_module
 
 USE kinds_mod 
 USE GA_parameters_module
+
 IMPLICIT none
 
 INTEGER (KIND=i4b) :: n_GA_Elitists
@@ -39,7 +40,6 @@ INTEGER (KIND=i4b), ALLOCATABLE, DIMENSION(:) :: GA_individual_elites
 
 REAL (KIND=r8b) :: GA_Individual_Lowest_SSE
 
-REAL (KIND=r8b),ALLOCATABLE, DIMENSION(:,:) :: ppex  ! debug
 
 
 ! needed to support sexual and "tournament-style" reproduction
