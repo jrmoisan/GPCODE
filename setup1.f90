@@ -71,7 +71,6 @@ END IF ! myid == 0
 
 IF ( TRIM (model) == "fasham_CDOM") THEN
 
-IF ( TRIM (model) == "fasham_CDOM") THEN
 
     ALLOCATE (aCDOM,source=newFasham_CDOM())
 
@@ -81,7 +80,6 @@ IF ( TRIM (model) == "fasham_CDOM") THEN
 
     CALL aCDOM%setModel()
 
-    CALL aCDOM%setModel()
 
     RETURN
 
@@ -89,13 +87,12 @@ END IF
 
 IF ( TRIM (model) == "fasham_CDOM_GP") THEN
 
-IF ( TRIM (model) == "fasham_CDOM_GP") THEN
 
     ALLOCATE (aCDOM,source=newFasham_CDOM_GP())
 
-    CALL aCDOM%init()
 
     CALL aCDOM%init()
+
 
     CALL aCDOM%setTruth()
 
