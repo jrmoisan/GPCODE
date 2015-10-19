@@ -112,13 +112,13 @@ END IF !   myid == 0
 GA_child_print_interval = n_GA_generations /  number_GA_child_prints
 
 IF ( GA_child_print_interval == 0) THEN
-     GA_child_print_interval = MAX ( 1, n_GA_generations / 2 )
+    GA_child_print_interval = MAX ( 1, n_GA_generations / 2 )
 END IF
 
 GP_child_print_interval = n_GP_generations /  number_GP_child_prints
 
 IF ( GP_child_print_interval == 0) THEN
-     GP_child_print_interval = MAX ( 1, n_GP_generations / 2 )
+    GP_child_print_interval = MAX ( 1, n_GP_generations / 2 )
 END IF
 
 

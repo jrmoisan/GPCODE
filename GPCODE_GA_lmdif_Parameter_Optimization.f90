@@ -1,9 +1,9 @@
 !> @brief
-!>  This subroutine controls the integration and fitness evaluation for the
+!>  This subroutine controls the integration and fitness evaluation for the   
 !!  GA individuals
 !>
 !> @details
-!>  This subroutine controls the integration and fitness evaluation for the
+!>  This subroutine controls the integration and fitness evaluation for the   
 !!  GA individuals
 !>
 !> @author Dr. John R. Moisan [NASA/GSFC]
@@ -17,17 +17,17 @@ SUBROUTINE GPCODE_GA_lmdif_Parameter_Optimization( &
                   i_GP_Generation,i_GP_individual, &
                              new_comm )
 
-
-!---------------------------------------------------------------------------
+ 
+!---------------------------------------------------------------------------  
 !
-! DESCRIPTION:
-! Brief description of routine.
+! DESCRIPTION: 
+! Brief description of routine. 
 
 !
 ! REVISION HISTORY:
 ! TODO_dd_mmm_yyyy - TODO_describe_appropriate_changes - TODO_name
 !
-!---------------------------------------------------------------------------
+!---------------------------------------------------------------------------  
 
 ! written by: Dr. John R. Moisan [NASA/GSFC] 5 December, 2012
 !xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
@@ -369,7 +369,7 @@ INTEGER (KIND=i4b) :: n_procs
                 individual_SSE_nolog10(i_individual) =   buffer_recv( n_GP_parameters+3)
 
                 IF ( individual_quality(i_individual) < 0 .or.  &                      
-                    individual_SSE(i_individual) < 1.0D-20         ) THEN               
+                     individual_SSE(i_individual) < 1.0D-20         ) THEN               
 
                     individual_SSE(i_individual) = big_real                              
                     individual_SSE_nolog10(i_individual) =   big_real

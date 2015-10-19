@@ -78,6 +78,7 @@ INTEGER (KIND=i4b),INTENT(IN) :: new_comm
 
 INTEGER (KIND=i4b) :: individual_quality(n_GA_individuals)
 
+
 REAL (KIND=r8b) :: child_parameters(n_GP_parameters, n_GA_individuals)
 
 EXTERNAL :: fcn

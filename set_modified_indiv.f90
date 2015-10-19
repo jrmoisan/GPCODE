@@ -1,9 +1,9 @@
 !> @brief
-!>  This subroutine uses the user control input and
+!>  This subroutine uses the user control input and 
 !!  determines how many individuals are elite, or mutated, etc.
 !>
 !> @details
-!>  This subroutine uses the user control input and
+!>  This subroutine uses the user control input and 
 !!  determines how many individuals are elite, or mutated, etc.
 !>
 !> @author Dr. John R. Moisan [NASA/GSFC]
@@ -11,17 +11,17 @@
 
 SUBROUTINE set_modified_indiv( )
 
-
-!---------------------------------------------------------------------------
+ 
+!---------------------------------------------------------------------------  
 !
-! DESCRIPTION:
-! Brief description of routine.
+! DESCRIPTION: 
+! Brief description of routine. 
 !
 ! REVISION HISTORY:
 ! TODO_dd_mmm_yyyy - TODO_describe_appropriate_changes - TODO_name
 !
 
-!---------------------------------------------------------------------------
+!---------------------------------------------------------------------------  
 
 ! program written by: Dr. John R. Moisan [NASA/GSFC] 31 January, 2013
 

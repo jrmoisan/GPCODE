@@ -1345,7 +1345,7 @@ DO
 
 
     ELSE IF ( Aline(1:len('restart')) == "RESTART" .or.     &
-            Aline(1:len('restart')) == "restart" ) THEN
+              Aline(1:len('restart')) == "restart" ) THEN
 
 
         READ(Aline(len('restart')+1:), * ) !temp_seed(1:n_seed)

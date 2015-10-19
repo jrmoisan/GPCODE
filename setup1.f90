@@ -11,17 +11,17 @@
 
 SUBROUTINE setup1( )
 
-
-!---------------------------------------------------------------------------
+ 
+!---------------------------------------------------------------------------  
 !
-! DESCRIPTION:
-! Brief description of routine.
+! DESCRIPTION: 
+! Brief description of routine. 
 !
 ! REVISION HISTORY:
 ! TODO_dd_mmm_yyyy - TODO_describe_appropriate_changes - TODO_name
 !
 
-!---------------------------------------------------------------------------
+!---------------------------------------------------------------------------  
 
 ! program written by: Dr. John R. Moisan [NASA/GSFC] 31 January, 2013
 
@@ -66,11 +66,12 @@ INTEGER (KIND=i4b) :: i_CODE_equation
 
 IF ( myid == 0 ) THEN
     WRITE (6,'(/A,1x,A)') 'set1: model ', TRIM (model)
-END IF ! myid == 0
+END IF ! myid == 0 
 
 
 IF ( TRIM (model) == "fasham_CDOM") THEN
 
+IF ( TRIM (model) == "fasham_CDOM") THEN
 
     ALLOCATE (aCDOM,source=newFasham_CDOM())
 
@@ -80,6 +81,7 @@ IF ( TRIM (model) == "fasham_CDOM") THEN
 
     CALL aCDOM%setModel()
 
+    CALL aCDOM%setModel()
 
     RETURN
 
@@ -87,9 +89,11 @@ END IF
 
 IF ( TRIM (model) == "fasham_CDOM_GP") THEN
 
+IF ( TRIM (model) == "fasham_CDOM_GP") THEN
 
     ALLOCATE (aCDOM,source=newFasham_CDOM_GP())
 
+    CALL aCDOM%init()
 
     CALL aCDOM%init()
 
@@ -312,7 +316,7 @@ IF ( INDEX ( model,'LOG10') > 0 .or. &
 
 END IF!  INDEX ( model,'LOG10') > 0 ...
 
-IF ( myid == 0 ) THEN
+IF ( myid == 0 ) THEN 
     WRITE (6, '(/A,2(1x,I6))') 'set1: n_input_data_points ', n_input_data_points
     WRITE (6, '(A,2(1x,I6))')  'set1: n_input_vars ', n_input_vars
     WRITE (6, '(A,2(1x,I6)/)') 'set1: n_time_steps ', n_time_steps
@@ -512,7 +516,7 @@ L_minSSE = n_GP_Elitists ==  0 .or.   prob_no_elite > 0.0D0
 
 IF ( myid == 0 ) THEN
     WRITE (6, '(/A,1x,I6,1x,E15.7,5x,L1/)') 'set1: n_GP_Elitists, prob_no_elite, L_minSSE ', &
-                                                  n_GP_Elitists, prob_no_elite, L_minSSE
+                                                   n_GP_Elitists, prob_no_elite, L_minSSE 
 END IF ! myid == 0
 
 IF ( myid == 0 .and. L_minSSE ) THEN
