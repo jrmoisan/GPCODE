@@ -57,6 +57,8 @@ USE kinds_mod
     INTEGER (KIND=i4b), parameter :: ExponentialLeftMinus  = 19
     INTEGER (KIND=i4b), parameter :: ExponentialRightMinus = 20
 
+    INTEGER (KIND=i4b), parameter :: Mult_1 = 21
+    INTEGER (KIND=i4b), parameter :: Square = 22
 
 
     INTEGER (KIND=i4b), parameter :: MathNodeType      = 1

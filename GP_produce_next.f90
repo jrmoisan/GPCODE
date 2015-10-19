@@ -255,7 +255,7 @@ END IF ! ierror....
 
 !------------------------------------------------------------------------------------
 
-! For then fasham_fixed_tree model, Run_GP_Calculate_Fitness is set to true at the start
+! For the fasham_fixed_tree model, Run_GP_Calculate_Fitness is set to true at the start
 ! of a generation for all individuals. The code below sets it to false for the
 ! best individual of the last generation, with the hope that this will retain
 ! the best individual over the generations.
