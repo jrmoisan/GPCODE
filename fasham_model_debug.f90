@@ -702,7 +702,7 @@ GP_Individual_Node_Parameters(15,54)=  beta3  ! "[15] (P)   0.75000000"];
 
 
 
-do  i_GP_individual = 1, n_GP_Individuals
+DO  i_GP_individual = 1, n_GP_Individuals
     GP_Adult_Population_Node_Type(:,:,i_GP_individual) = &
           GP_Individual_Node_Type(:,:)
     GP_Population_Node_parameters(:,:,i_GP_individual) = &

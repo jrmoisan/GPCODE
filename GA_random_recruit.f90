@@ -51,7 +51,7 @@ IF ( n_GA_rand_recruits < 1 ) RETURN
 
 n_recruited  = 0
 
-do  i_GA_recruit=1,n_GA_rand_recruits
+DO  i_GA_recruit=1,n_GA_rand_recruits
 
 
     !---------------------------------------------------------------------

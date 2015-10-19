@@ -139,7 +139,7 @@ END IF ! n_parms <= 0
 ! GP_Individual_Node_Type is used in fcn
 ! and passed to RK subroutine as RK_node_type
 
-do  i_tree=1,n_trees
+DO  i_tree=1,n_trees
     DO  i_node=1,n_nodes
         GP_Individual_Node_Type(i_node,i_tree) = &
                        GP_Adult_Population_Node_Type(i_node,i_tree,i_G_indiv)
@@ -149,7 +149,7 @@ END DO  ! i_tree
 !-------------------------------------------------------------------------------
 
 
-do  i_parameter = 1, n_parms
+DO  i_parameter = 1, n_parms
 
     X_lmdif(i_parameter) = child_parameters(i_parameter)
 
@@ -228,7 +228,7 @@ if (info .eq. 8) info = 4
 !-----------------------------------------------------------------------------------
 
 
-do  i_parameter = 1, n_parms
+DO  i_parameter = 1, n_parms
 
     child_parameters(i_parameter) = &
                            DABS ( x_lmdif(i_parameter) )
@@ -267,8 +267,7 @@ END IF !  individual_quality > 0
 
 
 
-IF ( INDEX ( model,'LOG10') > 0 .or. &                                                                            
-     INDEX ( model,'log10') > 0         ) THEN                                                                     
+IF ( INDEX ( model,'log10') > 0         ) THEN                                                                     
 
     GP_Child_Individual_SSE_nolog10(i_G_indiv) = sse_local_nolog10
 

@@ -71,7 +71,6 @@ END IF ! myid == 0
 
 IF ( TRIM (model) == "fasham_CDOM") THEN
 
-
     ALLOCATE (aCDOM,source=newFasham_CDOM())
 
     CALL aCDOM%init()
@@ -87,9 +86,7 @@ END IF
 
 IF ( TRIM (model) == "fasham_CDOM_GP") THEN
 
-
     ALLOCATE (aCDOM,source=newFasham_CDOM_GP())
-
 
     CALL aCDOM%init()
 
@@ -97,7 +94,6 @@ IF ( TRIM (model) == "fasham_CDOM_GP") THEN
     CALL aCDOM%setTruth()
 
     !call cdom%setModel()
-
 
     RETURN
 
@@ -185,7 +181,6 @@ GP_minSSE_Individual_SSE = 1.0d99
 ! fill the model arrays
 
 ! sets:
-!      Runge_Kutta_Initial_Conditions
 !      GP_Individual_Node_Type
 !      GP_Individual_Node_Parameters
 !      tree_evaluation
@@ -238,16 +233,7 @@ END IF ! myid == 0
 
 IF ( myid == 0 ) THEN    ! 20131209
 
-    IF ( n_input_vars == 0 ) THEN
-
-        WRITE (GP_print_unit,'(/A/)') &
-              'set1: time_step   Numerical_Code_Solution(time_step,1:n_CODE_equations)'
-        DO  i = 0, n_time_steps
-            WRITE (GP_print_unit,'(I6,2x,10(1x,E14.7))') &
-                  i, (Numerical_Code_Solution(i,jj), jj = 1,n_CODE_equations )
-        END DO ! i
-
-    ELSE
+    IF (  INDEX ( model, 'data' ) > 0    ) THEN
 
         WRITE (6, '(/A,2(1x,I6))') 'set1: n_input_data_points ', n_input_data_points
 
@@ -258,8 +244,17 @@ IF ( myid == 0 ) THEN    ! 20131209
                   i, (Numerical_CODE_Solution(i,jj), jj = 1,n_CODE_equations )
         END DO ! i
 
+     else 
 
-    END IF ! n_input_vars == 0
+        WRITE (GP_print_unit,'(/A/)') &
+              'set1: time_step   Numerical_Code_Solution(time_step,1:n_CODE_equations)'
+        DO  i = 0, n_time_steps
+            WRITE (GP_print_unit,'(I6,2x,10(1x,E14.7))') &
+                  i, (Numerical_Code_Solution(i,jj), jj = 1,n_CODE_equations )
+        END DO ! i
+
+
+    END IF ! INDEX ( model, 'data' ) > 0
 
 
 END IF ! myid == 0
@@ -272,22 +267,22 @@ END IF ! myid == 0
 
 ! set message length if data processing option is on
 
-IF ( n_input_vars == 0 ) THEN
-    message_len = ( n_time_steps + 1 ) * n_CODE_equations
-ELSE
+IF (  INDEX ( model, 'data' ) > 0 ) THEN
     message_len = ( n_input_data_points + 1 ) * n_CODE_equations
+ELSE
+    message_len = ( n_time_steps + 1 ) * n_CODE_equations
 END IF ! n_input_vars == 0
 
 
 CALL MPI_BCAST( Numerical_CODE_Solution, message_len,    &
                 MPI_DOUBLE_PRECISION, 0, MPI_COMM_WORLD, ierr )
 
+
 Data_Array=Numerical_CODE_Solution        ! Matrix Operation
 
 
 
-IF ( INDEX ( model,'LOG10') > 0 .or. &
-     INDEX ( model,'log10') > 0         ) THEN
+IF ( INDEX ( model,'log10') > 0         ) THEN
 
     message_len = ( n_input_data_points + 1 ) * n_CODE_equations
 
@@ -296,7 +291,7 @@ IF ( INDEX ( model,'LOG10') > 0 .or. &
 
     Data_Array_log10 = Numerical_CODE_Solution_log10        ! Matrix Operation
 
-END IF!  INDEX ( model,'LOG10') > 0 ...
+END IF !  INDEX ( model,'LOG10') > 0 ...
 
 !--------------------------------------------------------------------------------
 
@@ -306,12 +301,11 @@ END IF!  INDEX ( model,'LOG10') > 0 ...
 
 Numerical_CODE_Solution(1:n_time_steps, 1:n_code_equations) = 0.0d0
 
-IF ( INDEX ( model,'LOG10') > 0 .or. &
-     INDEX ( model,'log10') > 0         ) THEN
+IF ( INDEX ( model,'log10') > 0         ) THEN
 
     Numerical_CODE_Solution_log10(1:n_time_steps, 1:n_code_equations) = 0.0d0
 
-END IF!  INDEX ( model,'LOG10') > 0 ...
+END IF !  INDEX ( model,'LOG10') > 0 ...
 
 IF ( myid == 0 ) THEN 
     WRITE (6, '(/A,2(1x,I6))') 'set1: n_input_data_points ', n_input_data_points
@@ -321,10 +315,10 @@ END IF ! myid == 0
 
 
 
-IF ( n_input_vars == 0 ) THEN
-    message_len = ( n_time_steps + 1 ) * n_CODE_equations
-ELSE
+IF (  INDEX ( model, 'data' ) > 0 ) then
     message_len = ( n_input_data_points + 1 ) * n_CODE_equations
+ELSE
+    message_len = ( n_time_steps + 1 ) * n_CODE_equations
 END IF ! n_input_vars == 0
 
 
@@ -333,13 +327,12 @@ CALL MPI_BCAST( Numerical_CODE_Solution, message_len,    &
 
 
 
-IF ( INDEX ( model,'LOG10') > 0 .or. &
-     INDEX ( model,'log10') > 0         ) THEN
+IF ( INDEX ( model,'log10') > 0         ) THEN
 
     CALL MPI_BCAST( Numerical_CODE_Solution_log10, message_len,    &
                 MPI_DOUBLE_PRECISION, 0, MPI_COMM_WORLD, ierr )
 
-END IF!  INDEX ( model,'LOG10') > 0 ...
+END IF !  INDEX ( model,'log10') > 0 ...
 
 
 
@@ -354,7 +347,7 @@ END IF!  INDEX ( model,'LOG10') > 0 ...
 ! Data_Variance_inv
 
 
-IF ( myid == 0 ) THEN    ! 20131209
+IF ( myid == 0 ) THEN
     CALL comp_data_variance( )
 END IF ! myid == 0
 
@@ -372,7 +365,7 @@ answer = 0.0d0 ! set all to zero
 
 n_parameters = 0
 
-do  i_CODE_equation=1,n_CODE_equations
+DO  i_CODE_equation=1,n_CODE_equations
     n_parameters=n_parameters+1
     answer(n_parameters)=Numerical_CODE_Initial_Conditions(i_CODE_equation)
 END DO ! i_CODE_equation
@@ -382,7 +375,7 @@ END DO ! i_CODE_equation
 
 ! calculate how many parameters total to fit for the specific individual CODE
 
-do  i_tree=1,n_trees
+DO  i_tree=1,n_trees
     DO  i_node=1,n_nodes
 
         IF ( GP_individual_node_type(i_node,i_tree) .eq. 0) THEN
@@ -440,8 +433,7 @@ IF ( myid == 0 ) THEN
 
     ! note:  sse0 is only used by cpu 0 which does all fitness calculations
 
-    IF ( INDEX ( model,'LOG10') > 0 .or. &
-         INDEX ( model,'log10') > 0         ) THEN
+    IF ( INDEX ( model,'log10') > 0         ) THEN
 
         CALL sse0_calc_log10( )
         CALL sse0_calc( )
@@ -452,7 +444,7 @@ IF ( myid == 0 ) THEN
 
         SSE0 = SSE0_nolog10
 
-    END IF!  INDEX ( model,'LOG10') > 0 ...
+    END IF !  INDEX ( model,'log10') > 0 ...
 
 
 
@@ -485,14 +477,13 @@ message_len = 1
 CALL MPI_BCAST( SSE0, message_len,    &
                 MPI_DOUBLE_PRECISION, 0, MPI_COMM_WORLD, ierr )
 
-IF ( INDEX ( model,'LOG10') > 0 .or. &
-     INDEX ( model,'log10') > 0         ) THEN
+IF ( INDEX ( model,'log10') > 0         ) THEN
 
     message_len = 1
     CALL MPI_BCAST( SSE0_nolog10, message_len,    &
                     MPI_DOUBLE_PRECISION, 0, MPI_COMM_WORLD, ierr )
 
-END IF!  INDEX ( model,'LOG10') > 0 ...
+END IF !  INDEX ( model,'log10') > 0 ...
 
 
 !---------------------------------------------------------------------------

@@ -273,8 +273,7 @@ IF ( myid == 0 ) THEN
     DO  i = 1, n_time_steps   !  n_input_data_points
 
 
-        IF ( INDEX ( model, 'data') == 0 .and. &
-             INDEX ( model, 'DATA') == 0             ) THEN
+        IF ( INDEX ( model, 'data') == 0   ) THEN
 
 
             x_time_step = REAL ( i, KIND=r8b ) * dt
@@ -453,8 +452,7 @@ IF ( myid == 0 ) THEN
         WRITE (GP_print_unit, '(/A,1x,E15.7)') 'pts: y_min', y_min
         WRITE (GP_print_unit, '(A,1x,E15.7/)') 'pts: y_max', y_max
 
-        IF ( INDEX ( model,'LOG10') > 0 .or. &
-            INDEX ( model,'log10') > 0         ) THEN
+        IF ( INDEX ( model,'log10') > 0         ) THEN
 
 
             WRITE (GP_print_unit, '(A,2(1x, I6),1x,E15.7, 2(1x,E15.7))') &
@@ -499,8 +497,7 @@ IF ( myid == 0 ) THEN
     WRITE (plot_unit, '(A,1x,E15.7)')  '#pts: y_min', y_min
     WRITE (plot_unit, '(A,1x,E15.7)')  '#pts: y_max', y_max
 
-    IF ( INDEX ( model,'LOG10') > 0 .or. &
-        INDEX ( model,'log10') > 0         ) THEN
+    IF ( INDEX ( model,'log10') > 0         ) THEN
 
 
         WRITE (plot_unit, '(A,2(1x, I6),1x,E15.7, 2(1x,E15.7))') &
@@ -523,7 +520,7 @@ END IF ! myid == 0
 
 !--------------------------------------------------------------------------------
 
-do  i = 1, n_trees
+DO  i = 1, n_trees
     IF ( ASSOCIATED ( GP_Trees(i,1)%n ) ) THEN
         CALL GP_Trees(i,1)%n%delete()
         DEALLOCATE ( GP_Trees(i,1)%n )

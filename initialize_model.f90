@@ -56,7 +56,7 @@ INTEGER, INTENT(IN)  ::  myprint_unit
 
 ! See comment in GP_Variables
 
-do  i = 1, n_CODE_equations
+DO  i = 1, n_CODE_equations
     bioflo_map(i,1) = -i
 END DO ! i
 

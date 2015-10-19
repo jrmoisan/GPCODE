@@ -85,7 +85,7 @@ min_fit = 1.0D20
 ! do the loop this way since temp_fitness
 ! is sorted in ascending order of fitness
 
-do  i = n_GA_individuals, n_GA_individuals - n_GA_save_elites + 1,   -1
+DO  i = n_GA_individuals, n_GA_individuals - n_GA_save_elites + 1,   -1
 
     IF ( temp_fitness(i) < min_fit ) THEN
         min_fit = temp_fitness(i)
@@ -112,7 +112,7 @@ ga_individual_elites = 0
 ! of the first n_GA_save_elites  individuals
 
 j = 0
-do  i = 1, n_GA_individuals
+DO  i = 1, n_GA_individuals
 
     IF ( individual_ranked_fitness(i) >= min_fit ) THEN
 

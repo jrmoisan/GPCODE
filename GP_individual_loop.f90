@@ -94,7 +94,7 @@ CALL mpi_comm_size( new_comm, n_procs,  ierr )
 ! do the loop over the GP individuals in n_partitions chunks
 
 part_loop:&
-do  i_part = 1,  n_partitions
+DO  i_part = 1,  n_partitions
 
     !---------------------------------------------------------------------------------
 
@@ -195,7 +195,7 @@ do  i_part = 1,  n_partitions
                     DO  i_Node=1,n_Nodes
 
                         IF ( GP_Individual_Node_Type(i_Node,i_Tree) < 0  .and. &
-                            GP_Individual_Node_Type(i_Node,i_Tree) > -9999  ) THEN
+                             GP_Individual_Node_Type(i_Node,i_Tree) > -9999  ) THEN
                             n_GP_vars = n_GP_vars + 1
                         END IF ! GP_Individual_Node_Type(i_Node,i_Tree) > 0 ....
 
@@ -206,8 +206,8 @@ do  i_part = 1,  n_partitions
                 ! or if n_GP_parameters <=  n_code_equations
 
                 IF ( n_GP_parameters == 0 .or. &
-                    n_GP_parameters > n_maximum_number_parameters .or.  &
-                    n_GP_parameters <=  n_code_equations                 ) THEN
+                     n_GP_parameters > n_maximum_number_parameters .or.  &
+                     n_GP_parameters <=  n_code_equations                 ) THEN
 
 
 

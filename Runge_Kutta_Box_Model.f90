@@ -74,7 +74,7 @@ tree_node_count = 0
 
 
 IF ( TRIM (model) == 'fasham_CDOM' .or. &
-    TRIM (model) == 'fasham_CDOM_GP' ) THEN
+     TRIM (model) == 'fasham_CDOM_GP' ) THEN
     dt = 1.0d0
 END IF !  TRIM (model) == 'fasham_CDOM' ...           
 
@@ -98,7 +98,7 @@ END IF ! L_print_RK
 ! start the time stepping loop
 
 
-do  i_Time_Step = 1, n_Time_Steps
+DO  i_Time_Step = 1, n_Time_Steps
 
     b_tmp(:) = Numerical_CODE_Solution(i_Time_Step-1,:)  ! Array Assignment
 
@@ -162,7 +162,7 @@ do  i_Time_Step = 1, n_Time_Steps
                     Tree_Value(i_Tree) = GP_Trees( i_Tree,  i_Track )%n%val()
 
                     IF ( ISNAN ( Tree_Value(i_Tree) )          .or.   &
-                          ABS ( Tree_Value(i_Tree) )  > big_real  ) THEN
+                           ABS ( Tree_Value(i_Tree) )  > big_real  ) THEN
 
                         L_bad_result = .TRUE.
 

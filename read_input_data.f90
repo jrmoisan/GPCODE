@@ -139,7 +139,6 @@ IF ( myid == 0 ) THEN
     WRITE (6,'(//A,2(1x,I10)/)') &
           'rid:  n_input_data_points, n_time_steps = ',  &
                  n_input_data_points, n_time_steps
-    flush(6)
 END IF ! myid == 0 
 
 RETURN 

@@ -65,7 +65,7 @@ REAL (KIND=r4b),PARAMETER :: prob_choose_forcing_type = 0.25
 GP_Child_Population_Node_Type(:,:,i_GP_Individual) =-9999 ! set all to null [-9999]
 
 
-do  i_Tree=1,n_Trees                ! for each GPCODE tree
+DO  i_Tree=1,n_Trees                ! for each GPCODE tree
 
 
     CALL RANDOM_NUMBER(cff) ! uniform random number generator
@@ -183,7 +183,7 @@ END DO !  i_Tree
 
 n_parms = 0
 
-do  i_Tree=1,n_Trees
+DO  i_Tree=1,n_Trees
 
     n_parms_per_tree = 0
 

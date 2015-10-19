@@ -74,7 +74,7 @@ INTEGER (KIND=i4b) :: i_GA_individual
 
 mean_fit_before = 0.0d0
 icount = 0
-do  i_GA_individual = 1, n_GA_individuals
+DO  i_GA_individual = 1, n_GA_individuals
 
     IF ( individual_quality(i_GA_individual) > 0  .and.  &
         Individual_Ranked_Fitness(i_GA_Individual) > 1.0d0 ) THEN
@@ -100,7 +100,7 @@ n_replaced = 0
 icff = 0
 
 i_loop:&
-do  i_GA_Individual=1,n_GA_individuals
+DO  i_GA_Individual=1,n_GA_individuals
 
     Run_GA_lmdIF (i_GA_Individual)=.false.
   
@@ -193,7 +193,7 @@ END DO i_loop  ! i_GA_Individual
 
 mean_fit_after = 0.0d0
 icount = 0
-do  i_GA_individual = 1, n_GA_individuals
+DO  i_GA_individual = 1, n_GA_individuals
 
 
     IF ( individual_quality(i_GA_individual) > 0  .and.  &

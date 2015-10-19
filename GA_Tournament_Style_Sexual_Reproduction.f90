@@ -83,7 +83,7 @@ ierror_tou = 0
 n_replaced = 0
 
 
-do  i_GA_Crossover=1,n_GA_Crossovers
+DO  i_GA_Crossover=1,n_GA_Crossovers
 
 
     !--------------------------------------------------------------------
@@ -115,7 +115,7 @@ do  i_GA_Crossover=1,n_GA_Crossovers
     IF ( k_GA_Individual_Male(2) .eq. k_GA_Individual_Male(1) ) THEN
   
         IF ( k_GA_Individual_Male(1) .ne. n_GA_individuals) THEN
-            k_GA_Individual_Male(2) =  &
+             k_GA_Individual_Male(2) =  &
                MIN ( k_GA_Individual_Male(1) + 1, n_GA_individuals )
         ELSE
             k_GA_Individual_Male(2)= MAX ( k_GA_Individual_Male(1) - 1, 1 )
@@ -164,7 +164,7 @@ do  i_GA_Crossover=1,n_GA_Crossovers
   
   
     IF ( Individual_Ranked_Fitness(k_GA_Individual_Male(1)) .lt. &
-        Individual_Ranked_Fitness(k_GA_Individual_Male(2))        ) THEN
+         Individual_Ranked_Fitness(k_GA_Individual_Male(2))        ) THEN
   
         k_GA_Individual_Male(1)=k_GA_Individual_Male(2)
   
@@ -192,7 +192,7 @@ do  i_GA_Crossover=1,n_GA_Crossovers
     IF ( k_GA_Individual_Female(2) .eq. k_GA_Individual_Female(1)) THEN
   
         IF ( k_GA_Individual_Female(1) .ne. n_GA_individuals ) THEN
-            k_GA_Individual_Female(2) =  &
+             k_GA_Individual_Female(2) =  &
                    MIN ( k_GA_Individual_Female(1) + 1, n_GA_individuals )
         ELSE
             k_GA_Individual_Female(2) =  MAX ( k_GA_Individual_Female(1) - 1, 1 )
@@ -244,7 +244,7 @@ do  i_GA_Crossover=1,n_GA_Crossovers
   
   
     IF ( Individual_Ranked_Fitness(k_GA_Individual_Female(1)) .lt. &
-        Individual_Ranked_Fitness(k_GA_Individual_Female(2))         ) THEN
+         Individual_Ranked_Fitness(k_GA_Individual_Female(2))         ) THEN
   
         k_GA_Individual_Female(1)=k_GA_Individual_Female(2)
   

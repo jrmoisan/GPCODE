@@ -125,7 +125,7 @@ Individual_Fitness        = Individual_Ranked_Fitness(i_GA_Best_Parent)
 Individual_Fitness_best_1 = Individual_Fitness
 
 
-do  jj = 1, n_parameters
+DO  jj = 1, n_parameters
     parent_parameters_best_1(jj) =  &
                         Parent_Parameters(jj, i_GA_Best_Parent)
 END DO ! jj

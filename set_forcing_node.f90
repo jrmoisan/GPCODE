@@ -67,11 +67,14 @@ node_variable = 0
 
 CALL RANDOM_NUMBER(cff)
 
+! use cff to decide if you need a forcing function
 
 IF ( cff < prob_forcing ) THEN
 
+    
     CALL RANDOM_NUMBER(cff)
 
+    ! use 2nd cff to decide which forcing function to use
 
     IF ( cff >  frac_forcing_type(1, 3) .and.  &
          cff <= frac_forcing_type(2, 3)         ) THEN

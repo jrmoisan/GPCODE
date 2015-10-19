@@ -50,36 +50,36 @@ if (myid /=0) RETURN
 
 
 WRITE (GP_print_unit,'(A,1x,I10)')    'pv1: n_GA_individuals           ', &
-                                           n_GA_individuals
+                                            n_GA_individuals
 WRITE (GP_print_unit,'(A,1x,I10)')    'pv1: n_time_steps               ', &
-                                           n_time_steps
+                                            n_time_steps
 WRITE (GP_print_unit,'(A,1x,I10)')    'pv1: n_GA_Generations           ', &
-                                           n_GA_Generations
+                                            n_GA_Generations
 WRITE (GP_print_unit,'(A,1x, E15.7)') 'pv1: GA_Crossover_Probability   ', &
-                                           GA_Crossover_Probability
+                                            GA_Crossover_Probability
 WRITE (GP_print_unit,'(A,1x, E15.7)') 'pv1: GA_Mutation_Probability    ', &
-                                           GA_Mutation_Probability
+                                            GA_Mutation_Probability
 WRITE (GP_print_unit,'(A,1x, E15.7)') 'pv1: GA_save_elites_Probability ', &
-                                           GA_save_elites_Probability
+                                            GA_save_elites_Probability
 
 WRITE (GP_print_unit,'(/A,1x, E15.7)')'pv1: GP_Tree_Probability        ', &
-                                           GP_Tree_Probability
+                                            GP_Tree_Probability
 
 WRITE (GP_print_unit,'(A,1x, E15.7)') 'pv1: GP_Elitist_Probability     ', &
-                                           GP_Elitist_Probability
+                                            GP_Elitist_Probability
 
 WRITE (GP_print_unit,'(A,1x, E15.7)') 'pv1: GP_Crossover_Probability   ', &
-                                           GP_Crossover_Probability
+                                            GP_Crossover_Probability
 
 WRITE (GP_print_unit,'(A,1x, E15.7)') 'pv1: GP_Asexual_Reproduction_Probability ', &
-                                           GP_Asexual_Reproduction_Probability
+                                            GP_Asexual_Reproduction_Probability
 
 WRITE (GP_print_unit,'(A,1x, E15.7)') 'pv1: GP_Mutation_Probability    ', &
-                                           GP_Mutation_Probability
+                                            GP_Mutation_Probability
 WRITE (GP_print_unit,'(/A,1x,I10)')   'pv1: n_gp_individuals           ', &
-                                           n_gp_individuals
+                                            n_gp_individuals
 WRITE (GP_print_unit,'(A,1x,I10)')    'pv1: n_gp_generations           ', &
-                                           n_gp_generations
+                                            n_gp_generations
 
 
 

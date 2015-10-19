@@ -135,6 +135,9 @@ END IF ! L_unit50_output
 
 ! initialize the biological data fields
 
+Numerical_CODE_Initial_Conditions(1:n_code_equations) = &
+                 input_data_array(1:n_code_equations, 1)
+
 
 Numerical_CODE_Solution(0,1:n_CODE_equations) = &
                  Numerical_CODE_Initial_Conditions
@@ -216,11 +219,23 @@ IF ( myid == 0 ) THEN
     WRITE (GP_print_unit,'(A,1x,I6)') &
           'saa: CALL Runge_Kutta_Box_Model  n_input_vars ',  n_input_vars
 
-    IF ( n_input_vars == 0 ) THEN
+    IF ( index( model, 'data' ) == 0   ) THEN
 
-        CALL Runge_Kutta_Box_Model( .FALSE. )
+        !CALL Runge_Kutta_Box_Model( .FALSE. )
+        DO  i = 1, n_input_data_points
+        
+            DO  ii = 1, n_CODE_equations
+                Numerical_CODE_Solution( i, ii ) = input_data_array(ii,i) 
+                WRITE (6,'(A,2(1x,I6),1x,E20.10)') 'saa: i,ii, Numerical_CODE_Solution(i,ii)', &
+                                                         i,ii, Numerical_CODE_Solution(i,ii)
+            END DO ! ii
+        
+        END DO ! i 
+
 
     ELSE
+
+        !  data and data_log10 models
 
         ! input_data_array(0,:) is the function truth value 
         ! input_data_array(1:n_input_vars,:) are the inputs to the function
@@ -230,13 +245,12 @@ IF ( myid == 0 ) THEN
             DO  ii = 1, n_CODE_equations
                 Numerical_CODE_Solution( i, ii ) = input_data_array(0,i) 
                 WRITE (6,'(A,2(1x,I6),1x,E20.10)') 'saa: i,ii, Numerical_CODE_Solution(i,ii)', &
-                                                        i,ii, Numerical_CODE_Solution(i,ii)
+                                                         i,ii, Numerical_CODE_Solution(i,ii)
             END DO ! ii
         
         END DO ! i 
 
-        IF ( INDEX ( model, 'LOG10') > 0 .or. &
-            INDEX ( model, 'log10') > 0        ) THEN
+        IF ( INDEX ( model, 'log10') > 0        ) THEN
 
             WRITE (6,'(A/)') ' '
 
@@ -253,7 +267,7 @@ IF ( myid == 0 ) THEN
             END DO ! i 
 
         END IF ! INDEX ( model, 'LOG10') > 0 ...      
-    END IF ! n_input_vars == 0
+    END IF ! index( model, 'data' ) == 0 .and. ...
 
 END IF ! myid == 0
 

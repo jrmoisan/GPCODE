@@ -86,7 +86,7 @@ LOGICAL :: L_op
                                                                                                                 
 
 
-inquire( unit = GP_best_summary_output_unit,  opened = L_op )
+INQUIRE ( unit = GP_best_summary_output_unit,  opened = L_op )
 IF ( L_op ) THEN
     CLOSE ( GP_best_summary_output_unit )  
 END IF !  L_op 
@@ -101,9 +101,9 @@ OPEN ( GP_best_summary_output_unit, file='GP_summary_file', &
 
 Lprint = .FALSE. 
 
-IF ( i_GP_generation == 1                                  .or. &
-    MOD ( i_GP_generation, GP_child_print_interval ) == 0  .or. &
-    i_GP_generation == n_GP_generations                          ) THEN
+IF ( i_GP_generation == 1                                   .or. &
+     MOD ( i_GP_generation, GP_child_print_interval ) == 0  .or. &
+     i_GP_generation == n_GP_generations                          ) THEN
 
     Lprint = .TRUE.
 
@@ -148,7 +148,7 @@ IF ( Lprint ) THEN
             &GP_Pop_Init_Cond(i_code_eq, i_GP_Indiv) '
 END IF ! Lprint
 
-do  i_code_eq = 1, n_CODE_Equations
+DO  i_code_eq = 1, n_CODE_Equations
 
     IF ( Lprint ) THEN
         WRITE (GP_print_unit,'(3(1x,I10), 7x, E24.16)')&
@@ -175,7 +175,7 @@ WRITE (GP_best_summary_output_unit, '(A,2(1x,I6))') &
 
 
 
-do  i_Tree=1,n_Trees
+DO  i_Tree=1,n_Trees
     DO  i_Node=1,n_Nodes
 
         IF ( GP_Adult_Population_Node_Type(i_Node,i_Tree,i_GP_indiv) .ne. -9999 ) THEN
@@ -210,7 +210,7 @@ END IF ! Lprint
 
 ! write all non-zero parameters to output file
 
-do  i_tree=1,n_trees
+DO  i_tree=1,n_trees
     DO  i_node=1,n_nodes
 
         IF ( GP_Adult_Population_Node_Type(i_Node,i_Tree,i_GP_indiv) == 0 ) THEN
@@ -231,7 +231,7 @@ WRITE (GP_best_summary_output_unit, '(A,2(1x,I6))') '>>', i_GP_generation, i_GP_
 
 !---------------------------------------------------------------------------------
 
-inquire( unit = GP_best_summary_output_unit,  opened = L_op )
+INQUIRE ( unit = GP_best_summary_output_unit,  opened = L_op )
 IF ( L_op ) THEN
     CLOSE ( GP_best_summary_output_unit )  
 END IF !  L_op 

@@ -67,7 +67,7 @@ INTEGER (KIND=i4b), DIMENSION(1:nn_Nodes,1:nn_Trees), INTENT(IN) :: temp_Node_Ty
 
 i_Error=0
 
-do  i_Tree=1,nn_Trees
+DO  i_Tree=1,nn_Trees
 
     DO  i_Level=1,n_Levels-1
 

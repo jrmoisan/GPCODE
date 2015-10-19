@@ -52,7 +52,7 @@ REAL (KIND=r8b) :: sse_ind
 
 i_GP_Individual = n_GP_Elitists
 
-do  i_GP_Asexual_Reproduction=1,n_GP_Asexual_Reproductions
+DO  i_GP_Asexual_Reproduction=1,n_GP_Asexual_Reproductions
 
     i_GP_Individual=i_GP_Individual+1
 

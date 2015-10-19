@@ -66,7 +66,7 @@ tree_node_count = 0
 ! start the data point loop
 
 
-do  i_data_point = 1, n_input_data_points
+DO  i_data_point = 1, n_input_data_points
 
 
     !------------------------------------------------------------------------------
@@ -137,7 +137,7 @@ do  i_data_point = 1, n_input_data_points
 
 
         IF ( ISNAN ( Tree_Value(i_Tree) )          .or.   &
-              ABS ( Tree_Value(i_Tree) )  > big_real  ) THEN
+               ABS ( Tree_Value(i_Tree) )  > big_real  ) THEN
             L_bad_result = .TRUE.
             RETURN
         END IF !  ISNAN ( Tree_Value(i_Tree) ) .or. ABS (Tree_Value(i_Tree)) > big_real
@@ -152,8 +152,7 @@ do  i_data_point = 1, n_input_data_points
     Numerical_CODE_Solution(i_data_point,1) = ABS ( Tree_Value(i_Tree) )
 
 
-    IF ( INDEX ( model, 'LOG10') > 0 .or. &
-         INDEX ( model, 'log10') > 0        ) THEN
+    IF ( INDEX ( model, 'log10') > 0        ) THEN
 
         Numerical_CODE_Solution_log10(i_data_point,1) = log10( ABS ( Tree_Value(i_Tree) ) ) 
 
