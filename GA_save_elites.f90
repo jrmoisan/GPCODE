@@ -49,7 +49,7 @@ REAL (KIND=r8b) :: min_fit
 
 ! cycle through all individuals, until one, j,  is found such that:
 
-!    the integrated_ranked_fitness(j) > random number
+!    the integrated_ranked_fitness(j) > random number 
 
 ! then replace child parameters of i with child parameters of j
 
