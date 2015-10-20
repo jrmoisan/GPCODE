@@ -1,8 +1,8 @@
 !> @brief
-!>  This subroutine reads the control input provided by the user.               
+!>  This subroutine reads the control input provided by the user.
 !>
 !> @details
-!>  This subroutine reads the control input provided by the user.               
+!>  This subroutine reads the control input provided by the user.
 !>
 !> @author Dr. John R. Moisan [NASA/GSFC]
 !> @date January, 2013 Dr. John R. Moisan
@@ -11,16 +11,16 @@
 
 SUBROUTINE read_cntl_vars( ierror )
 
- 
-!---------------------------------------------------------------------------  
+
+!---------------------------------------------------------------------------
 !
-! DESCRIPTION: 
-! Brief description of routine. 
+! DESCRIPTION:
+! Brief description of routine.
 !
 ! REVISION HISTORY:
 ! TODO_dd_mmm_yyyy - TODO_describe_appropriate_changes - TODO_name
 !
-!---------------------------------------------------------------------------  
+!---------------------------------------------------------------------------
 
 
 USE kinds_mod
@@ -68,7 +68,7 @@ INTEGER (KIND=i4b) :: ierror
 INTEGER (KIND=i4b) :: hash_index
 
 REAL (KIND=r8b) :: dt_min
-LOGICAL ::  L_op_cntl 
+LOGICAL ::  L_op_cntl
 
 !----------------------------------------------------------------------
 
@@ -78,14 +78,14 @@ ierror = 0
 
 ! open the control input file
 
-inquire( unit = cntl_unitnum, opened = L_op_cntl )
+INQUIRE ( unit = cntl_unitnum, opened = L_op_cntl )
 
 IF ( .not. L_op_cntl ) THEN
     OPEN ( unit = cntl_unitnum, file = 'GPGA_cntl_vars.in', &
           form = 'formatted',&
           status = 'old' )
 
-END IF ! .not. L_op_cntl 
+END IF ! .not. L_op_cntl
 
 REWIND (cntl_unitnum)
 
@@ -100,7 +100,7 @@ IF ( myid == 0 ) THEN
     'Input Echo Listing------------------------------------------------'
 
     echoloop: &
-    DO 
+    DO
 
         Aline(1:) = ' '
 
@@ -132,7 +132,6 @@ IF ( myid == 0 ) THEN
 
 END IF !myid==0
 
-flush( GP_print_unit )
 
 
 !---------------------------------------------------------------------
@@ -242,14 +241,14 @@ GP_Set_Terminal_to_Parameter_Probability = 0.6d0
 
 n_partitions = 2
 
-truth_model = 0 
+truth_model = 0
 L_truth_model = .FALSE.
 
 
 gp_para_lmdif_start_gen  = 1
 gp_para_lmdif_modulus = 10
-L_gp_para_lmdif = .FALSE. 
- 
+L_gp_para_lmdif = .FALSE.
+
 L_replace_larger_SSE_only = .FALSE.
 
 !---------------------------------------------------------------------
@@ -262,7 +261,7 @@ REWIND (cntl_unitnum)
 
 
 cntlloop: &
-DO 
+DO
 
     Aline = ' '
 
@@ -283,10 +282,10 @@ DO
 
 !------------------------------------------------------------------------------
 
-    !  this allows comments 
+    !  this allows comments
     !  all text following a '#' is ignored
 
-    hash_index = INDEX ( Aline, '#' ) 
+    hash_index = INDEX ( Aline, '#' )
     IF ( hash_index > 0 ) Aline( hash_index: ) = ' '
 
 !------------------------------------------------------------------------------
@@ -297,7 +296,7 @@ DO
 
 
     IF ( Aline(1:len('GA_Crossover_Probability')) == "GA_Crossover_Probability" .or.     &
-        Aline(1:len('GA_Crossover_Probability')) == "ga_crossover_probability" ) THEN
+         Aline(1:len('GA_Crossover_Probability')) == "ga_crossover_probability" ) THEN
 
         READ(Aline(len('GA_Crossover_Probability')+1:), * ) GA_Crossover_Probability
 
@@ -314,7 +313,7 @@ DO
 ! probability of mutation in parameter string of GA_lmdif
 
     ELSE IF ( Aline(1:len('GA_Mutation_Probability')) == "GA_Mutation_Probability" .or.     &
-            Aline(1:len('GA_Mutation_Probability')) == "ga_mutation_probability" ) THEN
+              Aline(1:len('GA_Mutation_Probability')) == "ga_mutation_probability" ) THEN
 
         READ(Aline(len('GA_Mutation_Probability')+1:), * ) GA_Mutation_Probability
 
@@ -330,7 +329,7 @@ DO
 !GA_rand_recruit_Probability  = 0.005d0   ! probability of rand_recruit in binary string
 
     ELSE IF ( Aline(1:len('GA_rand_recruit_Probability')) == "GA_Rand_Recruit_Probability" .or. &
-            Aline(1:len('GA_rand_recruit_Probability')) == "ga_rand_recruit_probability" ) THEN
+              Aline(1:len('GA_rand_recruit_Probability')) == "ga_rand_recruit_probability" ) THEN
 
         READ(Aline(len('GA_rand_recruit_Probability')+1:), * ) GA_rand_recruit_Probability
 
@@ -348,7 +347,7 @@ DO
 ! probability of saving an individual as an elite individual
 
     ELSE IF ( Aline(1:len('GA_save_elites_Probability')) == "GA_save_elites_Probability" .or.     &
-            Aline(1:len('GA_save_elites_Probability')) == "ga_save_elites_probability" ) THEN
+              Aline(1:len('GA_save_elites_Probability')) == "ga_save_elites_probability" ) THEN
 
         READ(Aline(len('GA_save_elites_Probability')+1:), * ) GA_save_elites_Probability
 
@@ -364,7 +363,7 @@ DO
 !GP_Tree_Probability  = 0.005d0   ! Estimated from previous work by Joel Cohen
 
     ELSE IF ( Aline(1:len('GP_Tree_Probability')) == "GP_Tree_Probability" .or.     &
-            Aline(1:len('GP_Tree_Probability')) == "gp_tree_probability" ) THEN
+              Aline(1:len('GP_Tree_Probability')) == "gp_tree_probability" ) THEN
 
         READ(Aline(len('GP_Tree_Probability')+1:), * ) GP_Tree_Probability
 
@@ -381,7 +380,7 @@ DO
 ! Keeps the top n_GP_Elitists of the Best Fit Individuals from Generation to Generation
 
     ELSE IF ( Aline(1:len('GP_Elitist_Probability')) == "GP_Elitist_Probability" .or.     &
-            Aline(1:len('GP_Elitist_Probability')) == "gp_elitist_probability" ) THEN
+              Aline(1:len('GP_Elitist_Probability')) == "gp_elitist_probability" ) THEN
 
         READ(Aline(len('GP_Elitist_Probability')+1:), * ) GP_Elitist_Probability
 
@@ -396,7 +395,7 @@ DO
 !GP_rand_Recruit_Probability  = 0.005d0   ! probability of rand_recruit in binary string
 
     ELSE IF ( Aline(1:len('GP_rand_Recruit_Probability')) == "GP_Rand_Recruit_Probability" .or. &
-            Aline(1:len('GP_rand_recruit_Probability')) == "gp_rand_recruit_probability" ) THEN
+              Aline(1:len('GP_rand_recruit_Probability')) == "gp_rand_recruit_probability" ) THEN
 
         READ(Aline(len('GP_rand_recruit_Probability')+1:), * ) GP_rand_recruit_Probability
 
@@ -414,7 +413,7 @@ DO
 
     ELSE IF ( Aline(1:len('GP_Asexual_Reproduction_Probability')) ==               &
                                   "GP_Asexual_Reproduction_Probability" .or.     &
-            Aline(1:len('GP_Asexual_Reproduction_Probability')) ==               &
+              Aline(1:len('GP_Asexual_Reproduction_Probability')) ==               &
                                   "gp_asexual_reproduction_probability" ) THEN
 
         READ(Aline(len('GP_Asexual_Reproduction_Probability')+1:), * ) &
@@ -431,7 +430,7 @@ DO
 !GP_Crossover_Probability  = 0.005d0   !  probability of sexual crossing of binary string
 
     ELSE IF ( Aline(1:len('GP_Crossover_Probability')) == "GP_Crossover_Probability" .or.     &
-            Aline(1:len('GP_Crossover_Probability')) == "gp_crossover_probability" ) THEN
+              Aline(1:len('GP_Crossover_Probability')) == "gp_crossover_probability" ) THEN
 
         READ(Aline(len('GP_Crossover_Probability')+1:), * ) GP_Crossover_Probability
 
@@ -447,7 +446,7 @@ DO
 !GP_Mutation_Probability  = 0.005d0   ! probability of mutation in binary string
 
     ELSE IF ( Aline(1:len('GP_Mutation_Probability')) == "GP_Mutation_Probability" .or.     &
-            Aline(1:len('GP_Mutation_Probability')) == "gp_mutation_probability" ) THEN
+              Aline(1:len('GP_Mutation_Probability')) == "gp_mutation_probability" ) THEN
 
         READ(Aline(len('GP_Mutation_Probability')+1:), * ) GP_Mutation_Probability
 
@@ -463,7 +462,7 @@ DO
 !n_GA_Generations
 
     ELSE IF ( Aline(1:len('n_GA_Generations')) == "n_GA_Generations" .or.     &
-            Aline(1:len('n_GA_Generations')) == "n_ga_generations" ) THEN
+              Aline(1:len('n_GA_Generations')) == "n_ga_generations" ) THEN
 
         READ(Aline(len('n_GA_Generations')+1:), * ) n_GA_Generations
 
@@ -479,7 +478,7 @@ DO
 !n_GA_Individuals
 
     ELSE IF ( Aline(1:len('n_GA_Individuals')) == "n_GA_Individuals" .or.     &
-            Aline(1:len('n_GA_Individuals')) == "n_ga_individuals" ) THEN
+              Aline(1:len('n_GA_Individuals')) == "n_ga_individuals" ) THEN
 
         READ(Aline(len('n_GA_Individuals')+1:), * ) n_GA_Individuals
 
@@ -494,7 +493,7 @@ DO
 !n_time_steps
 
     ELSE IF ( Aline(1:len('n_time_steps')) == "N_Time_Steps" .or.     &
-            Aline(1:len('n_time_steps')) == "n_time_steps" ) THEN
+              Aline(1:len('n_time_steps')) == "n_time_steps" ) THEN
 
         READ(Aline(len('n_time_steps')+1:), * ) n_time_steps
 
@@ -510,7 +509,7 @@ DO
 !dt = 1.0D+1/(24.0D+0*60.0D+0)   ! [d^-1; 10 minute time step]
 
     ELSE IF ( Aline(1:len('DT')) == "DT" .or.     &
-            Aline(1:len('DT')) == "dt" ) THEN
+              Aline(1:len('DT')) == "dt" ) THEN
 
         READ(Aline(len('DT')+1:), * )  dt_min
 
@@ -538,7 +537,7 @@ DO
 !                [sse_min_time , sse_max_time] interval
 
     ELSE IF ( Aline(1:len('sse_low_wt')) == "sse_low_wt" .or.     &
-            Aline(1:len('sse_low_wt')) == "SSE_LOW_WT" ) THEN
+              Aline(1:len('sse_low_wt')) == "SSE_LOW_WT" ) THEN
 
         READ(Aline(len('sse_low_wt')+1:), * )  sse_low_wt
 
@@ -558,7 +557,7 @@ DO
 ! sse_min_time  -  start time of interval where data is weighted with 1.0
 
     ELSE IF ( Aline(1:len('sse_min_time')) == "sse_min_time" .or.     &
-            Aline(1:len('sse_min_time')) == "SSE_MIN_TIME" ) THEN
+              Aline(1:len('sse_min_time')) == "SSE_MIN_TIME" ) THEN
 
         READ(Aline(len('sse_min_time')+1:), * )  sse_min_time
 
@@ -578,7 +577,7 @@ DO
 ! sse_max_time  -  stop  time of interval where data is weighted with 1.0
 
     ELSE IF ( Aline(1:len('sse_max_time')) == "sse_max_time" .or.     &
-            Aline(1:len('sse_max_time')) == "SSE_MAX_TIME" ) THEN
+              Aline(1:len('sse_max_time')) == "SSE_MAX_TIME" ) THEN
 
         READ(Aline(len('sse_max_time')+1:), * )  sse_max_time
 
@@ -598,7 +597,7 @@ DO
 !model = LV  or  NPZ or data or fasham or fasham_fixed_tree
 
     ELSE IF ( Aline(1:len('model')) == "MODEL" .or.     &
-            Aline(1:len('model')) == "model" ) THEN
+              Aline(1:len('model')) == "model" ) THEN
 
         READ(Aline(len('model')+1:), * )  model
 
@@ -614,15 +613,15 @@ DO
         IF ( TRIM (model) == 'fasham_fixed_tree' ) model = 'fasham_fixed_tree'
 
 
-        IF ( TRIM (model) == 'fasham_cdom'   ) model = 'fasham_CDOM' 
+        IF ( TRIM (model) == 'fasham_cdom'   ) model = 'fasham_CDOM'
         IF ( TRIM (model) == 'fasham_cdom_gp') model = 'fasham_CDOM_GP'
 
 
+        IF ( TRIM (model) == 'FASHAM_CDOM'   ) model = 'fasham_CDOM'
+        IF ( TRIM (model) == 'FASHAM_CDOM_GP') model = 'fasham_CDOM_GP'
 
-
-        IF ( TRIM (model) == 'fasham_cdom'   ) model = 'fasham_CDOM' 
-        IF ( TRIM (model) == 'fasham_cdom_gp') model = 'fasham_CDOM_GP'
-
+        IF ( TRIM (model) == 'DATA'        ) model = 'data'
+        IF ( TRIM (model) == 'DATALOG10'   ) model = 'datalog10'
 
 
 
@@ -646,7 +645,7 @@ DO
 !N_GP_individuals
 
     ELSE IF ( Aline(1:len('n_gp_individuals')) == "N_GP_INDIVIDUALS" .or.     &
-            Aline(1:len('n_gp_individuals')) == "n_gp_individuals" ) THEN
+              Aline(1:len('n_gp_individuals')) == "n_gp_individuals" ) THEN
 
         READ(Aline(len('n_gp_individuals')+1:), * )  n_gp_individuals
 
@@ -662,7 +661,7 @@ DO
 !N_GP_generations
 
     ELSE IF ( Aline(1:len('n_gp_generations')) == "N_GP_GENERATIONS" .or.     &
-            Aline(1:len('n_gp_generations')) == "n_gp_generations" ) THEN
+              Aline(1:len('n_gp_generations')) == "n_gp_generations" ) THEN
 
         READ(Aline(len('n_gp_generations')+1:), * )  n_gp_generations
 
@@ -683,7 +682,7 @@ DO
 ! if  L_node_functions is .FALSE., the selected_function array is used.
 
     ELSE IF ( Aline(1:len('n_Node_Functions')) == "n_Node_Functions" .or.     &
-            Aline(1:len('n_Node_Functions')) == "n_node_functions" ) THEN
+              Aline(1:len('n_Node_Functions')) == "n_node_functions" ) THEN
 
         READ(Aline(len('n_Node_Functions')+1:), * )  n_Node_Functions
 
@@ -700,7 +699,7 @@ DO
 ! selected_function
 
     ELSE IF ( Aline(1:len('selected_function')) == "SELECTED_FUNCTION" .or.     &
-            Aline(1:len('selected_function')) == "selected_function" ) THEN
+              Aline(1:len('selected_function')) == "selected_function" ) THEN
 
         READ(Aline(len('selected_function')+1:), * )  selected_function
 
@@ -727,7 +726,7 @@ DO
 ! used to scale the random number
 
     ELSE IF ( Aline(1:len('random_scale_small')) == "RANDOM_SCALE_SMALL" .or.  &
-            Aline(1:len('random_scale_small')) == "random_scale_small" ) THEN
+              Aline(1:len('random_scale_small')) == "random_scale_small" ) THEN
 
         READ(Aline(len('random_scale_small')+1:), * )  random_scale_small
 
@@ -745,7 +744,7 @@ DO
 ! used to scale the random number
 
     ELSE IF ( Aline(1:len('random_scale_large')) == "RANDOM_SCALE_LARGE" .or.  &
-            Aline(1:len('random_scale_large')) == "random_scale_large" ) THEN
+              Aline(1:len('random_scale_large')) == "random_scale_large" ) THEN
 
         READ(Aline(len('random_scale_large')+1:), * )  random_scale_large
 
@@ -767,7 +766,7 @@ DO
 
     ELSE IF ( Aline(1:len('random_scale_fraction')) == &
                         "RANDOM_SCALE_FRACTION"        .or.     &
-            Aline(1:len('random_scale_fraction')) == &
+              Aline(1:len('random_scale_fraction')) == &
                         "random_scale_fraction"           ) THEN
 
         READ(Aline(len('random_scale_fraction')+1:), * )  random_scale_fraction
@@ -792,8 +791,8 @@ DO
 
 
     ELSE IF ( Aline(1:len('ga_tournament_style')) == "ga_tournament_style" .or. &
-            Aline(1:len('ga_tournament_style')) == "GA_tournament_style" .or.     &
-            Aline(1:len('ga_tournament_style')) == "GA_TOURNAMENT_STYLE"           ) THEN
+              Aline(1:len('ga_tournament_style')) == "GA_tournament_style" .or.     &
+              Aline(1:len('ga_tournament_style')) == "GA_TOURNAMENT_STYLE"           ) THEN
 
         READ(Aline(len('ga_tournament_style')+1:), * )  ga_tournament_style
 
@@ -816,7 +815,7 @@ DO
 ! runs to be made which have the same set of random numbers
 
     ELSE IF ( Aline(1:len('user_input_random_seed')) == "user_input_random_seed"  .or.     &
-            Aline(1:len('user_input_random_seed')) == "USER_INPUT_RANDOM_SEED"           ) THEN
+              Aline(1:len('user_input_random_seed')) == "USER_INPUT_RANDOM_SEED"           ) THEN
 
         READ(Aline(len('user_input_random_seed')+1:), * )  user_input_random_seed
 
@@ -841,7 +840,7 @@ DO
 
 
     ELSE IF ( Aline(1:len('GA_print')) == "GA_print"  .or.     &
-            Aline(1:len('GA_print')) == "ga_print"           ) THEN
+              Aline(1:len('GA_print')) == "ga_print"           ) THEN
 
         READ(Aline(len('GA_print')+1:), * )  GA_print_flag
 
@@ -874,7 +873,7 @@ DO
 
 
     ELSE IF ( Aline(1:len('GA_output_parameters')) == "GA_output_parameters"  .or.     &
-            Aline(1:len('GA_output_parameters')) == "ga_output_parameters"           ) THEN
+              Aline(1:len('GA_output_parameters')) == "ga_output_parameters"           ) THEN
 
         READ(Aline(len('GA_output_parameters')+1:), * )  GA_output_parameters_flag
 
@@ -905,7 +904,7 @@ DO
 
 
     ELSE IF ( Aline(1:len('GP_output_parameters')) == "GP_output_parameters"  .or.     &
-            Aline(1:len('GP_output_parameters')) == "gp_output_parameters"           ) THEN
+              Aline(1:len('GP_output_parameters')) == "gp_output_parameters"           ) THEN
 
         READ(Aline(len('GP_output_parameters')+1:), * )  GP_output_parameters_flag
 
@@ -1035,7 +1034,7 @@ DO
 
 
     ELSE IF ( Aline(1:len('GA_log')) == "GA_log"  .or.     &
-            Aline(1:len('GA_log')) == "ga_log"           ) THEN
+              Aline(1:len('GA_log')) == "ga_log"           ) THEN
 
 
         READ(Aline(len('GA_log')+1:), * )  GA_log_flag
@@ -1067,7 +1066,7 @@ DO
 
 
     ELSE IF ( Aline(1:len('GP_log')) == "GP_log"  .or.     &
-            Aline(1:len('GP_log')) == "gp_log"           ) THEN
+              Aline(1:len('GP_log')) == "gp_log"           ) THEN
 
 
         READ(Aline(len('GP_log')+1:), * )  GP_log_flag
@@ -1098,7 +1097,7 @@ DO
 
 
     ELSE IF ( Aline(1:len('GPSSE_log')) == "GPSSE_log"  .or.     &
-            Aline(1:len('GPSSE_log')) == "gpsse_log"           ) THEN
+              Aline(1:len('GPSSE_log')) == "gpsse_log"           ) THEN
 
 
         READ(Aline(len('GPSSE_log')+1:), * )  GPSSE_log_flag
@@ -1165,8 +1164,8 @@ DO
 
 
     ELSE IF ( Aline(1:len('GP_all_summary')) == "GP_all_summary" .or.  &
-            Aline(1:len('GP_all_summary')) == "GP_ALL_SUMMARY" .or.  &
-            Aline(1:len('GP_all_summary')) == "gp_all_summary"      ) THEN
+              Aline(1:len('GP_all_summary')) == "GP_ALL_SUMMARY" .or.  &
+              Aline(1:len('GP_all_summary')) == "gp_all_summary"      ) THEN
 
 
         READ(Aline(len('GP_all_summary')+1:), * )  GP_all_summary_flag
@@ -1230,7 +1229,7 @@ DO
 
 
     ELSE IF ( Aline(1:len('number_ga_child_prints')) == "number_ga_child_prints" .or.     &
-            Aline(1:len('number_ga_child_prints')) == "NUMBER_GA_CHILD_PRINTS" ) THEN
+              Aline(1:len('number_ga_child_prints')) == "NUMBER_GA_CHILD_PRINTS" ) THEN
 
         READ(Aline(len('number_ga_child_prints')+1:), * )  number_ga_child_prints
 
@@ -1250,7 +1249,7 @@ DO
 
 
     ELSE IF ( Aline(1:len('number_GP_child_prints')) == "number_gp_child_prints" .or.     &
-            Aline(1:len('number_GP_child_prints')) == "NUMBER_GP_CHILD_PRINTS" ) THEN
+              Aline(1:len('number_GP_child_prints')) == "NUMBER_GP_CHILD_PRINTS" ) THEN
 
         READ(Aline(len('number_GP_child_prints')+1:), * )  number_GP_child_prints
 
@@ -1268,7 +1267,7 @@ DO
 
 
     ELSE IF ( Aline(1:len('n_input_vars')) == "N_INPUT_VARS" .or.     &
-            Aline(1:len('n_input_vars')) == "n_input_vars" ) THEN
+              Aline(1:len('n_input_vars')) == "n_input_vars" ) THEN
 
         READ(Aline(len('n_input_vars')+1:), * )  n_input_vars
 
@@ -1285,7 +1284,7 @@ DO
 
 
     ELSE IF ( Aline(1:len('n_levels')) == "N_LEVELS" .or.     &
-            Aline(1:len('n_levels')) == "n_levels" ) THEN
+              Aline(1:len('n_levels')) == "n_levels" ) THEN
 
         READ(Aline(len('n_levels')+1:), * )  n_levels
 
@@ -1302,7 +1301,7 @@ DO
 
 
     ELSE IF ( Aline(1:len('prob_no_elite')) == "PROB_NO_ELITE" .or.     &
-            Aline(1:len('prob_no_elite')) == "prob_no_elite" ) THEN
+              Aline(1:len('prob_no_elite')) == "prob_no_elite" ) THEN
 
         READ(Aline(len('prob_no_elite')+1:), * )  prob_no_elite
 
@@ -1324,7 +1323,7 @@ DO
 ! then the node type  is a variable type,  else a parameter type
 
     ELSE IF ( Aline(1:len('term_to_parm_prob')) == "term_to_parm_prob" .or.     &
-            Aline(1:len('term_to_parm_prob')) == "term_to_parm_prob" ) THEN
+              Aline(1:len('term_to_parm_prob')) == "term_to_parm_prob" ) THEN
 
         READ(Aline(len('term_to_parm_prob')+1:), * )  GP_Set_Terminal_to_Parameter_Probability
 
@@ -1356,7 +1355,7 @@ DO
         IF ( myid == 0 ) THEN
             WRITE (GP_print_unit,'(A,5x,L1)') &
                   'rcntl: L_restart = ', L_restart
-    
+
             WRITE (GP_print_unit,'(A,1x,i6)') &
                   'rcntl: n_seed    = ', n_seed
         END IF !myid==0
@@ -1374,7 +1373,7 @@ DO
 
 
     ELSE IF ( Aline(1:len('n_partitions')) == "N_PARTITIONS" .or.     &
-            Aline(1:len('n_partitions')) == "n_partitions" ) THEN
+              Aline(1:len('n_partitions')) == "n_partitions" ) THEN
 
         READ(Aline(len('n_partitions')+1:), * )  n_partitions
 
@@ -1393,8 +1392,8 @@ DO
 !  set the forcing function node value -5004 to zero
 
     ELSE IF ( Aline(1:len('no_forcing')) == "no_forcing" .or.  &
-            Aline(1:len('no_forcing')) == "NO_FORCING" .or.  &
-            Aline(1:len('no_forcing')) == "No_Forcing"      ) THEN
+              Aline(1:len('no_forcing')) == "NO_FORCING" .or.  &
+              Aline(1:len('no_forcing')) == "No_Forcing"      ) THEN
 
         ! this now applies only to the daily forcing -5004
         READ(Aline(len('no_forcing')+1:), * )  no_forcing_flag
@@ -1421,7 +1420,7 @@ DO
 
 
     ELSE IF ( Aline(1:len('prob_forcing')) == "PROB_FORCING" .or.     &
-            Aline(1:len('prob_forcing')) == "prob_forcing" ) THEN
+              Aline(1:len('prob_forcing')) == "prob_forcing" ) THEN
 
         READ(Aline(len('prob_forcing')+1:), * )  prob_forcing
 
@@ -1436,13 +1435,13 @@ DO
 !--------------------------------------------------------------------
 
 
-! truth_model       = turn on comparisons of the current tree with the 
+! truth_model       = turn on comparisons of the current tree with the
 !                     truth model tree and print results
 
 
     ELSE IF ( Aline(1:len('truth_model')) == "TRUTH_MODEL" .or.     &
-            Aline(1:len('truth_model')) == "Truth_Model" .or.     &
-            Aline(1:len('truth_model')) == "truth_model"     ) THEN
+              Aline(1:len('truth_model')) == "Truth_Model" .or.     &
+              Aline(1:len('truth_model')) == "truth_model"     ) THEN
 
         READ(Aline(len('truth_model')+1:), * )  truth_model
 
@@ -1459,14 +1458,14 @@ DO
 !--------------------------------------------------------------------
 
 
-! gp_para_lmdif   = turn on call to GP_para_lmdif_process 
+! gp_para_lmdif   = turn on call to GP_para_lmdif_process
 !                   set first GP generation to call GP_para_lmdif_process
 !                   set modulus for GP generations  to call GP_para_lmdif_process
 
 
     ELSE IF ( Aline(1:len('gp_para_lmdif')) == "GP_PARA_LMDIF" .or.     &
-            Aline(1:len('gp_para_lmdif')) == "GP_Para_Lmdif" .or.     &
-            Aline(1:len('gp_para_lmdif')) == "gp_para_lmdif"     ) THEN
+              Aline(1:len('gp_para_lmdif')) == "GP_Para_Lmdif" .or.     &
+              Aline(1:len('gp_para_lmdif')) == "gp_para_lmdif"     ) THEN
 
         READ(Aline(len('gp_para_lmdif')+1:), * , IOSTAT = istat )  &
              gp_para_lmdif_start_gen, gp_para_lmdif_modulus
@@ -1496,10 +1495,10 @@ DO
 
 
     ELSE IF ( Aline(1:len('replace_larger_SSE_only')) == "REPLACE_LARGER_SSE_ONLY" .or.     &
-            Aline(1:len('replace_larger_SSE_only')) == "replace_larger_SSE_only" .or.     &
-            Aline(1:len('replace_larger_SSE_only')) == "replace_larger_sse_only"     ) THEN
+              Aline(1:len('replace_larger_SSE_only')) == "replace_larger_SSE_only" .or.     &
+              Aline(1:len('replace_larger_SSE_only')) == "replace_larger_sse_only"     ) THEN
 
-        
+
         L_replace_larger_SSE_only = .true.
 
         IF ( myid == 0 ) THEN
@@ -1517,10 +1516,10 @@ DO
 
 
     ELSE IF ( Aline(1:len('replace_larger_SSE_only')) == "REPLACE_LARGER_SSE_ONLY" .or.     &
-            Aline(1:len('replace_larger_SSE_only')) == "replace_larger_SSE_only" .or.     &
-            Aline(1:len('replace_larger_SSE_only')) == "replace_larger_sse_only"     ) THEN
+              Aline(1:len('replace_larger_SSE_only')) == "replace_larger_SSE_only" .or.     &
+              Aline(1:len('replace_larger_SSE_only')) == "replace_larger_sse_only"     ) THEN
 
-        
+
         L_replace_larger_SSE_only = .true.
 
         IF ( myid == 0 ) THEN
@@ -1596,7 +1595,7 @@ IF ( L_gp_para_lmdif               .and. &
 
     gp_para_lmdif_start_gen  = n_GP_generations / 2
 
-END IF ! gp_para_lmdif_start_gen  == 0 
+END IF ! gp_para_lmdif_start_gen  == 0
 
 
 
@@ -1604,43 +1603,45 @@ END IF ! gp_para_lmdif_start_gen  == 0
 
 IF ( myid == 0) THEN
 
+    !WRITE (GP_print_unit,'(A,1x,I6)') 'rcntl: n_code_equations = ', &
+    !                                          n_code_equations
     WRITE (GP_print_unit,'(A,1x,F10.4)') 'rcntl: GA_Crossover_Probability   = ', &
-                                                GA_Crossover_Probability
+                                                 GA_Crossover_Probability
     WRITE (GP_print_unit,'(A,1x,F10.4)') 'rcntl: GA_Mutation_Probability    = ', &
-                                                GA_Mutation_Probability
+                                                 GA_Mutation_Probability
     WRITE (GP_print_unit,'(A,1x,F10.4)') 'rcntl: GA_rand_recruit_Probability = ', &
-                                                GA_rand_recruit_Probability
+                                                 GA_rand_recruit_Probability
     WRITE (GP_print_unit,'(A,1x,F10.4)') 'rcntl: GA_save_elites_Probability = ', &
-                                                GA_save_elites_Probability
+                                                 GA_save_elites_Probability
     WRITE (GP_print_unit,'(A,1x,F10.4)') 'rcntl: GP_Tree_Probability = ', &
-                                                GP_Tree_Probability
+                                                 GP_Tree_Probability
     WRITE (GP_print_unit,'(A,1x,F10.4)') 'rcntl: GP_Elitist_Probability = ', &
-                                                GP_Elitist_Probability
+                                                 GP_Elitist_Probability
     WRITE (GP_print_unit,'(A,1x,F10.4)') &
                'rcntl: GP_Asexual_Reproduction_Probability = ', &
                        GP_Asexual_Reproduction_Probability
     WRITE (GP_print_unit,'(A,1x,F10.4)') 'rcntl: GP_Crossover_Probability = ', &
-                                                GP_Crossover_Probability
+                                                 GP_Crossover_Probability
     WRITE (GP_print_unit,'(A,1x,F10.4)') 'rcntl: GP_Mutation_Probability = ', &
-                                                GP_Mutation_Probability
+                                                 GP_Mutation_Probability
     WRITE (GP_print_unit,'(A,1x,F10.4)') 'rcntl: GP_rand_recruit_Probability = ', &
-                                                GP_rand_recruit_Probability
+                                                 GP_rand_recruit_Probability
     WRITE (GP_print_unit,'(A,1x,I6)') 'rcntl: n_GA_Generations = ', &
-                                             n_GA_Generations
+                                              n_GA_Generations
     WRITE (GP_print_unit,'(A,1x,I6)') 'rcntl: n_GA_Individuals = ', &
-                                             n_GA_Individuals
+                                              n_GA_Individuals
     WRITE (GP_print_unit,'(A,1x,I6)') 'rcntl: n_time_steps     = ', &
-                                             n_time_steps
+                                              n_time_steps
     WRITE (GP_print_unit,'(A,1x,F10.4)') 'rcntl: dt (minutes) = ', dt_min
     WRITE (6,'(/A,2(1x,E15.7))') 'rcntl: dt, Delta_Time_in_Days ',  &
-                                        dt, Delta_Time_in_Days
+                                         dt, Delta_Time_in_Days
     WRITE (GP_print_unit,'(A,1x,F10.4)') 'rcntl: dt (days)    = ', dt
     WRITE (6,'(/A,1x,E15.7)') 'rcntl: sse_low_wt',  &
-                                     sse_low_wt
+                                      sse_low_wt
     WRITE (6,'(/A,1x,E15.7)') 'rcntl: sse_min_time',  &
-                                     sse_min_time
+                                      sse_min_time
     WRITE (6,'(/A,1x,E15.7)') 'rcntl: sse_max_time',  &
-                                     sse_max_time
+                                      sse_max_time
     WRITE (GP_print_unit,'(A,1x,A)') 'rcntl: model = ', TRIM ( model )
     WRITE (GP_print_unit,'(A,1x,I6)') 'rcntl: n_gp_individuals = ', n_gp_individuals
     WRITE (GP_print_unit,'(A,1x,I6)') 'rcntl: n_gp_generations = ', n_gp_generations
@@ -1680,7 +1681,7 @@ IF ( myid == 0) THEN
     WRITE (GP_print_unit,'(A,1x,I12)') 'rcntl: fort555_output_flag =', &
                                                fort555_output_flag
     WRITE (GP_print_unit,'(A,4x,L1 )') 'rcntl: L_fort555_output =', &
-                                              L_fort555_output
+                                               L_fort555_output
     WRITE (GP_print_unit,'(A,1x,I12)') 'rcntl: GA_log_flag =', &
                                                GA_log_flag
     WRITE (GP_print_unit,'(A,4x,L1 )') 'rcntl: L_GA_log =', &
@@ -1737,7 +1738,7 @@ IF ( myid == 0) THEN
                                                L_truth_model
 
     WRITE (GP_print_unit,'(A,4x,L1 )') 'rcntl: L_replace_larger_SSE_only =', &
-                                               L_replace_larger_SSE_only 
+                                               L_replace_larger_SSE_only
 
     WRITE (GP_print_unit,'(A,4x,L1 )') 'rcntl: L_gp_para_lmdif =', &
                                                L_gp_para_lmdif

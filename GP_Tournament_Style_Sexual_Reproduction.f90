@@ -146,7 +146,7 @@ DO
 
 
     IF ( GP_Adult_Population_SSE(k_GP_Individual_Male(2)) .lt.  &
-        GP_Adult_Population_SSE(k_GP_Individual_Male(1))         ) THEN
+         GP_Adult_Population_SSE(k_GP_Individual_Male(1))         ) THEN
 
         k_GP_Individual_Male(1) = k_GP_Individual_Male(2)
 
@@ -172,7 +172,7 @@ DO
     IF ( k_GP_Individual_Female(2) .eq. k_GP_Individual_Female(1)  ) THEN
 
         IF ( k_GP_Individual_Female(1)  <   N_GP_Individuals) THEN
-            k_GP_Individual_Female(2)  =  k_GP_Individual_Female(1)+1
+             k_GP_Individual_Female(2)  =  k_GP_Individual_Female(1)+1
         ELSE
             k_GP_Individual_Female(2)  =  k_GP_Individual_Female(1)-1
         END IF !   k_GP_Individual_Female(1) .ne. N_GP_Individuals
@@ -187,7 +187,7 @@ DO
 
 
     IF ( GP_Adult_Population_SSE(k_GP_Individual_Female(2)) .lt.  &
-        GP_Adult_Population_SSE(k_GP_Individual_Female(1))          ) THEN
+         GP_Adult_Population_SSE(k_GP_Individual_Female(1))          ) THEN
 
         k_GP_Individual_Female(1)  =  k_GP_Individual_Female(2)
 

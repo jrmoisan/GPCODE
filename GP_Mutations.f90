@@ -102,7 +102,7 @@ END IF !  cff <  prob_no_elite * 0.5
 
 
 
-do  i_GP_Mutation = 1,n_GP_Mutations
+DO  i_GP_Mutation = 1,n_GP_Mutations
 
 
     i_GP_Individual = i_GP_Individual+1
@@ -259,7 +259,6 @@ do  i_GP_Mutation = 1,n_GP_Mutations
             !----------------------------------------------------------------------
 
             IF ( model == 'fasham_CDOM_GP') THEN
-
 
                 CALL RANDOM_NUMBER(cff)
 

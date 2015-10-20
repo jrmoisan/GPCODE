@@ -77,8 +77,7 @@ CALL MPI_BCAST( GP_Child_Population_SSE, n_GP_individuals,    &
                 MPI_DOUBLE_PRECISION, 0, MPI_COMM_WORLD, ierr )
 
 
-IF ( INDEX ( model, 'log10') > 0 .or. &                                                                                   
-    INDEX ( model, 'LOG10') > 0        ) THEN                                                                             
+IF ( INDEX ( model, 'log10') > 0    ) THEN                                                                             
                                                                                                                         
     CALL MPI_BCAST( GP_Child_Individual_SSE_nolog10, n_GP_individuals,    &
                     MPI_DOUBLE_PRECISION, 0, MPI_COMM_WORLD, ierr )

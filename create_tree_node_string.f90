@@ -52,7 +52,7 @@ INTEGER (KIND=i4b) :: jj
 
 tree_node_string = ''
 
-do  jj = 1, n_nodes
+DO  jj = 1, n_nodes
 
 
     node_element_string = '   '

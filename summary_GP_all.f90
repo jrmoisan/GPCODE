@@ -85,7 +85,7 @@ IF ( .not. L_GP_all_summary ) RETURN
 
 IF ( GP_unit == GP_summary_output_unit_lgen ) THEN 
 
-    inquire( GP_unit, opened = L_open )
+    INQUIRE ( GP_unit, opened = L_open )
     IF ( L_open ) CLOSE ( GP_unit )
     OPEN ( GP_unit, file='GP_last_gen_summary_file', &
           form = 'formatted', access = 'sequential', &
@@ -101,8 +101,8 @@ END IF ! GP_unit == GP_summary_output_unit
 Lprint = .FALSE.
 
 IF ( i_GP_generation == 1                                  .or. &
-    MOD ( i_GP_generation, GP_child_print_interval ) == 0  .or. &
-    i_GP_generation == n_GP_generations                          ) THEN
+     MOD ( i_GP_generation, GP_child_print_interval ) == 0  .or. &
+     i_GP_generation == n_GP_generations                          ) THEN
 
     Lprint = .TRUE.
 
@@ -114,7 +114,7 @@ END IF ! i_GP_generation == 1 .or. ...
 ! write the summary file header for each individual
 ! which has n_GP_parameters >= n_code_equations
 
-do  i_GP_indiv = 1, n_GP_individuals
+DO  i_GP_indiv = 1, n_GP_individuals
 
 
     WRITE (GP_unit, '(2x,6(1x,I6),1x,E20.10)') &

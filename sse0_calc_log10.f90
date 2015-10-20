@@ -59,19 +59,18 @@ SSE0 = 0.0D+0
 fvec = 0.0d0
 sse_wt = 1.0d0
 
-do  i_time_step = 1, n_time_steps
+DO  i_time_step = 1, n_time_steps
 
 
     fvec(i_time_step)=0.0d0
 
 
-    IF ( INDEX ( model, 'data') == 0 .and. &
-         INDEX ( model, 'DATA') == 0             ) THEN
+    IF ( INDEX ( model, 'data') == 0    ) THEN
 
         x_time_step = REAL ( i_time_step, KIND=r8b ) * dt
 
         IF ( x_time_step >= sse_min_time .and. &
-            x_time_step <= sse_max_time        ) THEN
+             x_time_step <= sse_max_time        ) THEN
 
             sse_wt = 1.0d0
 

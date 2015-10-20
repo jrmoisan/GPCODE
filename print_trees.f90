@@ -117,7 +117,7 @@ WRITE (GP_print_unit,'(/A)')  &
 IF ( len( TRIM (tree_descrip) ) > 0 )WRITE (GP_print_unit,'(A)')  tree_descrip
 
 
-do  i_GP_individual = n_indiv_start, n_indiv_STOP
+DO  i_GP_individual = n_indiv_start, n_indiv_STOP
 
     IF ( n_indiv_STOP - n_indiv_start > 0 ) THEN
 

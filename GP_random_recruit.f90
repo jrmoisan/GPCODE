@@ -48,10 +48,7 @@ INTEGER (KIND=i4b) :: n_GP_recruited
 n_GP_recruited = 0
 
 
-do  i_GP_recruit = n_GP_Elitists+1 , n_GP_individuals   
-
-
-    !--------------------------------------------------------------------------
+DO  i_GP_recruit = n_GP_Elitists+1 , n_GP_individuals   
 
 
     CALL RANDOM_NUMBER(cff) ! uniform random number generator

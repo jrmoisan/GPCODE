@@ -77,7 +77,7 @@ USE GP_variables_module
     alatr=alatd*2.D+0*pi/360.D+0
 
 
-!   correction of solar constant due to the ellipticity of the earth orbit
+    ! correction of solar constant due to the ellipticity of the earth orbit
 
     enot=1.D+0+(0.033D+0*COS (2.D+0*pi*day/365.D+0))   ! E_0 from [Duffie and Beckman, 1980]
 
@@ -99,7 +99,7 @@ USE GP_variables_module
     cloud=oktas/8.D+0
 
 
-!   cloud corr from Smith and Dobson, [Ecological Modeling, 14, 1-19, 1981]
+    ! cloud corr from Smith and Dobson, [Ecological Modeling, 14, 1-19, 1981]
 
 
     IF ( ABS (zenith) .le. 1.55D+0 ) THEN
@@ -110,7 +110,7 @@ USE GP_variables_module
 
 
 
-!   calculate the light value only during the day [night = zenith .ge. pi/2.D+0]
+    ! calculate the light value only during the day [night = zenith .ge. pi/2.D+0]
 
     IF ( ABS (zenith) .lt. pi/2.D+0 ) THEN
         par0=solar*trans*enot*cosz*0.43D+0*(1.D+0-albedo)*cloudy
@@ -119,7 +119,7 @@ USE GP_variables_module
     END IF
 
 
-!   calculate aJ by integrating (simple trapezoidal) PvsI terms over the aMLD
+    ! calculate aJ by integrating (simple trapezoidal) PvsI terms over the aMLD
 
 
     aJ=0.D+0

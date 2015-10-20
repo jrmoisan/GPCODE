@@ -79,11 +79,11 @@ WRITE (GP_print_unit,'(A,1x,G10.2/)')'pv2: sse_max_time(days)   ', sse_max_time
 
 
 WRITE (GP_print_unit,'(/A,1x,E15.7)') 'pv2: GA_Crossover_Probability  ', &
-                                           GA_Crossover_Probability
+                                            GA_Crossover_Probability
 WRITE (GP_print_unit,'(A,1x,E15.7)')  'pv2: GA_Mutation_Probability   ', &
-                                           GA_Mutation_Probability
+                                            GA_Mutation_Probability
 WRITE (GP_print_unit,'(A,1x,E15.7)')  'pv2: GA_save_elites_Probability', &
-                                           GA_save_elites_Probability
+                                            GA_save_elites_Probability
 
 WRITE (GP_print_unit,'(/A)')  'pv2: code CALLs parallel lmdif at END of each GP  generation'
 WRITE (GP_print_unit,'(A//)')  'pv2: 2-range random_real initialization of child parameters '
@@ -95,13 +95,13 @@ WRITE (GP_print_unit,'(A//)')  'pv2: 2-range random_real initialization of child
 !GP_child_print_interval = n_GP_generations /  number_GP_child_prints
 
 WRITE (GP_print_unit,'(A,1x,I6)')   'pv2: GP_child_print_interval ', &
-                                         GP_child_print_interval
+                                          GP_child_print_interval
 WRITE (GP_print_unit,'(A,1x,I6)')   'pv2: GA_child_print_interval ', &
-                                         GA_child_print_interval
+                                          GA_child_print_interval
 !-----------------------------------------------------------------------------
 
 WRITE (GP_print_unit,'(/A)') ' '
-do  i = 1, n_parameters
+DO  i = 1, n_parameters
     WRITE (GP_print_unit,'(A,1x,I6,2x,E15.7)') &
           'pv2: i, answer(i)', i, answer(i)
 END DO ! i

@@ -11,19 +11,19 @@
 
 SUBROUTINE init_values( icall  )
 
- 
-!---------------------------------------------------------------------------  
+
+!---------------------------------------------------------------------------
 !
-! DESCRIPTION: 
-! Brief description of routine. 
+! DESCRIPTION:
+! Brief description of routine.
 
 !
 ! REVISION HISTORY:
 ! TODO_dd_mmm_yyyy - TODO_describe_appropriate_changes - TODO_name
 !
-!---------------------------------------------------------------------------  
+!---------------------------------------------------------------------------
 
-USE kinds_mod 
+USE kinds_mod
 
 USE mpi
 USE mpi_module

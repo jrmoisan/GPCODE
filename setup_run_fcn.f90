@@ -78,7 +78,6 @@ INTEGER (KIND=i4b),INTENT(IN) :: new_comm
 
 INTEGER (KIND=i4b) :: individual_quality(n_GA_individuals)
 
-
 REAL (KIND=r8b) :: child_parameters(n_GP_parameters, n_GA_individuals)
 
 EXTERNAL :: fcn
@@ -93,7 +92,7 @@ CALL mpi_comm_rank( new_comm, new_rank, ierr )
 
 x_LMDIF(1:n_GP_parameters) = 0.0D0
 
-do  i_parameter=1,n_parameters
+DO  i_parameter=1,n_parameters
 
     X_LMDIF(i_parameter) = child_parameters(i_parameter,i_GA_indiv)
 
@@ -133,7 +132,7 @@ if (info .eq. 8) info = 4
 !-----------------------------------------------------------------------------------
 
 
-do  i_parameter=1,n_parameters
+DO  i_parameter=1,n_parameters
 
     child_parameters(i_parameter,i_GA_indiv) = &
                             DABS ( x_LMDIF(i_parameter) )

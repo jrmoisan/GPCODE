@@ -230,13 +230,12 @@ IF ( myid == 0 ) THEN
             DO  ii = 1, n_CODE_equations
                 Numerical_CODE_Solution( i, ii ) = input_data_array(0,i) 
                 WRITE (6,'(A,2(1x,I6),1x,E20.10)') 'saa: i,ii, Numerical_CODE_Solution(i,ii)', &
-                                                        i,ii, Numerical_CODE_Solution(i,ii)
+                                                         i,ii, Numerical_CODE_Solution(i,ii)
             END DO ! ii
         
         END DO ! i 
 
-        IF ( INDEX ( model, 'LOG10') > 0 .or. &
-            INDEX ( model, 'log10') > 0        ) THEN
+        IF ( INDEX ( model, 'log10') > 0        ) THEN
 
             WRITE (6,'(A/)') ' '
 

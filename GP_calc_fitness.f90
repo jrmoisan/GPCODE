@@ -102,7 +102,7 @@ max_n_gp_parameters = maxval( GP_Individual_N_GP_param )
 ! calculate the total population's SSE
 
 dff=0.0d0
-do  i_GP_Individual=1,n_GP_Individuals
+DO  i_GP_Individual=1,n_GP_Individuals
 
     IF (  GP_Individual_N_GP_param( i_GP_Individual ) < min_N_param ) CYCLE
 
@@ -115,8 +115,8 @@ END DO ! i_gp_individual
 !-------------------------------------------------------------------------------
 
 IF ( i_GP_generation == 1                                 .or. &
-    MOD ( i_GP_generation, GP_child_print_interval ) == 0 .or. &
-    i_GP_generation == n_GP_generations                          ) THEN
+     MOD ( i_GP_generation, GP_child_print_interval ) == 0 .or. &
+     i_GP_generation == n_GP_generations                          ) THEN
 
 
     WRITE (GP_print_unit,'(/A,1x,I6)') &
@@ -141,8 +141,7 @@ IF ( L_GPSSE_log ) THEN
         WRITE (GPSSE_log_unit,'(A)') '#gpcf: gen  indiv      SSE     SSE/SSE0'
     END IF  ! i_GP_generation == 1
 
-    IF ( INDEX ( model, 'LOG10') > 0 .or. &
-        INDEX ( model, 'log10') > 0        ) THEN
+    IF ( INDEX ( model, 'log10') > 0        ) THEN
 
 
         DO  i_GP_Individual=1,n_GP_Individuals
@@ -184,7 +183,7 @@ END IF ! L_GPSSE_log
 
 GP_Population_Ranked_Fitness = 0.0d0
 
-do  i_GP_Individual=1,n_GP_Individuals
+DO  i_GP_Individual=1,n_GP_Individuals
 
     IF (  GP_Individual_N_GP_param( i_GP_Individual ) < min_N_param ) CYCLE
 
@@ -212,7 +211,7 @@ END DO ! i_GP_Individual
 GP_Integrated_Population_Ranked_Fitness = 0.0d0
 
 dff=0.0
-do  i_GP_Individual=1,n_GP_Individuals
+DO  i_GP_Individual=1,n_GP_Individuals
 
     dff = dff + GP_Population_Ranked_Fitness(i_GP_Individual)
 
@@ -225,7 +224,7 @@ END DO
 ! normalize to the integrated ranking values so that
 ! the ranking integration ranges from [0. to 1.]
 
-do  i_GP_Individual=1,n_GP_Individuals
+DO  i_GP_Individual=1,n_GP_Individuals
 
     IF ( ABS ( GP_Integrated_Population_Ranked_Fitness(n_GP_Individuals) ) &
                                                             > 1.0D-30 ) THEN
@@ -251,7 +250,7 @@ i_GP_Best_Parent=1
 
 dff=GP_Population_Ranked_Fitness(1)
 
-do  i_GP_Individual=2,n_GP_individuals
+DO  i_GP_Individual=2,n_GP_individuals
 
     IF (  GP_Individual_N_GP_param( i_GP_Individual ) < min_N_param ) CYCLE
 
@@ -278,8 +277,8 @@ WRITE (GP_print_unit,'(/A,2(1x,I6),3(1x,E15.7))') &
 ! and writes the tree to the summary_best file
 
 IF ( i_GP_generation == 1                                 .or. &
-    MOD ( i_GP_generation, GP_child_print_interval ) == 0 .or. &
-    i_GP_generation == n_GP_generations                          ) THEN
+     MOD ( i_GP_generation, GP_child_print_interval ) == 0 .or. &
+     i_GP_generation == n_GP_generations                          ) THEN
 
     WRITE (GP_print_unit,'(/A/)') &
           'gpcf:------------------------------------------&
@@ -296,8 +295,8 @@ CALL summary_GP_indiv( i_GP_generation, i_GP_Best_Parent, 1 )
 
 
 IF ( i_GP_generation == 1                                 .or. &
-    MOD ( i_GP_generation, GP_child_print_interval ) == 0 .or. &
-    i_GP_generation == n_GP_generations                          ) THEN
+     MOD ( i_GP_generation, GP_child_print_interval ) == 0 .or. &
+     i_GP_generation == n_GP_generations                          ) THEN
 
     WRITE (GP_print_unit,'(/A/)') &
           'gpcf:------------------------------------------&
@@ -320,8 +319,7 @@ IF ( L_GPSSE_log ) THEN
     END IF !  i_GP_generation == 1
 
 
-    IF ( INDEX ( model, 'LOG10') > 0 .or. &
-        INDEX ( model, 'log10') > 0        ) THEN
+    IF ( INDEX ( model, 'log10') > 0        ) THEN
 
 
         WRITE (6,'(/A,1x, I6, 1x,E12.5)') &
@@ -385,7 +383,7 @@ WRITE (GP_print_unit,'(/A)') &
           'gpcf: i_CODE_eq  Model_Init_Cond(i_CODE_eq)  &
           &GP_Pop_init_cond(i_CODE_eq,i_GP_Best_Parent)'
 
-do  i_CODE_equation=1,n_CODE_equations
+DO  i_CODE_equation=1,n_CODE_equations
 
     WRITE (GP_print_unit,'(6x,I6,7x, E24.16, 10x, E24.16)') &
           i_CODE_equation, &
@@ -404,7 +402,7 @@ WRITE (GP_print_unit,'(/A)') &
      'gpcf: i_tree  i_node  nop   GP_pop_node_params'
 
 tree_loop:&
-do  i_tree=1,n_trees
+DO  i_tree=1,n_trees
 
     node_loop:&
     DO  i_node=1,n_nodes
@@ -458,8 +456,8 @@ END IF ! L_GP_output_parameters
 !---------------------------------------------------------------------------
 
 IF ( i_GP_generation == 1                                 .or. &
-    MOD ( i_GP_generation, GP_child_print_interval ) == 0 .or. &
-    i_GP_generation == n_GP_generations                          ) THEN
+     MOD ( i_GP_generation, GP_child_print_interval ) == 0 .or. &
+     i_GP_generation == n_GP_generations                          ) THEN
 
     WRITE (GP_print_unit,'(/A,1x,I6)') &
          'gpcf: print the tree for the best individual =', i_GP_Best_Parent
@@ -481,10 +479,10 @@ END IF ! i_GP_generation == 1 .or. ...
 !  record relative differences in the parameters
 !  but do not include in the logical calculation
 
-IF ( L_truth_model                                        .and.  &
-    ( i_GP_generation == 1                                 .or. &
-    MOD ( i_GP_generation, GP_child_print_interval ) == 0   .or. &
-    i_GP_generation == n_GP_generations  )                        ) THEN
+IF ( L_truth_model                                         .and.  &
+     ( i_GP_generation == 1                                  .or. &
+     MOD ( i_GP_generation, GP_child_print_interval ) == 0   .or. &
+     i_GP_generation == n_GP_generations  )                        ) THEN
 
 
 
@@ -545,7 +543,7 @@ IF ( L_truth_model                                        .and.  &
             END IF ! L_node_match
 
             IF ( GP_Adult_Population_Node_Type(i_Node,i_Tree,i_GP_Best_Parent) == 0 .or. &
-                Truth_Node_Type(i_Node,i_Tree) == 0                                 ) THEN
+                 Truth_Node_Type(i_Node,i_Tree) == 0                                 ) THEN
 
                 WRITE (GP_print_unit,'(3x,2(1x,I6),3(6x,E15.7),T89,A,5x,A)') &
                   i_tree, i_node, &

@@ -57,7 +57,7 @@ INTEGER (KIND=i4b) :: i_Node_Right
 
 !---------------------------------------------------------------------------
 
-do  i_GP_Individual=1,n_GP_Individuals
+DO  i_GP_Individual=1,n_GP_Individuals
 
 
     DO  i_Tree=1,n_Trees
@@ -74,7 +74,6 @@ do  i_GP_Individual=1,n_GP_Individuals
 
 
             ! run through each function at the level
-
 
             DO  i_Node = pow2_table( i_level ) + 1 , pow2_table( i_level+1 ), 2
 

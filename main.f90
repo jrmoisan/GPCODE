@@ -14,15 +14,15 @@
 
 program main
 
- 
-!---------------------------------------------------------------------------  
+
+!---------------------------------------------------------------------------
 !
-! DESCRIPTION: 
-! Brief description of routine. 
+! DESCRIPTION:
+! Brief description of routine.
 ! REVISION HISTORY:
 ! TODO_dd_mmm_yyyy - TODO_describe_appropriate_changes - TODO_name
 !
-!---------------------------------------------------------------------------  
+!---------------------------------------------------------------------------
 
 ! program written by: Dr. John R. Moisan [NASA/GSFC] 31 January, 2013
 
@@ -204,8 +204,8 @@ CALL read_input_data()
 
 !----------------------------------------------------
 
-ALLOCATE(seed(n_seed))
-ALLOCATE(current_seed(n_seed))
+ALLOCATE ( seed(n_seed) )
+ALLOCATE ( current_seed(n_seed) )
 
 IF ( user_input_random_seed > 0 ) THEN
    clock = user_input_random_seed
@@ -237,6 +237,7 @@ END IF ! myid == 0
 
 
 CALL setup1( )
+
 
 !----------------------------------------------------
 
@@ -295,7 +296,7 @@ IF ( myid == 0 ) THEN
 
     IF ( L_GP_all_summary .and. GP_all_summary_flag > 1 ) THEN
 
-        inquire( GP_summary_output_unit_all, opened = op )
+        INQUIRE ( GP_summary_output_unit_all, opened = op )
         IF ( op ) CLOSE ( GP_summary_output_unit_all )
 
         OPEN ( GP_summary_output_unit_all, file='GP_ALL_summary_file', &
@@ -312,8 +313,8 @@ IF ( myid == 0 ) THEN
     WRITE (6,'(/A,1x,I5)')     '0: start generation loop  myid = ', myid
 END IF ! myid == 0
 
-   generation_loop:&
-   DO  i_GP_Generation= 1, n_GP_Generations
+generation_loop:&
+DO  i_GP_Generation= 1, n_GP_Generations
 
     IF ( myid == 0 ) THEN
 
@@ -330,7 +331,7 @@ END IF ! myid == 0
 
         IF ( L_GP_all_summary ) THEN
 
-            inquire( GP_summary_output_unit_lgen, opened = op )
+            INQUIRE ( GP_summary_output_unit_lgen, opened = op )
             IF ( op ) CLOSE ( GP_summary_output_unit_lgen )
 
 
@@ -385,6 +386,7 @@ END IF ! myid == 0
          Run_GP_Calculate_Fitness= .false.
     END IF !  TRIM (model) == 'fasham_fixed_tree'
 
+
     ! randomly create the initial tree arrays for each individual and
     ! send them all to GA_lmdif for parameter optimization on generation 1
 
@@ -403,7 +405,7 @@ END IF ! myid == 0
 
 
     IF ( TRIM (model) /= 'fasham_fixed_tree' .and. &
-        TRIM (model) /= 'fasham_CDOM'              ) THEN
+         TRIM (model) /= 'fasham_CDOM'              ) THEN
         IF ( myid == 0 ) THEN
 
             CALL GP_Clean_Tree_Nodes
@@ -541,9 +543,9 @@ END IF ! myid == 0
 
     IF ( myid == 0 ) THEN
 
-        IF ( i_GP_generation == 1                                  .or. &
-            MOD ( i_GP_generation, GP_child_print_interval ) == 0  .or. &
-            i_GP_generation == n_GP_generations                          ) THEN
+        IF ( i_GP_generation == 1                                   .or. &
+             MOD ( i_GP_generation, GP_child_print_interval ) == 0  .or. &
+             i_GP_generation == n_GP_generations                          ) THEN
 
             WRITE (GP_print_unit,'(/A)') &
             '================================================================================='
@@ -568,7 +570,7 @@ END IF ! myid == 0
 
 
 
-            IF ( INDEX ( model, 'log10') > 0 .or. INDEX ( model, 'LOG10') > 0 ) THEN
+            IF ( INDEX ( model, 'log10') > 0  ) THEN
 
                 WRITE (GP_print_unit, '(/A )') &
                      '0:i_GP_Indiv  GP_Indiv_N_param   &
@@ -581,7 +583,7 @@ END IF ! myid == 0
                     GP_Child_Individual_SSE_nolog10(i_GP_Individual)/SSE0_nolog10
                 END DO
 
-            END IF ! INDEX ( model, 'log10') > 0 .or. INDEX ( model, 'LOG10') > 0 ) THEN
+            END IF ! INDEX ( model, 'log10') > 0  ) THEN
 
         END IF ! i_GP_generation == 1 .or. ...
 
@@ -605,9 +607,9 @@ END IF ! myid == 0
 
         !-----------------------------------------------------------------------
 
-        IF ( i_GP_generation == 1                                  .or. &
-            MOD ( i_GP_generation, GP_child_print_interval ) == 0  .or. &
-            i_GP_generation == n_GP_generations                          ) THEN
+        IF ( i_GP_generation == 1                                   .or. &
+             MOD ( i_GP_generation, GP_child_print_interval ) == 0  .or. &
+             i_GP_generation == n_GP_generations                          ) THEN
 
             WRITE (GP_print_unit,'(A)')&
             '0:################################################################'
@@ -701,7 +703,7 @@ END IF ! myid == 0
 
         IF ( L_GP_all_summary ) THEN
 
-            inquire( GP_summary_output_unit_lgen, opened = op )
+            INQUIRE ( GP_summary_output_unit_lgen, opened = op )
 
             IF ( op ) CLOSE ( GP_summary_output_unit_lgen )
 
@@ -802,10 +804,10 @@ IF ( myid == 0 ) THEN
 
     IF ( L_GP_all_summary ) THEN
 
-        inquire( GP_summary_output_unit_all, opened = op )
+        INQUIRE ( GP_summary_output_unit_all, opened = op )
         IF ( op ) CLOSE ( GP_summary_output_unit_all )
 
-        inquire( GP_summary_output_unit_lgen, opened = op )
+        INQUIRE ( GP_summary_output_unit_lgen, opened = op )
         IF ( op ) CLOSE ( GP_summary_output_unit_lgen )
 
     END IF ! L_GP_all_summary

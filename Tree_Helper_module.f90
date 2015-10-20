@@ -70,7 +70,7 @@ TYPE(Tree_Node_Pointer), DIMENSION(Tree_count), INTENT(IN) :: Trees ! The array 
 maxHeight = 0
 currentHeight = 0
 
-do  i = 1,Tree_count
+DO  i = 1,Tree_count
 
     currentHeight = GetTreeHeight(Trees(i)%n)
     IF ( currentHeight .gt. maxHeight) THEN

@@ -60,7 +60,7 @@ IF ( L_ga_print ) THEN
 END IF ! L_ga_print
 
 
-do  i_GA_Individual=1,n_GA_individuals
+DO  i_GA_Individual=1,n_GA_individuals
 
 
     DO  i_Parameter=1,n_Parameters
@@ -68,8 +68,6 @@ do  i_GA_Individual=1,n_GA_individuals
         CALL random_REAL (dff) ! random real number generator
 
         Child_Parameters(i_Parameter,i_GA_Individual) = dff
-
-        !if( i_parameter == 1 ) Child_Parameters(i_Parameter,i_GA_Individual) = 0.29520d0 !debug only 
 
         IF ( L_ga_print ) THEN
             WRITE (GA_print_unit,'(A,2(1x, I6),1x,E15.7)') &
